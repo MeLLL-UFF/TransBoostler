@@ -25,22 +25,13 @@ seed = 441773
 
 if not os.path.exists('experiments'):
     os.makedirs('experiments')
-    
-def print_function(message):
-    global experiment_title
-    global nbr
-    if not os.path.exists('experiments/' + experiment_title):
-        os.makedirs('experiments/' + experiment_title)
-    with open('experiments/' + experiment_title + '/' + str(nbr) + '_' + experiment_title + '.txt', 'a') as f:
-        print(message, file=f)
-        print(message)
         
 start = time.time()
 for experiment in experiments:
 
-    experiment_title = experiments[experiment]['id'] + '_' + experiments[experiment]['source'] + '_' + experiments[experiment]['target']
+    experiment_title = experiment['id'] + '_' + experiment['source'] + '_' + experiment['target']
 
-    print_function('Starting experiment {} \n'.format(experiment_title))
+    print('Starting experiment {} \n'.format(experiment_title))
 
     source = experiment['source']
     target = experiment['target']
@@ -60,14 +51,17 @@ for experiment in experiments:
     
     print('Source train facts examples: {}'.format(len(src_facts)))
     print('Source train pos examples: {}'.format(len(src_pos)))
-    print('Source train neg examples: %s\n'.format(len(src_neg)))
-                       
+    print('Source train neg examples: {}\n'.format(len(src_neg)))
+    
+    start = time.time()
     # Learning from source dataset
-    background = boostsrl,modes(modes=bk[source], [experiment[ 'predicate']], use_std_logic_variables=False, , maxTreeDepth=maxTreeDepth, nodeSize=nodeSize, numOfClauses=numOfClauses)
+    background = boostsrl.modes(modes=bk[source], [experiment['predicate']], use_std_logic_variables=False, maxTreeDepth=maxTreeDepth, nodeSize=nodeSize, numOfClauses=numOfClauses)
 
     model = boostsrl.train(background, src_pos, src_neg, src_facts)
+
+    end = time.time()
     
-    print('Model training time {}'.format(model.traintime()))
+    print('Model training time {}'.format(round(end-start, 4)))
 
     print(['WILL Produced-Tree #'+str(i+1)+'\n'+('\n'.join(model.get_will_produced_tree(treenumber=i+1))) for i in range(trees)])
 
