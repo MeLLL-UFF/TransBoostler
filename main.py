@@ -4,6 +4,7 @@ import sys
 import time
 #sys.path.append('../..')
 
+from sklearn.model_selection import train_test_split
 from experiments import experiments, bk
 from datasets.get_datasets import *
 from boostsrl import boostsrl
@@ -25,7 +26,7 @@ seed = 441773
 
 if not os.path.exists('experiments'):
     os.makedirs('experiments')
-        
+      
 start = time.time()
 for experiment in experiments:
 
@@ -55,14 +56,15 @@ for experiment in experiments:
     
     start = time.time()
     # Learning from source dataset
-    background = boostsrl.modes(modes=bk[source], [experiment['predicate']], use_std_logic_variables=False, maxTreeDepth=maxTreeDepth, nodeSize=nodeSize, numOfClauses=numOfClauses)
+    background = boostsrl.modes(bk[source], [experiment['predicate']], useStdLogicVariables=False, maxTreeDepth=maxTreeDepth, nodeSize=nodeSize, numOfClauses=numOfClauses)
 
-    model = boostsrl.train(background, src_pos, src_neg, src_facts)
+    model = boostsrl.train(background, src_pos, src_neg, src_facts, refine=None, trees=10)
 
     end = time.time()
     
     print('Model training time {}'.format(round(end-start, 4)))
 
-    print(['WILL Produced-Tree #'+str(i+1)+'\n'+('\n'.join(model.get_will_produced_tree(treenumber=i+1))) for i in range(trees)])
+    results = boostsrl.test(model, src_pos, src_neg, src_facts, trees=10)
+    print(results.summarize_results())
 
     break
