@@ -64,7 +64,12 @@ for experiment in experiments:
     
     print('Model training time {}'.format(round(end-start, 4)))
 
-    results = boostsrl.test(model, src_pos, src_neg, src_facts, trees=10)
-    print(results.summarize_results())
+    #results = boostsrl.test(model, src_pos, src_neg, src_facts, trees=10)
+    #print(results.summarize_results())
+
+    structured = []
+    for i in range(trees):
+      structured.append(model.get_structured_tree(treenumber=i+1).copy())
+    print(structured)
 
     break
