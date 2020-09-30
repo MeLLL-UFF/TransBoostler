@@ -2,27 +2,18 @@
 import os
 import sys
 import time
-#sys.path.append('../..')
 
 from sklearn.model_selection import train_test_split
 from experiments import experiments, bk
 from datasets.get_datasets import *
 from boostsrl import boostsrl
+import parameters as params
 import numpy as np
 import random
 
 #verbose=True
 source_balanced = 1
 balanced = 1
-firstRun = False
-n_runs = 24
-folds = 3
-
-nodeSize = 2
-numOfClauses = 8
-maxTreeDepth = 3
-trees = 10
-seed = 441773
 
 if not os.path.exists('experiments'):
     os.makedirs('experiments')
@@ -40,8 +31,8 @@ for experiment in experiments:
     to_predicate = experiment['to_predicate']
     
     # Load source dataset
-    src_total_data = datasets.load(source, bk[source], seed=seed)
-    src_data = datasets.load(source, bk[source], target=predicate, balanced=source_balanced, seed=seed)
+    src_total_data = datasets.load(source, bk[source], seed=params.SEED)
+    src_data = datasets.load(source, bk[source], target=predicate, balanced=source_balanced, seed=params.SEED)
 
     # Group and shuffle
     src_facts = datasets.group_folds(src_data[0])
@@ -56,9 +47,9 @@ for experiment in experiments:
     
     start = time.time()
     # Learning from source dataset
-    background = boostsrl.modes(bk[source], [experiment['predicate']], useStdLogicVariables=False, maxTreeDepth=maxTreeDepth, nodeSize=nodeSize, numOfClauses=numOfClauses)
+    background = boostsrl.modes(bk[source], [experiment['predicate']], useStdLogicVariables=False, maxTreeDepth=params.MAXTREEDEPTH, nodeSize=params.NODESIZE, numOfClauses=params.NUMOFCLAUSES)
 
-    model = boostsrl.train(background, src_pos, src_neg, src_facts, refine=None, trees=10)
+    model = boostsrl.train(background, src_pos, src_neg, src_facts, refine=params.REFINE, trees=params.TREES)
 
     end = time.time()
     
@@ -68,7 +59,7 @@ for experiment in experiments:
     #print(results.summarize_results())
 
     structured = []
-    for i in range(trees):
+    for i in range(params.TREES):
       structured.append(model.get_structured_tree(treenumber=i+1).copy())
     print(structured)
 
