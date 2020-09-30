@@ -3,6 +3,13 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+# Ignoring output folders
+boostsrl/train/
+boostsrl/test/
+
+# Ignoring boostsrl outputs
+boostsrl/*.txt
+
 # C extensions
 *.so
 
