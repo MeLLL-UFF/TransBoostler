@@ -38,25 +38,26 @@ def sweep_tree(structure, preds=[]):
       using recursion
 
       Args:
-          structure(list/dict/str/float): relation to be split
+          structure(list/dict/str/float): something to be added to the list
       Returns:
           all predicates learned by the model
   """
   if(isinstance(structure, list)):
     for element in structure:
       preds = sweep_tree(element, preds)
+    return preds
   elif(isinstance(structure, dict)):
     for key in structure:
       if(isinstance(structure[key], str)):
         temp = structure[key].split(', ')
         for t in temp:
-          if(['('] in t):
-            preds.append(t.split('('[0].strip()))
-        return preds
+          if((')' not in t and '(' in t) or ('(' in t and ')' in t)):
+            preds = sweep_tree(t, preds) 
       else:
         preds = sweep_tree(structure[key], preds)
-  elif(isinstance(structure, str) and ["true", "false"] not in structure):
-    preds.append(structure.split('(')[0])
+    return preds
+  elif(isinstance(structure, str) and ("false" not in structure or "true" not in structure)):
+    preds.append(structure)
     return preds
   else:
     return preds

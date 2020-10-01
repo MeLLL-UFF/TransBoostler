@@ -9,6 +9,7 @@ from datasets.get_datasets import *
 from boostsrl import boostsrl
 from transfer import Transfer
 import parameters as params
+import utils as utils
 import numpy as np
 import random
 
@@ -62,7 +63,9 @@ for experiment in experiments:
     for i in range(params.TREES):
       structured.append(model.get_structured_tree(treenumber=i+1).copy())
     
-    source_preds = sweep_tree(structure)
+    source_preds = list(set(utils.sweep_tree(structured)))
+    
+    break
 
     #similarities = transfer.similarity_word2vec(source_preds, bk[target], params.GOOGLE_WORD2VEC_PATH, method='concatenate')
     #print(similarities.head())
