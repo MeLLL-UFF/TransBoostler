@@ -7,6 +7,7 @@ from sklearn.model_selection import train_test_split
 from experiments import experiments, bk
 from datasets.get_datasets import *
 from boostsrl import boostsrl
+from transfer import Transfer
 import parameters as params
 import numpy as np
 import random
@@ -14,6 +15,8 @@ import random
 #verbose=True
 source_balanced = 1
 balanced = 1
+
+transfer = Transfer()
 
 if not os.path.exists('experiments'):
     os.makedirs('experiments')
@@ -45,15 +48,12 @@ for experiment in experiments:
     print('Source train pos examples: {}'.format(len(src_pos)))
     print('Source train neg examples: {}\n'.format(len(src_neg)))
     
-    start = time.time()
     # Learning from source dataset
     background = boostsrl.modes(bk[source], [experiment['predicate']], useStdLogicVariables=False, maxTreeDepth=params.MAXTREEDEPTH, nodeSize=params.NODESIZE, numOfClauses=params.NUMOFCLAUSES)
 
     model = boostsrl.train(background, src_pos, src_neg, src_facts, refine=params.REFINE, trees=params.TREES)
-
-    end = time.time()
     
-    print('Model training time {}'.format(round(end-start, 4)))
+    print('Model training time {}'.format(model.traintime()))
 
     #results = boostsrl.test(model, src_pos, src_neg, src_facts, trees=10)
     #print(results.summarize_results())
@@ -61,6 +61,10 @@ for experiment in experiments:
     structured = []
     for i in range(params.TREES):
       structured.append(model.get_structured_tree(treenumber=i+1).copy())
-    print(structured)
+    
+    source_preds = sweep_tree(structure)
 
-    break
+    #similarities = transfer.similarity_word2vec(source_preds, bk[target], params.GOOGLE_WORD2VEC_PATH, method='concatenate')
+    #print(similarities.head())
+
+    

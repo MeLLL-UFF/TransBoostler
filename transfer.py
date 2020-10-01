@@ -3,50 +3,23 @@ from gensim.models import KeyedVectors
 from ekphrasis.classes.segmenter import Segmenter
 from collections import OrderedDict
 from scipy import spatial
+import utils as utils
 import numpy as np
 import operator
 import logging
-import sys, os
+import sys
+import os
 
 import logging
 logging.basicConfig(level=logging.INFO)
 
-#segmenter using the word statistics from Wikipedia
+# segmenter using the word statistics from Wikipedia
 seg = Segmenter(corpus="english")
 
 class Transfer:
 
   def __init__(self):
     pass
-
-  def build_triples(self, data):
-    """
-       Splits predicates and its literals
-
-       Args:
-            data(str): relation to be split
-       Returns:
-            relation as a three-element array
-
-        Example: 
-            movie(A) -> movie, A, ''
-            father(A,B) -> father, A, B
-    """
-    output = []
-    for d in data:
-      d = d.split('(')
-      d_predicate = d[0]
-
-      if(',' in d[1]):
-        d_literal_1 = d[1].split(',')[0]
-        d_literal_2 = d[1].split(',')[1].split(')')[0]
-      else:
-        d_literal_1 = d[1].split(',')[0]
-        d_literal_2 = ''
-
-      output.append([d_predicate, d_literal_1, d_literal_2])
-
-    return output
 
   def get_arrays_avg(self, data):
     """
@@ -64,20 +37,21 @@ class Transfer:
         avg += np.array(data[i])
     return np.divide(avg, N)
 
-  def build_model_array(self, data, model, relation='AVG'):
-	  """
+  def build_model_array(self, data, model, method='AVG'):
+    """
         Turn relations into a single array
 
         Args:
             data(array): an array containing word embeddings
             model(object): embedding model
-            relation(str): method to compact arrays of embedded words
+            method(str): method to compact arrays of embedded words
        Returns:
             a dictionary that the keys are the words and the values are single arrays of embeddings
     """
 
     dict = {}
     for example in data:
+      print(data)
       temp = []
 
       # Tokenize relation words
@@ -85,13 +59,13 @@ class Transfer:
       for word in predicate.split():
         temp.append(model.wv[word.lower().strip()])
 
-      if(relation == 'AVG'):
+      if(method == 'AVG'):
         predicate = self.get_arrays_avg(temp)
-      elif(relation == 'MAX'):
+      elif(method == 'MAX'):
         predicate = max(temp, key=operator.methodcaller('tolist'))
-      elif(relation == 'MIN'):
+      elif(method == 'MIN'):
         predicate = min(temp, key=operator.methodcaller('tolist'))
-      elif(relation == 'CONCATENATE'):
+      elif(method == 'CONCATENATE'):
         predicate = min(temp, key=operator.methodcaller('tolist'))
         maximum = max(temp, key=operator.methodcaller('tolist'))
         predicate = np.append(predicate, maximum)
@@ -117,11 +91,12 @@ class Transfer:
         key = s + ',' + t
         similarity[key] = 1 - spatial.distance.cosine(source[s], target[t])
 
-    df = pd.DataFrame.from_dict(similarity, orient="index", columns=['similarity'])
+    df = pd.DataFrame.from_dict(
+        similarity, orient="index", columns=['similarity'])
     return df
 
   def similarity_word2vec(self, source, target, model_path, method):
-     """
+    """
         Embed relations using pre-trained word2vec
 
         Args:
@@ -135,6 +110,9 @@ class Transfer:
 
     # Load Google's pre-trained Word2Vec model.
     word2vecModel = KeyedVectors.load_word2vec_format(model_path, binary=True, unicode_errors='ignore')
+
+    source = utils.build_triples(source)
+    target = utils.build_triples(target)
 
     source = self.build_model_array(source, word2vecModel, method=method)
     target = self.build_model_array(target, word2vecModel, method=method)

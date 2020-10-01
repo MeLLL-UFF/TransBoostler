@@ -1,5 +1,5 @@
 
-GOOGLE_WORD2VEC_PATH = 'models/word2vec//GoogleNews-vectors-negative300.bin'
+GOOGLE_WORD2VEC_PATH = 'word2vec//GoogleNews-vectors-negative300.bin'
 
 # BoostSRL parameters
 NODESIZE = 2
