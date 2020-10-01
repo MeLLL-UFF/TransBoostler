@@ -63,11 +63,10 @@ for experiment in experiments:
     for i in range(params.TREES):
       structured.append(model.get_structured_tree(treenumber=i+1).copy())
     
-    source_preds = list(set(utils.sweep_tree(structured)))
-    
-    break
+    preds_learned = list(set(utils.sweep_tree(structured)))
 
-    #similarities = transfer.similarity_word2vec(source_preds, bk[target], params.GOOGLE_WORD2VEC_PATH, method='concatenate')
-    #print(similarities.head())
+    similarities = transfer.similarity_word2vec(preds_learned, bk[target], params.GOOGLE_WORD2VEC_PATH, method=params.METHOD)
+
+    break
 
     

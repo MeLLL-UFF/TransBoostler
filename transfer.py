@@ -4,6 +4,7 @@ from ekphrasis.classes.segmenter import Segmenter
 from collections import OrderedDict
 from scipy import spatial
 import utils as utils
+import pandas as pd
 import numpy as np
 import operator
 import logging
@@ -33,7 +34,7 @@ class Transfer:
 
     N = len(data)
     avg = np.array(data[0])
-    for i in range(1, len(data)):
+    for i in range(1, N):
         avg += np.array(data[i])
     return np.divide(avg, N)
 
@@ -51,14 +52,13 @@ class Transfer:
 
     dict = {}
     for example in data:
-      print(data)
       temp = []
 
-      # Tokenize relation words
-      predicate = seg.segment(example[1])
+      # Tokenize words of relation
+      predicate = seg.segment(example[0])
       for word in predicate.split():
         temp.append(model.wv[word.lower().strip()])
-
+    
       if(method == 'AVG'):
         predicate = self.get_arrays_avg(temp)
       elif(method == 'MAX'):
@@ -70,7 +70,7 @@ class Transfer:
         maximum = max(temp, key=operator.methodcaller('tolist'))
         predicate = np.append(predicate, maximum)
 
-      dict[example.rstrip()] = predicate
+      dict[example[0].rstrip()] = predicate
     return dict
 
   def get_cosine_similarities(self, source, target):
@@ -89,10 +89,11 @@ class Transfer:
     for s in source:
       for t in target:
         key = s + ',' + t
+        print(s, t)
+        print(len(source[s]), len(target[t]))
         similarity[key] = 1 - spatial.distance.cosine(source[s], target[t])
 
-    df = pd.DataFrame.from_dict(
-        similarity, orient="index", columns=['similarity'])
+    df = pd.DataFrame.from_dict(similarity, orient="index", columns=['similarity'])
     return df
 
   def similarity_word2vec(self, source, target, model_path, method):
