@@ -61,3 +61,61 @@ def sweep_tree(structure, preds=[]):
     return preds
   else:
     return preds
+
+def get_next_node(node, next):
+  """
+      Add next nodes of tree to list of rules
+
+      Args:
+          node(list): current branch to be added to list
+          next(list): next branch of tree given the current node
+      Returns:
+          all rules from a node
+  """
+
+  if not node:
+    return next
+  b = node.split(',')
+  b.append(next)
+  return ','.join(b)
+
+
+def get_rules(structure, treenumber=1):
+  """
+      Sweep through a branch of the tree 
+      to get all rules
+
+      Args:
+          structure(list): tree struct
+          treenumber(int): number of the tree to be processed
+      Returns:
+          all rules learned in the given branch
+  """
+
+  target = structure[0]
+  nodes = structure[1]
+  tree = treenumber-1
+
+  rules = []
+  for path in value in nodes.items():
+    node = target + ' :- ' + value + '.' if not path else value + '.'
+    true =  'true'  if get_next_node(path, 'true')  in nodes else 'false'
+    false = 'true'  if get_next_node(path, 'false') in nodes else 'false'
+    rules.append(';'.join([str(tree), path, node, true, false]))
+  return rules
+
+def get_all_rules_from_tree(structures):
+  """
+      Sweep through the relational tree 
+      to get all relational rules
+
+      Args:
+          structure(list): tree struct
+      Returns:
+          all rules learned by the model
+  """
+
+  rules = []
+  for i in range(len(structures)):
+    rules += get_rules(structures[i], treenumber=i+1)
+  return rules

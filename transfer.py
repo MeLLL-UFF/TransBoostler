@@ -89,8 +89,6 @@ class Transfer:
     for s in source:
       for t in target:
         key = s + ',' + t
-        print(s, t)
-        print(len(source[s]), len(target[t]))
         similarity[key] = 1 - spatial.distance.cosine(source[s], target[t])
 
     df = pd.DataFrame.from_dict(similarity, orient="index", columns=['similarity'])
@@ -119,3 +117,29 @@ class Transfer:
     target = self.build_model_array(target, word2vecModel, method=method)
 
     return self.get_cosine_similarities(source, target)
+
+  def write_to_file_closest_distance(self, from_predicate, to_predicate, source, similarity, recursion=False, searchArgPermutation=False, searchEmpty=False, allowSameTargetMap=False):
+    """
+          Sorts dataframe to obtain the closest target to a given source
+
+          Args:
+              source(array): all predicates from source dataset
+              similarity(dataframe): a pandas dataframe containing every pair (source, target) similarity
+         Returns:
+               writes a file containing transfer information
+      """
+   
+    with open('transfer_file.txt', 'w') as file:
+      for s in source:
+        pairs = similarity.filter(like=s, axis=0).sort_values(by='similarity', ascending=False).head(10).index.tolist()
+        file.write(str(s) + ': ' + ','.join([pair.split(',')[1] for pair in pairs]))
+        file.write('\n')
+      file.write('\n')
+
+      file.write('setMap: ' + from_predicate + ',' + to_predicate + '\n')
+      if(recursion):
+          file.write('setMap: recursion_' + from_predicate + '(A,B)=recursion_' + to_predicate + '(A,B).\n')
+      file.write('setParam: searchArgPermutation=' + str(searchArgPermutation).lower() + '.\n')
+      file.write('setParam: searchEmpty=' + str(searchEmpty).lower() + '.\n')
+      file.write('setParam: allowSameTargetMap=' + str(allowSameTargetMap).lower() + '.\n')
+      file.close()
