@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 from gensim.test.utils import datapath, get_tmpfile
 from gensim.models import KeyedVectors
 from ekphrasis.classes.segmenter import Segmenter

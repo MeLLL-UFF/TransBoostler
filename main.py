@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 
 import os
 import sys
@@ -72,5 +73,3 @@ for experiment in experiments:
     transfer.write_to_file_closest_distance(predicate, to_predicate, preds_learned, similarities, searchArgPermutation=True, allowSameTargetMap=False)
     
     break
-
-    
