@@ -3,6 +3,7 @@ from gensim.test.utils import datapath, get_tmpfile
 from gensim.models import KeyedVectors
 from ekphrasis.classes.segmenter import Segmenter
 from collections import OrderedDict
+import parameters as params
 from scipy import spatial
 import utils as utils
 import pandas as pd
@@ -137,7 +138,7 @@ class Transfer:
                writes a file containing transfer information
       """
    
-    with open('transfer_file.txt', 'w') as file:
+    with open(params.TRANSFER_FILENAME, 'w') as file:
       for s in source:
         pairs = similarity.filter(like=s, axis=0).sort_values(by='similarity', ascending=False).head(10).index.tolist()
         file.write(str(s) + ': ' + ','.join([re.split(r',\s*(?![^()]*\))', pair)[1] for pair in pairs]))

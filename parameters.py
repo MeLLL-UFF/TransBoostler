@@ -9,3 +9,7 @@ MAXTREEDEPTH = 3
 TREES = 10
 SEED = 441773
 REFINE = None
+
+# Filename
+TRANSFER_FILENAME = 'boostsrl/transfer.txt'
+REFINE_FILENAME = 'boostsrl/refine.txt'

@@ -119,3 +119,16 @@ def get_all_rules_from_tree(structures):
   for i in range(len(structures)):
     rules += get_rules(structures[i], treenumber=i+1)
   return rules
+
+def write_to_file(data, filename):
+  """
+      Write content to a specific file
+
+      Args:
+          data(list): information to be written
+          filename(str): name of file in which the data will be written
+  """
+  with open(path, 'w') as f:
+      for line in content:
+          f.write(line + '\n')
+  f.close()
