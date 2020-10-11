@@ -10,6 +10,7 @@ import operator
 import logging
 import sys
 import os
+import re
 
 import logging
 logging.basicConfig(level=logging.INFO)
@@ -70,7 +71,8 @@ class Transfer:
         maximum = max(temp, key=operator.methodcaller('tolist'))
         predicate = np.append(predicate, maximum)
 
-      dict[example[0].rstrip()] = predicate
+      arity = 2 if example[2] else 1
+      dict[example[0].rstrip()] = [predicate, arity]
     return dict
 
   def get_cosine_similarities(self, source, target):
@@ -88,8 +90,13 @@ class Transfer:
     similarity = {}
     for s in source:
       for t in target:
-        key = s + ',' + t
-        similarity[key] = 1 - spatial.distance.cosine(source[s], target[t])
+
+      	# Predicates must have the same arity
+        if(source[s][1] != target[t][1]):
+        	continue
+
+        key = s + '(' + ','.join([chr(65+i) for i in range(source[s][1])]) + ')' + ',' + t + '(' + ','.join([chr(65+i) for i in range(target[t][1])]) + ')'
+        similarity[key] = 1 - spatial.distance.cosine(source[s][0], target[t][0])
 
     df = pd.DataFrame.from_dict(similarity, orient="index", columns=['similarity'])
     return df
@@ -132,7 +139,7 @@ class Transfer:
     with open('transfer_file.txt', 'w') as file:
       for s in source:
         pairs = similarity.filter(like=s, axis=0).sort_values(by='similarity', ascending=False).head(10).index.tolist()
-        file.write(str(s) + ': ' + ','.join([pair.split(',')[1] for pair in pairs]))
+        file.write(str(s) + ': ' + ','.join([re.split(r',\s*(?![^()]*\))', pair)[1] for pair in pairs]))
         file.write('\n')
       file.write('\n')
 
