@@ -61,14 +61,14 @@ for experiment in experiments:
       structured.append(model.get_structured_tree(treenumber=i+1).copy())
     
     preds_learned = list(set(utils.sweep_tree(structured)))
-    preds_learned.remove(predicate)
+    #preds_learned.remove(predicate)
 
     refine_structure = utils.get_all_rules_from_tree(structured)
     
     #similarities = pd.read_csv('similaridades-10.csv').set_index('Unnamed: 0')
     #preds_learned = ["actor", "movie", "director"]
 
-    similarities = transfer.similarity_word2vec(preds_learned, bk[target].remove(to_predicate), params.GOOGLE_WORD2VEC_PATH, method=params.METHOD)
+    similarities = transfer.similarity_word2vec(preds_learned, bk[target], params.GOOGLE_WORD2VEC_PATH, method=params.METHOD)
     transfer.write_to_file_closest_distance(predicate, to_predicate, preds_learned, similarities, searchArgPermutation=True, allowSameTargetMap=False)
     
     break

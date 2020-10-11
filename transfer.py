@@ -70,7 +70,7 @@ class Transfer:
         maximum = max(temp, key=operator.methodcaller('tolist'))
         predicate = np.append(predicate, maximum)
 
-      dict[example[0].rstrip()] = predicate
+      dict[example[0].rstrip() + '(' + example[1] + ')' if not example[2] == '' else ',' + example[2] + ')'] = predicate
     return dict
 
   def get_cosine_similarities(self, source, target):
@@ -129,7 +129,7 @@ class Transfer:
                writes a file containing transfer information
       """
    
-    with open('transfer_file.txt', 'w') as file:
+    with open('boostsrl/transfer_file.txt', 'w') as file:
       for s in source:
         pairs = similarity.filter(like=s, axis=0).sort_values(by='similarity', ascending=False).head(10).index.tolist()
         file.write(str(s) + ': ' + ','.join([pair.split(',')[1] for pair in pairs]))

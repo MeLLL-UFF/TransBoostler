@@ -97,7 +97,7 @@ def get_rules(structure, treenumber=1):
   tree = treenumber-1
 
   rules = []
-  for path in value in nodes.items():
+  for path, value in nodes.items():
     node = target + ' :- ' + value + '.' if not path else value + '.'
     true =  'true'  if get_next_node(path, 'true')  in nodes else 'false'
     false = 'true'  if get_next_node(path, 'false') in nodes else 'false'
