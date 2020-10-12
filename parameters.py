@@ -10,6 +10,7 @@ TREES = 10
 SEED = 441773
 REFINE = None
 
-# Filename
+# Filenames
 TRANSFER_FILENAME = 'boostsrl/transfer.txt'
 REFINE_FILENAME = 'boostsrl/refine.txt'
+WILLTHEORIES_FILENAME = 'boostsrl/train/models/WILLtheories/{}_learnedWILLregressionTrees.txt'

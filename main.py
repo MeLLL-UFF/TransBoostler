@@ -54,16 +54,20 @@ for experiment in experiments:
 
     model = boostsrl.train(background, src_pos, src_neg, src_facts, refine=params.REFINE, trees=params.TREES)
     
-    print('Model training time {}'.format(model.traintime()))
+    #print('Model training time {}'.format(model.traintime()))
 
     structured, will = [], ""
     for i in range(params.TREES):
       structured.append(model.get_structured_tree(treenumber=i+1).copy())
 
-    will = ['WILL Produced-Tree #'+str(i+1)+'\n'+('\n'.join(model.get_structured_tree(treenumber=i+1))) for i in range(params.TREES)]
-    for i in will:
-        print(i)
-    print('\n')
+    with open(params.WILLTHEORIES_FILENAME.format(to_predicate), 'w') as file:
+        will = ['WILL Produced-Tree #'+str(i+1)+'\n'+('\n'.join(model.get_structured_tree(treenumber=i+1))) for i in range(params.TREES)]
+        for i in will:
+            print(i)
+            file.write(i)
+        print('\n')
+        file.write('\n')
+    file.close()
     
     preds_learned = list(set(utils.sweep_tree(structured)))
     #preds_learned.remove(predicate)
@@ -102,7 +106,7 @@ for experiment in experiments:
     background = boostsrl.modes(bk[target], [to_predicate], useStdLogicVariables=False, maxTreeDepth=params.MAXTREEDEPTH, nodeSize=params.NODESIZE, numOfClauses=params.NUMOFCLAUSES)
     model = boostsrl.train(background, tar_train_pos, tar_train_neg, tar_train_facts, refine=params.REFINE_FILENAME, transfer=params.TRANSFER_FILENAME, trees=params.TREES)
 
-    print('Model training time using transfer learning {}'.format(model.traintime()))
+    #print('Model training time using transfer learning {}'.format(model.traintime()))
 
     results = boostsrl.test(model, tar_test_pos, tar_test_neg, tar_test_facts, trees=params.TREES)
     inference_time = results.testtime()
