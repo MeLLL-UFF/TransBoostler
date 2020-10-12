@@ -54,7 +54,7 @@ for experiment in experiments:
 
     model = boostsrl.train(background, src_pos, src_neg, src_facts, refine=params.REFINE, trees=params.TREES)
     
-    print('Model training time {}'.format(model.traintime()))
+    #print('Model training time {}'.format(model.traintime()))
 
     structured = []
     for i in range(params.TREES):
@@ -102,7 +102,7 @@ for experiment in experiments:
         print(i)
     print('\n')
 
-    print('Model training time using transfer learning {}'.format(model.traintime()))
+    #print('Model training time using transfer learning {}'.format(model.traintime()))
 
     results = boostsrl.test(model, tar_test_pos, tar_test_neg, tar_test_facts, trees=params.TREES)
     inference_time = results.testtime()
