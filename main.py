@@ -59,12 +59,12 @@ for experiment in experiments:
     structured = []
     for i in range(params.TREES):
       structured.append(model.get_structured_tree(treenumber=i+1).copy())
-    utils.write_to_file(structured, params.REFINE_FILENAME)
     
     preds_learned = list(set(utils.sweep_tree(structured)))
     #preds_learned.remove(predicate)
 
     refine_structure = utils.get_all_rules_from_tree(structured)
+    utils.write_to_file(refine_structure, params.REFINE_FILENAME)
     
     similarities = pd.read_csv('similaridades-10.csv').set_index('Unnamed: 0')
     #preds_learned = ["actor(A)", "movie(A)", "director(A,B)"]
