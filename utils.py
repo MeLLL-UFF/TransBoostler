@@ -128,7 +128,7 @@ def write_to_file(data, filename):
           data(list): information to be written
           filename(str): name of file in which the data will be written
   """
-  with open(path, 'w') as f:
+  with open(filename, 'w') as f:
       for line in content:
           f.write(line + '\n')
   f.close()
