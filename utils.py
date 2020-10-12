@@ -122,13 +122,13 @@ def get_all_rules_from_tree(structures):
 
 def write_to_file(data, filename):
   """
-      Write content to a specific file
+      Write data to a specific file
 
       Args:
           data(list): information to be written
           filename(str): name of file in which the data will be written
   """
   with open(filename, 'w') as f:
-      for line in content:
+      for line in data:
           f.write(line + '\n')
   f.close()
