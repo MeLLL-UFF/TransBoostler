@@ -140,15 +140,15 @@ class Transfer:
    
     with open(params.TRANSFER_FILENAME, 'w') as file:
       for s in source:
-        pairs = similarity.filter(like=s, axis=0).sort_values(by='similarity', ascending=False).head(10).index.tolist()
-        file.write(str(s) + ': ' + ','.join([re.split(r',\s*(?![^()]*\))', pair)[1] for pair in pairs]))
+        pairs = similarity.filter(like=s, axis=0).sort_values(by='similarity', ascending=False).index.tolist()
+        file.write(str(s) + ': ' + ','.join([pair for pair in pairs]))
         file.write('\n')
       file.write('\n')
 
-      file.write('setMap: ' + from_predicate + ',' + to_predicate + '\n')
+      file.write('setMap:' + from_predicate + ',' + to_predicate + '\n')
       if(recursion):
-          file.write('setMap: recursion_' + from_predicate + '(A,B)=recursion_' + to_predicate + '(A,B).\n')
-      file.write('setParam: searchArgPermutation=' + str(searchArgPermutation).lower() + '.\n')
-      file.write('setParam: searchEmpty=' + str(searchEmpty).lower() + '.\n')
-      file.write('setParam: allowSameTargetMap=' + str(allowSameTargetMap).lower() + '.\n')
+          file.write('setMap:recursion_' + from_predicate + '(A,B)=recursion_' + to_predicate + '(A,B).\n')
+      file.write('setParam:searchArgPermutation=' + str(searchArgPermutation).lower() + '.\n')
+      file.write('setParam:searchEmpty=' + str(searchEmpty).lower() + '.\n')
+      file.write('setParam:allowSameTargetMap=' + str(allowSameTargetMap).lower() + '.\n')
       file.close()

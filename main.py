@@ -17,6 +17,8 @@ import random
 source_balanced = 1
 balanced = 1
 
+i = 0
+
 transfer = Transfer()
 
 if not os.path.exists('experiments'):
@@ -54,7 +56,7 @@ for experiment in experiments:
 
     model = boostsrl.train(background, src_pos, src_neg, src_facts, refine=params.REFINE, trees=params.TREES)
     
-    #print('Model training time {}'.format(model.traintime()))
+    print('Model training time {}'.format(model.traintime()))
 
     structured, will = [], ""
     for i in range(params.TREES):
@@ -70,15 +72,15 @@ for experiment in experiments:
     file.close()
     
     preds_learned = list(set(utils.sweep_tree(structured)))
-    #preds_learned.remove(predicate)
+    preds_learned.remove(predicate)
 
     refine_structure = utils.get_all_rules_from_tree(structured)
     utils.write_to_file(refine_structure, params.REFINE_FILENAME)
     
-    similarities = pd.read_csv('similaridades-10.csv').set_index('Unnamed: 0')
+    #similarities = pd.read_csv('similaridades-10.csv').set_index('Unnamed: 0')
     #preds_learned = ["actor(A)", "movie(A)", "director(A,B)"]
 
-    #similarities = transfer.similarity_word2vec(preds_learned, bk[target], params.GOOGLE_WORD2VEC_PATH, method=params.METHOD)
+    similarities = transfer.similarity_word2vec(preds_learned, bk[target], params.GOOGLE_WORD2VEC_PATH, method=params.METHOD)
     transfer.write_to_file_closest_distance(predicate, to_predicate, preds_learned, similarities, searchArgPermutation=True, allowSameTargetMap=False)
     
     # Load new predicate target dataset
