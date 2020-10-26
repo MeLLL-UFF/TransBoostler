@@ -3,6 +3,7 @@ from gensim.test.utils import datapath, get_tmpfile
 from gensim.models import KeyedVectors
 from ekphrasis.classes.segmenter import Segmenter
 from collections import OrderedDict
+from nltk.corpus import stopwords 
 import parameters as params
 from scipy import spatial
 import utils as utils
@@ -59,7 +60,11 @@ class Transfer:
 
       # Tokenize words of relation
       predicate = seg.segment(example[0])
+      stop_words = set(stopwords.words('english')) 
       for word in predicate.split():
+        if(word in stop_words):
+          continue
+
         temp.append(model.wv[word.lower().strip()])
     
       if(method == 'AVG'):
@@ -73,8 +78,7 @@ class Transfer:
         maximum = max(temp, key=operator.methodcaller('tolist'))
         predicate = np.append(predicate, maximum)
 
-      arity = 2 if example[2] else 1
-      dict[example[0].rstrip()] = [predicate, arity]
+      dict[example[0].rstrip()] = [predicate, example[1:]]
     return dict
 
   def get_cosine_similarities(self, source, target):
@@ -94,10 +98,10 @@ class Transfer:
       for t in target:
 
       	# Predicates must have the same arity
-        if(source[s][1] != target[t][1]):
+        if(len(source[s][1]) != len(target[t][1])):
         	continue
 
-        key = s + '(' + ','.join([chr(65+i) for i in range(source[s][1])]) + ')' + ',' + t + '(' + ','.join([chr(65+i) for i in range(target[t][1])]) + ')'
+        key = s + '(' + (','.join(source[s][1]) if source[s][1][1] != '' else source[s][1][0]) + ')' + ',' + t + '(' + (','.join(target[t][1]) if target[t][1][1] != '' else target[t][1][0]) + ')'
         similarity[key] = 1 - spatial.distance.cosine(source[s][0], target[t][0])
 
     df = pd.DataFrame.from_dict(similarity, orient="index", columns=['similarity'])
@@ -127,25 +131,26 @@ class Transfer:
 
     return self.get_cosine_similarities(source, target)
 
-  def write_to_file_closest_distance(self, from_predicate, to_predicate, source, similarity, recursion=False, searchArgPermutation=False, searchEmpty=False, allowSameTargetMap=False):
+  def write_to_file_closest_distance(self, from_predicate, to_predicate, arity, source, similarity, recursion=False, searchArgPermutation=False, searchEmpty=False, allowSameTargetMap=False):
     """
           Sorts dataframe to obtain the closest target to a given source
 
           Args:
+              from_predicate(str): predicate of model trained using source data
+              to_predicate(str): predicate of model to be trained transfering the structure of source model
+              arity(int): arity of from and to predicate
               source(array): all predicates from source dataset
               similarity(dataframe): a pandas dataframe containing every pair (source, target) similarity
          Returns:
                writes a file containing transfer information
       """
-   
     with open(params.TRANSFER_FILENAME, 'w') as file:
       for s in source:
         pairs = similarity.filter(like=s, axis=0).sort_values(by='similarity', ascending=False).index.tolist()
-        file.write(str(s) + ': ' + ','.join([pair for pair in pairs]))
+        file.write(str(s) + ': ' + ','.join([re.split(r',\s*(?![^()]*\))', pair)[1] for pair in pairs]))
         file.write('\n')
-      file.write('\n')
 
-      file.write('setMap:' + from_predicate + ',' + to_predicate + '\n')
+      file.write('setMap:' + from_predicate + '(' + ','.join([chr(65+i) for i in range(arity)]) + ')' + ',' + to_predicate + '(' + ','.join([chr(65+i) for i in range(arity)]) + ')' + '\n')
       if(recursion):
           file.write('setMap:recursion_' + from_predicate + '(A,B)=recursion_' + to_predicate + '(A,B).\n')
       file.write('setParam:searchArgPermutation=' + str(searchArgPermutation).lower() + '.\n')

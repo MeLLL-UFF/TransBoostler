@@ -35,6 +35,7 @@ for experiment in experiments:
     target = experiment['target']
     predicate = experiment['predicate']
     to_predicate = experiment['to_predicate']
+    arity = experiment['arity']
     
     # Load source dataset
     src_total_data = datasets.load(source, bk[source], seed=params.SEED)
@@ -53,26 +54,17 @@ for experiment in experiments:
     
     # Learning from source dataset
     background = boostsrl.modes(bk[source], [experiment['predicate']], useStdLogicVariables=False, maxTreeDepth=params.MAXTREEDEPTH, nodeSize=params.NODESIZE, numOfClauses=params.NUMOFCLAUSES)
-
     model = boostsrl.train(background, src_pos, src_neg, src_facts, refine=params.REFINE, trees=params.TREES)
     
-    print('Model training time {}'.format(model.traintime()))
+    #TODO: adicionar o tempo corretamente
+    #print('Model training time {}'.format(model.traintime()))
 
-    structured, will = [], ""
+    structured = []
     for i in range(params.TREES):
       structured.append(model.get_structured_tree(treenumber=i+1).copy())
-
-    with open(params.WILLTHEORIES_FILENAME.format(to_predicate), 'w') as file:
-        will = ['WILL Produced-Tree #'+str(i+1)+'\n'+('\n'.join(model.get_structured_tree(treenumber=i+1))) for i in range(params.TREES)]
-        for i in will:
-            print(i)
-            file.write(i)
-        print('\n')
-        file.write('\n')
-    file.close()
     
-    preds_learned = list(set(utils.sweep_tree(structured)))
-    preds_learned.remove(predicate)
+    preds = list(set(utils.sweep_tree(structured)))
+    preds_learned = list(set([pred.replace('.', '').replace('+', '').replace('-', '') for pred in bk[source] if pred.split('(')[0] != predicate and pred.split('(')[0] in preds]))
 
     refine_structure = utils.get_all_rules_from_tree(structured)
     utils.write_to_file(refine_structure, params.REFINE_FILENAME)
@@ -81,12 +73,13 @@ for experiment in experiments:
     #preds_learned = ["actor(A)", "movie(A)", "director(A,B)"]
 
     similarities = transfer.similarity_word2vec(preds_learned, bk[target], params.GOOGLE_WORD2VEC_PATH, method=params.METHOD)
-    transfer.write_to_file_closest_distance(predicate, to_predicate, preds_learned, similarities, searchArgPermutation=True, allowSameTargetMap=False)
+    transfer.write_to_file_closest_distance(predicate, to_predicate, arity, preds_learned, similarities, allowSameTargetMap=False)
     
     # Load new predicate target dataset
     tar_data = datasets.load(target, bk[target], target=to_predicate, balanced=balanced, seed=params.SEED)
     
     # Group and shuffle
+    i = 0
     if target not in ['nell_sports', 'nell_finances', 'yago2s']:
         [tar_train_facts, tar_test_facts] =  datasets.get_kfold_small(i, tar_data[0])
         [tar_train_pos, tar_test_pos] =  datasets.get_kfold_small(i, tar_data[1])
@@ -111,21 +104,21 @@ for experiment in experiments:
     #print('Model training time using transfer learning {}'.format(model.traintime()))
 
     results = boostsrl.test(model, tar_test_pos, tar_test_neg, tar_test_facts, trees=params.TREES)
-    inference_time = results.testtime()
+    #inference_time = results.testtime()
     t_results = results.summarize_results()
-    t_results['Learning time'] = learning_time
-    t_results['Inference time'] = inference_time
-    print_function('Results')
-    print_function('   AUC ROC   = %s' % t_results['AUC ROC'])
-    print_function('   AUC PR    = %s' % t_results['AUC PR'])
-    print_function('   CLL        = %s' % t_results['CLL'])
-    print_function('   Precision = %s at threshold = %s' % (t_results['Precision'][0], t_results['Precision'][1]))
-    print_function('   Recall    = %s' % t_results['Recall'])
-    print_function('   F1        = %s' % t_results['F1'])
-    print_function('\n')
-    print_function('Total learning time: %s seconds' % learning_time)
-    print_function('Total inference time: %s seconds' % inference_time)
-    print_function('AUC ROC: %s' % t_results['AUC ROC'])
-    print_function('\n')
+    #t_results['Learning time'] = learning_time
+    #t_results['Inference time'] = inference_time
+    print('Results')
+    print('   AUC ROC   = %s' % t_results['AUC ROC'])
+    print('   AUC PR    = %s' % t_results['AUC PR'])
+    print('   CLL        = %s' % t_results['CLL'])
+    print('   Precision = %s at threshold = %s' % (t_results['Precision'][0], t_results['Precision'][1]))
+    print('   Recall    = %s' % t_results['Recall'])
+    print('   F1        = %s' % t_results['F1'])
+    print('\n')
+    print('Total learning time: %s seconds' % learning_time)
+    print('Total inference time: %s seconds' % inference_time)
+    print('AUC ROC: %s' % t_results['AUC ROC'])
+    print('\n')
 
     break

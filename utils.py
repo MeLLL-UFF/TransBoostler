@@ -1,6 +1,7 @@
 import numpy as np
 import sys
 import os
+import re
 
 def build_triples(data):
   """
@@ -17,18 +18,17 @@ def build_triples(data):
   """
   output = []
   for d in data:
-    d = d.split('(')
+    d = d.replace('.','').split('(')
     d_predicate = d[0]
 
     if(',' in d[1]):
-      d_literal_1 = d[1].split(',')[0]
-      d_literal_2 = d[1].split(',')[1].split(')')[0]
+      d_literal_1 = d[1].split(',')[0].replace('(', '').replace('+', '').replace('-', '')
+      d_literal_2 = d[1].split(',')[1].split(')')[0].replace('+', '').replace('-', '')
     else:
-      d_literal_1 = d[1].split(',')[0]
+      d_literal_1 = d[1].split(',')[0].replace(')', '').replace('+', '').replace('-', '')
       d_literal_2 = ''
 
     output.append([d_predicate, d_literal_1, d_literal_2])
-
   return output
 
 def sweep_tree(structure, preds=[]):
@@ -49,15 +49,15 @@ def sweep_tree(structure, preds=[]):
   elif(isinstance(structure, dict)):
     for key in structure:
       if(isinstance(structure[key], str)):
-        temp = structure[key].split(', ')
+        temp = re.split(r',\s*(?![^()]*\))', structure[key])
         for t in temp:
-          if((')' not in t and '(' in t) or ('(' in t and ')' in t)):
-            preds = sweep_tree(t, preds) 
+          t = t.split('(')[0]	
+          preds = sweep_tree(t, preds) 
       else:
         preds = sweep_tree(structure[key], preds)
     return preds
   elif(isinstance(structure, str) and ("false" not in structure or "true" not in structure)):
-    preds.append(structure)
+    preds.append(structure.split('(')[0])
     return preds
   else:
     return preds
