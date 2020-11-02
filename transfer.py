@@ -1,13 +1,14 @@
 
 from gensim.test.utils import datapath, get_tmpfile
 from ekphrasis.classes.segmenter import Segmenter
-from gensim.models import KeyedVectors
+from gensim.models import KeyedVectors, FastText
 from collections import OrderedDict
 import parameters as params
 from scipy import spatial
 import utils as utils
 import pandas as pd
 import numpy as np
+import fasttext
 import operator
 import logging
 import sys
@@ -61,7 +62,8 @@ class Transfer:
       predicate = seg.segment(example[0])
       for word in predicate.split():
         try:
-          temp.append(model.wv[word.lower().strip()])
+          #temp.append(model.wv[word.lower().strip()])
+          temp.append(model.get_word_vector(word.lower().strip()))
         except:
           temp.append([0] * params.EMBEDDING_DIMENSION)
     
@@ -130,6 +132,30 @@ class Transfer:
 
     source = self.build_model_array(source, word2vecModel, method=method)
     target = self.build_model_array(target, word2vecModel, method=method)
+
+    return self.get_cosine_similarities(source, target)
+
+  def similarity_fasttext(self, source, target, model_path, method):
+    """
+        Embed relations using pre-trained fasttext
+
+        Args:
+            source(array): all predicates from source dataset
+            target(array): all predicates from target dataset
+            model_path(str): current path to find the model to be used
+            method(str): method used to compact arrays
+       Returns:
+            a pandas dataframe containing every pair (source, target) similarity
+    """
+
+    # Load Wikipedia's pre-trained fastText model.
+    fastTextModel = fasttext.load_model(params.WIKIPEDIA_FASTTEXT_PATH)
+
+    source = utils.build_triples(source)
+    target = utils.build_triples(target)
+
+    source = self.build_model_array(source, fastTextModel, method=method)
+    target = self.build_model_array(target, fastTextModel, method=method)
 
     return self.get_cosine_similarities(source, target)
 

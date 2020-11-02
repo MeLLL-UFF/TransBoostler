@@ -1,9 +1,4 @@
 
-import os
-import sys
-import time
-
-from sklearn.model_selection import train_test_split
 from experiments import experiments, bk
 from datasets.get_datasets import *
 from boostsrl import boostsrl
@@ -12,12 +7,13 @@ import parameters as params
 import utils as utils
 import numpy as np
 import random
+import time
+import sys
+import os
 
 #verbose=True
 source_balanced = 1
 balanced = 1
-
-i = 0
 
 transfer = Transfer()
 
@@ -58,26 +54,28 @@ for experiment in experiments:
     print('Source train neg examples: {}\n'.format(len(src_neg)))
     
     # Learning from source dataset
-    background = boostsrl.modes(bk[source], [experiment['predicate']], useStdLogicVariables=False, maxTreeDepth=params.MAXTREEDEPTH, nodeSize=params.NODESIZE, numOfClauses=params.NUMOFCLAUSES)
-    model = boostsrl.train(background, src_pos, src_neg, src_facts, refine=params.REFINE, trees=params.TREES)
+    #background = boostsrl.modes(bk[source], [experiment['predicate']], useStdLogicVariables=False, maxTreeDepth=params.MAXTREEDEPTH, nodeSize=params.NODESIZE, numOfClauses=params.NUMOFCLAUSES)
+    #model = boostsrl.train(background, src_pos, src_neg, src_facts, refine=params.REFINE, trees=params.TREES)
     
     #TODO: adicionar o tempo corretamente
     #print('Model training time {}'.format(model.traintime()))
 
-    structured = []
-    for i in range(params.TREES):
-      structured.append(model.get_structured_tree(treenumber=i+1).copy())
+    #structured = []
+    #for i in range(params.TREES):
+    #  structured.append(model.get_structured_tree(treenumber=i+1).copy())
     
-    preds = list(set(utils.sweep_tree(structured)))
-    preds_learned = list(set([pred.replace('.', '').replace('+', '').replace('-', '') for pred in bk[source] if pred.split('(')[0] != predicate and pred.split('(')[0] in preds]))
+    #preds = list(set(utils.sweep_tree(structured)))
+    #preds_learned = list(set([pred.replace('.', '').replace('+', '').replace('-', '') for pred in bk[source] if pred.split('(')[0] != predicate and pred.split('(')[0] in preds]))
 
-    refine_structure = utils.get_all_rules_from_tree(structured)
-    utils.write_to_file(refine_structure, params.REFINE_FILENAME)
-    utils.write_to_file(refine_structure, os.getcwd() + '/experiments/{}_{}_{}/'.format(_id, source, target) + 'source_tree.txt')
+    #refine_structure = utils.get_all_rules_from_tree(structured)
+    #utils.write_to_file(refine_structure, params.REFINE_FILENAME)
+    #utils.write_to_file(refine_structure, os.getcwd() + '/experiments/{}_{}_{}/'.format(_id, source, target) + 'source_tree.txt')
 
-    similarities = transfer.similarity_word2vec(preds_learned, set(bk[target]), params.GOOGLE_WORD2VEC_PATH, method=params.METHOD)
-    transfer.write_to_file_closest_distance(predicate, to_predicate, arity, set([s.replace('.', '').replace('+', '').replace('-', '') for s in bk[source]]), similarities, allowSameTargetMap=False)
+    similarities = transfer.similarity_fasttext(set([b.replace('+', '').replace('-', '').replace('.', '') for b in bk[source]]), set(bk[target]), params.WIKIPEDIA_FASTTEXT_PATH, method=params.METHOD)
+    #transfer.write_to_file_closest_distance(predicate, to_predicate, arity, set([s.replace('.', '').replace('+', '').replace('-', '') for s in bk[source]]), similarities, allowSameTargetMap=False)
     
+    print(similarities.head())
+    break 
     # Load new predicate target dataset
     tar_data = datasets.load(target, bk[target], target=to_predicate, balanced=balanced, seed=params.SEED)
     
