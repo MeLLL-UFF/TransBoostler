@@ -1,5 +1,6 @@
 
 GOOGLE_WORD2VEC_PATH = 'word2vec//GoogleNews-vectors-negative300.bin'
+EMBEDDING_DIMENSION = 300
 METHOD = 'CONCATENATE'
 
 # BoostSRL parameters

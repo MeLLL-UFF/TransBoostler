@@ -132,3 +132,22 @@ def write_to_file(data, filename):
       for line in data:
           f.write(line + '\n')
   f.close()
+
+def fill_dimension(source, target, dimension):
+  """
+     Fix source and target to be the same dimension
+
+      Args:
+          source(list): source embedding vector
+          target(str): target embedding vector
+          dimension(int): number of dimension of embedding vector
+  """
+
+  if(source.shape[0] > target.shape[0]):
+    zeros = np.zeros(source.shape[0] - target.shape[0])
+    return source, np.append(target, zeros)
+  elif(source.shape[0] < target.shape[0]):
+    zeros = np.zeros(target.shape[0] - source.shape[0])
+    return np.append(source, zeros), target
+  else:
+    print("Something went wrong while filling dimensions") 

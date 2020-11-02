@@ -1,9 +1,8 @@
 
 from gensim.test.utils import datapath, get_tmpfile
-from gensim.models import KeyedVectors
 from ekphrasis.classes.segmenter import Segmenter
+from gensim.models import KeyedVectors
 from collections import OrderedDict
-from nltk.corpus import stopwords 
 import parameters as params
 from scipy import spatial
 import utils as utils
@@ -60,12 +59,11 @@ class Transfer:
 
       # Tokenize words of relation
       predicate = seg.segment(example[0])
-      stop_words = set(stopwords.words('english')) 
       for word in predicate.split():
-        if(word in stop_words):
-          continue
-
-        temp.append(model.wv[word.lower().strip()])
+        try:
+          temp.append(model.wv[word.lower().strip()])
+        except:
+          temp.append([0] * params.EMBEDDING_DIMENSION)
     
       if(method == 'AVG'):
         predicate = self.get_arrays_avg(temp)
@@ -74,9 +72,9 @@ class Transfer:
       elif(method == 'MIN'):
         predicate = min(temp, key=operator.methodcaller('tolist'))
       elif(method == 'CONCATENATE'):
-        predicate = min(temp, key=operator.methodcaller('tolist'))
-        maximum = max(temp, key=operator.methodcaller('tolist'))
-        predicate = np.append(predicate, maximum)
+        #predicate = min(temp, key=operator.methodcaller('tolist'))
+        #maximum = max(temp, key=operator.methodcaller('tolist'))
+        predicate = np.concatenate(temp)
 
       dict[example[0].rstrip()] = [predicate, example[1:]]
     return dict
@@ -102,6 +100,10 @@ class Transfer:
         	continue
 
         key = s + '(' + (','.join(source[s][1]) if source[s][1][1] != '' else source[s][1][0]) + ')' + ',' + t + '(' + (','.join(target[t][1]) if target[t][1][1] != '' else target[t][1][0]) + ')'
+        
+        if(source[s][0].shape[0] != target[t][0].shape[0]):
+          source[s][0], target[t][0] = utils.fill_dimension(source[s][0], target[t][0], params.EMBEDDING_DIMENSION)
+
         similarity[key] = 1 - spatial.distance.cosine(source[s][0], target[t][0])
 
     df = pd.DataFrame.from_dict(similarity, orient="index", columns=['similarity'])
@@ -147,7 +149,7 @@ class Transfer:
     with open(params.TRANSFER_FILENAME, 'w') as file:
       for s in source:
         pairs = similarity.filter(like=s, axis=0).sort_values(by='similarity', ascending=False).index.tolist()
-        file.write(str(s) + ': ' + ','.join([re.split(r',\s*(?![^()]*\))', pair)[1] for pair in pairs]))
+        file.write((str(s) + ': ' + ','.join([re.split(r',\s*(?![^()]*\))', pair)[1] for pair in pairs])).replace('`', ''))
         file.write('\n')
 
       file.write('setMap:' + from_predicate + '(' + ','.join([chr(65+i) for i in range(arity)]) + ')' + ',' + to_predicate + '(' + ','.join([chr(65+i) for i in range(arity)]) + ')' + '\n')
