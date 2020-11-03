@@ -1,6 +1,6 @@
 
 GOOGLE_WORD2VEC_PATH = 'word2vec/GoogleNews-vectors-negative300.bin'
-WIKIPEDIA_FASTTEXT_PATH = 'fasttext/wiki-news-300d-1M.vec'
+WIKIPEDIA_FASTTEXT_PATH = 'fasttext/wiki.en.bin'
 EMBEDDING_DIMENSION = 300
 METHOD = 'CONCATENATE'
 

@@ -65,6 +65,7 @@ class Transfer:
           #temp.append(model.wv[word.lower().strip()])
           temp.append(model.get_word_vector(word.lower().strip()))
         except:
+          print('Word {} not present in pre-trained model'.format(word.lower().strip()))
           temp.append([0] * params.EMBEDDING_DIMENSION)
     
       if(method == 'AVG'):
@@ -172,6 +173,7 @@ class Transfer:
          Returns:
                writes a file containing transfer information
       """
+    print(similarity.head())
     with open(params.TRANSFER_FILENAME, 'w') as file:
       for s in source:
         pairs = similarity.filter(like=s, axis=0).sort_values(by='similarity', ascending=False).index.tolist()
