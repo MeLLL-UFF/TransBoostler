@@ -64,15 +64,16 @@ for experiment in experiments:
     for i in range(params.TREES):
       structured.append(model.get_structured_tree(treenumber=i+1).copy())
     
+    # Get the list of predicates from source tree
     preds = list(set(utils.sweep_tree(structured)))
     preds_learned = list(set([pred.replace('.', '').replace('+', '').replace('-', '') for pred in bk[source] if pred.split('(')[0] != predicate and pred.split('(')[0] in preds]))
-
+    
     refine_structure = utils.get_all_rules_from_tree(structured)
     utils.write_to_file(refine_structure, params.REFINE_FILENAME)
     utils.write_to_file(refine_structure, os.getcwd() + '/experiments/{}_{}_{}/'.format(_id, source, target) + 'source_tree.txt')
 
     similarities = transfer.similarity_fasttext(preds_learned, set(bk[target]), params.WIKIPEDIA_FASTTEXT_PATH, method=params.METHOD)
-    transfer.write_to_file_closest_distance(predicate, to_predicate, arity, set([s.replace('.', '').replace('+', '').replace('-', '') for s in bk[source]]), similarities, allowSameTargetMap=True)
+    transfer.write_to_file_closest_distance(predicate, to_predicate, arity, set([s.replace('.', '').replace('+', '').replace('-', '') for s in bk[source] if s.replace('.', '').replace('+', '').replace('-', '') in preds_learned]), similarities, allowSameTargetMap=True)
     
     # Load new predicate target dataset
     tar_data = datasets.load(target, bk[target], target=to_predicate, balanced=balanced, seed=params.SEED)

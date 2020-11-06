@@ -173,7 +173,7 @@ class Transfer:
          Returns:
                writes a file containing transfer information
       """
-    print(similarity.head())
+    print(similarity)
     with open(params.TRANSFER_FILENAME, 'w') as file:
       for s in source:
         pairs = similarity.filter(like=s, axis=0).sort_values(by='similarity', ascending=False).index.tolist()
