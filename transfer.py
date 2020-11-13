@@ -1,10 +1,11 @@
 
 from gensim.test.utils import datapath, get_tmpfile
 from ekphrasis.classes.segmenter import Segmenter
-from gensim.models import KeyedVectors, FastText
+from gensim.models import KeyedVectors
 from collections import OrderedDict
 import parameters as params
 from scipy import spatial
+from tqdm import tqdm
 import utils as utils
 import pandas as pd
 import numpy as np
@@ -54,8 +55,10 @@ class Transfer:
             a dictionary that the keys are the words and the values are single arrays of embeddings
     """
 
+    logging.info('Building embeddings')
+
     dict = {}
-    for example in data:
+    for example in tqdm(data):
       temp = []
 
       # Tokenize words of relation
@@ -79,6 +82,8 @@ class Transfer:
         #maximum = max(temp, key=operator.methodcaller('tolist'))
         predicate = np.concatenate(temp)
 
+      if(example[2] == ''):
+        example.remove('')
       dict[example[0].rstrip()] = [predicate, example[1:]]
     return dict
 
@@ -94,16 +99,18 @@ class Transfer:
             a pandas dataframe containing every pair (source, target) similarity
     """
 
+    logging.info('Calculating similarities')
+
     similarity = {}
-    for s in source:
-      for t in target:
+    for s in tqdm(source):
+      for t in tqdm(target):
 
       	# Predicates must have the same arity
         if(len(source[s][1]) != len(target[t][1])):
-        	continue
+          continue
 
-        key = s + '(' + (','.join(source[s][1]) if source[s][1][1] != '' else source[s][1][0]) + ')' + ',' + t + '(' + (','.join(target[t][1]) if target[t][1][1] != '' else target[t][1][0]) + ')'
-        
+        key = s + '(' + ','.join(source[s][1]) + ')' + ',' + t + '(' + ','.join(target[t][1]) + ')'
+        #key = s + '(' + ','.join([chr(65+i) for i in range(len(source[s][1]))]) + ')' + ',' + t + '(' + ','.join([chr(65+i) for i in range(len(target[t][1]))]) + ')'
         if(source[s][0].shape[0] != target[t][0].shape[0]):
           source[s][0], target[t][0] = utils.fill_dimension(source[s][0], target[t][0], params.EMBEDDING_DIMENSION)
 
@@ -126,6 +133,7 @@ class Transfer:
     """
 
     # Load Google's pre-trained Word2Vec model.
+    logging.info('Loading pre-trained Word2Vec model')
     word2vecModel = KeyedVectors.load_word2vec_format(model_path, binary=True, unicode_errors='ignore')
 
     source = utils.build_triples(source)
@@ -150,6 +158,7 @@ class Transfer:
     """
 
     # Load Wikipedia's pre-trained fastText model.
+    logging.info('Loading pre-trained fastText model.')
     fastTextModel = fasttext.load_model(params.WIKIPEDIA_FASTTEXT_PATH)
 
     source = utils.build_triples(source)
@@ -160,7 +169,56 @@ class Transfer:
 
     return self.get_cosine_similarities(source, target)
 
-  def write_to_file_closest_distance(self, from_predicate, to_predicate, arity, source, similarity, recursion=False, searchArgPermutation=False, searchEmpty=False, allowSameTargetMap=False):
+  #def map_variables(self, bk_source, tree_source):
+  #  bk_source.sort()
+  #  tree_source.sort()
+  #  variables = {}
+  #  for s,t in zip(bk_source, tree_source):
+  #    print(s, t)
+
+  def map_predicates(self, source, similarity, recursion=False, searchArgPermutation=False, searchEmpty=False, allowSameTargetMap=False):
+      """
+        Sorts dataframe to obtain the closest target to a given source
+
+        Args:
+            source(array): all predicates from source dataset
+            similarity(dataframe): a pandas dataframe containing every pair (source, target) similarity
+        Returns:
+            a dictionary containing all predicates mapped
+      """
+
+      logging.info('Mapping source to target predicates given the highest similaries')
+
+      target_mapped, mapping = [], {}
+      a = similarity.sort_values(by='similarity', ascending=False)
+      print(a)
+      print('\n\n\n')
+      indexes = similarity.sort_values(by='similarity', ascending=False).index.tolist()
+      
+      for index in tqdm(indexes):
+        index = re.split(r',\s*(?![^()]*\))', index)
+        source, target = index[0].rstrip(), index[1].rstrip()
+
+        if(source in mapping):
+          continue
+
+        if(allowSameTargetMap):
+          mapping[source] = target
+        else:
+          if(target in target_mapped):
+            continue
+          else:
+            mapping[source] = target
+            target_mapped.append(target)
+
+        if(len(mapping) == len(source)):
+          # All sources mapped to a target
+          break
+
+      del similarity
+      return mapping
+
+  def write_to_file_closest_distance(self, from_predicate, to_predicate, arity, mapping, filename, recursion=False, searchArgPermutation=False, searchEmpty=False, allowSameTargetMap=False):
     """
           Sorts dataframe to obtain the closest target to a given source
 
@@ -168,16 +226,13 @@ class Transfer:
               from_predicate(str): predicate of model trained using source data
               to_predicate(str): predicate of model to be trained transfering the structure of source model
               arity(int): arity of from and to predicate
-              source(array): all predicates from source dataset
-              similarity(dataframe): a pandas dataframe containing every pair (source, target) similarity
+              mapping(dict): a dictionary a pair of mapping (source, target)
          Returns:
-               writes a file containing transfer information
-      """
-    print(similarity)
+              writes a file containing transfer information
+    """
     with open(params.TRANSFER_FILENAME, 'w') as file:
-      for s in source:
-        pairs = similarity.filter(like=s, axis=0).sort_values(by='similarity', ascending=False).index.tolist()
-        file.write((str(s) + ': ' + ','.join([re.split(r',\s*(?![^()]*\))', pair)[1] for pair in pairs])).replace('`', ''))
+      for source in mapping:
+        file.write((source + ': ' + mapping[source]).replace('`', ''))
         file.write('\n')
 
       file.write('setMap:' + from_predicate + '(' + ','.join([chr(65+i) for i in range(arity)]) + ')' + ',' + to_predicate + '(' + ','.join([chr(65+i) for i in range(arity)]) + ')' + '\n')
@@ -186,4 +241,18 @@ class Transfer:
       file.write('setParam:searchArgPermutation=' + str(searchArgPermutation).lower() + '.\n')
       file.write('setParam:searchEmpty=' + str(searchEmpty).lower() + '.\n')
       file.write('setParam:allowSameTargetMap=' + str(allowSameTargetMap).lower() + '.\n')
-      file.close()
+    file.close()
+
+    with open(filename + '/transfer.txt', 'w') as file:
+      for s in source:
+        #pairs = similarity.filter(like=s, axis=0).sort_values(by='similarity', ascending=False).index.tolist()
+        file.write((source + ': ' + mapping[source]).replace('`', ''))
+        file.write('\n')
+
+      file.write('setMap:' + from_predicate + '(' + ','.join([chr(65+i) for i in range(arity)]) + ')' + ',' + to_predicate + '(' + ','.join([chr(65+i) for i in range(arity)]) + ')' + '\n')
+      if(recursion):
+          file.write('setMap:recursion_' + from_predicate + '(A,B)=recursion_' + to_predicate + '(A,B).\n')
+      file.write('setParam:searchArgPermutation=' + str(searchArgPermutation).lower() + '.\n')
+      file.write('setParam:searchEmpty=' + str(searchEmpty).lower() + '.\n')
+      file.write('setParam:allowSameTargetMap=' + str(allowSameTargetMap).lower() + '.\n')
+    file.close()

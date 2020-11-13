@@ -58,6 +58,7 @@ def sweep_tree(structure, preds=[]):
     return preds
   elif(isinstance(structure, str) and ("false" not in structure or "true" not in structure)):
     preds.append(structure.split('(')[0])
+    #preds.append(structure)
     return preds
   else:
     return preds

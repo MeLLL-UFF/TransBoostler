@@ -11,6 +11,9 @@ import time
 import sys
 import os
 
+import logging
+logging.basicConfig(level=logging.INFO)
+
 #verbose=True
 source_balanced = 1
 balanced = 1
@@ -25,7 +28,7 @@ for experiment in experiments:
 
     experiment_title = experiment['id'] + '_' + experiment['source'] + '_' + experiment['target']
 
-    print('Starting experiment {} \n'.format(experiment_title))
+    logging.info('Starting experiment {} \n'.format(experiment_title))
 
     _id = experiment['id']
     source = experiment['source']
@@ -34,7 +37,7 @@ for experiment in experiments:
     to_predicate = experiment['to_predicate']
     arity = experiment['arity']
 
-    path = os.getcwd() + '/experiments/{}_{}_{}'.format(_id, source, target)
+    path = os.getcwd() + '/experiments/' + experiment_title
     if not os.path.exists(path):
         os.mkdir(path)
     
@@ -47,18 +50,26 @@ for experiment in experiments:
     src_pos = datasets.group_folds(src_data[1])
     src_neg = datasets.group_folds(src_data[2])
                 
-    print('Start learning from source dataset\n')
+    logging.info('Start learning from source dataset\n')
     
-    print('Source train facts examples: {}'.format(len(src_facts)))
-    print('Source train pos examples: {}'.format(len(src_pos)))
-    print('Source train neg examples: {}\n'.format(len(src_neg)))
+    logging.info('Source train facts examples: {}'.format(len(src_facts)))
+    logging.info('Source train pos examples: {}'.format(len(src_pos)))
+    logging.info('Source train neg examples: {}\n'.format(len(src_neg)))
     
+    start = time.time()
+
     # Learning from source dataset
     background = boostsrl.modes(bk[source], [experiment['predicate']], useStdLogicVariables=False, maxTreeDepth=params.MAXTREEDEPTH, nodeSize=params.NODESIZE, numOfClauses=params.NUMOFCLAUSES)
     model = boostsrl.train(background, src_pos, src_neg, src_facts, refine=params.REFINE, trees=params.TREES)
     
+    end = time.time()
+
     #TODO: adicionar o tempo corretamente
     #print('Model training time {}'.format(model.traintime()))
+
+    logging.info('Model training time {}'.format(end-start))
+
+    logging.info('Building refine structure')
 
     structured = []
     for i in range(params.TREES):
@@ -66,15 +77,21 @@ for experiment in experiments:
     
     # Get the list of predicates from source tree
     preds = list(set(utils.sweep_tree(structured)))
-    preds_learned = list(set([pred.replace('.', '').replace('+', '').replace('-', '') for pred in bk[source] if pred.split('(')[0] != predicate and pred.split('(')[0] in preds]))
+    preds_learned = [pred.replace('.', '').replace('+', '').replace('-', '') for pred in bk[source] if pred.split('(')[0] != predicate and pred.split('(')[0] in preds]
+    print(preds_learned)
     
+    logging.info('Searching for similarities')
+
     refine_structure = utils.get_all_rules_from_tree(structured)
     utils.write_to_file(refine_structure, params.REFINE_FILENAME)
     utils.write_to_file(refine_structure, os.getcwd() + '/experiments/{}_{}_{}/'.format(_id, source, target) + 'source_tree.txt')
 
-    similarities = transfer.similarity_fasttext(preds_learned, set(bk[target]), params.WIKIPEDIA_FASTTEXT_PATH, method=params.METHOD)
-    transfer.write_to_file_closest_distance(predicate, to_predicate, arity, set([s.replace('.', '').replace('+', '').replace('-', '') for s in bk[source] if s.replace('.', '').replace('+', '').replace('-', '') in preds_learned]), similarities, allowSameTargetMap=True)
+    targets = [t.replace('.', '').replace('+', '').replace('-', '') for t in set(bk[target]) if t.split('(')[0] != to_predicate]
+    similarities = transfer.similarity_fasttext(preds_learned, targets, params.WIKIPEDIA_FASTTEXT_PATH, method=params.METHOD)
+    mapping = transfer.map_predicates(preds_learned, similarities)
+    transfer.write_to_file_closest_distance(predicate, to_predicate, arity, mapping, 'experiments/' + experiment_title, allowSameTargetMap=params.ALLOW_SAME_TARGET_MAP)
     
+    skoaksoaksopas
     # Load new predicate target dataset
     tar_data = datasets.load(target, bk[target], target=to_predicate, balanced=balanced, seed=params.SEED)
     
@@ -92,14 +109,14 @@ for experiment in experiments:
         [tar_train_pos, tar_test_pos] =  datasets.get_kfold_small(i, to_folds_pos)
         [tar_train_neg, tar_test_neg] =  datasets.get_kfold_small(i, to_folds_neg)
     
-    print('Start transfer learning experiment\n')
+    logging.info('Start transfer learning experiment\n')
 
-    print('Target train facts examples: %s' % len(tar_train_facts))
-    print('Target train pos examples: %s' % len(tar_train_pos))
-    print('Target train neg examples: %s\n' % len(tar_train_neg))
-    print('Target test facts examples: %s' % len(tar_test_facts))
-    print('Target test pos	 examples: %s' % len(tar_test_pos))
-    print('Target test neg examples: %s\n' % len(tar_test_neg))
+    logging.info('Target train facts examples: %s' % len(tar_train_facts))
+    logging.info('Target train pos examples: %s' % len(tar_train_pos))
+    logging.info('Target train neg examples: %s\n' % len(tar_train_neg))
+    logging.info('Target test facts examples: %s' % len(tar_test_facts))
+    logging.info('Target test pos examples: %s' % len(tar_test_pos))
+    logging.info('Target test neg examples: %s\n' % len(tar_test_neg))
 
     start = time.time()
 
@@ -109,7 +126,7 @@ for experiment in experiments:
     end = time.time()
     learning_time = end-start
 
-    #print('Model training time using transfer learning {}'.format(model.traintime()))
+    logging.info('Model training time using transfer learning {}'.format(learning_time))
 
     start = time.time()
 
@@ -118,22 +135,20 @@ for experiment in experiments:
     end = time.time()
     inference_time = end-start
 
-    inference_time = results.testtime()
+    #inference_time = results.testtime()
     t_results = results.summarize_results()
     results = []
     t_results['Learning time'] = learning_time
     t_results['Inference time'] = inference_time
-    results.append('Results')
-    results.append('   AUC ROC   = {}'.format(t_results['AUC ROC']))
-    results.append('   AUC PR    = {}'.format(t_results['AUC PR']))
-    results.append('   CLL       = {}'.format(t_results['CLL']))
-    results.append('   Precision = {} at threshold = {}'.format(t_results['Precision'][0], t_results['Precision'][1]))
-    results.append('   Recall    = {}'.format(t_results['Recall']))
-    results.append('   F1        = {}'.format(t_results['F1']))
+    results.append('AUC ROC: {}'.format(t_results['AUC ROC']))
+    results.append('AUC PR: {}'.format(t_results['AUC PR']))
+    results.append('CLL: {}'.format(t_results['CLL']))
+    results.append('Precision: {}'.format(t_results['Precision'][0]))
+    results.append('Recall: {}'.format(t_results['Recall']))
+    results.append('F1: {}'.format(t_results['F1']))
     results.append('\n')
     results.append('Total learning time: {} seconds'.format(learning_time))
     results.append('Total inference time: {} seconds'.format(inference_time))
-    results.append('AUC ROC: {}'.format(t_results['AUC ROC']))
     results.append('\n')
 
     structured = []
@@ -144,3 +159,4 @@ for experiment in experiments:
 
     results += refine_structure
     utils.write_to_file(results, os.getcwd() + '/experiments/{}_{}_{}/results.txt'.format(_id, source, target))
+    break
