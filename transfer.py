@@ -190,9 +190,6 @@ class Transfer:
       logging.info('Mapping source to target predicates given the highest similaries')
 
       target_mapped, mapping = [], {}
-      a = similarity.sort_values(by='similarity', ascending=False)
-      print(a)
-      print('\n\n\n')
       indexes = similarity.sort_values(by='similarity', ascending=False).index.tolist()
       
       for index in tqdm(indexes):
@@ -231,7 +228,7 @@ class Transfer:
               writes a file containing transfer information
     """
     with open(params.TRANSFER_FILENAME, 'w') as file:
-      for source in mapping:
+      for source in mapping.keys():
         file.write((source + ': ' + mapping[source]).replace('`', ''))
         file.write('\n')
 
@@ -244,8 +241,7 @@ class Transfer:
     file.close()
 
     with open(filename + '/transfer.txt', 'w') as file:
-      for s in source:
-        #pairs = similarity.filter(like=s, axis=0).sort_values(by='similarity', ascending=False).index.tolist()
+      for source in mapping.keys():
         file.write((source + ': ' + mapping[source]).replace('`', ''))
         file.write('\n')
 

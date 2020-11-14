@@ -78,7 +78,7 @@ for experiment in experiments:
     # Get the list of predicates from source tree
     preds = list(set(utils.sweep_tree(structured)))
     preds_learned = [pred.replace('.', '').replace('+', '').replace('-', '') for pred in bk[source] if pred.split('(')[0] != predicate and pred.split('(')[0] in preds]
-    print(preds_learned)
+    print('Preds learned:',preds_learned)
     
     logging.info('Searching for similarities')
 
@@ -91,7 +91,6 @@ for experiment in experiments:
     mapping = transfer.map_predicates(preds_learned, similarities)
     transfer.write_to_file_closest_distance(predicate, to_predicate, arity, mapping, 'experiments/' + experiment_title, allowSameTargetMap=params.ALLOW_SAME_TARGET_MAP)
     
-    skoaksoaksopas
     # Load new predicate target dataset
     tar_data = datasets.load(target, bk[target], target=to_predicate, balanced=balanced, seed=params.SEED)
     
@@ -135,7 +134,7 @@ for experiment in experiments:
     end = time.time()
     inference_time = end-start
 
-    #inference_time = results.testtime()
+    inference_time = results.testtime()
     t_results = results.summarize_results()
     results = []
     t_results['Learning time'] = learning_time
@@ -159,4 +158,5 @@ for experiment in experiments:
 
     results += refine_structure
     utils.write_to_file(results, os.getcwd() + '/experiments/{}_{}_{}/results.txt'.format(_id, source, target))
-    break
+
+    del preds, preds_learned, similarities, mapping, refine_structure
