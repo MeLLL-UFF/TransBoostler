@@ -1,7 +1,7 @@
 
 from gensim.test.utils import datapath, get_tmpfile
 from ekphrasis.classes.segmenter import Segmenter
-from gensim.models import KeyedVectors
+from gensim.models import KeyedVectors, Word2Vec
 from collections import OrderedDict
 import parameters as params
 from scipy import spatial
@@ -55,7 +55,7 @@ class Transfer:
             a dictionary that the keys are the words and the values are single arrays of embeddings
     """
 
-    logging.info('Building embeddings')
+    #logging.info('Building embeddings')
 
     dict = {}
     for example in tqdm(data):
@@ -68,7 +68,7 @@ class Transfer:
           #temp.append(model.wv[word.lower().strip()])
           temp.append(model.get_word_vector(word.lower().strip()))
         except:
-          print('Word {} not present in pre-trained model'.format(word.lower().strip()))
+          logging.warning('Word {} not present in pre-trained model'.format(word.lower().strip()))
           temp.append([0] * params.EMBEDDING_DIMENSION)
     
       if(method == 'AVG'):
@@ -134,7 +134,7 @@ class Transfer:
 
     # Load Google's pre-trained Word2Vec model.
     logging.info('Loading pre-trained Word2Vec model')
-    word2vecModel = KeyedVectors.load_word2vec_format(model_path, binary=True, unicode_errors='ignore')
+    word2vecModel = KeyedVectors.load_word2vec_format(model_path, binary=True)
 
     source = utils.build_triples(source)
     target = utils.build_triples(target)
@@ -144,7 +144,7 @@ class Transfer:
 
     return self.get_cosine_similarities(source, target)
 
-  def similarity_fasttext(self, source, target, model_path, method):
+  def similarity_fasttext(self, source, target, fastTextModel, method):
     """
         Embed relations using pre-trained fasttext
 
@@ -158,8 +158,8 @@ class Transfer:
     """
 
     # Load Wikipedia's pre-trained fastText model.
-    logging.info('Loading pre-trained fastText model.')
-    fastTextModel = fasttext.load_model(params.WIKIPEDIA_FASTTEXT_PATH)
+    #logging.info('Loading pre-trained fastText model.')
+    #fastTextModel = fasttext.load_model(params.WIKIPEDIA_FASTTEXT_PATH)
 
     source = utils.build_triples(source)
     target = utils.build_triples(target)
@@ -168,13 +168,6 @@ class Transfer:
     target = self.build_model_array(target, fastTextModel, method=method)
 
     return self.get_cosine_similarities(source, target)
-
-  #def map_variables(self, bk_source, tree_source):
-  #  bk_source.sort()
-  #  tree_source.sort()
-  #  variables = {}
-  #  for s,t in zip(bk_source, tree_source):
-  #    print(s, t)
 
   def map_predicates(self, source, similarity, recursion=False, searchArgPermutation=False, searchEmpty=False, allowSameTargetMap=False):
       """
@@ -212,7 +205,6 @@ class Transfer:
           # All sources mapped to a target
           break
 
-      del similarity
       return mapping
 
   def write_to_file_closest_distance(self, from_predicate, to_predicate, arity, mapping, filename, recursion=False, searchArgPermutation=False, searchEmpty=False, allowSameTargetMap=False):
@@ -235,8 +227,8 @@ class Transfer:
       file.write('setMap:' + from_predicate + '(' + ','.join([chr(65+i) for i in range(arity)]) + ')' + ',' + to_predicate + '(' + ','.join([chr(65+i) for i in range(arity)]) + ')' + '\n')
       if(recursion):
           file.write('setMap:recursion_' + from_predicate + '(A,B)=recursion_' + to_predicate + '(A,B).\n')
-      file.write('setParam:searchArgPermutation=' + str(searchArgPermutation).lower() + '.\n')
-      file.write('setParam:searchEmpty=' + str(searchEmpty).lower() + '.\n')
+      #file.write('setParam:searchArgPermutation=' + str(searchArgPermutation).lower() + '.\n')
+      #file.write('setParam:searchEmpty=' + str(searchEmpty).lower() + '.\n')
       file.write('setParam:allowSameTargetMap=' + str(allowSameTargetMap).lower() + '.\n')
     file.close()
 
@@ -248,7 +240,7 @@ class Transfer:
       file.write('setMap:' + from_predicate + '(' + ','.join([chr(65+i) for i in range(arity)]) + ')' + ',' + to_predicate + '(' + ','.join([chr(65+i) for i in range(arity)]) + ')' + '\n')
       if(recursion):
           file.write('setMap:recursion_' + from_predicate + '(A,B)=recursion_' + to_predicate + '(A,B).\n')
-      file.write('setParam:searchArgPermutation=' + str(searchArgPermutation).lower() + '.\n')
-      file.write('setParam:searchEmpty=' + str(searchEmpty).lower() + '.\n')
+      #file.write('setParam:searchArgPermutation=' + str(searchArgPermutation).lower() + '.\n')
+      #file.write('setParam:searchEmpty=' + str(searchEmpty).lower() + '.\n')
       file.write('setParam:allowSameTargetMap=' + str(allowSameTargetMap).lower() + '.\n')
     file.close()

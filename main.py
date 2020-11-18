@@ -6,6 +6,7 @@ from transfer import Transfer
 import parameters as params
 import utils as utils
 import numpy as np
+import fasttext
 import random
 import time
 import sys
@@ -13,6 +14,8 @@ import os
 
 import logging
 logging.basicConfig(level=logging.INFO)
+
+fastTextModel = fasttext.load_model(params.WIKIPEDIA_FASTTEXT_PATH)
 
 #verbose=True
 source_balanced = 1
@@ -23,7 +26,6 @@ transfer = Transfer()
 if not os.path.exists('experiments'):
     os.makedirs('experiments')
       
-start = time.time()
 for experiment in experiments:
 
     experiment_title = experiment['id'] + '_' + experiment['source'] + '_' + experiment['target']
@@ -78,8 +80,8 @@ for experiment in experiments:
     # Get the list of predicates from source tree
     preds = list(set(utils.sweep_tree(structured)))
     preds_learned = [pred.replace('.', '').replace('+', '').replace('-', '') for pred in bk[source] if pred.split('(')[0] != predicate and pred.split('(')[0] in preds]
-    print('Preds learned:',preds_learned)
-    
+    print('PREDS', preds_learned)
+
     logging.info('Searching for similarities')
 
     refine_structure = utils.get_all_rules_from_tree(structured)
@@ -87,7 +89,7 @@ for experiment in experiments:
     utils.write_to_file(refine_structure, os.getcwd() + '/experiments/{}_{}_{}/'.format(_id, source, target) + 'source_tree.txt')
 
     targets = [t.replace('.', '').replace('+', '').replace('-', '') for t in set(bk[target]) if t.split('(')[0] != to_predicate]
-    similarities = transfer.similarity_fasttext(preds_learned, targets, params.WIKIPEDIA_FASTTEXT_PATH, method=params.METHOD)
+    similarities = transfer.similarity_fasttext(preds_learned, targets, fastTextModel, method=params.METHOD)
     mapping = transfer.map_predicates(preds_learned, similarities)
     transfer.write_to_file_closest_distance(predicate, to_predicate, arity, mapping, 'experiments/' + experiment_title, allowSameTargetMap=params.ALLOW_SAME_TARGET_MAP)
     
@@ -134,7 +136,7 @@ for experiment in experiments:
     end = time.time()
     inference_time = end-start
 
-    inference_time = results.testtime()
+    #inference_time = results.testtime()
     t_results = results.summarize_results()
     results = []
     t_results['Learning time'] = learning_time

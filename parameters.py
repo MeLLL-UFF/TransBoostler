@@ -11,7 +11,7 @@ MAXTREEDEPTH = 3
 TREES = 10
 SEED = 441773
 REFINE = None
-ALLOW_SAME_TARGET_MAP = True
+ALLOW_SAME_TARGET_MAP = False
 
 # Filenames
 TRANSFER_FILENAME = 'boostsrl/transfer.txt'
