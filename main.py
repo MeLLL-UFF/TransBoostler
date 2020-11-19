@@ -11,6 +11,7 @@ import random
 import time
 import sys
 import os
+import gc
 
 import logging
 logging.basicConfig(level=logging.INFO)
@@ -78,9 +79,9 @@ for experiment in experiments:
       structured.append(model.get_structured_tree(treenumber=i+1).copy())
     
     # Get the list of predicates from source tree
-    preds = list(set(utils.sweep_tree(structured)))
+    preds, preds_learned = [], []
+    preds = list(set(utils.sweep_tree(structured, [])))
     preds_learned = [pred.replace('.', '').replace('+', '').replace('-', '') for pred in bk[source] if pred.split('(')[0] != predicate and pred.split('(')[0] in preds]
-    print('PREDS', preds_learned)
 
     logging.info('Searching for similarities')
 
@@ -90,6 +91,7 @@ for experiment in experiments:
 
     targets = [t.replace('.', '').replace('+', '').replace('-', '') for t in set(bk[target]) if t.split('(')[0] != to_predicate]
     similarities = transfer.similarity_fasttext(preds_learned, targets, fastTextModel, method=params.METHOD)
+    #(similarities.sort_values(by='similarity', ascending=False)).to_csv(os.getcwd() + '/experiments/{}_{}_{}/'.format(_id, source, target) + 'similarities.csv', index=False)
     mapping = transfer.map_predicates(preds_learned, similarities)
     transfer.write_to_file_closest_distance(predicate, to_predicate, arity, mapping, 'experiments/' + experiment_title, allowSameTargetMap=params.ALLOW_SAME_TARGET_MAP)
     
@@ -161,4 +163,4 @@ for experiment in experiments:
     results += refine_structure
     utils.write_to_file(results, os.getcwd() + '/experiments/{}_{}_{}/results.txt'.format(_id, source, target))
 
-    del preds, preds_learned, similarities, mapping, refine_structure
+    gc.collect()

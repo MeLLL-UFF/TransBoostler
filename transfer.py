@@ -144,13 +144,13 @@ class Transfer:
 
     return self.get_cosine_similarities(source, target)
 
-  def similarity_fasttext(self, source, target, fastTextModel, method):
+  def similarity_fasttext(self, sources, targets, fastTextModel, method):
     """
         Embed relations using pre-trained fasttext
 
         Args:
-            source(array): all predicates from source dataset
-            target(array): all predicates from target dataset
+            sources(array): all predicates from source dataset
+            targets(array): all predicates from target dataset
             model_path(str): current path to find the model to be used
             method(str): method used to compact arrays
        Returns:
@@ -161,15 +161,15 @@ class Transfer:
     #logging.info('Loading pre-trained fastText model.')
     #fastTextModel = fasttext.load_model(params.WIKIPEDIA_FASTTEXT_PATH)
 
-    source = utils.build_triples(source)
-    target = utils.build_triples(target)
+    sources = utils.build_triples(sources)
+    targets = utils.build_triples(targets)
 
-    source = self.build_model_array(source, fastTextModel, method=method)
-    target = self.build_model_array(target, fastTextModel, method=method)
+    sources = self.build_model_array(sources, fastTextModel, method=method)
+    targets = self.build_model_array(targets, fastTextModel, method=method)
 
-    return self.get_cosine_similarities(source, target)
+    return self.get_cosine_similarities(sources, targets)
 
-  def map_predicates(self, source, similarity, recursion=False, searchArgPermutation=False, searchEmpty=False, allowSameTargetMap=False):
+  def map_predicates(self, sources, similarity, recursion=False, searchArgPermutation=False, searchEmpty=False, allowSameTargetMap=False):
       """
         Sorts dataframe to obtain the closest target to a given source
 
@@ -189,7 +189,7 @@ class Transfer:
         index = re.split(r',\s*(?![^()]*\))', index)
         source, target = index[0].rstrip(), index[1].rstrip()
 
-        if(source in mapping):
+        if(source in mapping or source not in sources):
           continue
 
         if(allowSameTargetMap):
@@ -201,10 +201,16 @@ class Transfer:
             mapping[source] = target
             target_mapped.append(target)
 
-        if(len(mapping) == len(source)):
+        if(len(mapping) == len(sources)):
           # All sources mapped to a target
           break
 
+      # Adds source predicates to be mapped to 'empty'
+      for s in sources:
+        if(s not in mapping):
+          mapping[s] = ''
+
+      del indexes
       return mapping
 
   def write_to_file_closest_distance(self, from_predicate, to_predicate, arity, mapping, filename, recursion=False, searchArgPermutation=False, searchEmpty=False, allowSameTargetMap=False):
@@ -221,7 +227,10 @@ class Transfer:
     """
     with open(params.TRANSFER_FILENAME, 'w') as file:
       for source in mapping.keys():
-        file.write((source + ': ' + mapping[source]).replace('`', ''))
+        if(mapping[source] != ''):
+          file.write((source + ': ' +  mapping[source]).replace('`', ''))
+        else:
+          file.write((source + ':'))
         file.write('\n')
 
       file.write('setMap:' + from_predicate + '(' + ','.join([chr(65+i) for i in range(arity)]) + ')' + ',' + to_predicate + '(' + ','.join([chr(65+i) for i in range(arity)]) + ')' + '\n')
@@ -234,7 +243,10 @@ class Transfer:
 
     with open(filename + '/transfer.txt', 'w') as file:
       for source in mapping.keys():
-        file.write((source + ': ' + mapping[source]).replace('`', ''))
+        if(mapping[source] != ''):
+          file.write((source + ': ' +  mapping[source]).replace('`', ''))
+        else:
+          file.write((source + ':'))
         file.write('\n')
 
       file.write('setMap:' + from_predicate + '(' + ','.join([chr(65+i) for i in range(arity)]) + ')' + ',' + to_predicate + '(' + ','.join([chr(65+i) for i in range(arity)]) + ')' + '\n')
