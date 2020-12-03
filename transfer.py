@@ -119,7 +119,7 @@ class Transfer:
     df = pd.DataFrame.from_dict(similarity, orient="index", columns=['similarity'])
     return df
 
-  def similarity_word2vec(self, source, target, model_path, method):
+  def similarity_word2vec(self, source, target, word2vecModel, method):
     """
         Embed relations using pre-trained word2vec
 
@@ -133,8 +133,8 @@ class Transfer:
     """
 
     # Load Google's pre-trained Word2Vec model.
-    logging.info('Loading pre-trained Word2Vec model')
-    word2vecModel = KeyedVectors.load_word2vec_format(model_path, binary=True)
+    #logging.info('Loading pre-trained Word2Vec model')
+    #word2vecModel = KeyedVectors.load_word2vec_format(model_path, binary=True)
 
     source = utils.build_triples(source)
     target = utils.build_triples(target)
@@ -239,7 +239,6 @@ class Transfer:
       #file.write('setParam:searchArgPermutation=' + str(searchArgPermutation).lower() + '.\n')
       #file.write('setParam:searchEmpty=' + str(searchEmpty).lower() + '.\n')
       file.write('setParam:allowSameTargetMap=' + str(allowSameTargetMap).lower() + '.\n')
-    file.close()
 
     with open(filename + '/transfer.txt', 'w') as file:
       for source in mapping.keys():
@@ -255,4 +254,3 @@ class Transfer:
       #file.write('setParam:searchArgPermutation=' + str(searchArgPermutation).lower() + '.\n')
       #file.write('setParam:searchEmpty=' + str(searchEmpty).lower() + '.\n')
       file.write('setParam:allowSameTargetMap=' + str(allowSameTargetMap).lower() + '.\n')
-    file.close()

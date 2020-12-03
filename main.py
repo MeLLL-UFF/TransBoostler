@@ -64,8 +64,8 @@ for experiment in experiments:
     start = time.time()
 
     # Learning from source dataset
-    background = boostsrl.modes(bk[source], [experiment['predicate']], useStdLogicVariables=False, maxTreeDepth=params.MAXTREEDEPTH, nodeSize=params.NODESIZE, numOfClauses=params.NUMOFCLAUSES)
-    model = boostsrl.train(background, src_pos, src_neg, src_facts, refine=params.REFINE, trees=params.TREES)
+    #background = boostsrl.modes(bk[source], [experiment['predicate']], useStdLogicVariables=False, maxTreeDepth=params.MAXTREEDEPTH, nodeSize=params.NODESIZE, numOfClauses=params.NUMOFCLAUSES)
+    #model = boostsrl.train(background, src_pos, src_neg, src_facts, refine=params.REFINE, trees=params.TREES)
     
     end = time.time()
 
@@ -76,6 +76,7 @@ for experiment in experiments:
 
     logging.info('Building refine structure')
 
+    # Get all learned trees
     structured = []
     for i in range(params.TREES):
       structured.append(model.get_structured_tree(treenumber=i+1).copy())
@@ -87,25 +88,31 @@ for experiment in experiments:
 
     logging.info('Searching for similarities')
 
+    # Get all rules learned by RDN-B
     refine_structure = utils.get_all_rules_from_tree(structured)
     utils.write_to_file(refine_structure, params.REFINE_FILENAME)
     utils.write_to_file(refine_structure, os.getcwd() + '/experiments/{}_{}_{}/'.format(_id, source, target) + 'source_tree.txt')
 
+    # Create word embeddings and calculate similarities
     targets = [t.replace('.', '').replace('+', '').replace('-', '') for t in set(bk[target]) if t.split('(')[0] != to_predicate]
     similarities = transfer.similarity_fasttext(preds_learned, targets, fastTextModel, method=params.METHOD)
     #similarities = transfer.similarity_word2vec(preds_learned, targets, word2vecModel, method=params.METHOD)
     #(similarities.sort_values(by='similarity', ascending=False)).to_csv(os.getcwd() + '/experiments/{}_{}_{}/'.format(_id, source, target) + 'similarities.csv', index=False)
+    
+    # Map source predicates to targets and creates transfer file
     mapping = transfer.map_predicates(preds_learned, similarities)
     transfer.write_to_file_closest_distance(predicate, to_predicate, arity, mapping, 'experiments/' + experiment_title, allowSameTargetMap=params.ALLOW_SAME_TARGET_MAP)
 
-    # Load new predicate target dataset
+    # Load predicate target dataset
     tar_data = datasets.load(target, bk[target], target=to_predicate, balanced=balanced, seed=params.SEED)
 
+    # Set number of folds
     if target in ['nell_sports', 'nell_finances', 'yago2s']:
         n_folds = params.N_FOLDS
     else:
         n_folds = len(tar_data[0])
 
+    # Dataframes to keep folds and confusion matrix values
     all_folds_results = pd.DataFrame([], columns=['CLL', 'AUC ROC', 'AUC PR', 'Total Learning Time', 'Total Inference Time'])
     confusion_matrix  = pd.DataFrame([], columns=['TP', 'FP', 'TN', 'FN'])
     
@@ -136,6 +143,7 @@ for experiment in experiments:
 
         start = time.time()
 
+        # Train model using transfer learning
         background = boostsrl.modes(bk[target], [to_predicate], useStdLogicVariables=False, maxTreeDepth=params.MAXTREEDEPTH, nodeSize=params.NODESIZE, numOfClauses=params.NUMOFCLAUSES)
         model = boostsrl.train(background, tar_train_pos, tar_train_neg, tar_train_facts, refine=params.REFINE_FILENAME, transfer=params.TRANSFER_FILENAME, trees=params.TREES)
         
@@ -146,10 +154,13 @@ for experiment in experiments:
 
         start = time.time()
 
+        # Test transfered model
         results = boostsrl.test(model, tar_test_pos, tar_test_neg, tar_test_facts, trees=params.TREES)
 
         end = time.time()
         inference_time = end-start
+
+        # Get testing results
 
         #inference_time = results.testtime()
         t_results = results.summarize_results()
@@ -168,12 +179,15 @@ for experiment in experiments:
 
         all_folds_results = all_folds_results.append(results, ignore_index=True)
 
+        # Get target trees
         structured = []
         for i in range(params.TREES):
           structured.append(model.get_structured_tree(treenumber=i+1).copy())
 
         refine_structure = utils.get_all_rules_from_tree(structured)
+        target_trees += refine_structure
 
+        # Get confusion matrix by reading results from db files created by the Java application
         logging.info('Converting results file to txt')
 
         utils.convert_db_to_txt(to_predicate, params.TEST_OUTPUT)
@@ -186,8 +200,7 @@ for experiment in experiments:
 
         confusion_matrix = confusion_matrix.append({'TP': TP, 'FP': FP, 'TN': TN, 'FN': FN}, ignore_index=True)
 
+    # Save all CV results
     all_folds_results.to_csv(os.getcwd() + '/experiments/{}_{}_{}/all_folds.txt'.format(_id, source, target))
     confusion_matrix.to_csv(os.getcwd() + '/experiments/{}_{}_{}/confusion_matrix.txt'.format(_id, source, target), index=False)
-    
-    target_trees += refine_structure
     utils.write_to_file(target_trees, os.getcwd() + '/experiments/{}_{}_{}/results.txt'.format(_id, source, target))

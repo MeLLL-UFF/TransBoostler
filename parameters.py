@@ -4,7 +4,9 @@ WIKIPEDIA_FASTTEXT_PATH = 'fasttext/wiki.en.bin'
 EMBEDDING_DIMENSION = 300
 METHOD = 'CONCATENATE'
 
+# Validation parameters
 N_FOLDS = 3
+AMOUNTS = [0.2, 0.4, 0.6, 0.8, 1.0]
 
 # BoostSRL parameters
 NODESIZE = 2
