@@ -1,4 +1,6 @@
+from sklearn.metrics import confusion_matrix
 import numpy as np
+import subprocess
 import sys
 import os
 import re
@@ -152,3 +154,62 @@ def fill_dimension(source, target, dimension):
     return np.append(source, zeros), target
   else:
     print("Something went wrong while filling dimensions") 
+
+def convert_db_to_txt(predicate, path):
+  """
+     Converts the db file containing test outputs to txt
+
+      Args:
+          predicate(str): name of the predicate to be learned
+          path(str): path to text file
+  """
+  cmd = 'less {} > {}'
+  process = subprocess.Popen(cmd.format(path.format(predicate), path.format(predicate).replace('.db', '.txt')), shell=True)
+  output, error = process.communicate()
+
+  if(error):
+    print('Something went wrong while converting db file to txt file')
+
+
+def read_results(filename):
+  """
+     Reads the file containing test results 
+
+      Args:
+          filename(str): the name of the file
+      Returns:
+          y_true(array): real values of each test example
+          y_pred(array): predicted values of each test example
+  """
+  y_true, y_pred = [], []
+  with open(filename, 'r') as file:
+    for line in file:
+      example, score = line.replace(', ', ',').split()
+
+      if('!' in example):
+        y_true.append(0)
+        boolean = 0 if float(score) > 0.500 else 1
+        y_pred.append(boolean)
+      else:
+        y_true.append(1)
+        boolean = 1 if float(score) > 0.500 else 0
+        y_pred.append(boolean)
+  return y_true, y_pred
+
+def get_confusion_matrix(y_true, y_pred):
+  """
+     Returns the confusion matrix for each experiment
+
+      Args:
+          y_true(array): real values of each test example
+          y_pred(array): predicted values of each test example
+      Returns:
+          confusion matrix
+  """
+  # True Negatives, False Positives, False Negatives, True Positives
+  return confusion_matrix(y_true, y_pred).ravel()
+
+#y_true, y_pred = read_results('boostsrl/test/results_{}.db'.format('advisedby'))
+#print(get_confusion_matrix(y_true, y_pred))
+
+#print(len(y_true), len(y_pred))

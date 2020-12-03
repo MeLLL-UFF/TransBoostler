@@ -4,6 +4,7 @@ from datasets.get_datasets import *
 from boostsrl import boostsrl
 from transfer import Transfer
 import parameters as params
+from gensim.models import KeyedVectors
 import utils as utils
 import numpy as np
 import fasttext
@@ -17,6 +18,7 @@ import logging
 logging.basicConfig(level=logging.INFO)
 
 fastTextModel = fasttext.load_model(params.WIKIPEDIA_FASTTEXT_PATH)
+#word2vecModel = KeyedVectors.load_word2vec_format(params.GOOGLE_WORD2VEC_PATH, binary=True)
 
 #verbose=True
 source_balanced = 1
@@ -80,7 +82,7 @@ for experiment in experiments:
     
     # Get the list of predicates from source tree
     preds, preds_learned = [], []
-    preds = list(set(utils.sweep_tree(structured, [])))
+    preds = list(set(utils.sweep_tree(structured)))
     preds_learned = [pred.replace('.', '').replace('+', '').replace('-', '') for pred in bk[source] if pred.split('(')[0] != predicate and pred.split('(')[0] in preds]
 
     logging.info('Searching for similarities')
@@ -91,10 +93,11 @@ for experiment in experiments:
 
     targets = [t.replace('.', '').replace('+', '').replace('-', '') for t in set(bk[target]) if t.split('(')[0] != to_predicate]
     similarities = transfer.similarity_fasttext(preds_learned, targets, fastTextModel, method=params.METHOD)
+    #similarities = transfer.similarity_word2vec(preds_learned, targets, word2vecModel, method=params.METHOD)
     #(similarities.sort_values(by='similarity', ascending=False)).to_csv(os.getcwd() + '/experiments/{}_{}_{}/'.format(_id, source, target) + 'similarities.csv', index=False)
     mapping = transfer.map_predicates(preds_learned, similarities)
     transfer.write_to_file_closest_distance(predicate, to_predicate, arity, mapping, 'experiments/' + experiment_title, allowSameTargetMap=params.ALLOW_SAME_TARGET_MAP)
-    
+
     # Load new predicate target dataset
     tar_data = datasets.load(target, bk[target], target=to_predicate, balanced=balanced, seed=params.SEED)
 
@@ -104,6 +107,8 @@ for experiment in experiments:
         n_folds = len(tar_data[0])
 
     all_folds_results = pd.DataFrame([], columns=['CLL', 'AUC ROC', 'AUC PR', 'Total Learning Time', 'Total Inference Time'])
+    confusion_matrix  = pd.DataFrame([], columns=['TP', 'FP', 'TN', 'FN'])
+    
     target_trees = []
     for i in range(n_folds):
         logging.info('Starting fold {} \n'.format(str(i+1)))
@@ -169,9 +174,20 @@ for experiment in experiments:
 
         refine_structure = utils.get_all_rules_from_tree(structured)
 
+        logging.info('Converting results file to txt')
+
+        utils.convert_db_to_txt(to_predicate, params.TEST_OUTPUT)
+        y_true, y_pred = utils.read_results(params.TEST_OUTPUT.format(to_predicate).replace('.db', '.txt'))
+
+        logging.info('Building confusion matrix')
+
+        # True Negatives, False Positives, False Negatives, True Positives
+        TN, FP, FN, TP = utils.get_confusion_matrix(y_true, y_pred)
+
+        confusion_matrix = confusion_matrix.append({'TP': TP, 'FP': FP, 'TN': TN, 'FN': FN}, ignore_index=True)
+
     all_folds_results.to_csv(os.getcwd() + '/experiments/{}_{}_{}/all_folds.txt'.format(_id, source, target))
+    confusion_matrix.to_csv(os.getcwd() + '/experiments/{}_{}_{}/confusion_matrix.txt'.format(_id, source, target), index=False)
     
     target_trees += refine_structure
     utils.write_to_file(target_trees, os.getcwd() + '/experiments/{}_{}_{}/results.txt'.format(_id, source, target))
-
-    gc.collect()
