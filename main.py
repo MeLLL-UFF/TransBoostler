@@ -97,7 +97,6 @@ for experiment in experiments:
     targets = [t.replace('.', '').replace('+', '').replace('-', '') for t in set(bk[target]) if t.split('(')[0] != to_predicate]
     similarities = transfer.similarity_fasttext(preds_learned, targets, fastTextModel, method=params.METHOD)
     #similarities = transfer.similarity_word2vec(preds_learned, targets, word2vecModel, method=params.METHOD)
-    #(similarities.sort_values(by='similarity', ascending=False)).to_csv(os.getcwd() + '/experiments/{}_{}_{}/'.format(_id, source, target) + 'similarities.csv', index=False)
     
     # Map source predicates to targets and creates transfer file
     mapping = transfer.map_predicates(preds_learned, similarities)
