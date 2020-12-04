@@ -48,53 +48,55 @@ for experiment in experiments:
     path = os.getcwd() + '/experiments/' + experiment_title
     if not os.path.exists(path):
         os.mkdir(path)
+
+    if(trRDNB):
     
-    # Load source dataset
-    src_total_data = datasets.load(source, bk[source], seed=params.SEED)
-    src_data = datasets.load(source, bk[source], target=predicate, balanced=source_balanced, seed=params.SEED)
+        # Load source dataset
+        src_total_data = datasets.load(source, bk[source], seed=params.SEED)
+        src_data = datasets.load(source, bk[source], target=predicate, balanced=source_balanced, seed=params.SEED)
 
-    # Group and shuffle
-    src_facts = datasets.group_folds(src_data[0])
-    src_pos   = datasets.group_folds(src_data[1])
-    src_neg   = datasets.group_folds(src_data[2])
-                
-    logging.info('Start learning from source dataset\n')
-    
-    logging.info('Source train facts examples: {}'.format(len(src_facts)))
-    logging.info('Source train pos examples: {}'.format(len(src_pos)))
-    logging.info('Source train neg examples: {}\n'.format(len(src_neg)))
-    
-    # Learning from source dataset
-    background = boostsrl.modes(bk[source], [experiment['predicate']], useStdLogicVariables=False, maxTreeDepth=params.MAXTREEDEPTH, nodeSize=params.NODESIZE, numOfClauses=params.NUMOFCLAUSES)
-    model = boostsrl.train(background, src_pos, src_neg, src_facts, refine=params.REFINE, trees=params.TREES)
+        # Group and shuffle
+        src_facts = datasets.group_folds(src_data[0])
+        src_pos   = datasets.group_folds(src_data[1])
+        src_neg   = datasets.group_folds(src_data[2])
+                    
+        logging.info('Start learning from source dataset\n')
+        
+        logging.info('Source train facts examples: {}'.format(len(src_facts)))
+        logging.info('Source train pos examples: {}'.format(len(src_pos)))
+        logging.info('Source train neg examples: {}\n'.format(len(src_neg)))
+        
+        # Learning from source dataset
+        background = boostsrl.modes(bk[source], [experiment['predicate']], useStdLogicVariables=False, maxTreeDepth=params.MAXTREEDEPTH, nodeSize=params.NODESIZE, numOfClauses=params.NUMOFCLAUSES)
+        model = boostsrl.train(background, src_pos, src_neg, src_facts, refine=params.REFINE, trees=params.TREES)
 
-    logging.info('Building refine structure')
+        logging.info('Building refine structure')
 
-    # Get all learned trees
-    structured = []
-    for i in range(params.TREES):
-      structured.append(model.get_structured_tree(treenumber=i+1).copy())
-    
-    # Get the list of predicates from source tree
-    preds, preds_learned = [], []
-    preds = list(set(utils.sweep_tree(structured)))
-    preds_learned = [pred.replace('.', '').replace('+', '').replace('-', '') for pred in bk[source] if pred.split('(')[0] != predicate and pred.split('(')[0] in preds]
+        # Get all learned trees
+        structured = []
+        for i in range(params.TREES):
+          structured.append(model.get_structured_tree(treenumber=i+1).copy())
+        
+        # Get the list of predicates from source tree
+        preds, preds_learned = [], []
+        preds = list(set(utils.sweep_tree(structured)))
+        preds_learned = [pred.replace('.', '').replace('+', '').replace('-', '') for pred in bk[source] if pred.split('(')[0] != predicate and pred.split('(')[0] in preds]
 
-    logging.info('Searching for similarities')
+        logging.info('Searching for similarities')
 
-    # Get all rules learned by RDN-B
-    refine_structure = utils.get_all_rules_from_tree(structured)
-    utils.write_to_file(refine_structure, params.REFINE_FILENAME)
-    utils.write_to_file(refine_structure, os.getcwd() + '/experiments/{}_{}_{}/'.format(_id, source, target) + 'source_tree.txt')
+        # Get all rules learned by RDN-B
+        refine_structure = utils.get_all_rules_from_tree(structured)
+        utils.write_to_file(refine_structure, params.REFINE_FILENAME)
+        utils.write_to_file(refine_structure, os.getcwd() + '/experiments/{}_{}_{}/'.format(_id, source, target) + 'source_tree.txt')
 
-    # Create word embeddings and calculate similarities
-    targets = [t.replace('.', '').replace('+', '').replace('-', '') for t in set(bk[target]) if t.split('(')[0] != to_predicate]
-    similarities = transfer.similarity_fasttext(preds_learned, targets, fastTextModel, method=params.METHOD)
-    #similarities = transfer.similarity_word2vec(preds_learned, targets, word2vecModel, method=params.METHOD)
-    
-    # Map source predicates to targets and creates transfer file
-    mapping = transfer.map_predicates(preds_learned, similarities)
-    transfer.write_to_file_closest_distance(predicate, to_predicate, arity, mapping, 'experiments/' + experiment_title, allowSameTargetMap=params.ALLOW_SAME_TARGET_MAP)
+        # Create word embeddings and calculate similarities
+        targets = [t.replace('.', '').replace('+', '').replace('-', '') for t in set(bk[target]) if t.split('(')[0] != to_predicate]
+        similarities = transfer.similarity_fasttext(preds_learned, targets, fastTextModel, method=params.METHOD)
+        #similarities = transfer.similarity_word2vec(preds_learned, targets, word2vecModel, method=params.METHOD)
+        
+        # Map source predicates to targets and creates transfer file
+        mapping = transfer.map_predicates(preds_learned, similarities)
+        transfer.write_to_file_closest_distance(predicate, to_predicate, arity, mapping, 'experiments/' + experiment_title, allowSameTargetMap=params.ALLOW_SAME_TARGET_MAP)
 
     # Load predicate target dataset
     tar_data = datasets.load(target, bk[target], target=to_predicate, balanced=balanced, seed=params.SEED)
