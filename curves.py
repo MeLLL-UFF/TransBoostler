@@ -176,5 +176,5 @@ for experiment in experiments:
         all_RDNB_results = pd.DataFrame.from_dict(RDNB_results)
         all_RDNB_results = all_RDNB_results/n_folds
         
-        all_RDNB_results.to_csv(os.getcwd() + '/experiments/{}_{}_{}/RDNB_{}_curves.csv'.format(_id, source, target, target))
+        all_RDNB_results.to_csv(os.getcwd() + '/experiments/RDNB/RDNB_{}_curves.csv'.format(target))
     
