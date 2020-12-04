@@ -68,7 +68,7 @@ for experiment in experiments:
         
         # Learning from source dataset
         background = boostsrl.modes(bk[source], [experiment['predicate']], useStdLogicVariables=False, maxTreeDepth=params.MAXTREEDEPTH, nodeSize=params.NODESIZE, numOfClauses=params.NUMOFCLAUSES)
-        model = boostsrl.train(background, src_pos, src_neg, src_facts, refine=params.REFINE, trees=params.TREES)
+        model = boostsrl.train(background, src_pos, src_neg, src_facts, trees=params.TREES)
 
         logging.info('Building refine structure')
 
@@ -158,7 +158,7 @@ for experiment in experiments:
 
                 # Train model from scratch
                 background = boostsrl.modes(bk[target], [to_predicate], useStdLogicVariables=False, maxTreeDepth=params.MAXTREEDEPTH, nodeSize=params.NODESIZE, numOfClauses=params.NUMOFCLAUSES)
-                model = boostsrl.train(background, part_tar_train_pos, part_tar_train_neg, tar_train_facts, refine=None, transfer=None, trees=params.TREES)
+                model = boostsrl.train(background, part_tar_train_pos, part_tar_train_neg, tar_train_facts, trees=params.TREES)
 
                 # Test transfered model
                 results = boostsrl.test(model, tar_test_pos, tar_test_neg, tar_test_facts, trees=params.TREES)

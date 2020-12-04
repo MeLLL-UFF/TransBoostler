@@ -65,7 +65,7 @@ for experiment in experiments:
 
     # Learning from source dataset
     background = boostsrl.modes(bk[source], [experiment['predicate']], useStdLogicVariables=False, maxTreeDepth=params.MAXTREEDEPTH, nodeSize=params.NODESIZE, numOfClauses=params.NUMOFCLAUSES)
-    model = boostsrl.train(background, src_pos, src_neg, src_facts, refine=params.REFINE, trees=params.TREES)
+    model = boostsrl.train(background, src_pos, src_neg, src_facts, trees=params.TREES)
     
     end = time.time()
 
