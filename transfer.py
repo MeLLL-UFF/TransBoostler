@@ -78,8 +78,6 @@ class Transfer:
       elif(method == 'MIN'):
         predicate = min(temp, key=operator.methodcaller('tolist'))
       elif(method == 'CONCATENATE'):
-        #predicate = min(temp, key=operator.methodcaller('tolist'))
-        #maximum = max(temp, key=operator.methodcaller('tolist'))
         predicate = np.concatenate(temp)
 
       if(example[2] == ''):
@@ -93,8 +91,8 @@ class Transfer:
         for all possible pairs (source, target)
 
         Args:
-            source(array): all word embeddings from the source dataset
-            target(array): all word embeddings from the target dataset
+            source(dict): all word embeddings from the source dataset
+            target(dict): all word embeddings from the target dataset
        Returns:
             a pandas dataframe containing every pair (source, target) similarity
     """
@@ -119,6 +117,40 @@ class Transfer:
     df = pd.DataFrame.from_dict(similarity, orient="index", columns=['similarity'])
     return df
 
+  def get_wmd_similarities(self, sources, targets, model):
+    """
+        Calculate similarity of embedded arrays
+        using Word Mover's Distances for all possible pairs (source, target)
+
+        Args:
+            sources(array): all word embeddings from the source dataset
+            targets(array): all word embeddings from the target dataset
+       Returns:
+            a pandas dataframe containing every pair (source, target) similarity
+    """
+
+    logging.info('Calculating distances')
+
+    similarity = {}
+    for source in tqdm(sources):
+      if(len(source) > 2 and source[2] == ''): source.remove('')
+      for target in tqdm(targets):
+
+        if(len(target) > 2 and target[2] == ''):
+          target.remove('')
+
+        # Predicates must have the same arity
+        if(len(source[1:]) != len(target[1:])):
+          continue
+
+        key = source[0] + '(' + ','.join(source[1:]) + ')' + ',' + target[0] + '(' + ','.join(target[1:]) + ')'
+        #key = s + '(' + ','.join([chr(65+i) for i in range(len(source[s][1]))]) + ')' + ',' + t + '(' + ','.join([chr(65+i) for i in range(len(target[t][1]))]) + ')'
+
+        similarity[key] = 1 - model.wmdistance(seg.segment(source[0]), seg.segment(target[0]))
+
+    df = pd.DataFrame.from_dict(similarity, orient="index", columns=['similarity'])
+    return df
+
   def similarity_word2vec(self, source, target, word2vecModel, method):
     """
         Embed relations using pre-trained word2vec
@@ -126,7 +158,7 @@ class Transfer:
         Args:
             source(array): all predicates from source dataset
             target(array): all predicates from target dataset
-            model_path(str): current path to find the model to be used
+            word2vecModel(str): word2vec loaded model
             method(str): method used to compact arrays
        Returns:
              a pandas dataframe containing every pair (source, target) similarity
@@ -151,7 +183,7 @@ class Transfer:
         Args:
             sources(array): all predicates from source dataset
             targets(array): all predicates from target dataset
-            model_path(str): current path to find the model to be used
+            fastTextModel(str): fastTextModel loaded model
             method(str): method used to compact arrays
        Returns:
             a pandas dataframe containing every pair (source, target) similarity
@@ -169,7 +201,44 @@ class Transfer:
 
     return self.get_cosine_similarities(sources, targets)
 
-  def map_predicates(self, sources, similarity, recursion=False, searchArgPermutation=False, searchEmpty=False, allowSameTargetMap=False):
+  def distance_word2vec(self, sources, targets, word2vecModel, method):
+    """
+        Calculates similarity using Word Mover's Distance for Word2vec Embeddings
+
+        Args:
+            sources(array): all predicates from source dataset
+            targets(array): all predicates from target dataset
+            word2vecModel(str): word2vec loaded model
+            method(str): method used to compact arrays
+       Returns:
+            a pandas dataframe containing every pair (source, target) distance
+    """
+
+    sources = utils.build_triples(sources)
+    targets = utils.build_triples(targets)
+
+    return self.get_wmd_similarities(sources, targets, word2vecModel)
+
+
+  def distance_fastText(self, sources, targets, fastTextModel, method):
+    """
+        Calculates similarity using Word Mover's Distance for fastText Embeddings
+
+        Args:
+            sources(array): all predicates from source dataset
+            targets(array): all predicates from target dataset
+            fastTextModel(str): fastText loaded model
+            method(str): method used to compact arrays
+       Returns:
+            a pandas dataframe containing every pair (source, target) distance
+    """
+
+    sources = utils.build_triples(sources)
+    targets = utils.build_triples(targets)
+
+    return self.get_wmd_similarities(sources, targets, fastTextModel)
+
+  def map_predicates(self, sources, similarity, searchArgPermutation=False, allowSameTargetMap=False):
       """
         Sorts dataframe to obtain the closest target to a given source
 
@@ -184,6 +253,7 @@ class Transfer:
 
       target_mapped, mapping = [], {}
       indexes = similarity.sort_values(by='similarity', ascending=False).index.tolist()
+      utils.write_to_file(indexes, 'similarities.txt')
       
       for index in tqdm(indexes):
         index = re.split(r',\s*(?![^()]*\))', index)
@@ -235,7 +305,7 @@ class Transfer:
 
       file.write('setMap:' + from_predicate + '(' + ','.join([chr(65+i) for i in range(arity)]) + ')' + ',' + to_predicate + '(' + ','.join([chr(65+i) for i in range(arity)]) + ')' + '\n')
       if(recursion):
-          file.write('setMap:recursion_' + from_predicate + '(A,B)=recursion_' + to_predicate + '(A,B).\n')
+          file.write('setMap:recursion_' + from_predicate + '(A,B),recursion_' + to_predicate + '(A,B).\n')
       #file.write('setParam:searchArgPermutation=' + str(searchArgPermutation).lower() + '.\n')
       #file.write('setParam:searchEmpty=' + str(searchEmpty).lower() + '.\n')
       file.write('setParam:allowSameTargetMap=' + str(allowSameTargetMap).lower() + '.\n')
