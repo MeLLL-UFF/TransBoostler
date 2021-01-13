@@ -1,6 +1,8 @@
 from sklearn.metrics import confusion_matrix
 import numpy as np
 import subprocess
+import glob
+import json
 import sys
 import os
 import re
@@ -123,18 +125,33 @@ def get_all_rules_from_tree(structures):
     rules += get_rules(structures[i], treenumber=i+1)
   return rules
 
-def write_to_file(data, filename):
+def write_to_file(data, filename, op='w'):
   """
       Write data to a specific file
 
       Args:
           data(list): information to be written
           filename(str): name of file in which the data will be written
+          op(str): 'w' to create a new file or 'a' to append data to a new file if exists
   """
-  with open(filename, 'w') as f:
+  with open(filename, op) as f:
       for line in data:
           f.write(line + '\n')
+
+def read_file(filename):
+  """
+      Read data from a specific file
+
+      Args:
+          filename(str): name of file in which is the data to be read
+      Returns:
+          data(array): arrays containing all information found in file
+  """
+  f = open(filename, 'r')
+  data = f.readlines()
   f.close()
+
+  return data
 
 def fill_dimension(source, target, dimension):
   """
@@ -143,7 +160,7 @@ def fill_dimension(source, target, dimension):
       Args:
           source(list): source embedding vector
           target(str): target embedding vector
-          dimension(int): number of dimension of embedding vector
+          dimension(int): size of dimension of embedding vector
   """
 
   if(source.shape[0] > target.shape[0]):
@@ -154,6 +171,28 @@ def fill_dimension(source, target, dimension):
     return np.append(source, zeros), target
   else:
     print("Something went wrong while filling dimensions") 
+
+def fill_missing_dimensions(source, target, dimension):
+  """
+     Add zero arrays to source and target belong to the same feature space
+
+      Args:
+          source(list): source embedding vector
+          target(str): target embedding vector
+          dimension(int): size of dimension of embedding vector
+  """
+  if(len(source) > len(target)):
+    temp = [[0]* dimension] * len(source)
+    for i in range(len(target)):
+      temp[i] = target[i].copy()
+    return source, temp
+  elif(len(target) > len(source)):
+    temp = [[0]* dimension] * len(target)
+    for i in range(len(target)):
+      temp[i] = source[i].copy()
+    return temp, target
+  else:
+    print("Something went wrong while fixing space of word vector")
 
 def convert_db_to_txt(predicate, path):
   """
@@ -208,6 +247,44 @@ def get_confusion_matrix(y_true, y_pred):
   """
   # True Negatives, False Positives, False Negatives, True Positives
   return confusion_matrix(y_true, y_pred).ravel()
+
+def delete_folder_files(folder_name):
+  """
+    Deletes files from a specific folder
+
+    Args:
+        folder_name(str): name of the folder to empty
+  """
+  files = glob.glob(folder_name)
+  for f in files:
+      try:
+        os.remove(os.getcwd() + '/' + f)
+      except PermissionError as e:
+        print('In utils, delete_folder_files function: ', e)
+        os.rmdir(os.getcwd() + '/' + folder_name)
+
+
+def delete_file(filename):
+  """
+    Deletes file
+
+    Args:
+        filename(str): name of the file to be deleted
+  """
+  try:
+    os.remove(os.getcwd() + '/' + filename)
+  except FileNotFoundError as e:
+    print('In utils, delete_file function: ', e)
+
+def save_json_file(filename, data):
+  """
+    Save JSON file
+
+    Args:
+        filename(str): name of the file
+  """
+  with open(filename, 'w') as outfile:
+    json.dump(data, outfile)
 
 #y_true, y_pred = read_results('boostsrl/test/results_{}.db'.format('advisedby'))
 #print(get_confusion_matrix(y_true, y_pred))

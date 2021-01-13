@@ -1023,6 +1023,326 @@ class datasets:
                 negatives[0][relation].append([entity])
         return [facts, negatives]
 
+    '''
+    playsfor(person,team),
+    hascurrency(place,currency),
+    hascapital(place,place),
+    hasacademicadvisor(person,person),
+    haswonprize(person,prize),
+    participatedin(place,event),
+    owns(institution,institution),
+    isinterestedin(person,concept),
+    livesin(person,place),
+    happenedin(event,place),
+    holdspoliticalposition(person,politicalposition),
+    diedin(person,place),
+    actedin(person,media),
+    iscitizenof(person,place),
+    worksat(person,institution),
+    directed(person,media),
+    dealswith(place,place),
+    wasbornin(person,place),
+    created(person,media),
+    isleaderof(person,place),
+    haschild(person,person),
+    ismarriedto(person,person),
+    imports(person,material),
+    hasmusicalrole(person,musicalrole),
+    influences(person,person),
+    isaffiliatedto(person,team),
+    isknownfor(person,theory),
+    ispoliticianof(person,place),
+    graduatedfrom(person,institution),
+    exports(place,material),
+    edited(person,media),
+    wrotemusicfor(person,media).
+    '''
+    def get_yago2s_dataset(acceptedPredicates=None):
+        def clearCharacters(value):
+            value = value.lower()
+            value = re.sub('[^a-z0-9]', '', value)
+            return value
+        '''<Paul_Redford>   <created>   <The_Portland_Trip> .'''
+        facts = [{}]
+        dataset = pd.read_csv(os.path.join(__location__, 'files/yago2s.tsv'), sep='\t').drop_duplicates()
+        for data in dataset.values:
+            entity   = clearCharacters(data[0].split(',')[0])
+            relation = clearCharacters(data[1])
+            value    = clearCharacters(str(data[2].split(',')[0]))
+
+            if entity and relation and value:
+                if not acceptedPredicates or relation in acceptedPredicates:
+                    if relation not in facts[0]:
+                        facts[0][relation] = []
+                    facts[0][relation].append([entity, value])
+        return [facts, [{}]]
+
+    '''
+    cites(paper,paper),
+    gene(paper,gene),
+    journal(paper,journal),
+    author(paper,author),
+    chem(paper,chemical),
+    aff(paper,institute),
+    aspect(paper,gene,R)
+    '''
+    def get_yeast2_dataset(acceptedPredicates=None):
+        def clearCharacters(value):
+            value = value.lower()
+            value = re.sub('[^a-z0-9]', '', value)
+            return value
+        '''Author(65102,SwietliÅska_Z Zaborowska_D Zuk_J)'''
+        '''Aff(1408783,Centre_d'Etudes_de_Saclay)'''
+        facts = [{}]
+
+        #Dicts for validation
+        authors, cites, papers, journals, chem, genes, aspect = {}, {}, {}, {}, {}, {}, {}
+
+        with open(os.path.join(__location__, 'files/yeast2/alchemy/Abstract.db'), encoding="utf8") as f:
+            for line in f:
+                if 'FAuthor' in line or 'LAuthor' in line or 'DmHead' in line or 'QmHead' in line:
+                    continue
+                if 'Journal' in line or 'Aff' in line:
+                    relation = clearCharacters(line.split('(')[0])
+                    entity   = clearCharacters(line.split('(')[1].split(',')[0])
+                    value    = clearCharacters(line.split(',')[1])
+                    if relation not in facts[0]:
+                        facts[0][relation] = []
+                    facts[0][relation].append([entity, value])
+
+                    if entity not in papers:
+                        papers[entity] = 0
+
+                    if value not in journals:
+                        journals[value] = 0
+
+                elif 'Author' in line or 'Chem' in line:
+                    relation = clearCharacters(line.split('(')[0])
+                    entity   = clearCharacters(line.split('(')[1].split(',')[0])
+                    values   = line.split(',')[1].split()
+                    if relation not in facts[0]:
+                        facts[0][relation] = []
+                    for value in values:
+                        value = clearCharacters(value)
+                        facts[0][relation].append([entity, value])
+
+                        if 'Chem' in line and value not in chem:
+                            chem[value] = 0
+
+                        if 'Author' in line and value not in authors:
+                            authors[value] = 0
+
+        with open(os.path.join(__location__, 'files/yeast2/alchemy/GeneCitation.db'), encoding="utf8") as f:
+            for line in f:
+                relation = clearCharacters(line.split('(')[0])
+                entity_1 = clearCharacters(line.split('(')[1].split(',')[0])
+
+                if 'Aspect' in line:
+                    entity_2 = clearCharacters(line.split('(')[1].split(',')[1])
+                    values   = line.split(',')[2].split()
+                else:
+                    values   = line.split(',')[1].split()
+
+                if relation not in facts[0]:
+                    facts[0][relation] = []
+                for value in values:
+                    value = clearCharacters(value)
+
+                    if 'Aspect' in line:
+                        facts[0][relation].append([entity_1, entity_2, value])
+
+                    if 'Gene' in line:
+                        facts[0][relation].append([entity_1, value])
+
+                        if value not in genes:
+                            genes[value] = 0
+
+                    if entity not in papers:
+                        papers[entity] = 0
+
+        with open(os.path.join(__location__, 'files/yeast2/alchemy/Ref.db'), encoding="utf8") as f:
+            for line in f:
+                relation = clearCharacters(line.split('(')[0])
+                entity   = clearCharacters(line.split('(')[1].split(',')[0])
+                values   = line.split(',')[1].split()
+                if relation not in facts[0]:
+                    facts[0][relation] = []
+                for value in values:
+                    value = clearCharacters(value)
+                    facts[0][relation].append([entity, value])
+        with open(os.path.join(__location__, 'files/yeast2/alchemy/RefSGD.db'), encoding="utf8") as f:
+            for line in f:
+                relation = clearCharacters(line.split('(')[0])
+                entity   = clearCharacters(line.split('(')[1].split(',')[0])
+                values   = line.split(',')[1].split()
+                if relation not in facts[0]:
+                    facts[0][relation] = []
+                for value in values:
+                    value = clearCharacters(value)
+                    facts[0][relation].append([entity, value])
+
+        citations = []
+        for tupla in facts[0]['cites']:
+            if tupla[1] in papers:
+                citations.append([tupla[0], tupla[1]])
+        facts[0]['cites'] = citations.copy()
+
+        print('Total of authors {}'.format(len(authors)))
+        print('Total of papers {}'.format(len(papers)))
+        print('Total of genes {}'.format(len(genes)))
+        print('Total of chemicals {}'.format(len(chem)))
+        print('Total of journals {}'.format(len(journals)))
+        # 159k papers
+        # 14k chemicals
+        # 71k authors
+        # 1k journals
+        # 1.9k affiliations (selected from 6k affiliations)
+        # 5.6k genes
+
+        print('{} aff interactions'.format(len(facts[0]['aff'])))
+        print('{} citations'.format(len(facts[0]['cites'])))
+
+        return [facts, [{}]]
+
+    '''
+    journal(paper,journal),
+    author(paper,author),
+    cites(paper,paper),
+    gene(paper,gene),
+    aspect(paper,gene,R),
+    gp(gene,protein),
+    genetic(gene,gene),
+    physical(gene,gene)
+    '''
+    def get_fly_dataset(acceptedPredicates=None):
+        def clearCharacters(value):
+            value = value.lower()
+            value = unidecode.unidecode(value)
+            value = re.sub('[^a-z0-9]', '', value)
+            return value
+        facts = [{}]
+
+        #Dicts for validation
+        authors, cites, proteins, genes, aspect, gp, papers, journals = {}, {}, {}, {}, {}, {}, {}, {}
+
+        '''Author(65102,SwietliAska_Z Zaborowska_D Zuk_J)'''
+        '''Journal(18791224,Genetics)'''
+        with open(os.path.join(__location__, 'files/fly/alchemy/papers.db'), encoding="utf8") as f:
+            for line in f:
+                if 'FAuthor' in line:
+                    continue
+                if 'Journal' in line:
+                    relation = clearCharacters(line.split('(')[0])
+                    entity   = clearCharacters(line.split('(')[1].split(',')[0])
+                    value    = clearCharacters(line.split(',')[1])
+                    if relation not in facts[0]:
+                        facts[0][relation] = []
+                    facts[0][relation].append([entity, value])
+
+                    if entity not in papers:
+                        papers[entity] = 0
+
+                    if value not in journals:
+                        journals[value] = 0
+
+                elif 'Author' in line or 'Cites' in line or 'Protein' in line:
+                    relation = clearCharacters(line.split('(')[0])
+                    entity   = clearCharacters(line.split('(')[1].split(',')[0])
+                    values   = line.split(',')[1].split()
+                    if relation not in facts[0]:
+                        facts[0][relation] = []
+                    for value in values:
+                        value = clearCharacters(value)
+                        facts[0][relation].append([entity, value])
+
+                        if entity not in papers:
+                            papers[entity] = 0
+                        if('Author' in line and value not in authors):
+                            authors[value] = 0
+                        if('Protein' in line and value not in proteins):
+                            proteins[value] = 0
+        citations = []
+        for tupla in facts[0]['cites']:
+            if tupla[1] in papers:
+                citations.append([tupla[0], tupla[1]])
+        facts[0]['cites'] = citations.copy()
+
+        '''Aspect(55,TDH3,FuPr SLC)'''
+        '''Gene(55,TPI1 TDH3)'''
+        with open(os.path.join(__location__, 'files/fly/alchemy/GeneCitation.db'), encoding="utf8") as f:
+            for line in f:
+                relation = clearCharacters(line.split('(')[0])
+                entity_1 = clearCharacters(line.split('(')[1].split(',')[0])
+
+                if 'Aspect' in line:
+                    entity_2 = clearCharacters(line.split('(')[1].split(',')[1])
+                    values   = line.split(',')[2].split()
+                else:
+                    values   = line.split(',')[1].split()
+
+                if relation not in facts[0]:
+                    facts[0][relation] = []
+                for value in values:
+                    value = clearCharacters(value)
+
+                    if 'Aspect' in line:
+                        facts[0][relation].append([entity_1, entity_2, value])
+
+                    if 'Gene' in line:
+                        facts[0][relation].append([entity_1, value])
+
+                        if value not in genes:
+                            genes[value] = 0
+
+                    if entity not in papers:
+                        papers[entity] = 0
+
+        '''GP(2L52.1,A4F336_CAEEL)'''
+        with open(os.path.join(__location__, 'files/fly/alchemy/gene2Protein.db'), encoding="utf8") as f:
+            for line in f:
+                relation = clearCharacters(line.split('(')[0])
+                entity   = clearCharacters(line.split('(')[1].split(',')[0])
+                values   = line.split(',')[1].split()
+                if relation not in facts[0]:
+                    facts[0][relation] = []
+                for value in values:
+                    value = clearCharacters(value.split('_')[0])
+                    facts[0][relation].append([entity, value])
+
+        '''physical(AC3.4,AC3.3)'''
+        '''genetic(AC7.2,C54D1.6 ZK792.6)'''
+        with open(os.path.join(__location__, 'files/fly/alchemy/geneInter.db'), encoding="utf8") as f:
+            for line in f:
+                relation = clearCharacters(line.split('(')[0])
+                entity   = clearCharacters(line.split('(')[1].split(',')[0])
+                values   = line.split(',')[1].split()
+                if relation not in facts[0]:
+                    facts[0][relation] = []
+                for value in values:
+                    value = clearCharacters(value)
+                    facts[0][relation].append([entity, value])
+
+        print('Total of authors {}'.format(len(authors)))
+        print('Total of papers {}'.format(len(papers)))
+        print('Total of genes {}'.format(len(genes)))
+        print('Total of proteins {}'.format(len(proteins)))
+        print('Total of journals {}'.format(len(journals)))
+        # 39,037 papers in PMC, 385,699 in total if cited papers are included
+        # 102,472  authors.
+        # 244,014  genes in flymine.
+        # 340,039 proteins in flymine.
+        # 376 journals
+
+        # 679,903 Citation relations.
+        # 550,458 physical/genetic interaction relations from genes to other genes.
+        print('{} physical interactions'.format(len(facts[0]['physical'])))
+        print('{} genetic interactions'.format(len(facts[0]['genetic'])))
+        print('{} citations'.format(len(facts[0]['cites'])))
+
+        return [facts, [{}]]
+
+
+
 #import time
 #start = time.time()
 #data = datasets.get_webkb2_dataset()
@@ -1066,3 +1386,31 @@ class datasets:
 #    'courselevel(course,#level).',
 #    'yearsinprogram(person,#year).'], target='advisedby')
 #print(time.time() - start)
+
+
+#import time
+#start = time.time()
+#data = datasets.get_yago2s_dataset()
+#print(time.time() - start)
+
+#import json
+#with open('files/json/yago2s.json', 'w') as outfile:
+#    json.dump(data,outfile)
+
+#import time
+#start = time.time()
+#data = datasets.get_yeast2_dataset()
+#print(time.time() - start)
+
+#import json
+#with open('files/json/yeast2.json', 'w') as outfile:
+#    json.dump(data,outfile)
+
+#import time
+#start = time.time()
+#data = datasets.get_fly_dataset()
+#print(time.time() - start)
+
+#import json
+#with open('files/json/fly.json', 'w') as outfile:
+#    json.dump(data,outfile)

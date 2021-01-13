@@ -1,10 +1,12 @@
 
+from gensim.test.utils import get_tmpfile
 from experiments import experiments, bk
+from gensim.models import KeyedVectors
 from datasets.get_datasets import *
+from gensim.models import FastText
 from boostsrl import boostsrl
 from transfer import Transfer
 import parameters as params
-from gensim.models import KeyedVectors
 import utils as utils
 import numpy as np
 import fasttext
@@ -18,6 +20,9 @@ import logging
 logging.basicConfig(level=logging.INFO)
 
 fastTextModel = fasttext.load_model(params.WIKIPEDIA_FASTTEXT_PATH)
+#fname = get_tmpfile(params.WIKIPEDIA_FASTTEXT_PATH)
+#fastTextModel = FastText.load(fname)
+
 #word2vecModel = KeyedVectors.load_word2vec_format(params.GOOGLE_WORD2VEC_PATH, binary=True)
 
 #verbose=True
@@ -42,6 +47,11 @@ for experiment in experiments:
     to_predicate = experiment['to_predicate']
     arity = experiment['arity']
 
+    if target in ['twitter', 'yeast']:
+        recursion = True
+    else:
+        recursion = False
+        
     path = os.getcwd() + '/experiments/' + experiment_title
     if not os.path.exists(path):
         os.mkdir(path)
@@ -64,7 +74,7 @@ for experiment in experiments:
     start = time.time()
 
     # Learning from source dataset
-    background = boostsrl.modes(bk[source], [experiment['predicate']], useStdLogicVariables=False, maxTreeDepth=params.MAXTREEDEPTH, nodeSize=params.NODESIZE, numOfClauses=params.NUMOFCLAUSES)
+    background = boostsrl.modes(bk[source], [predicate], useStdLogicVariables=False, maxTreeDepth=params.MAXTREEDEPTH, nodeSize=params.NODESIZE, numOfClauses=params.NUMOFCLAUSES)
     model = boostsrl.train(background, src_pos, src_neg, src_facts, trees=params.TREES)
     
     end = time.time()
@@ -78,29 +88,39 @@ for experiment in experiments:
 
     # Get all learned trees
     structured = []
+    #will = ['WILL Produced-Tree #']
     for i in range(params.TREES):
-      structured.append(model.get_structured_tree(treenumber=i+1).copy())
+        current = model.get_structured_tree(treenumber=i+1)
+        structured.append(current.copy())
+    #    will += str(i+1)+'\n' + ('\n'.join(current))
+    #utils.write_to_file(will, os.getcwd() + '/experiments/{}_{}_{}/'.format(_id, source, target) + 'source_tree.txt')
     
     # Get the list of predicates from source tree
     preds, preds_learned = [], []
     preds = list(set(utils.sweep_tree(structured)))
-    preds_learned = [pred.replace('.', '').replace('+', '').replace('-', '') for pred in bk[source] if pred.split('(')[0] != predicate and pred.split('(')[0] in preds]
+    preds_learned = [pred.replace('.', '').replace('+', '').replace('-', '') for pred in bk[source] if pred.split('(')[0] != predicate and pred.split('(')[0] in preds and 'recursion_' not in pred]
+
+    #preds_learned = ['author(class,author)', 'venue(class,venue)', 'samebib(class,class)', 'sameauthor(author,author)', 'sametitle(title,title)', 'samevenue(venue,venue)', 'title(class,title)', 'haswordauthor(author,word)', 'harswordtitle(title,word)', 'haswordvenue(venue,word)']
 
     logging.info('Searching for similarities')
 
     # Get all rules learned by RDN-B
     refine_structure = utils.get_all_rules_from_tree(structured)
     utils.write_to_file(refine_structure, params.REFINE_FILENAME)
-    utils.write_to_file(refine_structure, os.getcwd() + '/experiments/{}_{}_{}/'.format(_id, source, target) + 'source_tree.txt')
+
+    #will = ['WILL Produced-Tree #'+str(i+1)+'\n'+('\n'.join(model.get_will_produced_tree(treenumber=i+1))) for i in range(10)]
+    #for w in will:
+    #    print(w)
 
     # Create word embeddings and calculate similarities
-    targets = [t.replace('.', '').replace('+', '').replace('-', '') for t in set(bk[target]) if t.split('(')[0] != to_predicate]
+    targets = [t.replace('.', '').replace('+', '').replace('-', '') for t in set(bk[target]) if t.split('(')[0] != to_predicate and 'recursion_' not in t]
+    #similarities = transfer.distance_word2vec(preds_learned, targets, word2vecModel, method=params.METHOD)
     similarities = transfer.similarity_fasttext(preds_learned, targets, fastTextModel, method=params.METHOD)
     #similarities = transfer.similarity_word2vec(preds_learned, targets, word2vecModel, method=params.METHOD)
     
     # Map source predicates to targets and creates transfer file
-    mapping = transfer.map_predicates(preds_learned, similarities)
-    transfer.write_to_file_closest_distance(predicate, to_predicate, arity, mapping, 'experiments/' + experiment_title, allowSameTargetMap=params.ALLOW_SAME_TARGET_MAP)
+    mapping = transfer.map_predicates(preds_learned, similarities, allowSameTargetMap=params.ALLOW_SAME_TARGET_MAP)
+    transfer.write_to_file_closest_distance(predicate, to_predicate, arity, mapping, 'experiments/' + experiment_title, recursion=recursion, allowSameTargetMap=params.ALLOW_SAME_TARGET_MAP)
 
     # Load predicate target dataset
     tar_data = datasets.load(target, bk[target], target=to_predicate, balanced=balanced, seed=params.SEED)
@@ -112,7 +132,7 @@ for experiment in experiments:
         n_folds = len(tar_data[0])
 
     # Dataframes to keep folds and confusion matrix values
-    all_folds_results = pd.DataFrame([], columns=['CLL', 'AUC ROC', 'AUC PR', 'Total Learning Time', 'Total Inference Time'])
+    all_folds_results = pd.DataFrame([], columns=['CLL', 'AUC ROC', 'AUC PR', 'Precision', 'Recall', 'F1', 'Total Learning Time', 'Total Inference Time'])
     confusion_matrix  = pd.DataFrame([], columns=['TP', 'FP', 'TN', 'FN'])
     
     target_trees = []
@@ -140,10 +160,10 @@ for experiment in experiments:
         logging.info('Target test pos examples: %s' % len(tar_test_pos))
         logging.info('Target test neg examples: %s\n' % len(tar_test_neg))
 
-        start = time.time()
-
-        # Train model using transfer learning
+        # Creating background
         background = boostsrl.modes(bk[target], [to_predicate], useStdLogicVariables=False, maxTreeDepth=params.MAXTREEDEPTH, nodeSize=params.NODESIZE, numOfClauses=params.NUMOFCLAUSES)
+        
+        start = time.time()
         model = boostsrl.train(background, tar_train_pos, tar_train_neg, tar_train_facts, refine=params.REFINE_FILENAME, transfer=params.TRANSFER_FILENAME, trees=params.TREES)
         
         end = time.time()
@@ -166,13 +186,12 @@ for experiment in experiments:
         results = {}
         #t_results['Learning time'] = learning_time
         #t_results['Inference time'] = inference_time
-        results['CLL']     = t_results['CLL']
-        results['AUC ROC'] = t_results['AUC ROC']
-        results['AUC PR']  = t_results['AUC PR']
-        #results.append('Precision: {}'.format(t_results['Precision'][0]))
-        #results.append('Recall: {}'.format(t_results['Recall']))
-        #results.append('F1: {}'.format(t_results['F1']))
-        #results.append('\n')
+        results['CLL']       = t_results['CLL']
+        results['AUC ROC']   = t_results['AUC ROC']
+        results['AUC PR']    = t_results['AUC PR']
+        results['Precision'] = t_results['Precision'][0]
+        results['Recall']    = t_results['Recall']
+        results['F1']        = t_results['F1']
         results['Total Learning Time']  = learning_time
         results['Total Inference Time'] = inference_time
 
