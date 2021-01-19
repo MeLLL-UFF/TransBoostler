@@ -20,14 +20,18 @@ import sys
 import os
 
 import logging
-#logging.getLogger().addHandler(logging.StreamHandler())
-logging.basicConfig(filename='app.log', filemode='w', level=logging.DEBUG, format='%(message)s')
+logging.basicConfig(level=logging.INFO, format="%(message)s", handlers=[logging.FileHandler("app.log"),logging.StreamHandler()])
 
 if not os.path.exists(params.WIKIPEDIA_FASTTEXT):
     raise ValueError("SKIP: You need to download the fasttext wikipedia model")
 
 logging.info('Loading fasttext model')
-#fastTextModel = FastText.load_fasttext_format(params.WIKIPEDIA_FASTTEXT)
+start = time.time()
+
+fastTextModel = fasttext.load_model(params.WIKIPEDIA_FASTTEXT)
+
+end = time.time()
+logging.info('Time to load FastText model: {} seconds'.format(round(end-start, 2)))
 
 #if not os.path.exists(params.GOOGLE_WORD2VEC):
 #    raise ValueError("SKIP: You need to download the google news model")
@@ -208,8 +212,6 @@ def main():
             logging.info('Target test facts examples: %s' % len(tar_test_facts))
             logging.info('Target test pos examples: %s' % len(tar_test_pos))
             logging.info('Target test neg examples: %s\n' % len(tar_test_neg))
-
-            saolspalsoaksoaksop
 
             for amount in params.AMOUNTS:
                 logging.info('Amount of data: ' + str(amount))
