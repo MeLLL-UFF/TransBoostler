@@ -25,6 +25,7 @@ logging.basicConfig(filename='app.log', filemode='w', level=logging.DEBUG, forma
 
 if not os.path.exists(params.WIKIPEDIA_FASTTEXT):
     raise ValueError("SKIP: You need to download the fasttext wikipedia model")
+
 logging.info('Loading fasttext model')
 #fastTextModel = FastText.load_fasttext_format(params.WIKIPEDIA_FASTTEXT)
 
@@ -187,19 +188,13 @@ def main():
 
             # Create word embeddings and calculate similarities
             targets = [t.replace('.', '').replace('+', '').replace('-', '') for t in set(bk[target]) if t.split('(')[0] != to_predicate and 'recursion_' not in t]
-            
-        # Load predicate target dataset
-        tar_data = datasets.load(target, bk[target], target=to_predicate, balanced=balanced, seed=params.SEED)
 
         # Set number of folds
-        if target in ['nell_sports', 'nell_finances', 'yago2s', 'yeast2', 'fly']:
-            n_folds = params.N_FOLDS
-        else:
-            n_folds = len(tar_data[0])
+        n_folds = datasets.get_n_folds(target)
 
         transboostler_target_trees, rdnb_target_trees = [], []
         for i in range(n_folds):
-            logging.info('Starting fold {} \n'.format(str(i+1)))
+            logging.info('\n Starting fold {} of {} folds \n'.format(i+1, n_folds))
 
             [tar_train_facts, tar_test_facts] =  datasets.load_pre_saved_folds(i+1, target, 'facts')
             [tar_train_pos, tar_test_pos]     =  datasets.load_pre_saved_folds(i+1, target, 'pos')
@@ -213,6 +208,8 @@ def main():
             logging.info('Target test facts examples: %s' % len(tar_test_facts))
             logging.info('Target test pos examples: %s' % len(tar_test_pos))
             logging.info('Target test neg examples: %s\n' % len(tar_test_neg))
+
+            saolspalsoaksoaksop
 
             for amount in params.AMOUNTS:
                 logging.info('Amount of data: ' + str(amount))

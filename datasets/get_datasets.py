@@ -139,11 +139,16 @@ class datasets:
                 neg.append(target + '(' + ','.join([key, objc]) + ').')
         return neg
 
+
     def get_json_dataset(dataset):
         '''Load dataset from json'''
         with open(os.path.join(__location__, 'files/json/' + dataset + '.json')) as data_file:
             data_loaded = json.load(data_file)
         return data_loaded
+
+    def get_n_folds(target):
+        '''Return the number of folds given a target dataset'''
+        return len(next(os.walk(os.path.join(__location__, 'folds/' + target)))[1])
 
     def load_pre_saved_folds(i, target, mode):
         '''Load folds generated used split_folds.py'''
