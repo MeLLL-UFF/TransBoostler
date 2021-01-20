@@ -33,10 +33,16 @@ fastTextModel = fasttext.load_model(params.WIKIPEDIA_FASTTEXT)
 end = time.time()
 logging.info('Time to load FastText model: {} seconds'.format(round(end-start, 2)))
 
-#if not os.path.exists(params.GOOGLE_WORD2VEC):
-#    raise ValueError("SKIP: You need to download the google news model")
-#logging.info('Loading word2vec model')
-#word2vecModel = api.load(params.GOOGLE_WORD2VEC)
+if not os.path.exists(params.GOOGLE_WORD2VEC):
+    raise ValueError("SKIP: You need to download the google news model")
+
+logging.info('Loading word2vec model')
+start - time.time()
+
+word2vecModel = KeyedVectors.load_word2vec_format(params.GOOGLE_WORD2VEC, binary=True, unicode_errors='ignore')
+
+end = time.time()
+logging.info('Time to load Word2Vec model: {} seconds'.format(round(end-start, 2)))
 
 # segmenter using the word statistics from Wikipedia
 seg = Segmenter(corpus="english")
@@ -49,7 +55,7 @@ runTransBoostler = True
 runRDNB = False
 theoryRevision = True
 
-transfer = Transfer()
+transfer = Transfer(seg)
 similarity = Similarity(seg)
 revision = TheoryRevision()
 
@@ -86,8 +92,13 @@ def get_confusion_matrix(to_predicate):
     # Get confusion matrix by reading results from db files created by the Java application
     logging.info('Converting results file to txt')
 
-    utils.convert_db_to_txt(to_predicate, params.TEST_OUTPUT)
-    y_true, y_pred = utils.read_results(params.TEST_OUTPUT.format(to_predicate).replace('.db', '.txt'))
+    if not os.path.exists(params.TEST_OUTPUT):
+        utils.convert_db_to_txt(to_predicate, params.TEST_OUTPUT.replace('test', 'best/test'))
+        y_true, y_pred = utils.read_results(params.TEST_OUTPUT.replace('test', 'best/test').format(to_predicate).replace('.db', '.txt'))
+    else:
+        utils.convert_db_to_txt(to_predicate, params.TEST_OUTPUT)
+        y_true, y_pred = utils.read_results(params.TEST_OUTPUT.format(to_predicate).replace('.db', '.txt'))
+    
 
     logging.info('Building confusion matrix')
 
@@ -106,17 +117,10 @@ def main():
         os.makedirs('experiments')
           
     for experiment in experiments:
+
         # Dictionaries to keep all experiments results
         transboostler_experiments = {}
-        transboostler_experiments_curves = {}
         transboostler_confusion_matrix = {}
-
-        # Dataframes to keep all RDN-B experiments results
-        rdnb_folds_results = pd.DataFrame([], columns=['CLL', 'AUC ROC', 'AUC PR', 'Precision', 'Recall', 'F1', 'Total Learning Time', 'Total Inference Time'])
-        rdnb_confusion_matrix  = pd.DataFrame([], columns=['TP', 'FP', 'TN', 'FN'])
-
-        # Dictionary to keep amounts values
-        RDNB_results = {key: {'AUC ROC': 0, 'AUC PR': 0} for key in params.AMOUNTS}
 
         experiment_title = experiment['id'] + '_' + experiment['source'] + '_' + experiment['target']
         logging.info('Starting experiment {} \n'.format(experiment_title))
@@ -193,6 +197,11 @@ def main():
             # Create word embeddings and calculate similarities
             targets = [t.replace('.', '').replace('+', '').replace('-', '') for t in set(bk[target]) if t.split('(')[0] != to_predicate and 'recursion_' not in t]
 
+
+            # Build word vectors for source and target predicates
+            sources = utils.build_triples(preds_learned)
+            targets = utils.build_triples(targets)
+
         # Set number of folds
         n_folds = datasets.get_n_folds(target)
 
@@ -223,10 +232,6 @@ def main():
 
                 if(runTransBoostler):
 
-                    # Build word vectors for source and target predicates
-                    sources = utils.build_triples(preds_learned)
-                    targets = utils.build_triples(targets)
-
                     # FastText Experiment 
 
                     # Build word vectors
@@ -236,11 +241,10 @@ def main():
                     similarities = similarity.cosine_similarities(fasttext_sources, fasttext_targets)
                     
                     transboostler_experiments['fasttext'] = {}
-                    transboostler_experiments['fasttext']['cosine'] = {}
-                    transboostler_experiments_curves['fasttext'] = {key: {'AUC ROC': [], 'AUC PR': []} for key in params.AMOUNTS} 
+                    transboostler_experiments['fasttext']['cosine'] = {key: {'CLL': [], 'AUC ROC': [], 'AUC PR': [], 'Learning Time': [], 'Inference Time': []} for key in params.AMOUNTS} 
 
                     transboostler_confusion_matrix['fasttext'] = {}
-                    transboostler_confusion_matrix['fasttext']['cosine'] = {}
+                    transboostler_confusion_matrix['fasttext']['cosine'] = {key: {'TP': [], 'FP': [], 'TN': [], 'FN': []} for key in params.AMOUNTS} 
 
                     logging.info('Searching for similarities \n')
                     
@@ -255,23 +259,20 @@ def main():
                     model, t_results, learning_time, inference_time = rdnb(background, part_tar_train_pos, part_tar_train_neg, tar_train_facts, tar_test_pos, tar_test_neg, tar_test_facts, params.REFINE_FILENAME, params.TRANSFER_FILENAME)
                     
                     if(theoryRevision):
-                        t_results, learning_time, inference_time = revision.apply(model, part_tar_train_pos, part_tar_train_neg, tar_train_facts, tar_test_pos, tar_test_neg, tar_test_facts)
+                        t_results, learning_time, inference_time = revision.apply(model, part_tar_train_pos, part_tar_train_neg, tar_train_facts, tar_test_pos, tar_test_neg, tar_test_facts, learning_time, inference_time)
 
-                    transboostler_experiments_curves['fasttext'][amount]['AUC ROC'].append(t_results['AUC ROC'])
-                    transboostler_experiments_curves['fasttext'][amount]['AUC PR'].append(t_results['AUC PR'])
+                    transboostler_experiments['fasttext']['cosine'][amount]['CLL'].append(t_results['CLL'])
+                    transboostler_experiments['fasttext']['cosine'][amount]['AUC ROC'].append(t_results['AUC ROC'])
+                    transboostler_experiments['fasttext']['cosine'][amount]['AUC PR'].append(t_results['AUC PR'])
+                    transboostler_experiments['fasttext']['cosine'][amount]['Learning Time'].append(learning_time)
+                    transboostler_experiments['fasttext']['cosine'][amount]['Inference Time'].append(inference_time)
 
-                    if(amount == 1.0):
-
-                        results = {}
-                        results = utils.get_results_dict(t_results, learning_time, inference_time)
-                        transboostler_experiments['fasttext']['cosine'] = results
-
-                        utils.show_results(results)
-
-                        transboostler_confusion_matrix['fasttext']['cosine'] = get_confusion_matrix(to_predicate)
-
-                        del results
-                    del model
+                    cm = get_confusion_matrix(to_predicate)
+                    transboostler_confusion_matrix['fasttext']['cosine'][amount]['TP'].append(cm['TP']) 
+                    transboostler_confusion_matrix['fasttext']['cosine'][amount]['FP'].append(cm['FP']) 
+                    transboostler_confusion_matrix['fasttext']['cosine'][amount]['TN'].append(cm['TN']) 
+                    transboostler_confusion_matrix['fasttext']['cosine'][amount]['FN'].append(cm['FN']) 
+                    del model, cm, t_results, learning_time, inference_time
 
                     # Word2Vec
 
@@ -282,11 +283,10 @@ def main():
                     similarities = similarity.cosine_similarities(word2vec_sources, word2vec_targets)
                     
                     transboostler_experiments['word2vec'] = {}
-                    transboostler_experiments['word2vec']['cosine'] = {}
-                    transboostler_experiments_curves['word2vec'] = {key: {'AUC ROC': [], 'AUC PR': []} for key in params.AMOUNTS} 
+                    transboostler_experiments['word2vec']['cosine'] = {key: {'CLL': [], 'AUC ROC': [], 'AUC PR': [], 'Learning Time': [], 'Inference Time': []} for key in params.AMOUNTS} 
 
                     transboostler_confusion_matrix['word2vec'] = {}
-                    transboostler_confusion_matrix['word2vec']['cosine'] = {}
+                    transboostler_confusion_matrix['word2vec']['cosine'] = {key: {'TP': [], 'FP': [], 'TN': [], 'FN': []} for key in params.AMOUNTS}
                     
                     # Map source predicates to targets and creates transfer file
                     mapping = transfer.map_predicates(preds_learned, similarities, allowSameTargetMap=params.ALLOW_SAME_TARGET_MAP)
@@ -296,25 +296,26 @@ def main():
 
                     logging.info('Training using transfer \n')
 
-                    t_results, learning_time, inference_time = rdnb(background, part_tar_train_pos, part_tar_train_neg, tar_train_facts, tar_train_pos, tar_test_neg, tar_test_facts, params.REFINE_FILENAME, params.TRANSFER_FILENAME)
+                    model, t_results, learning_time, inference_time = rdnb(background, part_tar_train_pos, part_tar_train_neg, tar_train_facts, tar_train_pos, tar_test_neg, tar_test_facts, params.REFINE_FILENAME, params.TRANSFER_FILENAME)
                     
-                    transboostler_experiments_curves['word2vec'][amount]['AUC ROC'].append(t_results['AUC ROC'])
-                    transboostler_experiments_curves['word2vec'][amount]['AUC PR'].append(t_results['AUC PR'])
+                    transboostler_experiments['word2vec']['cosine'][amount]['CLL'].append(t_results['CLL'])
+                    transboostler_experiments['word2vec']['cosine'][amount]['AUC ROC'].append(t_results['AUC ROC'])
+                    transboostler_experiments['word2vec']['cosine'][amount]['AUC PR'].append(t_results['AUC PR'])
+                    transboostler_experiments['word2vec']['cosine'][amount]['Learning Time'].append(learning_time)
+                    transboostler_experiments['word2vec']['cosine'][amount]['Inference Time'].append(inference_time)
 
-                    if(amount == 1.0):
-
-                        results = {}
-                        results = utils.get_results_dict(t_results, learning_time, inference_time)
-                        transboostler_experiments['word2vec']['cosine'] = results
-
-                        utils.show_results(results)
-
-                        transboostler_confusion_matrix['word2vec']['cosine'] = get_confusion_matrix(to_predicate)
-
-                        del results
-                    del model
+                    cm = get_confusion_matrix(to_predicate)
+                    transboostler_confusion_matrix['word2vec']['cosine'][amount]['TP'].append(cm['TP']) 
+                    transboostler_confusion_matrix['word2vec']['cosine'][amount]['FP'].append(cm['FP']) 
+                    transboostler_confusion_matrix['word2vec']['cosine'][amount]['TN'].append(cm['TN']) 
+                    transboostler_confusion_matrix['word2vec']['cosine'][amount]['FN'].append(cm['FN']) 
+                    del model, cm, t_results, learning_time, inference_time
 
                 if(runRDNB):
+
+                    # Dictionary to keep amounts values
+                    RDNB_results = {key: {'CLL': [], 'AUC ROC': [], 'AUC PR': [], 'Learning Time': [], 'Inference Time': []} for key in params.AMOUNTS}
+                    RDNB_confusion_matrix = {key: {'TP': [], 'FP': [], 'TN': [], 'FN': []} for key in params.AMOUNTS}
 
                     logging.info('Starting to learn from scratch')
 
@@ -323,49 +324,41 @@ def main():
                     model, t_results, learning_time, inference_time = rdnb(background, part_tar_train_pos, part_tar_train_neg, tar_train_facts, tar_train_pos, tar_test_neg, tar_test_facts)
 
 
-                    RDNB_results[amount]['AUC ROC'] += t_results['AUC ROC']
-                    RDNB_results[amount]['AUC PR']  += t_results['AUC PR']
+                    # Get target trees
+                    structured = []
+                    for i in range(params.TREES):
+                        structured.append(model.get_structured_tree(treenumber=i+1).copy())
 
-                    if(amount == 1.0):
+                    RDNB_results[amount]['CLL'].append(t_results['CLL'])
+                    RDNB_results[amount]['AUC ROC'].append(t_results['AUC ROC'])
+                    RDNB_results[amount]['AUC PR'].append(t_results['AUC PR'])
+                    RDNB_results[amount]['Learning Time'].append(t_results['Learning Time'])
+                    RDNB_results[amount]['Learning Time'].append(t_results['Inference Time'])
 
-                        results = {}
-                        results = utils.get_results_dict(t_results, learning_time, inference_time)
+                    cm = get_confusion_matrix(to_predicate)
+                    RDNB_confusion_matrix[amount]['TP'].append(cm['TP'])
+                    RDNB_confusion_matrix[amount]['FP'].append(cm['FP'])
+                    RDNB_confusion_matrix[amount]['TN'].append(cm['TN'])
+                    RDNB_confusion_matrix[amount]['FN'].append(cm['FN'])
 
-                        utils.show_results(results)
-                        
-                        rdnb_folds_results = rdnb_folds_results.append(results, ignore_index=True)
-
-                        # Get target trees
-                        structured = []
-                        for i in range(params.TREES):
-                          structured.append(model.get_structured_tree(treenumber=i+1).copy())
-
-                        refine_structure = utils.get_all_rules_from_tree(structured)
-                        rdnb_target_trees += refine_structure
-
-                        rdnb_confusion_matrix = rdnb_confusion_matrix.append(get_confusion_matrix(to_predicate), ignore_index=True)
-
-                        del results
+                    results = {}
+                    results = utils.get_results_dict(t_results, learning_time, inference_time)
+                    utils.show_results(results)
+                    del model, cm, t_results, learning_time, inference_time, results
 
                     del model
 
         if(runTransBoostler):
 
             # Save all results using transfer
-            utils.save_json_file(os.getcwd() + '/experiments/{}_{}_{}/transboostler_folds.txt'.format(_id, source, target), transboostler_experiments_curves)
-            utils.save_json_file(os.getcwd() + '/experiments/{}_{}_{}/transboostler_confusion_matrix.txt'.format(_id, source, target), transboostler_confusion_matrix)
-            utils.save_json_file(os.getcwd() + '/experiments/{}_{}_{}/transboostler_curves.txt'.format(_id, source, target), transboostler_experiments_curves)           
+            utils.save_json_file(os.getcwd() + '/experiments/{}_{}_{}/transboostler_confusion_matrix.json'.format(_id, source, target), transboostler_confusion_matrix)
+            utils.save_json_file(os.getcwd() + '/experiments/{}_{}_{}/transboostler_curves_folds.json'.format(_id, source, target), transboostler_experiments)           
 
         if(runRDNB):
             
             # Save all CV results
-            rdnb_folds_results.to_csv(os.getcwd() + '/experiments/{}_{}_{}/rdnb_folds.txt'.format(_id, source, target))
-            rdnb_confusion_matrix.to_csv(os.getcwd() + '/experiments/{}_{}_{}/rdnb_confusion_matrix.txt'.format(_id, source, target), index=False)
-
-            all_RDNB_results = pd.DataFrame.from_dict(RDNB_results)
-            all_RDNB_results = all_RDNB_results/n_folds
-            
-            all_RDNB_results.to_csv(os.getcwd() + '/experiments/{}_{}_{}/RDNB_curves.csv'.format(_id, source, target))
+            utils.save_json_file(os.getcwd() + '/experiments/{}_{}_{}/rdnb_curves_folds.json'.format(_id, source, target), rdnb_folds_results)
+            utils.save_json_file(os.getcwd() + '/experiments/{}_{}_{}/rdnb_confusion_matrix.json'.format(_id, source, target), rdnb_confusion_matrix)
 
 if __name__ == '__main__':
     sys.exit(main())

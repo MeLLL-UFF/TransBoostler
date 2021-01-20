@@ -17,8 +17,8 @@ import re
 
 class Transfer:
 
-  def __init__(self):
-    pass
+  def __init__(self, seg):
+    self.seg = seg
 
   def single_array(self, temp, method):
     """
@@ -68,15 +68,12 @@ class Transfer:
             a dictionary that the keys are the words and the values are single arrays of embeddings
     """
 
-    # segmenter using the word statistics from Wikipedia
-    seg = Segmenter(corpus="english")
-
     dict = {}
     for example in tqdm(data):
       temp = []
 
       # Tokenize words of relation
-      predicate = seg.segment(example[0])
+      predicate = self.seg.segment(example[0])
       for word in predicate.split():
         try:
           temp.append(model.get_word_vector(word.lower().strip()))
@@ -88,7 +85,7 @@ class Transfer:
       if(method):
         predicate = self.single_array(temp, method)
 
-      if(example[2] == ''):
+      if(len(example) > 2 and example[2] == ''):
         example.remove('')
       dict[example[0].rstrip()] = [predicate, example[1:]]
     return dict
@@ -110,7 +107,7 @@ class Transfer:
       temp = []
 
       # Tokenize words of relation
-      predicate = seg.segment(example[0])
+      predicate = self.seg.segment(example[0])
       for word in predicate.split():
         try:
           temp.append(model.wv[word.lower().strip()])
@@ -120,7 +117,7 @@ class Transfer:
     
       predicate = self.single_array(temp, method)
 
-      if(example[2] == ''):
+      if(len(example) > 2 and example[2] == ''):
         example.remove('')
       dict[example[0].rstrip()] = [predicate, example[1:]]
     return dict

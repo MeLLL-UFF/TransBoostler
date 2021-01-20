@@ -1,11 +1,16 @@
 from sklearn.metrics import confusion_matrix
+import parameters as params
 import numpy as np
 import subprocess
+import shutil
 import glob
 import json
 import sys
 import os
 import re
+
+import logging
+logging.basicConfig(level=logging.INFO, format="%(message)s", handlers=[logging.FileHandler("app.log"),logging.StreamHandler()])
 
 def build_triples(data):
   """
@@ -248,20 +253,35 @@ def get_confusion_matrix(y_true, y_pred):
   # True Negatives, False Positives, False Negatives, True Positives
   return confusion_matrix(y_true, y_pred).ravel()
 
-def delete_folder_files(folder_name):
+def show_results(results):
+    logging.info('Results \n')
+    res = ['{} : {} \n'.format(key, results[key]) for key in results]
+    for r in res:
+        logging.info(r)
+
+def get_results_dict(t_results, learning_time, inference_time):
+    results = {}
+    results['CLL']       = t_results['CLL']
+    results['AUC ROC']   = t_results['AUC ROC']
+    results['AUC PR']    = t_results['AUC PR']
+    results['Precision'] = t_results['Precision'][0]
+    results['Recall']    = t_results['Recall']
+    results['F1']        = t_results['F1']
+    results['Total Learning Time']  = learning_time
+    results['Total Inference Time'] = inference_time
+    return results
+
+def delete_folder(folder_name):
   """
     Deletes files from a specific folder
 
     Args:
         folder_name(str): name of the folder to empty
   """
-  files = glob.glob(folder_name)
-  for f in files:
-      try:
-        os.remove(os.getcwd() + '/' + f)
-      except PermissionError as e:
-        print('In utils, delete_folder_files function: ', e)
-        os.rmdir(os.getcwd() + '/' + folder_name)
+  try:
+    shutil.rmtree(os.getcwd() + '/' + folder_name)
+  except FileNotFoundError as e:
+    print('In utils, delete_folder_file function: ', e)
 
 
 def delete_file(filename):
@@ -283,8 +303,32 @@ def save_json_file(filename, data):
     Args:
         filename(str): name of the file
   """
+  def myconverter(obj):
+        if isinstance(obj, np.integer):
+            return int(obj)
+        elif isinstance(obj, np.floating):
+            return float(obj)
+        elif isinstance(obj, np.ndarray):
+            return obj.tolist()
+        elif isinstance(obj, datetime.datetime):
+            return obj.__str__()
+
   with open(filename, 'w') as outfile:
-    json.dump(data, outfile)
+    json.dump(data, outfile, default=myconverter)
+
+def save_best_model_files():
+  """Delete files of last best model (if exists) and save results for the best model"""
+
+  try:
+    shutil.rmtree(params.BEST_MODEL_FOLDER_FILES[:-1])
+  except:
+    pass
+
+  os.mkdir(params.BEST_MODEL_FOLDER_FILES[:-1])
+  shutil.move(params.TRAIN_FOLDER_FILES[:-1], params.BEST_MODEL_FOLDER_FILES[:-1])
+  shutil.move(params.TEST_FOLDER_FILES[:-1], params.BEST_MODEL_FOLDER_FILES[:-1])
+  shutil.move(params.TRAIN_OUTPUT_FILE, params.BEST_MODEL_FOLDER_FILES[:-1])
+  shutil.move(params.TEST_OUTPUT_FILE, params.BEST_MODEL_FOLDER_FILES[:-1])
 
 #y_true, y_pred = read_results('boostsrl/test/results_{}.db'.format('advisedby'))
 #print(get_confusion_matrix(y_true, y_pred))
