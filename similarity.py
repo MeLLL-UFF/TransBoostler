@@ -121,14 +121,14 @@ class Similarity:
   #def relaxed_wmd_similarities(self, sources, targets, model):
 
 
-  def euclidean_distance(self, sources, targets):
+  def euclidean_distance(self, source, target):
     """
     	Calculate similarity of embedded arrays
 	    using Euclidean Distance for all possible pairs (source, target)
 
 	    Args:
-	        sources(array): all word embeddings from the source dataset
-	        targets(array): all word embeddings from the target dataset
+	        source(array): all word embeddings from the source dataset
+	        target(array): all word embeddings from the target dataset
 	    Returns:
 	        a pandas dataframe containing every pair (source, target) similarity
 	"""
@@ -144,9 +144,9 @@ class Similarity:
         key = s + '(' + ','.join(source[s][1]) + ')' + ',' + t + '(' + ','.join(target[t][1]) + ')'
         #key = s + '(' + ','.join([chr(65+i) for i in range(len(source[s][1]))]) + ')' + ',' + t + '(' + ','.join([chr(65+i) for i in range(len(target[t][1]))]) + ')'
         if(len(source[s][0]) != len(target[t][0])):
-          source[s][0], target[t][0] = utils.fill_missing_dimensions(source[s][0], target[t][0], params.EMBEDDING_DIMENSION)
+          source[s][0], target[t][0] = utils.fill_dimension(source[s][0], target[t][0], params.EMBEDDING_DIMENSION)
 
-        similarity[key] = 1 - np.linalg.norm(source[s][0]-target[t][0])
+        similarity[key] = np.linalg.norm(source[s][0]-target[t][0])
 
     df = pd.DataFrame.from_dict(similarity, orient="index", columns=['similarity'])
     return df.sort_values(by='similarity', ascending=True)

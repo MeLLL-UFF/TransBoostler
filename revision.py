@@ -3,6 +3,7 @@ from boostsrl import boostsrl
 import parameters as params
 import utils as utils
 import copy
+import math
 import time
 
 import logging
@@ -13,7 +14,78 @@ class TheoryRevision:
 	def __init__(self):
 		pass
 
-	def get_refine_file(struct, forceLearning=False, treenumber=1):
+	def get_branch_with(self, branch, next_branch):
+		'''Append next_branch at branch'''
+		if not branch:
+			return next_branch
+		b = branch.split(',')
+		b.append(next_branch)
+		return ','.join(b)
+
+	def get_structured_from_tree_helper(self, path, root, nodes, leaves):
+		if isinstance(root, list):
+			leaves[path] = root
+		elif isinstance(root, dict):
+			i = list(root.keys())[0]
+			value = root[i]
+			children= value[1]
+			split = [] if path == '' else path.split(',')
+			left, right = ','.join(split+['true']), ','.join(split+['false'])
+			nodes[path] = i
+			self.get_structured_from_tree_helper(left, children[0], nodes, leaves)
+			self.get_structured_from_tree_helper(right, children[1], nodes, leaves)
+
+	def get_structured_from_tree(self, target, tree):
+		nodes, leaves = {}, {}
+		self.get_structured_from_tree_helper('', tree, nodes, leaves)
+		return [target, nodes, leaves]
+
+	def get_tree_helper(self, path, nodes, leaves, variances, no_variances=False):
+		children = [None, None]
+		split = [] if path == '' else path.split(',')
+		left, right = ','.join(split+['true']), ','.join(split+['false'])
+		varc = variances[path] if not no_variances else []
+		if left in nodes:
+			children[0] = self.get_tree_helper(left, nodes, leaves, variances, no_variances=no_variances)
+		if right in nodes:
+			children[1] = self.get_tree_helper(right, nodes, leaves, variances, no_variances=no_variances)
+		if left in leaves:
+			children[0] = leaves[left] # { 'type': 'leaf', 'std_dev': leaves[left][0], 'neg': leaves[left][1], 'pos': leaves[left][2] }
+		if right in leaves:
+			children[1] = leaves[right]
+		return { nodes[path]: [varc, children] }
+
+	def get_tree(self, nodes, leaves, variances, no_variances=False):
+		return self.get_tree_helper('', nodes, leaves, variances, no_variances=no_variances)
+
+	def generalize_tree_helper(self, root):
+		if isinstance(root, list):
+			return root
+		elif isinstance(root, dict):
+			i = list(root.keys())[0]
+			value = root[i]
+			children= value[1]
+			variances = value[0]
+			true_child, false_child = self.generalize_tree_helper(children[0]), self.generalize_tree_helper(children[1])
+
+			# if TRUE child has 0 examples reached
+			if math.isnan(variances[0]):
+				return false_child
+			# if FALSE child has 0 examples reached
+			if math.isnan(variances[1]):
+				return true_child
+			# if node has only leaves
+			if isinstance(true_child, list) and isinstance(false_child, list):
+				if variances[0] >= 0.0025 and variances[1] >= 0.0025:
+					return [0, true_child[1] + false_child[1], true_child[2] + false_child[2]] # return a leaf
+			# otherwise
+			return { i: [variances, [true_child, false_child]] }
+
+	def generalize_tree(self, tree):
+		ntree = copy.deepcopy(tree)
+		return self.generalize_tree_helper(ntree)
+
+	def get_refine_file(self, struct, forceLearning=False, treenumber=1):
 		'''Generate the refine file from given tree structure'''
 		target = struct[0]
 		nodes = struct[1]
@@ -22,12 +94,12 @@ class TheoryRevision:
 		refine = []
 		for path, value in nodes.items():
 			node = target + ' :- ' + value + '.' if not path else value + '.'
-			branchTrue = 'true' if revision.get_branch_with(path, 'true') in nodes or forceLearning else 'false'
-			branchFalse = 'true' if revision.get_branch_with(path, 'false') in nodes or forceLearning else 'false'
+			branchTrue = 'true' if self.get_branch_with(path, 'true') in nodes or forceLearning else 'false'
+			branchFalse = 'true' if self.get_branch_with(path, 'false') in nodes or forceLearning else 'false'
 			refine.append(';'.join([str(tree), path, node, branchTrue, branchFalse]))
 		return refine
 
-	def get_candidate(structure, variances, treenumber=1, no_pruning=False):
+	def get_candidate(self, structure, variances, treenumber=1, no_pruning=False):
 		'''Get candidate refining every revision point in a tree'''
 		target = structure[0]
 		nodes = structure[1]
@@ -42,10 +114,10 @@ class TheoryRevision:
 	def get_boosted_candidate(self, structure, variances, no_pruning=False):
 		refine = []
 		for i in range(len(structure)):
-			refine += revision.get_candidate(structure[i], variances[i], i+1, no_pruning=no_pruning)
+			refine += self.get_candidate(structure[i], variances[i], i+1, no_pruning=no_pruning)
 		return refine
 
-	def apply(self, model, train_pos, train_neg, train_facts, test_pos, test_neg, test_facts, learning_time, inference_time):
+	def apply(self, model, background, train_pos, train_neg, train_facts, test_pos, test_neg, test_facts, learning_time, inference_time):
 
 		total_revision_time = 0
 		best_cll = - float('inf')
@@ -152,7 +224,7 @@ class TheoryRevision:
 
 		return best_model_results, total_revision_time, inference_time
 
-	def rdnb(background, train_pos, train_neg, train_facts, test_pos, test_neg, test_facts, refine=None, transfer=None):
+	def rdnb(self, background, train_pos, train_neg, train_facts, test_pos, test_neg, test_facts, refine=None, transfer=None):
 		'''
 	        Train RDN-B using transfer learning
 	    '''
