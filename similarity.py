@@ -1,4 +1,5 @@
 
+from gensim.models import WordEmbeddingSimilarityIndex
 from gensim.matutils import softcossim
 import parameters as params
 from gensim import corpora
@@ -49,15 +50,15 @@ class Similarity:
         for every possible pairs (source, target)
 
         Args:
-            sources(array): all word embeddings from the source dataset
-            targets(array): all word embeddings from the target dataset
+            sources(array): all predicates from the source dataset
+            targets(array): all predicates from the target dataset
        Returns:
             a pandas dataframe containing every pair (source, target) similarity
     """
 
-    # Tokenize(segment) the predicates into words
-    texts =  [[word for word in self.seg.segment(source[0]).split()] for source in sources]
-    texts += [[word for word in self.seg.segment(target[0]).split()] for target in targets]
+    # Tokenize (segment) the predicates into words
+    texts =  [self.seg.segment(source[0]).split() for source in sources]
+    texts += [self.seg.segment(target[0]).split() for target in targets]
 
     # Create dictionary
     dictionary = corpora.Dictionary(texts)
@@ -73,13 +74,14 @@ class Similarity:
             if(len(target) > 2 and target[2] == ''): target.remove('')
 
       	    # Predicates must have the same arity
-            if(len(source[1:]) != len(target[1:])): continue
+            if(len(source[1:]) != len(target[1:])): 
+              continue
 
             # Convert the sentences into bag-of-words vectors.
             sent_1 = dictionary.doc2bow(self.seg.segment(source[0]).split())
             sent_2 = dictionary.doc2bow(self.seg.segment(target[0]).split())
 
-            key = source[0] + '(' + ','.join(source[1]) + ')' + ',' + target[0] + '(' + ','.join(target[1]) + ')'
+            key = source[0] + '(' + source[1] + ')' + ',' + target[0] + '(' + target[1] + ')'
             #key = s + '(' + ','.join([chr(65+i) for i in range(len(source[s][1]))]) + ')' + ',' + t + '(' + ','.join([chr(65+i) for i in range(len(target[t][1]))]) + ')'
 
             similarity[key] = softcossim(sent_1, sent_2, similarity_matrix)

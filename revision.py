@@ -117,7 +117,15 @@ class TheoryRevision:
 			refine += self.get_candidate(structure[i], variances[i], i+1, no_pruning=no_pruning)
 		return refine
 
-	def apply(self, model, background, train_pos, train_neg, train_facts, test_pos, test_neg, test_facts, learning_time, inference_time):
+
+	def get_boosted_refine_file(self, structs, forceLearning=False):
+		refine = []
+		for i in range(len(structs)):
+			refine += self.get_refine_file(structs[i], treenumber=i+1, forceLearning=forceLearning)
+		return refine
+
+	def apply(self, background, train_pos, train_neg, train_facts, test_pos, test_neg, test_facts, source_structure):
+		'''Function responsible for starting the theory revision process'''
 
 		total_revision_time = 0
 		best_cll = - float('inf')
@@ -125,30 +133,45 @@ class TheoryRevision:
 		best_model_results = None
 		pl_t_results = 0
 
-		# refine candidates
+		# Parameter learning
+		logging.info('******************************************')
+		logging.info('Performing Parameter Learning')
+		logging.info('******************************************')
+		logging.info('Refine')
+		for item in self.get_boosted_refine_file(source_structure):
+			logging.info(item)
+		logging.info('\n')
+
+		model, t_results, learning_time, inference_time = self.train_and_test(background, train_pos, train_neg, train_facts, test_pos, test_neg, test_facts, refine=params.REFINE_FILENAME, transfer=params.TRANSFER_FILENAME)
+		pl_t_results = copy.deepcopy(t_results)
+
 		structured = []
 		for i in range(params.TREES):
 			structured.append(model.get_structured_tree(treenumber=i+1).copy())
 
-        # Get variances for revision theory 
 		variances = [model.get_variances(treenumber=i+1) for i in range(params.TREES)]
 
-        # Test using training set
+        # Test using training set - Score model
 		start = time.time()
 		results = boostsrl.test(model, train_pos, train_neg, train_facts, trees=params.TREES)
+		scored_results = results.summarize_results()
 		end = time.time()
-		t_results = results.summarize_results()
-		best_model_cll = t_results['CLL']
-		best_model_results = copy.deepcopy(t_results)
 		inference_time = end-start
-		total_revision_time = learning_time + inference_time
-		best_model_structured = copy.deepcopy(structured)
 
-		logging.info('Parameter learned model CLL:{}'.format(t_results['CLL']))
+		best_model_cll = scored_results['CLL']
+		best_model_results = copy.deepcopy(t_results)
+
+		total_revision_time = learning_time + inference_time
+
+		logging.info('Parameter learned model CLL:{} \n'.format(scored_results['CLL']))
 		logging.info('Strucuture after Parameter Learning \n')
-        
+
+		best_model_structured = copy.deepcopy(structured)
+		logging.info('Structure after Parameter Learning')
+
 		for w in structured:
 			logging.info(w)
+
 		for v in variances:
 			logging.info(v)
 		logging.info('\n')
@@ -166,7 +189,7 @@ class TheoryRevision:
 			candidate = self.get_boosted_candidate(best_model_structured, variances)
 
 			if not len(candidate):
-                # Perform revision without pruning
+				# Perform revision without pruning
 				logging.info('Pruning resulted in null theory\n')
 				candidate = self.get_boosted_candidate(best_model_structured, variances, no_pruning=True)
 
@@ -179,26 +202,31 @@ class TheoryRevision:
 			logging.info('***************************')
 
 			utils.write_to_file(candidate, params.REFINE_FILENAME)
-			model, t_results, learning_time, inference_time = self.rdnb(background, train_pos, train_neg, train_facts, test_pos, test_neg, test_facts, params.REFINE_FILENAME, params.TRANSFER_FILENAME)
-
-            # Test using training set
-			results = boostsrl.test(model, part_tar_train_pos, part_tar_train_neg, tar_train_facts, trees=params.TREES)
-			t_results = results.summarize_results()
+			model, t_results, learning_time, inference_time = self.train_and_test(background, train_pos, train_neg, train_facts, test_pos, test_neg, test_facts, refine=params.REFINE_FILENAME)
 
 			structured = []
-			for i in range(trees):
+			for i in range(params.TREES):
 				structured.append(model.get_structured_tree(treenumber=i+1).copy())
 
+			variances = [model.get_variances(treenumber=i+1) for i in range(params.TREES)]
+
+			# Test using training set
+			start = time.time()
+			results = boostsrl.test(model, train_pos, train_neg, train_facts, trees=params.TREES)
+			scored_results = results.summarize_results()
+			end = time.time()
+			inference_time = end-start
+
 			total_revision_time = total_revision_time + learning_time + inference_time
-            
-			if t_results['CLL'] > best_model_cll:
+
+			if scored_results['CLL'] > best_model_cll:
 				found_better = True
-				best_model_cll = t_results['CLL']
+				best_model_cll = scored_results['CLL']
 				best_model_structured = copy.deepcopy(structured)
 				best_model_results = copy.deepcopy(t_results)
-				utils.save_model_files()
+				utils.save_best_model_files()
 
-			logging.info('Refined model CLL: %s' % t_results['CLL'])
+			logging.info('Refined model CLL: %s' % scored_results['CLL'])
 			logging.info('\n')
 			if found_better == False:
 				break
@@ -219,12 +247,12 @@ class TheoryRevision:
 		utils.delete_file(params.TEST_OUTPUT_FILE)
 
 		logging.info('Total revision time: %s' % total_revision_time)
-		logging.info('Best scored revision CLL: %s' % best_cll)
+		logging.info('Best scored revision CLL: %s' % best_model_cll)
 		logging.info('\n')
 
 		return best_model_results, total_revision_time, inference_time
 
-	def rdnb(self, background, train_pos, train_neg, train_facts, test_pos, test_neg, test_facts, refine=None, transfer=None):
+	def train_and_test(self, background, train_pos, train_neg, train_facts, test_pos, test_neg, test_facts, refine=None, transfer=None):
 		'''
 	        Train RDN-B using transfer learning
 	    '''
@@ -237,7 +265,7 @@ class TheoryRevision:
 
 		logging.info('Model training time {}'.format(learning_time))
 
-		will = ['WILL Produced-Tree #'+str(i+1)+'\n'+('\n'.join(model.get_will_produced_tree(treenumber=i+1))) for i in range(10)]
+		will = ['WILL Produced-Tree #'+str(i+1)+'\n'+('\n'.join(model.get_will_produced_tree(treenumber=i+1))) for i in range(params.TREES)]
 		for w in will:
 			logging.info(w)
 

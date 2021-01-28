@@ -1,8 +1,9 @@
 
 from ekphrasis.classes.segmenter import Segmenter
-from gensim.models import KeyedVectors, FastText
 from experiments import experiments, bk, setups
+from gensim.models.wrappers import FastText
 from gensim.test.utils import get_tmpfile
+from gensim.models import KeyedVectors
 from revision import TheoryRevision
 from datasets.get_datasets import *
 from similarity import Similarity
@@ -36,7 +37,7 @@ transfer = Transfer(seg)
 similarity = Similarity(seg)
 revision = TheoryRevision()
 
-def rdnb(background, train_pos, train_neg, train_facts, test_pos, test_neg, test_facts, refine=None, transfer=None):
+def train_and_test(background, train_pos, train_neg, train_facts, test_pos, test_neg, test_facts, refine=None, transfer=None):
     '''
         Train RDN-B using transfer learning
     '''
@@ -65,11 +66,11 @@ def rdnb(background, train_pos, train_neg, train_facts, test_pos, test_neg, test
 
     return model, results.summarize_results(), learning_time, inference_time
 
-def get_confusion_matrix(to_predicate):
+def get_confusion_matrix(to_predicate, revision=False):
     # Get confusion matrix by reading results from db files created by the Java application
     logging.info('Converting results file to txt')
 
-    if not os.path.exists(params.TEST_OUTPUT):
+    if revision:
         utils.convert_db_to_txt(to_predicate, params.TEST_OUTPUT.replace('test', 'best/test'))
         y_true, y_pred = utils.read_results(params.TEST_OUTPUT.replace('test', 'best/test').format(to_predicate).replace('.db', '.txt'))
     else:
@@ -89,9 +90,14 @@ def get_confusion_matrix(to_predicate):
 
     return {'TP': TP, 'FP': FP, 'TN':TN, 'FN': FN}
 
-def map_and_transfer(embeddingModel, similarityMetric, sources, targets, model, predicate, to_predicate, arity, preds_learned, experiment_title, recursion):
+def map_and_transfer(embeddingModel, similarityMetric, preds_learned, targets, model, predicate, to_predicate, arity, experiment_title, recursion):
+
+    # Build word vectors for source and target predicates
+    sources = utils.build_triples(preds_learned)
+    targets = utils.build_triples(targets)
 
     if(embeddingModel == 'fasttext'):
+
         # FastText Experiment 
 
         # Build word vectors
@@ -111,11 +117,13 @@ def map_and_transfer(embeddingModel, similarityMetric, sources, targets, model, 
         elif(similarityMetric == 'wmd'):
             similarities = similarity.wmd_similarities(sources, targets, model)
         elif(similarityMetric == 'euclidean'):
-            word2vec_sources = transfer.build_word2vec_array(sources, model, method=params.METHOD)
-            word2vec_targets = transfer.build_word2vec_array(targets, model, method=params.METHOD)
+
+            word2vec_sources = transfer.build_word2vec_array(sources, model)
+            word2vec_targets = transfer.build_word2vec_array(targets, model)
 
             similarities = similarity.euclidean_distance(word2vec_sources, word2vec_targets)
         elif(similarityMetric == 'cosine'):
+
             word2vec_sources = transfer.build_word2vec_array(sources, model, method=params.METHOD)
             word2vec_targets = transfer.build_word2vec_array(targets, model, method=params.METHOD)
 
@@ -124,6 +132,21 @@ def map_and_transfer(embeddingModel, similarityMetric, sources, targets, model, 
     # Map source predicates to targets and creates transfer file
     mapping = transfer.map_predicates(preds_learned, similarities, allowSameTargetMap=params.ALLOW_SAME_TARGET_MAP)
     transfer.write_to_file_closest_distance(predicate, to_predicate, arity, mapping, 'experiments/' + experiment_title, recursion=recursion, allowSameTargetMap=params.ALLOW_SAME_TARGET_MAP)
+
+    similarities.to_csv('similarities_{}.csv'.format(similarityMetric))
+    del similarities, preds_learned, mapping
+
+    if(embeddingModel == 'word2vec'):
+        try:
+            del word2vec_sources, word2vec_targets
+        except NameError:
+            pass
+
+    elif(embeddingModel == 'fasttext'):
+        try:
+            del fasttext_sources, fasttext_targets
+        except NameError:
+            pass
 
 def main():
 
@@ -153,7 +176,7 @@ def main():
             logging.info('Loading fasttext model')
             start = time.time()
 
-            loadedModel = fasttext.load_model(params.WIKIPEDIA_FASTTEXT)
+            loadedModel = FastText.load_fasttext_format(params.WIKIPEDIA_FASTTEXT)
 
             end = time.time()
             logging.info('Time to load FastText model: {} seconds'.format(round(end-start, 2)))
@@ -257,11 +280,7 @@ def main():
                 # Create word embeddings and calculate similarities
                 targets = [t.replace('.', '').replace('+', '').replace('-', '') for t in set(bk[target]) if t.split('(')[0] != to_predicate and 'recursion_' not in t]
 
-                # Build word vectors for source and target predicates
-                sources = utils.build_triples(preds_learned)
-                targets = utils.build_triples(targets)
-
-                map_and_transfer(embeddingModel, similarityMetric, sources, targets, loadedModel, predicate, to_predicate, arity, preds_learned, experiment_title, recursion)
+                map_and_transfer(embeddingModel, similarityMetric, preds_learned, targets, loadedModel, predicate, to_predicate, arity, experiment_title, recursion)
 
             # Set number of folds
             n_folds = datasets.get_n_folds(target)
@@ -295,13 +314,15 @@ def main():
                         # Get testing results
                         logging.info('Training using transfer \n')
 
-                        # Learn and test model
-                        model, t_results, learning_time, inference_time = rdnb(background, part_tar_train_pos, part_tar_train_neg, tar_train_facts, tar_test_pos, tar_test_neg, tar_test_facts, params.REFINE_FILENAME, params.TRANSFER_FILENAME)
-                        
-                        utils.show_results(utils.get_results_dict(t_results, learning_time, inference_time))
 
                         if(theoryRevision):
-                            t_results, learning_time, inference_time = revision.apply(model, background, part_tar_train_pos, part_tar_train_neg, tar_train_facts, tar_test_pos, tar_test_neg, tar_test_facts, learning_time, inference_time)
+                            # Learn and test model applying revision theory
+                            t_results, learning_time, inference_time = revision.apply(background, part_tar_train_pos, part_tar_train_neg, tar_train_facts, tar_test_pos, tar_test_neg, tar_test_facts, structured)
+                        else:
+                            # Learn and test model no revision theory
+                            model, t_results, learning_time, inference_time = train_and_test(background, part_tar_train_pos, part_tar_train_neg, tar_train_facts, tar_test_pos, tar_test_neg, tar_test_facts, params.REFINE_FILENAME, params.TRANSFER_FILENAME)
+    
+                            utils.show_results(utils.get_results_dict(t_results, learning_time, inference_time))
 
                         transboostler_experiments[embeddingModel][similarityMetric][amount]['CLL'].append(t_results['CLL'])
                         transboostler_experiments[embeddingModel][similarityMetric][amount]['AUC ROC'].append(t_results['AUC ROC'])
@@ -309,7 +330,7 @@ def main():
                         transboostler_experiments[embeddingModel][similarityMetric][amount]['Learning Time'].append(learning_time)
                         transboostler_experiments[embeddingModel][similarityMetric][amount]['Inference Time'].append(inference_time)
 
-                        cm = get_confusion_matrix(to_predicate)
+                        cm = get_confusion_matrix(to_predicate, revision=theoryRevision)
                         transboostler_confusion_matrix[embeddingModel][similarityMetric][amount]['TP'].append(cm['TP']) 
                         transboostler_confusion_matrix[embeddingModel][similarityMetric][amount]['FP'].append(cm['FP']) 
                         transboostler_confusion_matrix[embeddingModel][similarityMetric][amount]['TN'].append(cm['TN']) 
@@ -326,7 +347,7 @@ def main():
 
                         
                         # Get testing results
-                        model, t_results, learning_time, inference_time = rdnb(background, part_tar_train_pos, part_tar_train_neg, tar_train_facts, tar_train_pos, tar_test_neg, tar_test_facts)
+                        model, t_results, learning_time, inference_time = train_and_test(background, part_tar_train_pos, part_tar_train_neg, tar_train_facts, tar_train_pos, tar_test_neg, tar_test_facts)
 
 
                         # Get target trees

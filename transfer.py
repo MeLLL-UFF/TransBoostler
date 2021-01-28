@@ -90,7 +90,7 @@ class Transfer:
       dict[example[0].rstrip()] = [predicate, example[1:]]
     return dict
 
-  def build_word2vec_array(self, data, model, method='AVG'):
+  def build_word2vec_array(self, data, model, method=None):
     """
         Turn relations into a single array
 
@@ -115,7 +115,9 @@ class Transfer:
           print('Word {} not present in pre-trained model'.format(word.lower().strip()))
           temp.append([0] * params.EMBEDDING_DIMENSION)
     
-      predicate = self.single_array(temp, method)
+      predicate = temp.copy()
+      if(method):
+        predicate = self.single_array(temp, method)
 
       if(len(example) > 2 and example[2] == ''):
         example.remove('')
@@ -135,7 +137,6 @@ class Transfer:
 
       target_mapped, mapping = [], {}
       indexes = similarity.index.tolist()
-      utils.write_to_file(indexes, 'similarities.txt')
       
       for index in tqdm(indexes):
         index = re.split(r',\s*(?![^()]*\))', index)
