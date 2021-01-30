@@ -21,6 +21,7 @@ ALLOW_SAME_TARGET_MAP = False
 # Filenames
 TRANSFER_FILENAME = 'boostsrl/transfer.txt'
 REFINE_FILENAME = 'boostsrl/refine.txt'
+REFINE_REVISION_FILENAME = 'boostsrl/refine-revision.txt'
 WILLTHEORIES_FILENAME = 'boostsrl/train/models/WILLtheories/{}_learnedWILLregressionTrees.txt'
 
 TEST_OUTPUT = 'boostsrl/test/results_{}.db'

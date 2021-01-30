@@ -321,8 +321,9 @@ def main():
                         else:
                             # Learn and test model no revision theory
                             model, t_results, learning_time, inference_time = train_and_test(background, part_tar_train_pos, part_tar_train_neg, tar_train_facts, tar_test_pos, tar_test_neg, tar_test_facts, params.REFINE_FILENAME, params.TRANSFER_FILENAME)
-    
-                            utils.show_results(utils.get_results_dict(t_results, learning_time, inference_time))
+                            del model
+                            
+                        utils.show_results(utils.get_results_dict(t_results, learning_time, inference_time))
 
                         transboostler_experiments[embeddingModel][similarityMetric][amount]['CLL'].append(t_results['CLL'])
                         transboostler_experiments[embeddingModel][similarityMetric][amount]['AUC ROC'].append(t_results['AUC ROC'])
@@ -335,7 +336,7 @@ def main():
                         transboostler_confusion_matrix[embeddingModel][similarityMetric][amount]['FP'].append(cm['FP']) 
                         transboostler_confusion_matrix[embeddingModel][similarityMetric][amount]['TN'].append(cm['TN']) 
                         transboostler_confusion_matrix[embeddingModel][similarityMetric][amount]['FN'].append(cm['FN']) 
-                        del model, cm, t_results, learning_time, inference_time
+                        del cm, t_results, learning_time, inference_time
 
                     if(runRDNB):
 

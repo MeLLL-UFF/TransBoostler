@@ -254,12 +254,28 @@ def get_confusion_matrix(y_true, y_pred):
   return confusion_matrix(y_true, y_pred).ravel()
 
 def show_results(results):
+    """
+     Adds results to logging file.
+
+      Args:
+          results(dict): a dictionary containing results of the metrics used
+    """
     logging.info('Results \n')
     res = ['{} : {} \n'.format(key, results[key]) for key in results]
     for r in res:
         logging.info(r)
 
 def get_results_dict(t_results, learning_time, inference_time):
+    """
+     Returns a dictionary containing all results of metrics used and learning and inference time.
+
+      Args:
+          t_results(dict): results summarized by boostsrl
+          learning_time(float): training time
+          inference_time(float): testing time
+      Returns:
+          dictionary containing all results
+    """
     results = {}
     results['CLL']       = t_results['CLL']
     results['AUC ROC']   = t_results['AUC ROC']
@@ -281,7 +297,7 @@ def delete_folder(folder_name):
   try:
     shutil.rmtree(os.getcwd() + '/' + folder_name)
   except FileNotFoundError as e:
-    print('In utils, delete_folder_file function: ', e)
+    print('In utils, delete_folder function: ', e)
 
 
 def delete_file(filename):

@@ -155,7 +155,7 @@ class datasets:
 
         def read_file(filename):
             with open(os.path.join(__location__, filename)) as data:
-                data = data.readlines()
+                data = data.read().splitlines() 
             return data
 
         train = read_file('folds/{}/fold_{}/train_{}.txt'.format(target,i,mode))

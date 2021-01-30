@@ -201,8 +201,8 @@ class TheoryRevision:
 			logging.info('Refining candidate')
 			logging.info('***************************')
 
-			utils.write_to_file(candidate, params.REFINE_FILENAME)
-			model, t_results, learning_time, inference_time = self.train_and_test(background, train_pos, train_neg, train_facts, test_pos, test_neg, test_facts, refine=params.REFINE_FILENAME)
+			utils.write_to_file(candidate, params.REFINE_REVISION_FILENAME)
+			model, t_results, learning_time, inference_time = self.train_and_test(background, train_pos, train_neg, train_facts, test_pos, test_neg, test_facts, refine=params.REFINE_REVISION_FILENAME)
 
 			structured = []
 			for i in range(params.TREES):
