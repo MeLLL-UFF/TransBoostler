@@ -8,6 +8,8 @@ from tqdm import tqdm
 import utils as utils
 import pandas as pd
 import numpy as np
+import spacy
+import wmd
 
 class Similarity:
 
@@ -124,9 +126,32 @@ class Similarity:
         similarity[key] = model.wmdistance(self.seg.segment(source[0]).split(), self.seg.segment(target[0]).split())
 
     df = pd.DataFrame.from_dict(similarity, orient="index", columns=['similarity'])
-    return df.sort_values(by='similarity', ascending=True)
+    return df.sort_values(by='similarity')
 
-  #def relaxed_wmd_similarities(self, sources, targets, model):
+  def relaxed_wmd_similarities(self, sources, targets, model):
+      # Loads SpaCy's PT model
+      nlp = spacy.load('pt_core_news_md')
+      similarity = {}
+      for source in tqdm(sources):
+        if(len(source) > 2 and source[2] == ''): source.remove('')
+        for target in tqdm(targets):
+
+            if(len(target) > 2 and target[2] == ''): target.remove('')
+
+      	    # Predicates must have the same arity
+            if(len(source[1:]) != len(target[1:])): 
+              continue
+              
+            # Convert the sentences into SpaCy format.
+            sent_1 = nlp(self.seg.segment(source[0]).split())
+            sent_2 = nlp(self.seg.segment(target[0]).split())
+            
+            key = source[0] + '(' + source[1] + ')' + ',' + target[0] + '(' + target[1] + ')'
+            
+            similarity[key] = sent_2.similarity(sent_1)
+
+    df = pd.DataFrame.from_dict(similarity, orient="index", columns=['similarity'])
+    return df.sort_values(by='similarity', ascending=False)
 
 
   def euclidean_distance(self, source, target):
@@ -157,7 +182,7 @@ class Similarity:
         similarity[key] = np.linalg.norm(source[s][0]-target[t][0])
 
     df = pd.DataFrame.from_dict(similarity, orient="index", columns=['similarity'])
-    return df.sort_values(by='similarity', ascending=True)
+    return df.sort_values(by='similarity')
 
 
 #from ekphrasis.classes.segmenter import Segmenter
