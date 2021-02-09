@@ -150,8 +150,8 @@ class Similarity:
             
             similarity[key] = sent_2.similarity(sent_1)
 
-    df = pd.DataFrame.from_dict(similarity, orient="index", columns=['similarity'])
-    return df.sort_values(by='similarity', ascending=False)
+      df = pd.DataFrame.from_dict(similarity, orient="index", columns=['similarity'])
+      return df.sort_values(by='similarity', ascending=False)
 
 
   def euclidean_distance(self, source, target):
