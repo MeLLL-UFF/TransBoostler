@@ -13,7 +13,6 @@ import gensim.downloader as api
 import parameters as params
 import utils as utils
 import numpy as np
-import fasttext
 import random
 import copy
 import time
@@ -111,11 +110,17 @@ def map_and_transfer(embeddingModel, similarityMetric, preds_learned, targets, m
 
         elif(similarityMetric == 'euclidean'):
             similarities = similarity.euclidean_distance(fasttext_sources, fasttext_targets)
-    elif(embeddingModel == 'word2vec'):
-        if(similarityMetric == 'softcosine'):
-            similarities = similarity.soft_cosine_similarities(sources, targets, model)
+
         elif(similarityMetric == 'wmd'):
             similarities = similarity.wmd_similarities(sources, targets, model)
+    elif(embeddingModel == 'word2vec'):
+        
+        if(similarityMetric == 'softcosine'):
+            similarities = similarity.soft_cosine_similarities(sources, targets, model)
+
+        elif(similarityMetric == 'wmd'):
+            similarities = similarity.wmd_similarities(sources, targets, model)
+
         elif(similarityMetric == 'euclidean'):
 
             word2vec_sources = transfer.build_word2vec_array(sources, model)

@@ -210,7 +210,7 @@ class TheoryRevision:
 
 			variances = [model.get_variances(treenumber=i+1) for i in range(params.TREES)]
 
-			# Test using training set
+			# Inference on the training set to catch where it can be improved
 			start = time.time()
 			results = boostsrl.test(model, train_pos, train_neg, train_facts, trees=params.TREES)
 			scored_results = results.summarize_results()

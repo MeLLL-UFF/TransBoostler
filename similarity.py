@@ -57,6 +57,7 @@ class Similarity:
     """
 
     # Tokenize (segment) the predicates into words
+    # wasbornin -> was, born, in
     texts =  [self.seg.segment(source[0]).split() for source in sources]
     texts += [self.seg.segment(target[0]).split() for target in targets]
 
@@ -80,6 +81,11 @@ class Similarity:
             # Convert the sentences into bag-of-words vectors.
             sent_1 = dictionary.doc2bow(self.seg.segment(source[0]).split())
             sent_2 = dictionary.doc2bow(self.seg.segment(target[0]).split())
+            
+            # Adicionando vetor
+            # sent_2 = [(sent_2[0][0], 234565676767)]
+
+            # adicionar concatenação 
 
             key = source[0] + '(' + source[1] + ')' + ',' + target[0] + '(' + target[1] + ')'
             #key = s + '(' + ','.join([chr(65+i) for i in range(len(source[s][1]))]) + ')' + ',' + t + '(' + ','.join([chr(65+i) for i in range(len(target[t][1]))]) + ')'
