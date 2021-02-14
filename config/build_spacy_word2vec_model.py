@@ -6,6 +6,10 @@ import spacy
 import sys
 import os
 
+if os.name == 'posix' and sys.version_info[0] < 3:
+    import subprocess32 as subprocess
+else:
+    import subprocess
 
 def call_process(cmd):
     '''Create a subprocess and wait for it to finish. Error out if errors occur.'''
@@ -23,18 +27,18 @@ def create_word2vec_spacy_file():
     # When download is over, please create a new directory named word2vec inside TransBoostler's and place the model file in it.
 
     directory = os.path.abspath('..')
-    if(not os.path.exists(os.path.exists(os.path.join(directory, '/word2vec/GoogleNews-vectors-negative300.bin')))):
+    if(not os.path.exists(os.path.exists('/'.join([directory, '/word2vec/GoogleNews-vectors-negative300.bin'])))):
         
         #Creates new folder to download Word2Vec pre-trained model
-        os.mkdir(os.path.join(directory, '/word2vec'))
+        os.mkdir('/'.join([directory, '/word2vec']))
         
         raise("Please download Google News pre-trained Word2Vec model and place it inside 'word2vec' directory")
         
     else:
         
-        model = KeyedVectors.load_word2vec_format(os.path.join(directory, '/word2vec/GoogleNews-vectors-negative300.bin'), binary=True)
-        os.mkdir(os.path.join(directory, '/word2vec/spacy'))
-        model.wv.save_word2vec_format(os.path.join(directory,'/word2vec/spacy/googlenews.txt'), binary=False)
+        model = KeyedVectors.load_word2vec_format('/'.join([directory, '/word2vec/GoogleNews-vectors-negative300.bin']), binary=True)
+        os.mkdir('/'.join([directory, '/word2vec/spacy']))
+        model.wv.save_word2vec_format('/'.join([directory, '/word2vec/GoogleNews-vectors-negative300.bin']), binary=False)
         
         call_process('cd ..; python3 -m spacy init vectors en word2vec/spacy/googlenews.txt  word2vec/spacy/ --name en_googlenews.vectors --verbose')
     
@@ -42,3 +46,4 @@ def create_word2vec_spacy_file():
     
     
     
+create_word2vec_spacy_file()

@@ -20,6 +20,7 @@ import sys
 import os
 
 import logging
+utils.delete_file("app.log")
 logging.basicConfig(level=logging.INFO, format="%(message)s", handlers=[logging.FileHandler("app.log"),logging.StreamHandler()])
 
 # segmenter using the word statistics from Wikipedia
@@ -113,6 +114,9 @@ def map_and_transfer(embeddingModel, similarityMetric, preds_learned, targets, m
 
         elif(similarityMetric == 'wmd'):
             similarities = similarity.wmd_similarities(sources, targets, model)
+            
+        elif(similariyMetric == 'relax-wmd'):
+            similarities = similarity.relaxed_wmd_similarities(sources, targets, params.WIKIPEDIA_FASTTEXT_SPACY)
     elif(embeddingModel == 'word2vec'):
         
         if(similarityMetric == 'softcosine'):
@@ -120,6 +124,9 @@ def map_and_transfer(embeddingModel, similarityMetric, preds_learned, targets, m
 
         elif(similarityMetric == 'wmd'):
             similarities = similarity.wmd_similarities(sources, targets, model)
+            
+        elif(similariyMetric == 'relax-wmd'):
+            similarities = similarity.relaxed_wmd_similarities(sources, targets, params.GOOGLE_WORD2VEC_SPACY)
 
         elif(similarityMetric == 'euclidean'):
 

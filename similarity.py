@@ -129,7 +129,7 @@ class Similarity:
     df = pd.DataFrame.from_dict(similarity, orient="index", columns=['similarity'])
     return df.sort_values(by='similarity')
 
-  def relaxed_wmd_similarities(self, sources, targets, model):
+  def relaxed_wmd_similarities(self, sources, targets, modelname):
           """
     	Calculate similarity of embedded arrays
 	    using Relaxed Word Mover's Distance for all possible pairs (source, target)
@@ -137,13 +137,14 @@ class Similarity:
 	    Args:
 	        sources(array): all word embeddings from the source dataset
 	        targets(array): all word embeddings from the target dataset
+	        modelname(str): name of the model to be loaded
 	    Returns:
 	        a pandas dataframe containing every pair (source, target) similarity
 	"""
 
       
       # Loads GoogleNews word2vec model
-      nlp = spacy.blank("en").from_disk("word2vec/spacy")
+      nlp = spacy.blank("en").from_disk(modelname)
       similarity = {}
       for source in tqdm(sources):
         if(len(source) > 2 and source[2] == ''): source.remove('')
