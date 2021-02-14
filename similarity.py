@@ -10,6 +10,7 @@ import pandas as pd
 import numpy as np
 import spacy
 import wmd
+import os
 
 class Similarity:
 
@@ -129,8 +130,20 @@ class Similarity:
     return df.sort_values(by='similarity')
 
   def relaxed_wmd_similarities(self, sources, targets, model):
-      # Loads SpaCy's PT model
-      nlp = spacy.load('pt_core_news_md')
+          """
+    	Calculate similarity of embedded arrays
+	    using Relaxed Word Mover's Distance for all possible pairs (source, target)
+
+	    Args:
+	        sources(array): all word embeddings from the source dataset
+	        targets(array): all word embeddings from the target dataset
+	    Returns:
+	        a pandas dataframe containing every pair (source, target) similarity
+	"""
+
+      
+      # Loads GoogleNews word2vec model
+      nlp = spacy.blank("en").from_disk("word2vec/spacy")
       similarity = {}
       for source in tqdm(sources):
         if(len(source) > 2 and source[2] == ''): source.remove('')
@@ -143,8 +156,8 @@ class Similarity:
               continue
               
             # Convert the sentences into SpaCy format.
-            sent_1 = nlp(self.seg.segment(source[0]).split())
-            sent_2 = nlp(self.seg.segment(target[0]).split())
+            sent_1 = nlp(self.seg.segment(source[0]))
+            sent_2 = nlp(self.seg.segment(target[0]))
             
             key = source[0] + '(' + source[1] + ')' + ',' + target[0] + '(' + target[1] + ')'
             
