@@ -1,10 +1,20 @@
 
 setups = [
-        {'model': 'fasttext', 'similarity_metric': 'wmd', 'revision_theory': True},
+        {'model': 'fasttext', 'similarity_metric': 'softcosine', 'revision_theory': False},
+        {'model': 'fasttext', 'similarity_metric': 'wmd', 'revision_theory': False},
+        {'model': 'fasttext', 'similarity_metric': 'relax-wmd', 'revision_theory': False},
+        {'model': 'fasttext', 'similarity_metric': 'euclidean', 'revision_theory': False},
+        {'model': 'fasttext', 'similarity_metric': 'cosine', 'revision_theory': False},
+        
         {'model': 'word2vec', 'similarity_metric': 'softcosine', 'revision_theory': False},
         {'model': 'word2vec', 'similarity_metric': 'wmd', 'revision_theory': False},
-        {'model': 'word2vec', 'similarity_metric': 'cosine', 'revision_theory': True},
-        {'model': 'word2vec', 'similarity_metric': 'euclidean', 'revision_theory': False}
+        {'model': 'word2vec', 'similarity_metric': 'relax-wmd', 'revision_theory': False},
+        {'model': 'word2vec', 'similarity_metric': 'euclidean', 'revision_theory': False},
+        {'model': 'word2vec', 'similarity_metric': 'cosine', 'revision_theory': False},
+        #{'model': 'word2vec', 'similarity_metric': 'softcosine', 'revision_theory': False},
+        #{'model': 'word2vec', 'similarity_metric': 'wmd', 'revision_theory': False},
+        #{'model': 'word2vec', 'similarity_metric': 'cosine', 'revision_theory': True},
+        #{'model': 'word2vec', 'similarity_metric': 'euclidean', 'revision_theory': False}
         ]
 
 experiments = [
@@ -20,10 +30,10 @@ experiments = [
             {'id': '10', 'source':'nell_finances', 'target':'nell_sports', 'predicate':'companyeconomicsector', 'to_predicate':'teamplayssport', 'arity': 2},
             {'id': '11', 'source':'yeast', 'target':'webkb', 'predicate':'proteinclass', 'to_predicate':'departmentof', 'arity':2},
             {'id': '12', 'source':'webkb', 'target':'yeast', 'predicate':'departmentof', 'to_predicate':'proteinclass', 'arity':2},
-            {'id': '13', 'source': 'yago2s', 'target': 'yeast', 'predicate': 'wasbornin', 'to_predicate': 'proteinclass', 'arity': 2},
-            {'id': '14', 'source': 'yeast', 'target': 'yago2s', 'predicate': 'proteinclass', 'to_predicate': 'wasbornin', 'arity': 2},
-            {'id': '15', 'source': 'yeast', 'target': 'yeast2', 'predicate': 'proteinclass', 'to_predicate': 'gene', 'arity': 2},
-            {'id': '16', 'source': 'yeast', 'target': 'fly', 'predicate': 'proteinclass', 'to_predicate': 'gene', 'arity': 2},
+            #{'id': '13', 'source': 'yago2s', 'target': 'yeast', 'predicate': 'wasbornin', 'to_predicate': 'proteinclass', 'arity': 2},
+            #{'id': '14', 'source': 'yeast', 'target': 'yago2s', 'predicate': 'proteinclass', 'to_predicate': 'wasbornin', 'arity': 2},
+            #{'id': '15', 'source': 'yeast', 'target': 'yeast2', 'predicate': 'proteinclass', 'to_predicate': 'gene', 'arity': 2},
+            #{'id': '16', 'source': 'yeast', 'target': 'fly', 'predicate': 'proteinclass', 'to_predicate': 'gene', 'arity': 2},
             #{'id': '48', 'source':'twitter', 'target':'facebook', 'predicate':'follows', 'to_predicate':'edge', 'arity': 2},
             #{'id': '49', 'source':'imdb', 'target':'facebook', 'predicate':'workedunder', 'to_predicate':'edge','arity': 2},
             #{'id': '50', 'source':'uwcse', 'target':'facebook', 'predicate':'advisedby', 'to_predicate':'edge', 'arity': 2},
@@ -33,8 +43,8 @@ bk = {
       'imdb': ['workedunder(+person,+person).',
               'workedunder(+person,-person).',
               'workedunder(-person,+person).',
-              'recursion_workedunder(+person,`person).',
-              'recursion_workedunder(`person,+person).',
+              #'recursion_workedunder(+person,`person).',
+              #'recursion_workedunder(`person,+person).',
               'female(+person).',
               'actor(+person).',
               'director(+person).',
@@ -95,8 +105,8 @@ bk = {
               'samevenue(+venue,+venue).',
               'samevenue(+venue,-venue).',
               'samevenue(-venue,+venue).',
-              'recursion_samevenue(+venue,`venue).',
-              'recursion_samevenue(`venue,+venue).',
+              #'recursion_samevenue(+venue,`venue).',
+              #'recursion_samevenue(`venue,+venue).',
               'author(+class,+author).',
               'author(+class,-author).',
               'author(-class,+author).',

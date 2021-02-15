@@ -85,13 +85,14 @@ class Similarity:
             sent_1 = dictionary.doc2bow(self.seg.segment(source[0]).split())
             sent_2 = dictionary.doc2bow(self.seg.segment(target[0]).split())
             
+            #TODO:
             # Adicionando vetor
             # sent_2 = [(sent_2[0][0], 234565676767)]
 
             # adicionar concatenação 
 
             key = source[0] + '(' + source[1] + ')' + ',' + target[0] + '(' + target[1] + ')'
-            #key = s + '(' + ','.join([chr(65+i) for i in range(len(source[s][1]))]) + ')' + ',' + t + '(' + ','.join([chr(65+i) for i in range(len(target[t][1]))]) + ')'
+            #key = s + '(' + ','.join([chr(65+i) for i in range(len(source[s][1]))]) + ')' + ',' + t + '(' + ','.join([chr(65+i) for i in range(len(target[t][1]))]) +')'
 
             similarity[key] = softcossim(sent_1, sent_2, similarity_matrix)
 
@@ -130,7 +131,7 @@ class Similarity:
     return df.sort_values(by='similarity')
 
   def relaxed_wmd_similarities(self, sources, targets, modelname):
-          """
+      """
     	Calculate similarity of embedded arrays
 	    using Relaxed Word Mover's Distance for all possible pairs (source, target)
 
@@ -140,7 +141,7 @@ class Similarity:
 	        modelname(str): name of the model to be loaded
 	    Returns:
 	        a pandas dataframe containing every pair (source, target) similarity
-	"""
+      """
 
       
       # Loads GoogleNews word2vec model

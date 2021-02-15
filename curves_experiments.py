@@ -111,15 +111,29 @@ def map_and_transfer(embeddingModel, similarityMetric, preds_learned, targets, m
 
         elif(similarityMetric == 'euclidean'):
             similarities = similarity.euclidean_distance(fasttext_sources, fasttext_targets)
+            
+        elif(similarityMetric == 'softcosine'):
+            similarities = similarity.soft_cosine_similarities(sources, targets, model)
 
         elif(similarityMetric == 'wmd'):
             similarities = similarity.wmd_similarities(sources, targets, model)
             
         elif(similariyMetric == 'relax-wmd'):
             similarities = similarity.relaxed_wmd_similarities(sources, targets, params.WIKIPEDIA_FASTTEXT_SPACY)
+    
     elif(embeddingModel == 'word2vec'):
         
-        if(similarityMetric == 'softcosine'):
+        # Build word vectors
+        word2vec_sources = transfer.build_word2vec_array(sources, model, method=params.METHOD)
+        word2vec_targets = transfer.build_word2vec_array(targets, model, method=params.METHOD)
+        
+        if(similarityMetric == 'cosine'):
+            similarities = similarity.cosine_similarities(word2vec_sources, word2vec_targets)
+        
+        elif(similarityMetric == 'euclidean'):
+            similarities = similarity.euclidean_distance(word2vec_sources, word2vec_targets)
+
+        elif(similarityMetric == 'softcosine'):
             similarities = similarity.soft_cosine_similarities(sources, targets, model)
 
         elif(similarityMetric == 'wmd'):
@@ -128,24 +142,12 @@ def map_and_transfer(embeddingModel, similarityMetric, preds_learned, targets, m
         elif(similariyMetric == 'relax-wmd'):
             similarities = similarity.relaxed_wmd_similarities(sources, targets, params.GOOGLE_WORD2VEC_SPACY)
 
-        elif(similarityMetric == 'euclidean'):
-
-            word2vec_sources = transfer.build_word2vec_array(sources, model)
-            word2vec_targets = transfer.build_word2vec_array(targets, model)
-
-            similarities = similarity.euclidean_distance(word2vec_sources, word2vec_targets)
-        elif(similarityMetric == 'cosine'):
-
-            word2vec_sources = transfer.build_word2vec_array(sources, model, method=params.METHOD)
-            word2vec_targets = transfer.build_word2vec_array(targets, model, method=params.METHOD)
-
-            similarities = similarity.cosine_similarities(word2vec_sources, word2vec_targets)
 
     # Map source predicates to targets and creates transfer file
     mapping = transfer.map_predicates(preds_learned, similarities, allowSameTargetMap=params.ALLOW_SAME_TARGET_MAP)
     transfer.write_to_file_closest_distance(predicate, to_predicate, arity, mapping, 'experiments/' + experiment_title, recursion=recursion, allowSameTargetMap=params.ALLOW_SAME_TARGET_MAP)
 
-    similarities.to_csv('similarities_{}.csv'.format(similarityMetric))
+    similarities.to_csv('experiments/{}/similarities_{}_{}.csv'.format(experiment_title, embeddingModel, similarityMetric), index=False)
     del similarities, preds_learned, mapping
 
     if(embeddingModel == 'word2vec'):
@@ -169,12 +171,15 @@ def main():
     if not os.path.exists('experiments'):
         os.makedirs('experiments')
           
-    for setup in setups:
+    for setup in setups: 
         embeddingModel = setup['model'].lower()
         similarityMetric = setup['similarity_metric'].lower()
         theoryRevision = setup['revision_theory']
 
         logging.info('Starting experiments for {} using {} \n'.format(embeddingModel, similarityMetric))
+        
+        if 'previous' in locals() and previous != embeddingModel:
+            del loadedModel
 
         if(embeddingModel == 'fasttext'):
 
@@ -185,13 +190,14 @@ def main():
             if not os.path.exists(params.WIKIPEDIA_FASTTEXT):
                 raise ValueError("SKIP: You need to download the fasttext wikipedia model")
 
-            logging.info('Loading fasttext model')
-            start = time.time()
 
-            loadedModel = FastText.load_fasttext_format(params.WIKIPEDIA_FASTTEXT)
+            if 'loadedModel' not in locals():
+                logging.info('Loading fasttext model')
+                start = time.time()
+                loadedModel = FastText.load_fasttext_format(params.WIKIPEDIA_FASTTEXT)
 
-            end = time.time()
-            logging.info('Time to load FastText model: {} seconds'.format(round(end-start, 2)))
+                end = time.time()
+                logging.info('Time to load FastText model: {} seconds'.format(round(end-start, 2)))
 
         elif(embeddingModel == 'word2vec'):
 
@@ -202,13 +208,14 @@ def main():
             if not os.path.exists(params.GOOGLE_WORD2VEC):
                 raise ValueError("SKIP: You need to download the google news model")
 
-            logging.info('Loading word2vec model')
-            start = time.time()
 
-            loadedModel = KeyedVectors.load_word2vec_format(params.GOOGLE_WORD2VEC, binary=True, unicode_errors='ignore')
+            if 'loadedModel' not in locals():
+                logging.info('Loading word2vec model')
+                start = time.time()
+                loadedModel = KeyedVectors.load_word2vec_format(params.GOOGLE_WORD2VEC, binary=True, unicode_errors='ignore')
 
-            end = time.time()
-            logging.info('Time to load Word2Vec model: {} seconds'.format(round(end-start, 2)))
+                end = time.time()
+                logging.info('Time to load Word2Vec model: {} seconds'.format(round(end-start, 2)))
         else:
             raise ValueError("SKIP: Embedding models must be 'fasttext' or 'word2vec'")
 
@@ -384,18 +391,34 @@ def main():
                         results = utils.get_results_dict(t_results, learning_time, inference_time)
                         utils.show_results(results)
                         del model, cm, t_results, learning_time, inference_time, results
+                        
+                        previous = setup['model'].lower()
 
     if(runTransBoostler):
+        
+        matrix_filename = os.getcwd() + '/experiments/{}_{}_{}/transboostler_confusion_matrix.json'.format(_id, source, target)
+        folds_filename  = os.getcwd() + '/experiments/{}_{}_{}/transboostler_curves_folds.json'.format(_id, source, target)
+        
+        if(theoryRevision):
+            matrix_filename = matrix_filename.replace('.json', '_revision.json')
+            folds_filename  = folds_filename.replace('.json', '_revision.json')
 
         # Save all results using transfer
-        utils.save_json_file(os.getcwd() + '/experiments/{}_{}_{}/transboostler_confusion_matrix.json'.format(_id, source, target), transboostler_confusion_matrix)
-        utils.save_json_file(os.getcwd() + '/experiments/{}_{}_{}/transboostler_curves_folds.json'.format(_id, source, target), transboostler_experiments)           
+        utils.save_json_file(matrix_filename, transboostler_confusion_matrix)
+        utils.save_json_file(folds_filename, transboostler_experiments)           
 
     if(runRDNB):
         
+        matrix_filename = os.getcwd() + '/experiments/{}_{}_{}/rdnb_curves_folds.json'.format(_id, source, target)
+        folds_filename  = os.getcwd() + '/experiments/{}_{}_{}/rdnb_confusion_matrix.json'.format(_id, source, target)
+        
+        if(theoryRevision):
+            matrix_filename = matrix_filename.replace('.json', '_revision.json')
+            folds_filename  = folds_filename.replace('.json', '_revision.json')
+        
         # Save all CV results
-        utils.save_json_file(os.getcwd() + '/experiments/{}_{}_{}/rdnb_curves_folds.json'.format(_id, source, target), rdnb_folds_results)
-        utils.save_json_file(os.getcwd() + '/experiments/{}_{}_{}/rdnb_confusion_matrix.json'.format(_id, source, target), rdnb_confusion_matrix)
+        utils.save_json_file(matrix_filename, rdnb_folds_results)
+        utils.save_json_file(folds_filename, rdnb_confusion_matrix)
 
 if __name__ == '__main__':
     sys.exit(main())

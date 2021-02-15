@@ -6,12 +6,13 @@ WIKIPEDIA_FASTTEXT = 'fasttext/wiki.en.bin'
 WIKIPEDIA_FASTTEXT_SPACY = 'fasttext/spacy'
 
 EMBEDDING_DIMENSION = 300
-METHOD = 'CONCATENATE'
+#METHOD = 'CONCATENATE'
+METHOD = None
+
 
 # Validation parameters
 N_FOLDS = 3
-AMOUNTS = [0.2]
-#[0.2, 0.4, 0.6, 0.8, 1.0] 
+AMOUNTS = [0.2, 0.4, 0.6, 0.8, 1.0] 
 
 # BoostSRL parameters
 NODESIZE = 2
