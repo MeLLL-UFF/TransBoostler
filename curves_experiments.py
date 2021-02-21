@@ -19,26 +19,12 @@ import time
 import sys
 import os
 
-def load_fasttext():
-    print('loading word embeddings...')
-    embeddings_index = {}
-    f = open('fasttext/wiki.en.vec',encoding='utf-8')
-    for line in f:
-        values = line.strip().rsplit(' ')
-        word = values[0]
-        coefs = np.asarray(values[1:], dtype='float32')
-        embeddings_index[word] = coefs
-    f.close()
-    print('found %s word vectors' % len(embeddings_index))
-    
-    return embeddings_index
-
 import logging
 utils.delete_file("app.log")
 logging.basicConfig(level=logging.INFO, format="%(message)s", handlers=[logging.FileHandler("app.log"),logging.StreamHandler()])
 
 # segmenter using the word statistics from Wikipedia
-#seg = Segmenter(corpus="english")
+seg = Segmenter(corpus="english")
 
 #verbose=True
 source_balanced = 1
@@ -47,8 +33,8 @@ balanced = 1
 runTransBoostler = True
 runRDNB = False
 
-#transfer = Transfer(seg)
-#similarity = Similarity(seg)
+transfer = Transfer(seg)
+similarity = Similarity(seg)
 revision = TheoryRevision()
 
 def train_and_test(background, train_pos, train_neg, train_facts, test_pos, test_neg, test_facts, refine=None, transfer=None):
@@ -189,53 +175,16 @@ def main():
         embeddingModel = setup['model'].lower()
         similarityMetric = setup['similarity_metric'].lower()
         theoryRevision = setup['revision_theory']
-
-        logging.info('Starting experiments for {} using {} \n'.format(embeddingModel, similarityMetric))
         
-        if 'previous' in locals() and previous != embeddingModel:
-            del loadedModel
-
-        if(embeddingModel == 'fasttext'):
-
-            if('fasttext' not in transboostler_experiments):
-                transboostler_experiments['fasttext'] = {}
-                transboostler_confusion_matrix['fasttext'] = {}
-
-            if not os.path.exists(params.WIKIPEDIA_FASTTEXT):
-                raise ValueError("SKIP: You need to download the fasttext wikipedia model")
-
-            if 'loadedModel' not in locals():
-                logging.info('Loading fasttext model')
-                start = time.time()
-                #loadedModel = FastText.load_fasttext_format(params.WIKIPEDIA_FASTTEXT)
-                loadedModel = KeyedVectors.load_word2vec_format(params.WIKIPEDIA_FASTTEXT, binary=False, unicode_errors='ignore')
-
-                end = time.time()
-                logging.info('Time to load FastText model: {} seconds'.format(round(end-start, 2)))
-
-        elif(embeddingModel == 'word2vec'):
-
-            if('word2vec' not in transboostler_experiments):
-                transboostler_experiments['word2vec'] = {}
-                transboostler_confusion_matrix['word2vec'] = {}
-
-            if not os.path.exists(params.GOOGLE_WORD2VEC):
-                raise ValueError("SKIP: You need to download the google news model")
-
-
-            if 'loadedModel' not in locals():
-                logging.info('Loading word2vec model')
-                start = time.time()
-                loadedModel = KeyedVectors.load_word2vec_format(params.GOOGLE_WORD2VEC, binary=True, unicode_errors='ignore')
-
-                end = time.time()
-                logging.info('Time to load Word2Vec model: {} seconds'.format(round(end-start, 2)))
-        else:
-            raise ValueError("SKIP: Embedding models must be 'fasttext' or 'word2vec'")
+        if(embeddingModel not in transboostler_experiments):
+            transboostler_experiments[embeddingModel] = {}
+            transboostler_confusion_matrix[embeddingModel] = {}
 
         transboostler_experiments[embeddingModel][similarityMetric] = {key: {'CLL': [], 'AUC ROC': [], 'AUC PR': [], 'Learning Time': [], 'Inference Time': []} for key in params.AMOUNTS} 
         transboostler_confusion_matrix[embeddingModel][similarityMetric] = {key: {'TP': [], 'FP': [], 'TN': [], 'FN': []} for key in params.AMOUNTS} 
 
+        logging.info('Starting experiments for {} using {} \n'.format(embeddingModel, similarityMetric))
+        
         for experiment in experiments:
 
             experiment_title = experiment['id'] + '_' + experiment['source'] + '_' + experiment['target']
@@ -297,7 +246,8 @@ def main():
                 will = ['WILL Produced-Tree #'+str(i+1)+'\n'+('\n'.join(model.get_will_produced_tree(treenumber=i+1))) for i in range(10)]
                 for w in will:
                     logging.info(w)
-
+                
+                del model
                 
                 # Get the list of predicates from source tree
                 preds, preds_learned = [], []
@@ -313,6 +263,37 @@ def main():
                 # Create word embeddings and calculate similarities
                 targets = [t.replace('.', '').replace('+', '').replace('-', '') for t in set(bk[target]) if t.split('(')[0] != to_predicate and 'recursion_' not in t]
 
+                if 'previous' in locals() and previous != embeddingModel:
+                    del loadedModel
+
+                if(embeddingModel == 'fasttext'):
+                    if not os.path.exists(params.WIKIPEDIA_FASTTEXT): raise ValueError("SKIP: You need to download the fasttext wikipedia model")
+
+                    if 'loadedModel' not in locals():
+                        logging.info('Loading fasttext model')
+                        start = time.time()
+                        #loadedModel = FastText.load_fasttext_format(params.WIKIPEDIA_FASTTEXT)
+                        loadedModel = KeyedVectors.load_word2vec_format(params.WIKIPEDIA_FASTTEXT, binary=False, unicode_errors='ignore')
+
+                        end = time.time()
+                        logging.info('Time to load FastText model: {} seconds'.format(round(end-start, 2)))
+
+                elif(embeddingModel == 'word2vec'):
+
+                    if not os.path.exists(params.GOOGLE_WORD2VEC): raise ValueError("SKIP: You need to download the google news model")
+
+
+                    if 'loadedModel' not in locals():
+                        logging.info('Loading word2vec model')
+                        start = time.time()
+                        loadedModel = KeyedVectors.load_word2vec_format(params.GOOGLE_WORD2VEC, binary=True, unicode_errors='ignore')
+
+                        end = time.time()
+                        logging.info('Time to load Word2Vec model: {} seconds'.format(round(end-start, 2)))
+                else:
+                    raise ValueError("SKIP: Embedding models must be 'fasttext' or 'word2vec'")
+
+                # Maps and transfer using the loaded embedding model
                 map_and_transfer(embeddingModel, similarityMetric, preds_learned, targets, loadedModel, predicate, to_predicate, arity, experiment_title, recursion)
 
             # Set number of folds
