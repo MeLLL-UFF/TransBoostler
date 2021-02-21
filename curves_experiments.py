@@ -1,9 +1,9 @@
 
 from ekphrasis.classes.segmenter import Segmenter
 from experiments import experiments, bk, setups
-from gensim.models.wrappers import FastText
-from gensim.test.utils import get_tmpfile
-from gensim.models import KeyedVectors
+from gensim.models import KeyedVectors, FastText
+#from gensim.models.wrappers import FastText
+from gensim.test.utils import datapath
 from revision import TheoryRevision
 from datasets.get_datasets import *
 from similarity import Similarity
@@ -19,12 +19,26 @@ import time
 import sys
 import os
 
+def load_fasttext():
+    print('loading word embeddings...')
+    embeddings_index = {}
+    f = open('fasttext/wiki.en.vec',encoding='utf-8')
+    for line in f:
+        values = line.strip().rsplit(' ')
+        word = values[0]
+        coefs = np.asarray(values[1:], dtype='float32')
+        embeddings_index[word] = coefs
+    f.close()
+    print('found %s word vectors' % len(embeddings_index))
+    
+    return embeddings_index
+
 import logging
 utils.delete_file("app.log")
 logging.basicConfig(level=logging.INFO, format="%(message)s", handlers=[logging.FileHandler("app.log"),logging.StreamHandler()])
 
 # segmenter using the word statistics from Wikipedia
-seg = Segmenter(corpus="english")
+#seg = Segmenter(corpus="english")
 
 #verbose=True
 source_balanced = 1
@@ -33,8 +47,8 @@ balanced = 1
 runTransBoostler = True
 runRDNB = False
 
-transfer = Transfer(seg)
-similarity = Similarity(seg)
+#transfer = Transfer(seg)
+#similarity = Similarity(seg)
 revision = TheoryRevision()
 
 def train_and_test(background, train_pos, train_neg, train_facts, test_pos, test_neg, test_facts, refine=None, transfer=None):
@@ -190,11 +204,11 @@ def main():
             if not os.path.exists(params.WIKIPEDIA_FASTTEXT):
                 raise ValueError("SKIP: You need to download the fasttext wikipedia model")
 
-
             if 'loadedModel' not in locals():
                 logging.info('Loading fasttext model')
                 start = time.time()
-                loadedModel = FastText.load_fasttext_format(params.WIKIPEDIA_FASTTEXT)
+                #loadedModel = FastText.load_fasttext_format(params.WIKIPEDIA_FASTTEXT)
+                loadedModel = KeyedVectors.load_word2vec_format(params.WIKIPEDIA_FASTTEXT, binary=False, unicode_errors='ignore')
 
                 end = time.time()
                 logging.info('Time to load FastText model: {} seconds'.format(round(end-start, 2)))
