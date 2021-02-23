@@ -118,7 +118,7 @@ def map_and_transfer(embeddingModel, similarityMetric, preds_learned, targets, m
         elif(similarityMetric == 'wmd'):
             similarities = similarity.wmd_similarities(sources, targets, model)
             
-        elif(similariyMetric == 'relax-wmd'):
+        elif(similarityMetric == 'relax-wmd'):
             similarities = similarity.relaxed_wmd_similarities(sources, targets, params.WIKIPEDIA_FASTTEXT_SPACY)
     
     elif(embeddingModel == 'word2vec'):
@@ -139,7 +139,7 @@ def map_and_transfer(embeddingModel, similarityMetric, preds_learned, targets, m
         elif(similarityMetric == 'wmd'):
             similarities = similarity.wmd_similarities(sources, targets, model)
             
-        elif(similariyMetric == 'relax-wmd'):
+        elif(similarityMetric == 'relax-wmd'):
             similarities = similarity.relaxed_wmd_similarities(sources, targets, params.GOOGLE_WORD2VEC_SPACY)
 
 
@@ -178,102 +178,104 @@ def main():
 
     if not os.path.exists('experiments'):
         os.makedirs('experiments')
-          
-    for setup in setups: 
-        embeddingModel = setup['model'].lower()
-        similarityMetric = setup['similarity_metric'].lower()
-        theoryRevision = setup['revision_theory']
         
-        if(embeddingModel not in transboostler_experiments):
-            transboostler_experiments[embeddingModel] = {}
-            transboostler_confusion_matrix[embeddingModel] = {}
-
-        transboostler_experiments[embeddingModel][similarityMetric] = {key: {'CLL': [], 'AUC ROC': [], 'AUC PR': [], 'Learning Time': [], 'Inference Time': []} for key in params.AMOUNTS} 
-        transboostler_confusion_matrix[embeddingModel][similarityMetric] = {key: {'TP': [], 'FP': [], 'TN': [], 'FN': []} for key in params.AMOUNTS} 
-
-        logging.info('Starting experiments for {} using {} \n'.format(embeddingModel, similarityMetric))
+    for experiment in experiments:
         
-        for experiment in experiments:
+        #Clean folders if exist
+        clean_previous_experiments_stuff()
+
+        experiment_title = experiment['id'] + '_' + experiment['source'] + '_' + experiment['target']
+        logging.info('Starting experiment {} \n'.format(experiment_title))
+
+        _id = experiment['id']
+        source = experiment['source']
+        target = experiment['target']
+        predicate = experiment['predicate']
+        to_predicate = experiment['to_predicate']
+        arity = experiment['arity']
+        
+        if target in ['twitter', 'yeast']:
+            recursion = True
+        else:
+            recursion = False
+
+        path = os.getcwd() + '/experiments/' + experiment_title
+        if not os.path.exists(path):
+            os.mkdir(path)
+
+        if(runTransBoostler):
+
+            # Load source dataset
+            src_total_data = datasets.load(source, bk[source], seed=params.SEED)
+            src_data = datasets.load(source, bk[source], target=predicate, balanced=source_balanced, seed=params.SEED)
+
+            # Group and shuffle
+            src_facts = datasets.group_folds(src_data[0])
+            src_pos   = datasets.group_folds(src_data[1])
+            src_neg   = datasets.group_folds(src_data[2])
+                        
+            logging.info('Start learning from source dataset\n')
             
-            #Clean folders if exists
-            clean_previous_experiments_stuff()
-
-            experiment_title = experiment['id'] + '_' + experiment['source'] + '_' + experiment['target']
-            logging.info('Starting experiment {} \n'.format(experiment_title))
-
-            _id = experiment['id']
-            source = experiment['source']
-            target = experiment['target']
-            predicate = experiment['predicate']
-            to_predicate = experiment['to_predicate']
-            arity = experiment['arity']
+            logging.info('Source train facts examples: {}'.format(len(src_facts)))
+            logging.info('Source train pos examples: {}'.format(len(src_pos)))
+            logging.info('Source train neg examples: {}\n'.format(len(src_neg)))
             
-            if target in ['twitter', 'yeast']:
-                recursion = True
-            else:
-                recursion = False
+            start = time.time()
 
-            path = os.getcwd() + '/experiments/' + experiment_title
-            if not os.path.exists(path):
-                os.mkdir(path)
+            # Learning from source dataset
+            background = boostsrl.modes(bk[source], [predicate], useStdLogicVariables=False, maxTreeDepth=params.MAXTREEDEPTH, nodeSize=params.NODESIZE, numOfClauses=params.NUMOFCLAUSES)
+            model = boostsrl.train(background, src_pos, src_neg, src_facts, trees=params.TREES)
+            
+            end = time.time()
 
-            if(runTransBoostler):
+            #TODO: adicionar o tempo corretamente
+            #print('Model training time {}'.format(model.traintime()))
 
-                # Load source dataset
-                src_total_data = datasets.load(source, bk[source], seed=params.SEED)
-                src_data = datasets.load(source, bk[source], target=predicate, balanced=source_balanced, seed=params.SEED)
+            logging.info('Model training time {} \n'.format(end-start))
 
-                # Group and shuffle
-                src_facts = datasets.group_folds(src_data[0])
-                src_pos   = datasets.group_folds(src_data[1])
-                src_neg   = datasets.group_folds(src_data[2])
-                            
-                logging.info('Start learning from source dataset\n')
+            logging.info('Building refine structure \n')
+
+            # Get all learned trees
+            structured = []
+            for i in range(params.TREES):
+                structured.append(model.get_structured_tree(treenumber=i+1).copy())
+            
+            will = ['WILL Produced-Tree #'+str(i+1)+'\n'+('\n'.join(model.get_will_produced_tree(treenumber=i+1))) for i in range(10)]
+            for w in will:
+                logging.info(w)
+            
+            del model
+            
+            # Get the list of predicates from source tree
+            preds, preds_learned = [], []
+            preds = list(set(utils.sweep_tree(structured)))
+            preds_learned = [pred.replace('.', '').replace('+', '').replace('-', '') for pred in bk[source] if pred.split('(')[0] != predicate and pred.split('(')[0] in preds and 'recursion_' not in pred]
+            
+            # Get targets
+            targets = [t.replace('.', '').replace('+', '').replace('-', '') for t in set(bk[target]) if t.split('(')[0] != to_predicate and 'recursion_' not in t]
+
+            # Get all rules learned by RDN-B
+            refine_structure = utils.get_all_rules_from_tree(structured)
+            utils.write_to_file(refine_structure, params.REFINE_FILENAME)
+            
+            for setup in setups: 
+                embeddingModel = setup['model'].lower()
+                similarityMetric = setup['similarity_metric'].lower()
+                theoryRevision = setup['revision_theory']
                 
-                logging.info('Source train facts examples: {}'.format(len(src_facts)))
-                logging.info('Source train pos examples: {}'.format(len(src_pos)))
-                logging.info('Source train neg examples: {}\n'.format(len(src_neg)))
+                utils.delete_file(params.TRANSFER_FILENAME)
                 
-                start = time.time()
+                if(embeddingModel not in transboostler_experiments):
+                    transboostler_experiments[embeddingModel] = {}
+                    transboostler_confusion_matrix[embeddingModel] = {}
 
-                # Learning from source dataset
-                background = boostsrl.modes(bk[source], [predicate], useStdLogicVariables=False, maxTreeDepth=params.MAXTREEDEPTH, nodeSize=params.NODESIZE, numOfClauses=params.NUMOFCLAUSES)
-                model = boostsrl.train(background, src_pos, src_neg, src_facts, trees=params.TREES)
-                
-                end = time.time()
+                transboostler_experiments[embeddingModel][similarityMetric] = {key: {'CLL': [], 'AUC ROC': [], 'AUC PR': [], 'Learning Time': [], 'Inference Time': []} for key in params.AMOUNTS} 
+                transboostler_confusion_matrix[embeddingModel][similarityMetric] = {key: {'TP': [], 'FP': [], 'TN': [], 'FN': []} for key in params.AMOUNTS} 
 
-                #TODO: adicionar o tempo corretamente
-                #print('Model training time {}'.format(model.traintime()))
-
-                logging.info('Model training time {} \n'.format(end-start))
-
-                logging.info('Building refine structure \n')
-
-                # Get all learned trees
-                structured = []
-                for i in range(params.TREES):
-                    structured.append(model.get_structured_tree(treenumber=i+1).copy())
-                
-                will = ['WILL Produced-Tree #'+str(i+1)+'\n'+('\n'.join(model.get_will_produced_tree(treenumber=i+1))) for i in range(10)]
-                for w in will:
-                    logging.info(w)
-                
-                del model
-                
-                # Get the list of predicates from source tree
-                preds, preds_learned = [], []
-                preds = list(set(utils.sweep_tree(structured)))
-                preds_learned = [pred.replace('.', '').replace('+', '').replace('-', '') for pred in bk[source] if pred.split('(')[0] != predicate and pred.split('(')[0] in preds and 'recursion_' not in pred]
-
-                # Get all rules learned by RDN-B
-                refine_structure = utils.get_all_rules_from_tree(structured)
-                utils.write_to_file(refine_structure, params.REFINE_FILENAME)
-                
+                logging.info('Starting experiments for {} using {} \n'.format(embeddingModel, similarityMetric))
+            
                 # Uncomment for Cora predicates if you don't want to train using source
                 #preds_learned = ['author(class,author)', 'venue(class,venue)', 'samebib(class,class)', 'sameauthor(author,author)', 'sametitle(title,title)', 'samevenue(venue,venue)', 'title(class,title)', 'haswordauthor(author,word)', 'harswordtitle(title,word)', 'haswordvenue(venue,word)']
-
-                # Create word embeddings and calculate similarities
-                targets = [t.replace('.', '').replace('+', '').replace('-', '') for t in set(bk[target]) if t.split('(')[0] != to_predicate and 'recursion_' not in t]
 
                 if 'previous' in locals() and previous != embeddingModel:
                     del loadedModel
@@ -305,108 +307,108 @@ def main():
                 else:
                     raise ValueError("SKIP: Embedding models must be 'fasttext' or 'word2vec'")
 
-                # Maps and transfer using the loaded embedding model
+                # Map and transfer using the loaded embedding model
                 map_and_transfer(embeddingModel, similarityMetric, preds_learned, targets, loadedModel, predicate, to_predicate, arity, experiment_title, recursion)
 
-            #preds_learned = ['director(person)', 'actor(person)', 'movie(movie)']
-            #similarities = pd.read_csv('experiments/' + experiment_title + '/similarities_fasttext_softcosine.csv').set_index('Unnamed: 0')
-            #print(similarities)
-            
-            #mapping = transfer.map_predicates(preds_learned, similarities, allowSameTargetMap=params.ALLOW_SAME_TARGET_MAP)
-            #transfer.write_to_file_closest_distance(predicate, to_predicate, arity, mapping, 'experiments/' + experiment_title, recursion=recursion, allowSameTargetMap=params.ALLOW_SAME_TARGET_MAP)
-    
-            # Set number of folds
-            n_folds = datasets.get_n_folds(target)
-
-            for i in range(n_folds):
-                logging.info('\n Starting fold {} of {} folds \n'.format(i+1, n_folds))
-
-                [tar_train_facts, tar_test_facts] =  datasets.load_pre_saved_folds(i+1, target, 'facts')
-                [tar_train_pos, tar_test_pos]     =  datasets.load_pre_saved_folds(i+1, target, 'pos')
-                [tar_train_neg, tar_test_neg]     =  datasets.load_pre_saved_folds(i+1, target, 'neg')
+                #preds_learned = ['director(person)', 'actor(person)', 'movie(movie)']
+                #similarities = pd.read_csv('experiments/' + experiment_title + '/similarities_fasttext_softcosine.csv').set_index('Unnamed: 0')
+                #print(similarities)
                 
-                logging.info('Start transfer learning experiment\n')
+                #mapping = transfer.map_predicates(preds_learned, similarities, allowSameTargetMap=params.ALLOW_SAME_TARGET_MAP)
+                #transfer.write_to_file_closest_distance(predicate, to_predicate, arity, mapping, 'experiments/' + experiment_title, recursion=recursion, allowSameTargetMap=params.ALLOW_SAME_TARGET_MAP)
 
-                logging.info('Target train facts examples: %s' % len(tar_train_facts))
-                logging.info('Target train pos examples: %s' % len(tar_train_pos))
-                logging.info('Target train neg examples: %s\n' % len(tar_train_neg))
-                logging.info('Target test facts examples: %s' % len(tar_test_facts))
-                logging.info('Target test pos examples: %s' % len(tar_test_pos))
-                logging.info('Target test neg examples: %s\n' % len(tar_test_neg))
+                # Set number of folds
+                n_folds = datasets.get_n_folds(target)
 
-                for amount in params.AMOUNTS:
-                    logging.info('Amount of data: ' + str(amount))
-                    part_tar_train_pos = tar_train_pos[:int(amount * len(tar_train_pos))]
-                    part_tar_train_neg = tar_train_neg[:int(amount * len(tar_train_neg))]
+                for i in range(n_folds):
+                    logging.info('\n Starting fold {} of {} folds \n'.format(i+1, n_folds))
 
-                    # Creating background
-                    background = boostsrl.modes(bk[target], [to_predicate], useStdLogicVariables=False, maxTreeDepth=params.MAXTREEDEPTH, nodeSize=params.NODESIZE, numOfClauses=params.NUMOFCLAUSES)
+                    [tar_train_facts, tar_test_facts] =  datasets.load_pre_saved_folds(i+1, target, 'facts')
+                    [tar_train_pos, tar_test_pos]     =  datasets.load_pre_saved_folds(i+1, target, 'pos')
+                    [tar_train_neg, tar_test_neg]     =  datasets.load_pre_saved_folds(i+1, target, 'neg')
+                    
+                    logging.info('Start transfer learning experiment\n')
 
-                    if(runTransBoostler):
+                    logging.info('Target train facts examples: %s' % len(tar_train_facts))
+                    logging.info('Target train pos examples: %s' % len(tar_train_pos))
+                    logging.info('Target train neg examples: %s\n' % len(tar_train_neg))
+                    logging.info('Target test facts examples: %s' % len(tar_test_facts))
+                    logging.info('Target test pos examples: %s' % len(tar_test_pos))
+                    logging.info('Target test neg examples: %s\n' % len(tar_test_neg))
 
-                        # Get testing results
-                        logging.info('Training using transfer \n')
+                    for amount in params.AMOUNTS:
+                        logging.info('Amount of data: ' + str(amount))
+                        part_tar_train_pos = tar_train_pos[:int(amount * len(tar_train_pos))]
+                        part_tar_train_neg = tar_train_neg[:int(amount * len(tar_train_neg))]
+
+                        # Creating background
+                        background = boostsrl.modes(bk[target], [to_predicate], useStdLogicVariables=False, maxTreeDepth=params.MAXTREEDEPTH, nodeSize=params.NODESIZE, numOfClauses=params.NUMOFCLAUSES)
+
+                        if(runTransBoostler):
+
+                            # Get testing results
+                            logging.info('Training using transfer \n')
 
 
-                        if(theoryRevision):
-                            # Learn and test model applying revision theory
-                            t_results, learning_time, inference_time = revision.apply(background, part_tar_train_pos, part_tar_train_neg, tar_train_facts, tar_test_pos, tar_test_neg, tar_test_facts, structured)
-                        else:
-                            # Learn and test model no revision theory
-                            model, t_results, learning_time, inference_time = train_and_test(background, part_tar_train_pos, part_tar_train_neg, tar_train_facts, tar_test_pos, tar_test_neg, tar_test_facts, params.REFINE_FILENAME, params.TRANSFER_FILENAME)
-                            del model
+                            if(theoryRevision):
+                                # Learn and test model applying revision theory
+                                t_results, learning_time, inference_time = revision.apply(background, part_tar_train_pos, part_tar_train_neg, tar_train_facts, tar_test_pos, tar_test_neg, tar_test_facts, structured)
+                            else:
+                                # Learn and test model no revision theory
+                                model, t_results, learning_time, inference_time = train_and_test(background, part_tar_train_pos, part_tar_train_neg, tar_train_facts, tar_test_pos, tar_test_neg, tar_test_facts, params.REFINE_FILENAME, params.TRANSFER_FILENAME)
+                                del model
+                                
+                            utils.show_results(utils.get_results_dict(t_results, learning_time, inference_time))
+
+                            transboostler_experiments[embeddingModel][similarityMetric][amount]['CLL'].append(t_results['CLL'])
+                            transboostler_experiments[embeddingModel][similarityMetric][amount]['AUC ROC'].append(t_results['AUC ROC'])
+                            transboostler_experiments[embeddingModel][similarityMetric][amount]['AUC PR'].append(t_results['AUC PR'])
+                            transboostler_experiments[embeddingModel][similarityMetric][amount]['Learning Time'].append(learning_time)
+                            transboostler_experiments[embeddingModel][similarityMetric][amount]['Inference Time'].append(inference_time)
+
+                            cm = get_confusion_matrix(to_predicate, revision=theoryRevision)
+                            transboostler_confusion_matrix[embeddingModel][similarityMetric][amount]['TP'].append(cm['TP']) 
+                            transboostler_confusion_matrix[embeddingModel][similarityMetric][amount]['FP'].append(cm['FP']) 
+                            transboostler_confusion_matrix[embeddingModel][similarityMetric][amount]['TN'].append(cm['TN']) 
+                            transboostler_confusion_matrix[embeddingModel][similarityMetric][amount]['FN'].append(cm['FN']) 
+                            del cm, t_results, learning_time, inference_time
+
+                        if(runRDNB):
+
+                            # Dictionary to keep amounts values
+                            RDNB_results = {key: {'CLL': [], 'AUC ROC': [], 'AUC PR': [], 'Learning Time': [], 'Inference Time': []} for key in params.AMOUNTS}
+                            RDNB_confusion_matrix = {key: {'TP': [], 'FP': [], 'TN': [], 'FN': []} for key in params.AMOUNTS}
+
+                            logging.info('Starting to learn from scratch')
+
                             
-                        utils.show_results(utils.get_results_dict(t_results, learning_time, inference_time))
-
-                        transboostler_experiments[embeddingModel][similarityMetric][amount]['CLL'].append(t_results['CLL'])
-                        transboostler_experiments[embeddingModel][similarityMetric][amount]['AUC ROC'].append(t_results['AUC ROC'])
-                        transboostler_experiments[embeddingModel][similarityMetric][amount]['AUC PR'].append(t_results['AUC PR'])
-                        transboostler_experiments[embeddingModel][similarityMetric][amount]['Learning Time'].append(learning_time)
-                        transboostler_experiments[embeddingModel][similarityMetric][amount]['Inference Time'].append(inference_time)
-
-                        cm = get_confusion_matrix(to_predicate, revision=theoryRevision)
-                        transboostler_confusion_matrix[embeddingModel][similarityMetric][amount]['TP'].append(cm['TP']) 
-                        transboostler_confusion_matrix[embeddingModel][similarityMetric][amount]['FP'].append(cm['FP']) 
-                        transboostler_confusion_matrix[embeddingModel][similarityMetric][amount]['TN'].append(cm['TN']) 
-                        transboostler_confusion_matrix[embeddingModel][similarityMetric][amount]['FN'].append(cm['FN']) 
-                        del cm, t_results, learning_time, inference_time
-
-                    if(runRDNB):
-
-                        # Dictionary to keep amounts values
-                        RDNB_results = {key: {'CLL': [], 'AUC ROC': [], 'AUC PR': [], 'Learning Time': [], 'Inference Time': []} for key in params.AMOUNTS}
-                        RDNB_confusion_matrix = {key: {'TP': [], 'FP': [], 'TN': [], 'FN': []} for key in params.AMOUNTS}
-
-                        logging.info('Starting to learn from scratch')
-
-                        
-                        # Get testing results
-                        model, t_results, learning_time, inference_time = train_and_test(background, part_tar_train_pos, part_tar_train_neg, tar_train_facts, tar_train_pos, tar_test_neg, tar_test_facts)
+                            # Get testing results
+                            model, t_results, learning_time, inference_time = train_and_test(background, part_tar_train_pos, part_tar_train_neg, tar_train_facts, tar_train_pos, tar_test_neg, tar_test_facts)
 
 
-                        # Get target trees
-                        structured = []
-                        for i in range(params.TREES):
-                            structured.append(model.get_structured_tree(treenumber=i+1).copy())
+                            # Get target trees
+                            structured = []
+                            for i in range(params.TREES):
+                                structured.append(model.get_structured_tree(treenumber=i+1).copy())
 
-                        RDNB_results[amount]['CLL'].append(t_results['CLL'])
-                        RDNB_results[amount]['AUC ROC'].append(t_results['AUC ROC'])
-                        RDNB_results[amount]['AUC PR'].append(t_results['AUC PR'])
-                        RDNB_results[amount]['Learning Time'].append(t_results['Learning Time'])
-                        RDNB_results[amount]['Learning Time'].append(t_results['Inference Time'])
+                            RDNB_results[amount]['CLL'].append(t_results['CLL'])
+                            RDNB_results[amount]['AUC ROC'].append(t_results['AUC ROC'])
+                            RDNB_results[amount]['AUC PR'].append(t_results['AUC PR'])
+                            RDNB_results[amount]['Learning Time'].append(t_results['Learning Time'])
+                            RDNB_results[amount]['Learning Time'].append(t_results['Inference Time'])
 
-                        cm = get_confusion_matrix(to_predicate)
-                        RDNB_confusion_matrix[amount]['TP'].append(cm['TP'])
-                        RDNB_confusion_matrix[amount]['FP'].append(cm['FP'])
-                        RDNB_confusion_matrix[amount]['TN'].append(cm['TN'])
-                        RDNB_confusion_matrix[amount]['FN'].append(cm['FN'])
+                            cm = get_confusion_matrix(to_predicate)
+                            RDNB_confusion_matrix[amount]['TP'].append(cm['TP'])
+                            RDNB_confusion_matrix[amount]['FP'].append(cm['FP'])
+                            RDNB_confusion_matrix[amount]['TN'].append(cm['TN'])
+                            RDNB_confusion_matrix[amount]['FN'].append(cm['FN'])
 
-                        results = {}
-                        results = utils.get_results_dict(t_results, learning_time, inference_time)
-                        utils.show_results(results)
-                        del model, cm, t_results, learning_time, inference_time, results
-                        
-                        previous = setup['model'].lower()
+                            results = {}
+                            results = utils.get_results_dict(t_results, learning_time, inference_time)
+                            utils.show_results(results)
+                            del model, cm, t_results, learning_time, inference_time, results
+                                
+                            previous = setup['model'].lower()
 
     if(runTransBoostler):
         
