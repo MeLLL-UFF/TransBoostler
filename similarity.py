@@ -199,7 +199,7 @@ class Similarity:
         if(len(source[s][0]) != len(target[t][0])):
           source[s][0], target[t][0] = utils.fill_dimension(source[s][0], target[t][0], params.EMBEDDING_DIMENSION)
 
-        similarity[key] = np.linalg.norm(source[s][0]-target[t][0])
+        similarity[key] = np.linalg.norm([s_i - t_i for s_i, t_i in zip(source[s][0], target[t][0])])
 
     df = pd.DataFrame.from_dict(similarity, orient="index", columns=['similarity'])
     return df.sort_values(by='similarity')
