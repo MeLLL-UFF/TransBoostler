@@ -2,6 +2,7 @@
 from gensim.similarities import SparseTermSimilarityMatrix
 from gensim.models import WordEmbeddingSimilarityIndex
 from gensim.matutils import softcossim
+from scipy.spatial import distance
 import parameters as params
 from gensim import corpora
 from scipy import spatial
@@ -199,7 +200,7 @@ class Similarity:
         if(len(source[s][0]) != len(target[t][0])):
           source[s][0], target[t][0] = utils.fill_dimension(source[s][0], target[t][0], params.EMBEDDING_DIMENSION)
 
-        similarity[key] = np.linalg.norm([s_i - t_i for s_i, t_i in zip(source[s][0], target[t][0])])
+        similarity[key] = distance.euclidean(source[s][0], target[t][0])
 
     df = pd.DataFrame.from_dict(similarity, orient="index", columns=['similarity'])
     return df.sort_values(by='similarity')
