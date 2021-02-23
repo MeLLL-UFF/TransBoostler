@@ -147,7 +147,7 @@ def map_and_transfer(embeddingModel, similarityMetric, preds_learned, targets, m
     mapping = transfer.map_predicates(preds_learned, similarities, allowSameTargetMap=params.ALLOW_SAME_TARGET_MAP)
     transfer.write_to_file_closest_distance(predicate, to_predicate, arity, mapping, 'experiments/' + experiment_title, recursion=recursion, allowSameTargetMap=params.ALLOW_SAME_TARGET_MAP)
 
-    similarities.to_csv('experiments/{}/similarities_{}_{}.csv'.format(experiment_title, embeddingModel, similarityMetric), index=False)
+    similarities.to_csv('experiments/{}/similarities_{}_{}.csv'.format(experiment_title, embeddingModel, similarityMetric))
     del similarities, preds_learned, mapping
 
     if(embeddingModel == 'word2vec'):
@@ -258,6 +258,7 @@ def main():
                 refine_structure = utils.get_all_rules_from_tree(structured)
                 utils.write_to_file(refine_structure, params.REFINE_FILENAME)
                 
+                # Uncomment for Cora predicates if you don't want to train using source
                 #preds_learned = ['author(class,author)', 'venue(class,venue)', 'samebib(class,class)', 'sameauthor(author,author)', 'sametitle(title,title)', 'samevenue(venue,venue)', 'title(class,title)', 'haswordauthor(author,word)', 'harswordtitle(title,word)', 'haswordvenue(venue,word)']
 
                 # Create word embeddings and calculate similarities
@@ -296,6 +297,13 @@ def main():
                 # Maps and transfer using the loaded embedding model
                 map_and_transfer(embeddingModel, similarityMetric, preds_learned, targets, loadedModel, predicate, to_predicate, arity, experiment_title, recursion)
 
+            #preds_learned = ['director(person)', 'actor(person)', 'movie(movie)']
+            #similarities = pd.read_csv('experiments/' + experiment_title + '/similarities_fasttext_softcosine.csv').set_index('Unnamed: 0')
+            #print(similarities)
+            
+            #mapping = transfer.map_predicates(preds_learned, similarities, allowSameTargetMap=params.ALLOW_SAME_TARGET_MAP)
+            #transfer.write_to_file_closest_distance(predicate, to_predicate, arity, mapping, 'experiments/' + experiment_title, recursion=recursion, allowSameTargetMap=params.ALLOW_SAME_TARGET_MAP)
+    
             # Set number of folds
             n_folds = datasets.get_n_folds(target)
 

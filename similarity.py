@@ -1,4 +1,5 @@
 
+from gensim.similarities import SparseTermSimilarityMatrix
 from gensim.models import WordEmbeddingSimilarityIndex
 from gensim.matutils import softcossim
 import parameters as params
@@ -42,7 +43,7 @@ class Similarity:
         if(source[s][0].shape[0] != target[t][0].shape[0]):
           source[s][0], target[t][0] = utils.fill_dimension(source[s][0], target[t][0], params.EMBEDDING_DIMENSION)
 
-        similarity[key] = 1 - spatial.distance.cosine(source[s][0], target[t][0])
+        similarity[key] = spatial.distance.cosine(source[s][0], target[t][0])
 
     df = pd.DataFrame.from_dict(similarity, orient="index", columns=['similarity'])
     return df.sort_values(by='similarity', ascending=False)
@@ -65,10 +66,13 @@ class Similarity:
     texts += [self.seg.segment(target[0]).split() for target in targets]
 
     # Create dictionary
-    dictionary = corpora.Dictionary(texts)
+    #dictionary = corpora.Dictionary(texts)
 
     # Prepare the similarity matrix
-    similarity_matrix = model.similarity_matrix(dictionary, tfidf=None)
+    #similarity_matrix = model.similarity_matrix(dictionary, tfidf=None)
+
+    # Get word vectors
+    word_vectors = model.wv
 
     similarity = {}
     for source in tqdm(sources):
@@ -82,8 +86,8 @@ class Similarity:
               continue
 
             # Convert the sentences into bag-of-words vectors.
-            sent_1 = dictionary.doc2bow(self.seg.segment(source[0]).split())
-            sent_2 = dictionary.doc2bow(self.seg.segment(target[0]).split())
+            #sent_1 = dictionary.doc2bow(self.seg.segment(source[0]).split())
+            #sent_2 = dictionary.doc2bow(self.seg.segment(target[0]).split())
             
             #TODO:
             # Adicionando vetor
@@ -94,7 +98,8 @@ class Similarity:
             key = source[0] + '(' + source[1] + ')' + ',' + target[0] + '(' + target[1] + ')'
             #key = s + '(' + ','.join([chr(65+i) for i in range(len(source[s][1]))]) + ')' + ',' + t + '(' + ','.join([chr(65+i) for i in range(len(target[t][1]))]) +')'
 
-            similarity[key] = softcossim(sent_1, sent_2, similarity_matrix)
+            #similarity[key] = softcossim(sent_1, sent_2, similarity_matrix)
+            similarity[key] = word_vectors.n_similarity(self.seg.segment(source[0]).split(), self.seg.segment(target[0]).split())
 
     df = pd.DataFrame.from_dict(similarity, orient="index", columns=['similarity'])
     return df.sort_values(by='similarity', ascending=False)
