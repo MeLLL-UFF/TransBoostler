@@ -40,6 +40,10 @@ BACKGROUND_FILE = 'boostsrl/background.txt'
 MAX_REVISION_ITERATIONS = 1
 
 #Folders
+TRAIN_FOLDER = 'boostsrl/train'
+TEST_FOLDER = 'boostsrl/test'
+BEST_MODEL_FOLDER = 'boostsrl/best'
+
 TRAIN_FOLDER_FILES = 'boostsrl/train/*'
 TEST_FOLDER_FILES = 'boostsrl/test/*'
 BEST_MODEL_FOLDER_FILES = 'boostsrl/best/*'

@@ -162,6 +162,14 @@ def map_and_transfer(embeddingModel, similarityMetric, preds_learned, targets, m
         except NameError:
             pass
 
+def clean_previous_experiments_stuff():
+    logging.info('Cleaning previous experiments mess')
+    utils.delete_file(params.TRANSFER_FILENAME)
+    utils.delete_file(params.REFINE_FILENAME)
+    utils.delete_folder(params.TRAIN_FOLDER)
+    utils.delete_folder(params.TEST_FOLDER)
+    utils.delete_folder(params.BEST_MODEL_FOLDER)
+
 def main():
 
     # Dictionaries to keep all experiments results
@@ -186,6 +194,9 @@ def main():
         logging.info('Starting experiments for {} using {} \n'.format(embeddingModel, similarityMetric))
         
         for experiment in experiments:
+            
+            #Clean folders if exists
+            clean_previous_experiments_stuff()
 
             experiment_title = experiment['id'] + '_' + experiment['source'] + '_' + experiment['target']
             logging.info('Starting experiment {} \n'.format(experiment_title))
