@@ -1,11 +1,7 @@
 
-from gensim.similarities import SparseTermSimilarityMatrix
-from gensim.models import WordEmbeddingSimilarityIndex
-from gensim.matutils import softcossim
+from gensim import matutils, corpora
 from scipy.spatial import distance
 import parameters as params
-from gensim import corpora
-from scipy import spatial
 from tqdm import tqdm
 import utils as utils
 import pandas as pd
@@ -41,13 +37,15 @@ class Similarity:
 
         key = s + '(' + ','.join(source[s][1]) + ')' + ',' + t + '(' + ','.join(target[t][1]) + ')'
         #key = s + '(' + ','.join([chr(65+i) for i in range(len(source[s][1]))]) + ')' + ',' + t + '(' + ','.join([chr(65+i) for i in range(len(target[t][1]))]) + ')'
-        if(source[s][0].shape[0] != target[t][0].shape[0]):
-          source[s][0], target[t][0] = utils.fill_dimension(source[s][0], target[t][0], params.EMBEDDING_DIMENSION)
+        if(len(source[s][0]) != len(target[t][0])):
+          source[s][0], target[t][0] = utils.set_to_same_size(source[s][0], target[t][0], params.EMBEDDING_DIMENSION)
+          
 
-        similarity[key] = spatial.distance.cosine(source[s][0], target[t][0])
+        # This function corresponds to 1 - distance as presented at https://docs.scipy.org/doc/scipy/reference/generated/scipy.spatial.distance.cosine.html
+        similarity[key] = distance.cosine(source[s][0], target[t][0])
 
     df = pd.DataFrame.from_dict(similarity, orient="index", columns=['similarity'])
-    return df.sort_values(by='similarity', ascending=False)
+    return df.sort_values(by='similarity')
 
   def soft_cosine_similarities(self, sources, targets, model):
     """
@@ -60,18 +58,7 @@ class Similarity:
        Returns:
             a pandas dataframe containing every pair (source, target) similarity
     """
-
-    # Tokenize (segment) the predicates into words
-    # wasbornin -> was, born, in
-    texts =  [self.seg.segment(source[0]).split() for source in sources]
-    texts += [self.seg.segment(target[0]).split() for target in targets]
-
-    # Create dictionary
-    #dictionary = corpora.Dictionary(texts)
-
-    # Prepare the similarity matrix
-    #similarity_matrix = model.similarity_matrix(dictionary, tfidf=None)
-
+    
     # Get word vectors
     word_vectors = model.wv
 
@@ -86,21 +73,28 @@ class Similarity:
             if(len(source[1:]) != len(target[1:])): 
               continue
 
-            # Convert the sentences into bag-of-words vectors.
-            #sent_1 = dictionary.doc2bow(self.seg.segment(source[0]).split())
-            #sent_2 = dictionary.doc2bow(self.seg.segment(target[0]).split())
-            
-            #TODO:
-            # Adicionando vetor
-            # sent_2 = [(sent_2[0][0], 234565676767)]
-
-            # adicionar concatenação 
-
             key = source[0] + '(' + source[1] + ')' + ',' + target[0] + '(' + target[1] + ')'
             #key = s + '(' + ','.join([chr(65+i) for i in range(len(source[s][1]))]) + ')' + ',' + t + '(' + ','.join([chr(65+i) for i in range(len(target[t][1]))]) +')'
 
-            #similarity[key] = softcossim(sent_1, sent_2, similarity_matrix)
-            similarity[key] = word_vectors.n_similarity(self.seg.segment(source[0]).split(), self.seg.segment(target[0]).split())
+            # Tokenize (segment) the predicates into words
+            # wasbornin -> was, born, in
+            source_segmented = self.seg.segment(source[0]).split()
+            target_segmented = self.seg.segment(target[0]).split()
+
+            if(params.METHOD):
+                
+              # Calculate similarity using single vectors
+              sent_1 = [model.wv[word] for word in source_segmented]
+              sent_2 = [model.wv[word] for word in target_segmented]
+            
+              if(len(sent_1) != len(sent_2)):
+                  sent_1, sent_2 = utils.add_dimension(sent_1, sent_2, params.EMBEDDING_DIMENSION)
+                  
+              sent_1, sent_2 = utils.single_array(sent_1, params.METHOD), utils.single_array(sent_2, params.METHOD)
+                  
+              similarity[key] = np.dot(matutils.unitvec(np.array(sent_1)), matutils.unitvec(np.array(sent_2)))
+            else:
+              similarity[key] = word_vectors.n_similarity(source_segmented, target_segmented)
 
     df = pd.DataFrame.from_dict(similarity, orient="index", columns=['similarity'])
     return df.sort_values(by='similarity', ascending=False)
@@ -204,38 +198,3 @@ class Similarity:
 
     df = pd.DataFrame.from_dict(similarity, orient="index", columns=['similarity'])
     return df.sort_values(by='similarity')
-
-
-#from ekphrasis.classes.segmenter import Segmenter
-#from gensim.models import KeyedVectors, FastText
-
-#from gensim.corpora import Dictionary
-#from gensim.models import Word2Vec, WordEmbeddingSimilarityIndex
-#from gensim.similarities import SoftCosineSimilarity, SparseTermSimilarityMatrix
-
-#model = KeyedVectors.load_word2vec_format('word2vec/GoogleNews-vectors-negative300.bin', binary=True)
-
-# segmenter using the word statistics from Wikipedia
-#seg = Segmenter(corpus="english")
-
-#sources = [['advisedby', 'a', 'b']]
-#targets = [['workedunder', 'a', 'b'], ['movie', 'a', 'b']]
-
-# Tokenize(segment) the predicates into words
-#texts =  [[word for word in seg.segment(source[0]).split()] for source in sources]
-#texts += [[word for word in seg.segment(target[0]).split()] for target in targets]
-
-#termsim_index = WordEmbeddingSimilarityIndex(model.wv)
-#dictionary = Dictionary(texts)
-#bow_corpus = [dictionary.doc2bow(document) for document in texts]
-#similarity_matrix = SparseTermSimilarityMatrix(termsim_index, dictionary)  # construct similarity matrix
-#docsim_index = SoftCosineSimilarity(bow_corpus, similarity_matrix, num_best=10)
-
-#print(docsim_index[dictionary.doc2bow(['advised', 'by'])])
-
-
-#print(seg.segment(sources[0][0]), seg.segment(targets[0][0]))
-
-#sim = Similarity(seg)
-#df = sim.softcossim(sources, targets, model)
-#print(df)
