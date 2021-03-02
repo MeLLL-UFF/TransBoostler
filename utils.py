@@ -168,11 +168,11 @@ def fill_dimension(source, target, dimension):
           dimension(int): size of dimension of embedding vector
   """
 
-  if(source.shape[0] > target.shape[0]):
-    zeros = np.zeros(source.shape[0] - target.shape[0])
+  if(len(source) > len(target)):
+    zeros = np.zeros(len(source) - len(target))
     return source, np.append(target, zeros)
-  elif(source.shape[0] < target.shape[0]):
-    zeros = np.zeros(target.shape[0] - source.shape[0])
+  elif(len(source) < len(target)):
+    zeros = np.zeros(len(target) - len(source))
     return np.append(source, zeros), target
   else:
     print("Something went wrong while filling dimensions") 
@@ -193,9 +193,29 @@ def fill_missing_dimensions(source, target, dimension):
     return source, temp
   elif(len(target) > len(source)):
     temp = [[0]* dimension] * len(target)
-    for i in range(len(target)):
+    for i in range(len(source)):
       temp[i] = source[i].copy()
     return temp, target
+  else:
+    print("Something went wrong while fixing space of word vector")
+
+def add_dimension(source, target, dimension):
+  """
+     Add zero arrays so source and target have the same dimension
+
+     Args:
+          source(list): source embedding vector
+          target(str): target embedding vector
+          dimension(int): size of dimension of embedding vector
+  """
+  if(len(source) > len(target)):
+    temp = [0]* dimension
+    target.append(temp)
+    return source, target
+  elif(len(target) > len(source)):
+    temp = [0]* dimension
+    source.append(temp)
+    return source, target
   else:
     print("Something went wrong while fixing space of word vector")
 
@@ -297,7 +317,7 @@ def delete_folder(folder_name):
   try:
     shutil.rmtree(os.getcwd() + '/' + folder_name)
   except FileNotFoundError as e:
-    print('In utils, delete_folder function: ', e)
+    pass
 
 
 def delete_file(filename):
@@ -310,7 +330,7 @@ def delete_file(filename):
   try:
     os.remove(os.getcwd() + '/' + filename)
   except FileNotFoundError as e:
-    print('In utils, delete_file function: ', e)
+    pass
 
 def save_json_file(filename, data):
   """
