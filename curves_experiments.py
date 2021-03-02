@@ -1,4 +1,8 @@
 
+#Logging configuration
+import logging
+logging.basicConfig(filename='app.log', level=logging.INFO, format='%(asctime)s %(message)s')
+
 from ekphrasis.classes.segmenter import Segmenter
 from experiments import experiments, bk, setups
 from gensim.models import KeyedVectors, FastText
@@ -19,9 +23,8 @@ import time
 import sys
 import os
 
-import logging
-utils.delete_file("app.log")
-logging.basicConfig(level=logging.INFO, format="%(message)s", handlers=[logging.FileHandler("app.log"),logging.StreamHandler()])
+
+
 
 # segmenter using the word statistics from Wikipedia
 seg = Segmenter(corpus="english")
@@ -124,8 +127,9 @@ def map_and_transfer(embeddingModel, similarityMetric, preds_learned, targets, m
     elif(embeddingModel == 'word2vec'):
         
         # Build word vectors
-        word2vec_sources = transfer.build_word2vec_array(sources, model, method=params.METHOD)
-        word2vec_targets = transfer.build_word2vec_array(targets, model, method=params.METHOD)
+        word2vec_sources = transfer.build_word2vec_array(sources, model)
+        word2vec_targets = transfer.build_word2vec_array(targets, model)
+        
         
         if(similarityMetric == 'cosine'):
             similarities = similarity.cosine_similarities(word2vec_sources, word2vec_targets)
@@ -410,31 +414,31 @@ def main():
                                 
                             previous = setup['model'].lower()
 
-    if(runTransBoostler):
-        
-        matrix_filename = os.getcwd() + '/experiments/{}_{}_{}/transboostler_confusion_matrix.json'.format(_id, source, target)
-        folds_filename  = os.getcwd() + '/experiments/{}_{}_{}/transboostler_curves_folds.json'.format(_id, source, target)
-        
-        if(theoryRevision):
-            matrix_filename = matrix_filename.replace('.json', '_revision.json')
-            folds_filename  = folds_filename.replace('.json', '_revision.json')
+            if(runTransBoostler):
+                
+                matrix_filename = os.getcwd() + '/experiments/{}_{}_{}/transboostler_confusion_matrix.json'.format(_id, source, target)
+                folds_filename  = os.getcwd() + '/experiments/{}_{}_{}/transboostler_curves_folds.json'.format(_id, source, target)
+                
+                if(theoryRevision):
+                    matrix_filename = matrix_filename.replace('.json', '_revision.json')
+                    folds_filename  = folds_filename.replace('.json', '_revision.json')
 
-        # Save all results using transfer
-        utils.save_json_file(matrix_filename, transboostler_confusion_matrix)
-        utils.save_json_file(folds_filename, transboostler_experiments)           
+                # Save all results using transfer
+                utils.save_json_file(matrix_filename, transboostler_confusion_matrix)
+                utils.save_json_file(folds_filename, transboostler_experiments)           
 
-    if(runRDNB):
-        
-        matrix_filename = os.getcwd() + '/experiments/{}_{}_{}/rdnb_curves_folds.json'.format(_id, source, target)
-        folds_filename  = os.getcwd() + '/experiments/{}_{}_{}/rdnb_confusion_matrix.json'.format(_id, source, target)
-        
-        if(theoryRevision):
-            matrix_filename = matrix_filename.replace('.json', '_revision.json')
-            folds_filename  = folds_filename.replace('.json', '_revision.json')
-        
-        # Save all CV results
-        utils.save_json_file(matrix_filename, rdnb_folds_results)
-        utils.save_json_file(folds_filename, rdnb_confusion_matrix)
+            if(runRDNB):
+                
+                matrix_filename = os.getcwd() + '/experiments/{}_{}_{}/rdnb_curves_folds.json'.format(_id, source, target)
+                folds_filename  = os.getcwd() + '/experiments/{}_{}_{}/rdnb_confusion_matrix.json'.format(_id, source, target)
+                
+                if(theoryRevision):
+                    matrix_filename = matrix_filename.replace('.json', '_revision.json')
+                    folds_filename  = folds_filename.replace('.json', '_revision.json')
+                
+                # Save all CV results
+                utils.save_json_file(matrix_filename, rdnb_folds_results)
+                utils.save_json_file(folds_filename, rdnb_confusion_matrix)
 
 if __name__ == '__main__':
     sys.exit(main())
