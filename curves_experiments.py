@@ -1,5 +1,4 @@
 
-#Logging configuration
 import logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s %(message)s', handlers=[logging.FileHandler('app.log','w'),logging.StreamHandler()])
 
@@ -23,15 +22,15 @@ import time
 import sys
 import os
 
-# segmenter using the word statistics from Wikipedia
-seg = Segmenter(corpus="english")
-
 #verbose=True
 source_balanced = 1
 balanced = 1
 
 runTransBoostler = True
 runRDNB = False
+
+# Segmenter using the word statistics from Wikipedia
+seg = Segmenter(corpus="english")
 
 transfer = Transfer(seg)
 similarity = Similarity(seg)
@@ -100,16 +99,23 @@ def map_and_transfer(embeddingModel, similarityMetric, preds_learned, targets, m
 
         # FastText Experiment 
 
-        # Build word vectors
-        fasttext_sources = transfer.build_fasttext_array(sources, model, method=params.METHOD)
-        fasttext_targets = transfer.build_fasttext_array(targets, model, method=params.METHOD)
 
         logging.info('Searching for similarities \n')
         
         if(similarityMetric == 'cosine'):
+            
+            # Build word vectors
+            fasttext_sources = transfer.build_fasttext_array(sources, model, method=params.METHOD)
+            fasttext_targets = transfer.build_fasttext_array(targets, model, method=params.METHOD)
+            
             similarities = similarity.cosine_similarities(fasttext_sources, fasttext_targets)
 
         elif(similarityMetric == 'euclidean'):
+            
+            # Build word vectors
+            fasttext_sources = transfer.build_fasttext_array(sources, model, method=params.METHOD)
+            fasttext_targets = transfer.build_fasttext_array(targets, model, method=params.METHOD)
+            
             similarities = similarity.euclidean_distance(fasttext_sources, fasttext_targets)
             
         elif(similarityMetric == 'softcosine'):
@@ -123,15 +129,20 @@ def map_and_transfer(embeddingModel, similarityMetric, preds_learned, targets, m
     
     elif(embeddingModel == 'word2vec'):
         
-        # Build word vectors
-        word2vec_sources = transfer.build_word2vec_array(sources, model)
-        word2vec_targets = transfer.build_word2vec_array(targets, model)
-        
-        
         if(similarityMetric == 'cosine'):
+            
+            # Build word vectors
+            word2vec_sources = transfer.build_word2vec_array(sources, model, method=params.METHOD)
+            word2vec_targets = transfer.build_word2vec_array(targets, model, method=params.METHOD)
+            
             similarities = similarity.cosine_similarities(word2vec_sources, word2vec_targets)
         
         elif(similarityMetric == 'euclidean'):
+            
+            # Build word vectors
+            word2vec_sources = transfer.build_word2vec_array(sources, model, method=params.METHOD)
+            word2vec_targets = transfer.build_word2vec_array(targets, model, method=params.METHOD)
+            
             similarities = similarity.euclidean_distance(word2vec_sources, word2vec_targets)
 
         elif(similarityMetric == 'softcosine'):
