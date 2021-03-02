@@ -1,9 +1,12 @@
 
+from __future__ import division
+from gensim.corpora.dictionary import Dictionary
 from gensim import matutils, corpora
 from scipy.spatial import distance
 import parameters as params
 from tqdm import tqdm
 import utils as utils
+from pyemd import emd
 import pandas as pd
 import numpy as np
 import spacy
@@ -84,8 +87,8 @@ class Similarity:
             if(params.METHOD):
                 
               # Calculate similarity using single vectors
-              sent_1 = [model.wv[word] for word in source_segmented]
-              sent_2 = [model.wv[word] for word in target_segmented]
+              sent_1 = [model[word] for word in source_segmented]
+              sent_2 = [model[word] for word in target_segmented]
             
               if(len(sent_1) != len(sent_2)):
                   sent_1, sent_2 = utils.add_dimension(sent_1, sent_2, params.EMBEDDING_DIMENSION)
@@ -125,7 +128,25 @@ class Similarity:
         key = source[0] + '(' + ','.join(source[1:]) + ')' + ',' + target[0] + '(' + ','.join(target[1:]) + ')'
         #key = s + '(' + ','.join([chr(65+i) for i in range(len(source[s][1]))]) + ')' + ',' + t + '(' + ','.join([chr(65+i) for i in range(len(target[t][1]))]) + ')'
 
-        similarity[key] = model.wmdistance(self.seg.segment(source[0]).split(), self.seg.segment(target[0]).split())
+        if(params.METHOD):
+            
+            dictionary = Dictionary(documents=[[source[0]], [target[0]]])
+            vocab_len = len(dictionary)
+            
+            # Sets for faster look-up.
+            sourceset1 = set(source[0])
+            targetset2 = set(target[0])
+            
+            distance_matrix = self.get_distance_matrix(source[0], target[0], model, dictionary, vocab_len)
+            
+            # Compute nBOW representation of documents
+            d1 = self.nbow(source[0], dictionary, vocab_len)
+            d2 = self.nbow(target[0], dictionary, vocab_len)
+
+            # Compute WMD
+            similarity[key] = emd(d1, d2, distance_matrix)
+        else:
+            similarity[key] = model.wmdistance(self.seg.segment(source[0]).split(), self.seg.segment(target[0]).split())
 
     df = pd.DataFrame.from_dict(similarity, orient="index", columns=['similarity'])
     return df.sort_values(by='similarity')
@@ -198,3 +219,73 @@ class Similarity:
 
     df = pd.DataFrame.from_dict(similarity, orient="index", columns=['similarity'])
     return df.sort_values(by='similarity')
+    
+
+  def nbow(self, document, dictionary, vocab_len):
+    """
+    	Return nBoW representation of a document using a dictionary of words 
+
+	    Args:
+	        document(array): one given predicate
+	        dictionary(Dictionary): pair (source, target)
+	    Returns:
+	        a array of frequencies/size_of_document
+	"""
+    d = np.zeros(vocab_len, dtype=np.double)
+    nbow = dictionary.doc2bow([document])  # Word frequencies.
+    doc_len = len([document])
+    for idx, freq in nbow:
+        d[idx] = freq / float(doc_len)  # Normalized word frequencies.
+    return d
+
+  def get_distance_matrix(self, source, target, model, dictionary, vocab_len):
+      """
+    	Compute distance matrix between the predicates
+
+	    Args:
+	        source(str): source predicate
+	        target(str): target predicate
+	        model(KeyedVectors): embedding pre-trained model
+	        vocab_len(int): size of the vocabulary
+	    Returns:
+	        a array of distancies
+	"""
+      
+    # Compute distance matrix.
+    distance_matrix = np.zeros((vocab_len, vocab_len), dtype=np.double)
+    for i, t1 in dictionary.items():
+        for j, t2 in dictionary.items():
+            if not t1 in source or not t2 in target:
+                continue
+            
+            t1_conc = np.concatenate([model[token] for token in self.seg.segment(t1).split()])
+            t2_conc = np.concatenate([model[token] for token in self.seg.segment(t2).split()])
+            
+            if(len(t1_conc) != len(t2_conc)):
+                t1_conc, t2_conc = utils.set_to_same_size(t1_conc, t2_conc, params.EMBEDDING_DIMENSION)
+            
+            # Compute Euclidean distance between word vectors.
+            distance_matrix[i, j] = np.sqrt(np.sum((t1_conc - t2_conc)**2))
+
+    if np.sum(distance_matrix) == 0.0:
+        # `emd` gets stuck if the distance matrix contains only zeros.
+        print('The distance matrix is all zeros. Aborting (returning inf).')
+        return float('inf')
+    return distance_matrix
+
+#from ekphrasis.classes.segmenter import Segmenter
+#from gensim.models import KeyedVectors, FastText
+#from pyemd import emd
+
+# Segmenter using the word statistics from Wikipedia
+#seg = Segmenter(corpus="english")
+
+#model = KeyedVectors.load_word2vec_format('word2vec/GoogleNews-vectors-negative300.bin', binary=True)
+
+#document1 = ['testexample']
+#document2 = ['examblood']
+
+#document1_vec = np.array([model.wv[token] for token in document1 if token in model]).mean(axis=0)
+#document2_vec = np.array([model.wv[token] for token in document2 if token in model]).mean(axis=0)
+
+
