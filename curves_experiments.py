@@ -1,7 +1,7 @@
 
 #Logging configuration
 import logging
-logging.basicConfig(filename='app.log', level=logging.INFO, format='%(asctime)s %(message)s')
+logging.basicConfig(level=logging.INFO, format='%(asctime)s %(message)s', handlers=[logging.FileHandler('app.log','w'),logging.StreamHandler()])
 
 from ekphrasis.classes.segmenter import Segmenter
 from experiments import experiments, bk, setups
@@ -22,9 +22,6 @@ import copy
 import time
 import sys
 import os
-
-
-
 
 # segmenter using the word statistics from Wikipedia
 seg = Segmenter(corpus="english")
