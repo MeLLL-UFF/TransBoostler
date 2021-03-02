@@ -6,9 +6,8 @@ WIKIPEDIA_FASTTEXT = 'fasttext/wiki.en.vec'
 WIKIPEDIA_FASTTEXT_SPACY = 'fasttext/spacy'
 
 EMBEDDING_DIMENSION = 300
-#METHOD = 'CONCATENATE'
-METHOD = None
-
+METHOD = 'CONCATENATE'
+#METHOD = None
 
 # Validation parameters
 N_FOLDS = 3
