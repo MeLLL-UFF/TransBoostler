@@ -3,9 +3,13 @@ __pycache__/
 *.py[cod]
 *$py.class
 
-# Ignoring output folders
+# Ignoring output directories
 boostsrl/train/
 boostsrl/test/
+
+#Ignoring models directories
+fastext/
+word2vec/
 
 # Ignoring boostsrl outputs
 boostsrl/*.txt
