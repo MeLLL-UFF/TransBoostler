@@ -8,7 +8,7 @@ boostsrl/train/
 boostsrl/test/
 
 #Ignoring models directories
-fastext/
+fasttext/
 word2vec/
 
 # Ignoring boostsrl outputs
