@@ -40,9 +40,10 @@ class Transfer:
       predicate = self.seg.segment(example[0])
       for word in predicate.split():
         try:
-          temp.append(model.get_word_vector(word.lower().strip()))
+          #temp.append(model.get_word_vector(word.lower().strip()))
+          temp.append(model.wv[word.lower().strip()])
         except:
-          print('Word {} not present in pre-trained model'.format(word.lower().strip()))
+          print('Word \'{}\' not present in pre-trained model'.format(word.lower().strip()))
           temp.append([0] * params.EMBEDDING_DIMENSION)
 
       predicate = temp.copy()
@@ -101,6 +102,7 @@ class Transfer:
 
       target_mapped, mapping = [], {}
       indexes = similarity.index.tolist()
+      print(indexes)
       
       for index in tqdm(indexes):
         index = re.split(r',\s*(?![^()]*\))', index)

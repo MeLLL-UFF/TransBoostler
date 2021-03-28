@@ -195,7 +195,6 @@ def set_to_same_size(source, target, dimension):
     return source, target
   elif(len(target) > len(source)):
     dim = dimension * ((len(target) - len(source))//dimension)
-    print('dim', dim)
     source = np.concatenate((source, np.zeros(dim)))
     return source, target
   else:
@@ -217,7 +216,7 @@ def add_dimension(source, target, dimension):
     return source, target
   elif(len(target) > len(source)):
     temp = [0]* dimension * (len(target) - len(source))
-    source.append(temp)
+    np.append(source, temp)
     return source, target
   else:
     print("Something went wrong while fixing space of word vector")
