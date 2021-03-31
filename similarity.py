@@ -273,23 +273,24 @@ class Similarity:
             key = source[0] + '(' + source[1] + ')' + ',' + target[0] + '(' + target[1] + ')'
           
             if(params.METHOD):
-                embeddings = [np.concatenate([nlp.vocab[w].vector for w in self.seg.segment(source[0]).split()]), 
-                np.concatenate([nlp.vocab[w].vector for w in self.seg.segment(target[0]).split()])]
+                words = set([source[0]]).union([target[0]])
+                embeddings = [np.concatenate([nlp.vocab[w].vector for w in self.seg.segment(word).split()]) for word in words]
+                
+                #embeddings = [np.concatenate([nlp.vocab[w].vector for w in self.seg.segment(source[0]).split()]),np.concatenate([nlp.vocab[w].vector for w in self.seg.segment(target[0]).split()])]
 
                 if(len(embeddings[0]) != len(embeddings[1])):
                     embeddings[0], embeddings[1] = utils.set_to_same_size(embeddings[0], embeddings[1], params.EMBEDDING_DIMENSION)
 
-                similarity[key] = 1 - wmd_instance.compute_similarity(nlp(source[0]), nlp(target[0]), evec=np.array(embeddings, dtype=np.float32), single_vector=True)
-                
+                similarity[key] = wmd_instance.compute_similarity(nlp(source[0]), nlp(target[0]), evec=np.array(embeddings, dtype=np.float32), single_vector=True)
             else:
                 # Convert the sentences into SpaCy format.
                 sent_1 = nlp(self.seg.segment(source[0]))
                 sent_2 = nlp(self.seg.segment(target[0]))
             
-                similarity[key] = 1 - wmd_instance.compute_similarity(sent_1, sent_2)
+                similarity[key] = wmd_instance.compute_similarity(sent_1, sent_2)
 
       df = pd.DataFrame.from_dict(similarity, orient="index", columns=['similarity'])
-      return df.sort_values(by='similarity', ascending=False)
+      return df.sort_values(by='similarity', ascending=True)
 
 
   def euclidean_distance(self, sources, targets):
