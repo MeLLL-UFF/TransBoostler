@@ -204,7 +204,7 @@ def main():
         to_predicate = experiment['to_predicate']
         arity = experiment['arity']
         
-        if target in ['twitter', 'yeast']:
+        if target in ['twitter', 'yeast', 'nell_sports', 'nell_finances']:
             recursion = True
         else:
             recursion = False
