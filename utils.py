@@ -182,6 +182,20 @@ def fill_missing_dimensions(source, target, dimension):
 
 def set_to_same_size(source, target, dimension):
   """
+     Choose when to fill an array with zeros or to add new dimensions by the method chosen. 
+     Fill it up with zeros if concatenation is enable or adds new dimension if no single vector method is enable
+
+     Args:
+          source(list): source embedding vector
+          target(str): target embedding vector
+          dimension(int): size of dimension of embedding vector
+  """
+  if(params.METHOD):
+    return concatenate_to_same_size(source, target, dimension)
+  return add_dimension(source, target, dimension)
+
+def concatenate_to_same_size(source, target, dimension):
+  """
      Add zero arrays so source and target have the same size
 
      Args:
