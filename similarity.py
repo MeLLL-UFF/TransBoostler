@@ -48,29 +48,32 @@ class Similarity:
 	    Returns:
 	        a list of distancies
 	"""
+
+    #def __build_matrix(vocab_len, dictionary, docset1, docset2):
+        
+    #    return distance_matrix
 	
 	# Sets for faster look-up.
     docset1 = set(source)
     docset2 = set(target)
-      
+
     # Compute distance matrix.
     distance_matrix = np.zeros((vocab_len, vocab_len), dtype=np.double)
     for i, t1 in dictionary.items():
         for j, t2 in dictionary.items():
-            if not t1 in source or not t2 in target:
+            if not t1 in docset1 or not t2 in docset2:
                 continue
-            
-            t1, t2 = np.array([model[token] for token in self.seg.segment(t1).split() if token in model]), np.array([model[token] for token in self.seg.segment(t2).split() if token in model])
-            
+
             if(params.METHOD):
-                t1 = np.concatenate(t1)
-                t2 = np.concatenate(t2)
-            
-                if(len(t1) != len(t2)):
-                    t1, t2 = utils.set_to_same_size(t1, t2, params.EMBEDDING_DIMENSION)
-            
+                # Concatenate word vectors before calculate Euclidean Distance
+                _t1, _t2 = np.concatenate([model[w] for w in self.seg.segment(t1).split()]),np.concatenate([model[w] for w in self.seg.segment(t2).split()])
+                
+                if(len(_t1) != len(_t2)):
+                    _t1, _t2 = utils.set_to_same_size(_t1, _t2, params.EMBEDDING_DIMENSION)
+            else:
+                _t1, _t2 = model[t1], model[t2]
             # Compute Euclidean distance between word vectors.
-            distance_matrix[i, j] = np.sqrt(np.sum((t1 - t2)**2))
+            distance_matrix[i, j] = np.sqrt(np.sum((_t1 - _t2)**2))
 
     if np.sum(distance_matrix) == 0.0:
         # `emd` gets stuck if the distance matrix contains only zeros.
@@ -80,7 +83,7 @@ class Similarity:
 
   def __wmdistance(self, source, target, model):
     """
-        Calculate Word Mover's Distance
+        Calculate Word Mover's Distance for single-vectors (concatenate)
 
         Args:
             source(str): source predicate
@@ -88,11 +91,12 @@ class Similarity:
        Returns:
             distance between two word vectors
     """
-    
     if(params.METHOD):
+        print('METODOOOOOOOO')
         source, target = [source], [target]
     else:
         source, target = self.seg.segment(source).split(), self.seg.segment(target).split()
+        #source, target = source.split(), target.split()
         
     dictionary = Dictionary(documents=[source, target])
     vocab_len = len(dictionary)
@@ -233,11 +237,10 @@ class Similarity:
         if(len(source[1:]) != len(target[1:])):
           continue
 
-        key = source[0] + '(' + ','.join(source[1:]) + ')' + ',' + target[0] + '(' + ','.join(target[1:]) + ')'
+        #key = source[0] + '(' + ','.join(source[1:]) + ')' + ',' + target[0] + '(' + ','.join(target[1:]) + ')'
         #key = s + '(' + ','.join([chr(65+i) for i in range(len(source[s][1]))]) + ')' + ',' + t + '(' + ','.join([chr(65+i) for i in range(len(target[t][1]))]) + ')'
-        
+        key = 'A'
         similarity[key] = self.__wmdistance(source[0], target[0], model)
-        similarity[key] = model.wmdistance(self.seg.segment(source[0]).split(), self.seg.segment(target[0]).split())
 
     df = pd.DataFrame.from_dict(similarity, orient="index", columns=['similarity'])
     return df.sort_values(by='similarity')
@@ -326,20 +329,20 @@ class Similarity:
     df = pd.DataFrame.from_dict(similarity, orient="index", columns=['similarity'])
     return df.sort_values(by='similarity')
 
-#from ekphrasis.classes.segmenter import Segmenter
-#from gensim.models import KeyedVectors, FastText
-#from pyemd import emd
+# from ekphrasis.classes.segmenter import Segmenter
+# from gensim.models import KeyedVectors, FastText
+# from pyemd import emd
 
-# Segmenter using the word statistics from Wikipedia
-#seg = Segmenter(corpus="english")
+# # Segmenter using the word statistics from Wikipedia
+# seg = Segmenter(corpus="english")
 
-#model = KeyedVectors.load_word2vec_format('word2vec/GoogleNews-vectors-negative300.bin', binary=True)
+# fraseA = 'obama speaks media illinois'
+# fraseB = 'president greets press chicago'
 
-#document1 = ['testexample']
-#document2 = ['examblood']
+# model = KeyedVectors.load_word2vec_format('word2vec/GoogleNews-vectors-negative300.bin', binary=True)
 
-#document1_vec = np.array([model.wv[token] for token in document1 if token in model]).mean(axis=0)
-#document2_vec = np.array([model.wv[token] for token in document2 if token in model]).mean(axis=0)
-
-#sim = Similarity(None)
-#sim.relaxed_wmd_similarities(None, None, None, None)
+# sim = Similarity(seg)
+# #print(sim.wmd_similarities([['Obama speaks to the media in Illinois', 'person', 'person']], [['The president greets the press in Chicago', 'person', 'person']], model))
+# #params.METHOD = None
+# print(sim.wmd_similarities([[''.join(fraseA), 'person', 'person']], [[''.join(fraseB), 'person', 'person']], model))
+# print(model.wmdistance(''.join(fraseA), ''.join(fraseB)))
