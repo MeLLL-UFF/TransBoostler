@@ -80,17 +80,23 @@ def map_predicates(experiment, model, modelname):
         model_targets = transfer.build_word2vec_array(targets, model, method=params.METHOD)
 
         spacy_model = current_path + '/' + params.GOOGLE_WORD2VEC_SPACY
-    
-    # Mapping using Cosine similarities
-    similarities = similarity.cosine_similarities(model_sources, model_targets)
-    all_mappings = fill_mappings(preds_learned, similarities, all_mappings)
+
+    if(params.METHOD):
+    	columns = ['Cosine', 'Euclidean', 'SoftCosine', 'WMD', 'Relax-WMD']
+
+    	# Mapping using Cosine similarities
+	    similarities = similarity.cosine_similarities(model_sources, model_targets)
+	    all_mappings = fill_mappings(preds_learned, similarities, all_mappings)
+
+	    # Mapping using Euclidean similarities
+	    similarities = similarity.euclidean_distance(model_sources, model_targets)
+	    all_mappings = fill_mappings(preds_learned, similarities, all_mappings)
+
+   	else:
+   		columns = ['SoftCosine', 'WMD', 'Relax-WMD']
 
     # Mapping using SoftCosine similarities
     similarities = similarity.soft_cosine_similarities(sources, targets, model)
-    all_mappings = fill_mappings(preds_learned, similarities, all_mappings)
-
-    # Mapping using Euclidean similarities
-    similarities = similarity.euclidean_distance(model_sources, model_targets)
     all_mappings = fill_mappings(preds_learned, similarities, all_mappings)
 
     # Mapping using WMD similarities
@@ -98,10 +104,10 @@ def map_predicates(experiment, model, modelname):
     all_mappings = fill_mappings(preds_learned, similarities, all_mappings)
 
     # Mapping using Relaxed WMD similarities
-    similarities = similarity.relaxed_wmd_similarities(sources, targets, spacy_model)
+   	similarities = similarity.relaxed_wmd_similarities(sources, targets, spacy_model)
     all_mappings = fill_mappings(preds_learned, similarities, all_mappings)
 
-    return pd.DataFrame.from_dict(all_mappings, orient="index", columns=['Cosine', 'SoftCosine', 'Euclidean', 'WMD', 'Relax-WMD'])
+    return pd.DataFrame.from_dict(all_mappings, orient="index", columns=columns)
 
 def main():
 
@@ -115,7 +121,7 @@ def main():
     for experiment in experiments:
     	experiment_title = experiment['id'] + '_' + experiment['source'] + '_' + experiment['target']
     	fasttext_mappings = map_predicates(experiment, model, 'fasttext')
-    	fasttext_mappings.to_csv(current_path + '/mappings/{}/fasttext_{}.csv'.format(experiment_title, params.METHOD))
+    	fasttext_mappings.to_csv(current_path + '/mappings/{}/fasttext.csv'.format(experiment_title))
 
     del fasttext_mappings, model
 
@@ -129,7 +135,7 @@ def main():
     for experiment in experiments:
     	experiment_title = experiment['id'] + '_' + experiment['source'] + '_' + experiment['target']
     	word2vec_mappings = map_predicates(experiment, model, 'word2vec')
-    	word2vec_mappings.to_csv(current_path + '/mappings/{}/word2vec_{}.csv'.format(experiment_title, params.METHOD))
+    	word2vec_mappings.to_csv(current_path + '/mappings/{}/word2vec.csv'.format(experiment_title, params.METHOD))
 
 if __name__ == '__main__':
     sys.exit(main())
