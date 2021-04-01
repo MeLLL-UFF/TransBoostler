@@ -92,7 +92,6 @@ class Similarity:
             distance between two word vectors
     """
     if(params.METHOD):
-        print('METODOOOOOOOO')
         source, target = [source], [target]
     else:
         source, target = self.seg.segment(source).split(), self.seg.segment(target).split()
@@ -237,9 +236,9 @@ class Similarity:
         if(len(source[1:]) != len(target[1:])):
           continue
 
-        #key = source[0] + '(' + ','.join(source[1:]) + ')' + ',' + target[0] + '(' + ','.join(target[1:]) + ')'
+        key = source[0] + '(' + ','.join(source[1:]) + ')' + ',' + target[0] + '(' + ','.join(target[1:]) + ')'
         #key = s + '(' + ','.join([chr(65+i) for i in range(len(source[s][1]))]) + ')' + ',' + t + '(' + ','.join([chr(65+i) for i in range(len(target[t][1]))]) + ')'
-        key = 'A'
+
         similarity[key] = self.__wmdistance(source[0], target[0], model)
 
     df = pd.DataFrame.from_dict(similarity, orient="index", columns=['similarity'])
