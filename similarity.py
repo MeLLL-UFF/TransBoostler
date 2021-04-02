@@ -272,7 +272,7 @@ class Similarity:
             if(len(source[1:]) != len(target[1:])): 
               continue
           
-            key = source[0] + '(' + source[1] + ')' + ',' + target[0] + '(' + target[1] + ')'
+            key = source[0] + '(' + ','.join(source[1:]) + ')' + ',' + target[0] + '(' + ','.join(target[1:]) + ')'
           
             if(params.METHOD):
                 words = set([source[0]]).union([target[0]])
