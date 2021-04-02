@@ -20,8 +20,11 @@ seg = Segmenter(corpus="english")
 transfer = Transfer(seg)
 similarity = Similarity(seg)
 
+if_method = 'concatenate'
+
 def fill_mappings(preds_learned, similarities, all_mappings):
-	# Map source predicates to targets and creates transfer file
+
+    # Map source predicates to targets and creates transfer file
     mappings = transfer.map_predicates(preds_learned, similarities, allowSameTargetMap=params.ALLOW_SAME_TARGET_MAP)
 
     for source in mappings:
@@ -57,7 +60,7 @@ def map_predicates(experiment, model, modelname):
     preds, preds_learned = [], []
     preds = list(set(utils.sweep_tree(structured)))
     preds_learned = [pred.replace('.', '').replace('+', '').replace('-', '') for pred in bk[source] if pred.split('(')[0] != predicate and pred.split('(')[0] in preds and 'recursion_' not in pred]
-    
+
     # Get targets
     targets = [t.replace('.', '').replace('+', '').replace('-', '') for t in set(bk[target]) if t.split('(')[0] != to_predicate and 'recursion_' not in t]
 
@@ -82,36 +85,41 @@ def map_predicates(experiment, model, modelname):
         spacy_model = current_path + '/' + params.GOOGLE_WORD2VEC_SPACY
 
     if(params.METHOD):
-    	columns = ['Cosine', 'Euclidean', 'SoftCosine', 'WMD', 'Relax-WMD']
+        columns = ['Cosine', 'Euclidean', 'SoftCosine', 'WMD', 'Relax-WMD']
 
-    	# Mapping using Cosine similarities
-	    similarities = similarity.cosine_similarities(model_sources, model_targets)
-	    all_mappings = fill_mappings(preds_learned, similarities, all_mappings)
+        # Mapping using Cosine similarities
+        similarities = similarity.cosine_similarities(model_sources, model_targets)
+        all_mappings = fill_mappings(preds_learned, similarities, all_mappings)
+        similarities.to_csv(current_path + '/mappings/{}/{}_cosine_{}.csv'.format(experiment_title, modelname, if_method))
 
-	    # Mapping using Euclidean similarities
-	    similarities = similarity.euclidean_distance(model_sources, model_targets)
-	    all_mappings = fill_mappings(preds_learned, similarities, all_mappings)
+        # Mapping using Euclidean similarities
+        similarities = similarity.euclidean_distance(model_sources, model_targets)
+        all_mappings = fill_mappings(preds_learned, similarities, all_mappings)
+        similarities.to_csv(current_path + '/mappings/{}/{}_euclidean_{}.csv'.format(experiment_title, modelname, if_method))
 
-   	else:
-   		columns = ['SoftCosine', 'WMD', 'Relax-WMD']
+    else:
+        columns = ['SoftCosine', 'WMD', 'Relax-WMD']
 
     # Mapping using SoftCosine similarities
     similarities = similarity.soft_cosine_similarities(sources, targets, model)
     all_mappings = fill_mappings(preds_learned, similarities, all_mappings)
+    similarities.to_csv(current_path + '/mappings/{}/{}_softcosine_{}.csv'.format(experiment_title, modelname, if_method))
 
     # Mapping using WMD similarities
     similarities = similarity.wmd_similarities(sources, targets, model)
     all_mappings = fill_mappings(preds_learned, similarities, all_mappings)
+    similarities.to_csv(current_path + '/mappings/{}/{}_wmd_{}.csv'.format(experiment_title, modelname, if_method))
 
     # Mapping using Relaxed WMD similarities
-   	similarities = similarity.relaxed_wmd_similarities(sources, targets, spacy_model)
+    similarities = similarity.relaxed_wmd_similarities(sources, targets, spacy_model)
     all_mappings = fill_mappings(preds_learned, similarities, all_mappings)
+    similarities.to_csv(current_path + '/mappings/{}/{}_relaxwmd_{}.csv'.format(experiment_title, modelname, if_method))
 
     return pd.DataFrame.from_dict(all_mappings, orient="index", columns=columns)
 
 def main():
 
-	# Starting by fasttext
+    # Starting by fasttext
     if not os.path.exists(current_path + '/' + params.WIKIPEDIA_FASTTEXT):
         raise ValueError("SKIP: You need to download the fasttext wikipedia model")
 
@@ -119,9 +127,9 @@ def main():
     #loadedModel = None
 
     for experiment in experiments:
-    	experiment_title = experiment['id'] + '_' + experiment['source'] + '_' + experiment['target']
-    	fasttext_mappings = map_predicates(experiment, model, 'fasttext')
-    	fasttext_mappings.to_csv(current_path + '/mappings/{}/fasttext.csv'.format(experiment_title))
+        experiment_title = experiment['id'] + '_' + experiment['source'] + '_' + experiment['target']
+        fasttext_mappings = map_predicates(experiment, model, 'fasttext')
+        fasttext_mappings.to_csv(current_path + '/mappings/{}/fasttext_{}.csv'.format(experiment_title, if_method))
 
     del fasttext_mappings, model
 
@@ -133,9 +141,9 @@ def main():
     #loadedModel = None
 
     for experiment in experiments:
-    	experiment_title = experiment['id'] + '_' + experiment['source'] + '_' + experiment['target']
-    	word2vec_mappings = map_predicates(experiment, model, 'word2vec')
-    	word2vec_mappings.to_csv(current_path + '/mappings/{}/word2vec.csv'.format(experiment_title, params.METHOD))
+        experiment_title = experiment['id'] + '_' + experiment['source'] + '_' + experiment['target']
+        word2vec_mappings = map_predicates(experiment, model, 'word2vec')
+        word2vec_mappings.to_csv(current_path + '/mappings/{}/word2vec_{}.csv'.format(experiment_title, if_method))
 
 if __name__ == '__main__':
     sys.exit(main())
