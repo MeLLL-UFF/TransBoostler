@@ -102,7 +102,6 @@ class Transfer:
 
       target_mapped, mapping = [], {}
       indexes = similarity.index.tolist()
-      print(indexes)
       
       for index in tqdm(indexes):
         index = re.split(r',\s*(?![^()]*\))', index)
