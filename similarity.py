@@ -48,10 +48,6 @@ class Similarity:
 	    Returns:
 	        a list of distancies
 	"""
-
-    #def __build_matrix(vocab_len, dictionary, docset1, docset2):
-        
-    #    return distance_matrix
 	
 	# Sets for faster look-up.
     docset1 = set(source)
@@ -131,6 +127,22 @@ class Similarity:
                                     dtype=np.float32))
     return documents
 
+  def __create_key(self, source, target):
+    """
+        Create key to to dataframe used for mapping
+
+        Args:
+            source(str): source predicate or literal
+            target(str): target predicate or literal
+       Returns:
+            a string corresponding that corresponds to the mapping
+    """
+    if(source[1] != ''):
+        return source[0] + '(' + ','.join(source[1]) + ')' + ',' + target[0] + '(' + ','.join(target[1]) + ')'
+        #key = s + '(' + ','.join([chr(65+i) for i in range(len(source[s][1]))]) + ')' + ',' + t + '(' + ','.join([chr(65+i) for i in range(len(target[t][1]))]) + ')'
+    else:
+        return source[0] + ',' + target[0]
+
   def cosine_similarities(self, source, target):
     """
         Calculate cosine similarity of embedded arrays
@@ -150,10 +162,9 @@ class Similarity:
       	# Predicates must have the same arity
         if(len(source[s][1]) != len(target[t][1])):
           continue
-
-        key = s + '(' + ','.join(source[s][1]) + ')' + ',' + t + '(' + ','.join(target[t][1]) + ')'
-        #key = s + '(' + ','.join([chr(65+i) for i in range(len(source[s][1]))]) + ')' + ',' + t + '(' + ','.join([chr(65+i) for i in range(len(target[t][1]))]) + ')'
         
+        key = self.__create_key([s, source[s][1]], [t, target[t][1]])
+
         if(len(source[s][0]) != len(target[t][0])):
           source[s][0], target[t][0] = utils.set_to_same_size(source[s][0], target[t][0], params.EMBEDDING_DIMENSION)
 
@@ -186,8 +197,7 @@ class Similarity:
             if(len(source[1:]) != len(target[1:])): 
               continue
 
-            key = source[0] + '(' + ','.join(source[1:]) + ')' + ',' + target[0] + '(' + ','.join(target[1:]) + ')'
-            #key = s + '(' + ','.join([chr(65+i) for i in range(len(source[s][1]))]) + ')' + ',' + t + '(' + ','.join([chr(65+i) for i in range(len(target[t][1]))]) +')'
+            key = self.__create_key(source, target)
 
             # Tokenize (segment) the predicates into words
             # wasbornin -> was, born, in
@@ -236,8 +246,7 @@ class Similarity:
         if(len(source[1:]) != len(target[1:])):
           continue
 
-        key = source[0] + '(' + ','.join(source[1:]) + ')' + ',' + target[0] + '(' + ','.join(target[1:]) + ')'
-        #key = s + '(' + ','.join([chr(65+i) for i in range(len(source[s][1]))]) + ')' + ',' + t + '(' + ','.join([chr(65+i) for i in range(len(target[t][1]))]) + ')'
+        key = self.__create_key(source, target)
 
         similarity[key] = self.__wmdistance(source[0], target[0], model)
 
@@ -272,7 +281,7 @@ class Similarity:
             if(len(source[1:]) != len(target[1:])): 
               continue
           
-            key = source[0] + '(' + ','.join(source[1:]) + ')' + ',' + target[0] + '(' + ','.join(target[1:]) + ')'
+            key = self.__create_key(source, target)
           
             if(params.METHOD):
                 words = set([source[0]]).union([target[0]])
@@ -315,9 +324,8 @@ class Similarity:
         if(len(sources[s][1]) != len(targets[t][1])):
           continue
 
-        key = s + '(' + ','.join(sources[s][1]) + ')' + ',' + t + '(' + ','.join(targets[t][1]) + ')'
-        #key = s + '(' + ','.join([chr(65+i) for i in range(len(source[s][1]))]) + ')' + ',' + t + '(' + ','.join([chr(65+i) for i in range(len(target[t][1]))]) + ')'
-        
+        key = self.__create_key([s, sources[s][1]], [t, targets[t][1]])
+
         if(len(sources[s][0]) != len(targets[t][0]) and params.METHOD):
           sources[s][0], targets[t][0] = utils.set_to_same_size(sources[s][0], targets[t][0], params.EMBEDDING_DIMENSION)
         elif(len(sources[s][0]) != len(targets[t][0])):

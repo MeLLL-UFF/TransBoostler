@@ -12,6 +12,21 @@ import re
 import logging
 logging.basicConfig(level=logging.INFO, format="%(message)s", handlers=[logging.FileHandler("app.log"),logging.StreamHandler()])
 
+
+def get_all_literals(predicates):
+    """
+        Get all literals of source/target predicates
+
+        Args:
+            preciates(array): array containing all predicates to be mapped
+       Returns:
+            a list containing unique literals
+    """ 
+    literals = []     
+    for predicate in predicates:
+      literals += predicate.split('(')[1].replace(')', '').split(',')
+    return literals
+    
 def build_triples(data):
   """
       Splits predicates and its literals
