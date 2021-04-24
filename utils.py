@@ -55,7 +55,7 @@ def build_triples(data):
     output.append([d_predicate, d_literal_1, d_literal_2])
   return output
 
-def sweep_tree(structure, preds=[]):
+def sweep_tree_bckp(structure, trees=[]):
   """
       Sweep through the relational tree 
       to get all predicates learned 
@@ -63,6 +63,7 @@ def sweep_tree(structure, preds=[]):
 
       Args:
           structure(list/dict/str/float): something to be added to the list
+          trees: list to hold tree nodes. As we are using recursion, its default is empty.
       Returns:
           all predicates learned by the model
   """
@@ -86,6 +87,36 @@ def sweep_tree(structure, preds=[]):
     return preds
   else:
     return preds
+
+
+def sweep_tree(structure, trees=[]):
+  """
+      Sweep through the relational tree 
+      to get all predicates learned 
+      using recursion
+
+      Args:
+          structure(list/dict/str/float): something to be added to the list
+          trees: list to hold tree nodes. As we are using recursion, its default is empty.
+      Returns:
+          all predicates learned by the model
+  """
+  if(isinstance(structure, list)):
+    for element in structure:
+      trees = sweep_tree(element, trees)
+    return trees
+  elif(isinstance(structure, dict)):
+    node_number = 0
+    nodes = {}
+    for key in structure:
+      if(isinstance(structure[key], str)):
+        nodes[node_number] = structure[key]
+        node_number += 1
+    if(nodes):
+      trees.append(nodes)
+    return trees
+  else:
+    return trees
 
 def get_next_node(node, next):
   """
