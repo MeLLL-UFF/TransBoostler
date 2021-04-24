@@ -26,13 +26,13 @@ def get_all_literals(predicates):
     for predicate in predicates:
       literals += predicate.split('(')[1].replace(')', '').split(',')
     return literals
-    
-def build_triples(data):
+
+def build_triple(triple):
   """
-      Splits predicates and its literals
+      Split predicate and its literals
 
       Args:
-          data(str): relation to be split
+          triple(str): relation to be split
       Returns:
           relation as a three-element array
 
@@ -40,22 +40,34 @@ def build_triples(data):
           movie(A) -> movie, A, ''
           father(A,B) -> father, A, B
   """
+
+  triple = triple.replace('.','').split('(')
+  predicate = triple[0]
+
+  if(',' in triple[1]):
+    predicate_literal_1 = triple[1].split(',')[0].replace('(', '').replace('+', '').replace('-', '')
+    predicate_literal_2 = triple[1].split(',')[1].split(')')[0].replace('+', '').replace('-', '')
+  else:
+    predicate_literal_1 = triple[1].split(',')[0].replace(')', '').replace('+', '').replace('-', '')
+    predicate_literal_2 = ''
+
+  return [predicate, predicate_literal_1, predicate_literal_2]
+
+def build_triples(data):
+  """
+      Execute build_triples for an array of triples
+
+      Args:
+          data(list): list of atoms
+      Returns:
+          list of triples
+  """
   output = []
   for d in data:
-    d = d.replace('.','').split('(')
-    d_predicate = d[0]
-
-    if(',' in d[1]):
-      d_literal_1 = d[1].split(',')[0].replace('(', '').replace('+', '').replace('-', '')
-      d_literal_2 = d[1].split(',')[1].split(')')[0].replace('+', '').replace('-', '')
-    else:
-      d_literal_1 = d[1].split(',')[0].replace(')', '').replace('+', '').replace('-', '')
-      d_literal_2 = ''
-
-    output.append([d_predicate, d_literal_1, d_literal_2])
+    output.append(build_triple(d))
   return output
 
-def sweep_tree_bckp(structure, trees=[]):
+def sweep_tree(structure, trees=[]):
   """
       Sweep through the relational tree 
       to get all predicates learned 
@@ -89,21 +101,19 @@ def sweep_tree_bckp(structure, trees=[]):
     return preds
 
 
-def sweep_tree(structure, trees=[]):
+def deep_first_search_nodes(structure, trees=[]):
   """
-      Sweep through the relational tree 
-      to get all predicates learned 
-      using recursion
+      Uses Deep-First Search to return all nodes
 
       Args:
           structure(list/dict/str/float): something to be added to the list
           trees: list to hold tree nodes. As we are using recursion, its default is empty.
       Returns:
-          all predicates learned by the model
+          all nodes learned by the model
   """
   if(isinstance(structure, list)):
     for element in structure:
-      trees = sweep_tree(element, trees)
+      trees = deep_first_search_nodes(element, trees)
     return trees
   elif(isinstance(structure, dict)):
     node_number = 0

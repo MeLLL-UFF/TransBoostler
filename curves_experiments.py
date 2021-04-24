@@ -32,8 +32,7 @@ learn_from_source = True
 # Segmenter using the word statistics from Wikipedia
 seg = Segmenter(corpus="english")
 
-transfer = Transfer(seg)
-similarity = Similarity(seg)
+
 revision = TheoryRevision()
 
 def train_and_test(background, train_pos, train_neg, train_facts, test_pos, test_neg, test_facts, refine=None, transfer=None):
@@ -88,89 +87,6 @@ def get_confusion_matrix(to_predicate, revision=False):
         logging.info(m)
 
     return {'TP': TP, 'FP': FP, 'TN':TN, 'FN': FN}
-
-def map_and_transfer(embeddingModel, similarityMetric, preds_learned, targets, model, predicate, to_predicate, arity, experiment_title, recursion):
-
-    # Build word vectors for source and target predicates
-    sources = utils.build_triples(preds_learned)
-    targets = utils.build_triples(targets)
-
-    if(embeddingModel == 'fasttext'):
-
-        # FastText Experiment 
-
-        logging.info('Searching for similarities \n')
-        
-        if(similarityMetric == 'cosine'):
-            
-            # Build word vectors
-            fasttext_sources = transfer.build_fasttext_array(sources, model, method=params.METHOD)
-            fasttext_targets = transfer.build_fasttext_array(targets, model, method=params.METHOD)
-            
-            similarities = similarity.cosine_similarities(fasttext_sources, fasttext_targets)
-
-        elif(similarityMetric == 'euclidean'):
-            
-            # Build word vectors
-            fasttext_sources = transfer.build_fasttext_array(sources, model, method=params.METHOD)
-            fasttext_targets = transfer.build_fasttext_array(targets, model, method=params.METHOD)
-            
-            similarities = similarity.euclidean_distance(fasttext_sources, fasttext_targets)
-            
-        elif(similarityMetric == 'softcosine'):
-            similarities = similarity.soft_cosine_similarities(sources, targets, model)
-
-        elif(similarityMetric == 'wmd'):
-            similarities = similarity.wmd_similarities(sources, targets, model)
-            
-        elif(similarityMetric == 'relax-wmd'):
-            similarities = similarity.relaxed_wmd_similarities(sources, targets, params.WIKIPEDIA_FASTTEXT_SPACY)
-    
-    elif(embeddingModel == 'word2vec'):
-        
-        if(similarityMetric == 'cosine'):
-            
-            # Build word vectors
-            word2vec_sources = transfer.build_word2vec_array(sources, model, method=params.METHOD)
-            word2vec_targets = transfer.build_word2vec_array(targets, model, method=params.METHOD)
-            
-            similarities = similarity.cosine_similarities(word2vec_sources, word2vec_targets)
-        
-        elif(similarityMetric == 'euclidean'):
-            
-            # Build word vectors
-            word2vec_sources = transfer.build_word2vec_array(sources, model, method=params.METHOD)
-            word2vec_targets = transfer.build_word2vec_array(targets, model, method=params.METHOD)
-            
-            similarities = similarity.euclidean_distance(word2vec_sources, word2vec_targets)
-
-        elif(similarityMetric == 'softcosine'):
-            similarities = similarity.soft_cosine_similarities(sources, targets, model)
-
-        elif(similarityMetric == 'wmd'):
-            similarities = similarity.wmd_similarities(sources, targets, model)
-            
-        elif(similarityMetric == 'relax-wmd'):
-            similarities = similarity.relaxed_wmd_similarities(sources, targets, params.GOOGLE_WORD2VEC_SPACY)
-
-    # Map source predicates to targets and creates transfer file
-    mapping = transfer.map_predicates(preds_learned, similarities, allowSameTargetMap=params.ALLOW_SAME_TARGET_MAP)
-    transfer.write_to_file_closest_distance(predicate, to_predicate, arity, mapping, 'experiments/' + experiment_title, recursion=recursion, allowSameTargetMap=params.ALLOW_SAME_TARGET_MAP)
-
-    similarities.to_csv('experiments/{}/similarities_{}_{}.csv'.format(experiment_title, embeddingModel, similarityMetric))
-    del similarities, preds_learned, mapping
-
-    if(embeddingModel == 'word2vec'):
-        try:
-            del word2vec_sources, word2vec_targets
-        except NameError:
-            pass
-
-    elif(embeddingModel == 'fasttext'):
-        try:
-            del fasttext_sources, fasttext_targets
-        except NameError:
-            pass
 
 def clean_previous_experiments_stuff():
     logging.info('Cleaning previous experiments mess')
@@ -264,15 +180,12 @@ def main():
                 structured = [p for p in bk[source] if p.split('(')[0] in structured]
                 copyfile(os.getcwd() + '/experiments/{}_{}_{}/{}'.format(_id, source, target, params.REFINE_FILENAME.split('/')[1]), os.getcwd() + '/' + params.REFINE_FILENAME)
                 
-            # Get the list of predicates from source tree
-            preds, preds_learned = [], []
-            preds = list(set(utils.sweep_tree(structured)))
-            preds_learned = [pred.replace('.', '').replace('+', '').replace('-', '') for pred in bk[source] if pred.split('(')[0] != predicate and pred.split('(')[0] in preds and 'recursion_' not in pred]
-            
+            # Get the list of predicates from source tree          
+            nodes = utils.deep_first_search_nodes(structured)
+
             # Get targets
             targets = [t.replace('.', '').replace('+', '').replace('-', '') for t in set(bk[target]) if t.split('(')[0] != to_predicate and 'recursion_' not in t]
 
-            # DESCOMENTAR ISSO AQUI POR FAVOR!
             # Get all rules learned by RDN-B
             refine_structure = utils.get_all_rules_from_tree(structured)
             utils.write_to_file(refine_structure, params.REFINE_FILENAME)
@@ -312,22 +225,31 @@ def main():
 
                 elif(embeddingModel == 'word2vec'):
 
-                    if not os.path.exists(params.GOOGLE_WORD2VEC): 
-                        raise ValueError("SKIP: You need to download the google news model")
-
+                    #if not os.path.exists(params.GOOGLE_WORD2VEC): 
+                    #    raise ValueError("SKIP: You need to download the google news model")
 
                     if 'loadedModel' not in locals():
                         logging.info('Loading word2vec model')
                         start = time.time()
-                        loadedModel = KeyedVectors.load_word2vec_format(params.GOOGLE_WORD2VEC, binary=True, unicode_errors='ignore')
+                        #loadedModel = KeyedVectors.load_word2vec_format(params.GOOGLE_WORD2VEC, binary=True, unicode_errors='ignore')
+                        loadedModel = ''
 
                         end = time.time()
                         logging.info('Time to load Word2Vec model: {} seconds'.format(round(end-start, 2)))
                 else:
                     raise ValueError("SKIP: Embedding models must be 'fasttext' or 'word2vec'")
+                
+                print(embeddingModel)
+                
+                transfer = Transfer(segmenter=seg, model=loadedModel, model_name=embeddingModel)
+                similarity = Similarity(seg)
 
                 # Map and transfer using the loaded embedding model
-                map_and_transfer(embeddingModel, similarityMetric, preds_learned, targets, loadedModel, predicate, to_predicate, arity, experiment_title, recursion)
+                mapping  = transfer.map_predicates(similarityMetric, nodes, targets, predicate, to_predicate, arity, experiment_title, recursion)
+                transfer.write_to_file_closest_distance(predicate, to_predicate, arity, mapping, 'experiments/' + experiment_title, recursion=recursion, allowSameTargetMap=params.ALLOW_SAME_TARGET_MAP)
+
+                similarities.to_csv('experiments/{}/similarities_{}_{}.csv'.format(experiment_title, embeddingModel, similarityMetric))
+                del similarities, preds_learned, mapping
 
                 # Set number of folds
                 n_folds = datasets.get_n_folds(target)

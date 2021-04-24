@@ -143,6 +143,37 @@ class Similarity:
     else:
         return source[0] + ',' + target[0]
 
+  def compute_similarities(self, source, targets, similarity_metric, model='', model_name=''):
+    """
+        Calculate similarities between a clause and the targets
+
+        Args:
+            source(str): source predicate
+            target(str): target predicate
+       Returns:
+            a dataframe containing each pair similarity
+    """
+
+    if(similarity_metric == 'cosine'):
+      return self.cosine_similarities(source, targets)
+
+    if(similarity_metric == 'euclidean'):
+      return self.euclidean_distance(source, targets)
+            
+    if(similarity_metric == 'softcosine'):
+      return self.soft_cosine_similarities(source, targets, model)
+    
+    if(similarity_metric == 'wmd'):
+      return self.wmd_similarities(source, targets, model)
+            
+    if(similarity_metric == 'relax-wmd' and model_name==params.FASTTEXT):
+      return self.relaxed_wmd_similarities(source, targets, params.WIKIPEDIA_FASTTEXT_SPACY)
+
+    if(similarity_metric == 'relax-wmd' and model_name==params.WORD2VEC):
+      return self.relaxed_wmd_similarities(source, targets, params.GOOGLE_WORD2VEC_SPACY)
+
+    raise "Similarity metric not implemented."
+
   def cosine_similarities(self, source, target):
     """
         Calculate cosine similarity of embedded arrays

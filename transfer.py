@@ -3,6 +3,7 @@ from gensim.test.utils import datapath, get_tmpfile
 from ekphrasis.classes.segmenter import Segmenter
 from gensim.models import KeyedVectors, Word2Vec
 from collections import OrderedDict
+from similarity import Similarity
 import parameters as params
 from scipy import spatial
 from tqdm import tqdm
@@ -17,8 +18,11 @@ import re
 
 class Transfer:
 
-  def __init__(self, seg):
-    self.seg = seg
+  def __init__(self, segmenter, model, model_name):
+    self.seg = segmenter
+    self.model = model
+    self.model_name = model_name
+    self.similarity = Similarity(self.seg)
 
   def __is_compatible(self, source, target, constraints):
     """
@@ -38,12 +42,12 @@ class Transfer:
             return False
     return True
 
-  def build_fasttext_array(self, data, model, method=None, literals_mapping=False):
+  def __build_fasttext_array(self, data, method=None, literals_mapping=False):
     """
         Turn relations into a single array
 
         Args:
-            data(array): an array containing all predicates
+            data(array): an array containing predicates for each tree
             model(object): fasttext embedding model
             method(str): method to compact arrays of embedded words
        Returns:
@@ -63,7 +67,7 @@ class Transfer:
       for word in predicate.split():
         try:
           #temp.append(model.get_word_vector(word.lower().strip()))
-          temp.append(model.wv[word.lower().strip()])
+          temp.append(self.model.wv[word.lower().strip()])
         except:
           print('Word \'{}\' not present in pre-trained model'.format(word.lower().strip()))
           temp.append([0] * params.EMBEDDING_DIMENSION)
@@ -81,7 +85,7 @@ class Transfer:
         dict[example[0].rstrip()] = [predicate, example[1:]]
     return dict
 
-  def build_word2vec_array(self, data, model, method=None, literals_mapping=False):
+  def __build_word2vec_array(self, data, method=None, literals_mapping=False):
     """
         Turn relations into a single array
 
@@ -107,7 +111,7 @@ class Transfer:
       for word in predicate.split():
         try:
           #temp.append(model.get_word_vector(word.lower().strip()))
-          temp.append(model.wv[word.lower().strip()])
+          temp.append(self.model.wv[word.lower().strip()])
         except:
           print('Word \'{}\' not present in pre-trained model'.format(word.lower().strip()))
           temp.append([0] * params.EMBEDDING_DIMENSION)
@@ -125,7 +129,23 @@ class Transfer:
         dict[example[0].rstrip()] = [predicate, example[1:]]
     return dict
 
-  def create_constraints(self, sources, similarity, searchArgPermutation=False, allowSameTargetMap=False):
+  def __build_word_vectors(self, data, similarity_metric):
+    """
+        Create word vectors if needed (given the similarity metric)
+
+        Args:
+            data(list): all triples of predicates
+        Returns:
+            a dictionary of word vectors or a list of strings
+    """
+    if(similarity_metric in params.WORD_VECTOR_SIMILARITIES):
+      if(self.model_name == params.FASTTEXT):
+        return self.__build_fasttext_array(data, method=params.METHOD)
+      else:
+        return self.__build_word2vec_array(data, method=params.METHOD)
+    return data
+
+  def __create_constraints(self, sources, similarity, searchArgPermutation=False, allowSameTargetMap=False):
       """
         Create constraints to predicate mapping
 
@@ -157,7 +177,49 @@ class Transfer:
       return mapping
 
 
-  def map_predicates(self, sources, similarity, constraints=[], searchArgPermutation=False, allowSameTargetMap=False):
+  def __find_best_mapping(self, clause, targets, similarity_metric):
+    """
+
+    """
+    source = self.__build_word_vectors([utils.build_triple(clause)], similarity_metric)
+    similarities = self.similarity.compute_similarities(source, targets, similarity_metric, self.model, self.model_name)
+    
+  def map_predicates(self, similarity_metric, trees, targets, predicate, to_predicate, arity, experiment_title, recursion):
+
+    targets = utils.build_triples(targets)
+    targets = self.__build_word_vectors(targets, similarity_metric)
+    print(targets.keys())
+    print(len(targets[targets.keys()[0]]))
+    KSOAKSOPAKSOPAKSPOAS
+
+    mappings = {}
+    for tree in trees:
+      for i in range(len(tree.keys())):
+        #Process ith node
+        clauses = re.split(r',\s*(?![^()]*\))', tree[i])
+        for clause in clauses:
+          mappings[clause] = self.__find_best_mapping(clause, targets, similarity_metric)
+
+    # Map source predicates to targets and creates transfer file
+    mapping = transfer.map_predicates(nodes, similarities, allowSameTargetMap=params.ALLOW_SAME_TARGET_MAP)
+    #transfer.write_to_file_closest_distance(predicate, to_predicate, arity, mapping, 'experiments/' + experiment_title, recursion=recursion, allowSameTargetMap=params.ALLOW_SAME_TARGET_MAP)
+
+    #similarities.to_csv('experiments/{}/similarities_{}_{}.csv'.format(experiment_title, embeddingModel, similarityMetric))
+    #del similarities, preds_learned, mapping
+
+    #if(embeddingModel == 'word2vec'):
+    #    try:
+    #        del word2vec_sources, word2vec_targets
+    #    except NameError:
+    #        pass
+
+    #elif(embeddingModel == 'fasttext'):
+    #    try:
+    #        del fasttext_sources, fasttext_targets
+    #    except NameError:
+    #        pass
+
+  def map_predicates_bckp(self, sources, similarity, constraints=[], searchArgPermutation=False, allowSameTargetMap=False):
       """
         Sorts dataframe to obtain the closest target to a given source
 
