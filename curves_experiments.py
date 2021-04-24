@@ -21,6 +21,9 @@ import time
 import sys
 import os
 
+#TODO: apagar essa linha
+import gensim.downloader as api
+
 #verbose=True
 source_balanced = 1
 balanced = 1
@@ -34,6 +37,38 @@ seg = Segmenter(corpus="english")
 
 
 revision = TheoryRevision()
+
+def load_model(model_name):
+
+  if(model_name == 'fasttext'):
+    if not os.path.exists(params.WIKIPEDIA_FASTTEXT): 
+        raise ValueError("SKIP: You need to download the fasttext wikipedia model")
+
+    if 'loadedModel' not in locals():
+        logging.info('Loading fasttext model')
+        start = time.time()
+        #loadedModel = FastText.load_fasttext_format(params.WIKIPEDIA_FASTTEXT)
+        loadedModel = KeyedVectors.load_word2vec_format(params.WIKIPEDIA_FASTTEXT, binary=False, unicode_errors='ignore')
+
+        end = time.time()
+        logging.info('Time to load FastText model: {} seconds'.format(round(end-start, 2)))
+
+  elif(model_name == 'word2vec'):
+
+    #if not os.path.exists(params.GOOGLE_WORD2VEC): 
+    #    raise ValueError("SKIP: You need to download the google news model")
+
+    if 'loadedModel' not in locals():
+        logging.info('Loading word2vec model')
+        start = time.time()
+        #loadedModel = KeyedVectors.load_word2vec_format(params.GOOGLE_WORD2VEC, binary=True, unicode_errors='ignore')
+        loadedModel = api.load('word2vec-google-news-300')
+
+        end = time.time()
+        logging.info('Time to load Word2Vec model: {} seconds'.format(round(end-start, 2)))
+  else:
+    raise ValueError("SKIP: Embedding models must be 'fasttext' or 'word2vec'")
+  return loadedModel
 
 def train_and_test(background, train_pos, train_neg, train_facts, test_pos, test_neg, test_facts, refine=None, transfer=None):
     '''
@@ -210,46 +245,22 @@ def main():
                 if 'previous' in locals() and previous != embeddingModel:
                     del loadedModel
 
-                if(embeddingModel == 'fasttext'):
-                    if not os.path.exists(params.WIKIPEDIA_FASTTEXT): 
-                        raise ValueError("SKIP: You need to download the fasttext wikipedia model")
-
-                    if 'loadedModel' not in locals():
-                        logging.info('Loading fasttext model')
-                        start = time.time()
-                        #loadedModel = FastText.load_fasttext_format(params.WIKIPEDIA_FASTTEXT)
-                        loadedModel = KeyedVectors.load_word2vec_format(params.WIKIPEDIA_FASTTEXT, binary=False, unicode_errors='ignore')
-
-                        end = time.time()
-                        logging.info('Time to load FastText model: {} seconds'.format(round(end-start, 2)))
-
-                elif(embeddingModel == 'word2vec'):
-
-                    #if not os.path.exists(params.GOOGLE_WORD2VEC): 
-                    #    raise ValueError("SKIP: You need to download the google news model")
-
-                    if 'loadedModel' not in locals():
-                        logging.info('Loading word2vec model')
-                        start = time.time()
-                        #loadedModel = KeyedVectors.load_word2vec_format(params.GOOGLE_WORD2VEC, binary=True, unicode_errors='ignore')
-                        loadedModel = ''
-
-                        end = time.time()
-                        logging.info('Time to load Word2Vec model: {} seconds'.format(round(end-start, 2)))
-                else:
-                    raise ValueError("SKIP: Embedding models must be 'fasttext' or 'word2vec'")
-                
-                print(embeddingModel)
-                
+                loadedModel = load_model(embeddingModel)
                 transfer = Transfer(segmenter=seg, model=loadedModel, model_name=embeddingModel)
                 similarity = Similarity(seg)
+                
+                if(params.USE_LITERALS):
+                  preds_learned = [pred.split('(')[0] for pred in utils.sweep_tree(structured)]
+                  preds_learned = [pred.replace('+', '').replace('-', '').replace('.', '') for pred in bk[source] if pred.split('(')[0] in preds_learned]
+                  targets = [t.replace('.', '') for t in targets]
+
+                  constraints = transfer.map_literals(similarityMetric, preds_learned, targets)
 
                 # Map and transfer using the loaded embedding model
-                mapping  = transfer.map_predicates(similarityMetric, nodes, targets, predicate, to_predicate, arity, experiment_title, recursion)
+                mapping  = transfer.map_predicates(similarityMetric, nodes, targets)
                 transfer.write_to_file_closest_distance(predicate, to_predicate, arity, mapping, 'experiments/' + experiment_title, recursion=recursion, allowSameTargetMap=params.ALLOW_SAME_TARGET_MAP)
 
-                similarities.to_csv('experiments/{}/similarities_{}_{}.csv'.format(experiment_title, embeddingModel, similarityMetric))
-                del similarities, preds_learned, mapping
+                del nodes, mapping
 
                 # Set number of folds
                 n_folds = datasets.get_n_folds(target)

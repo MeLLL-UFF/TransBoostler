@@ -67,7 +67,7 @@ def build_triples(data):
     output.append(build_triple(d))
   return output
 
-def sweep_tree(structure, trees=[]):
+def sweep_tree(structure, preds=[]):
   """
       Sweep through the relational tree 
       to get all predicates learned 

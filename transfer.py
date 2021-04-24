@@ -140,9 +140,9 @@ class Transfer:
     """
     if(similarity_metric in params.WORD_VECTOR_SIMILARITIES):
       if(self.model_name == params.FASTTEXT):
-        return self.__build_fasttext_array(data, method=params.METHOD)
+        return self.__build_fasttext_array(data, method=params.METHOD, literals_mapping=params.USE_LITERALS)
       else:
-        return self.__build_word2vec_array(data, method=params.METHOD)
+        return self.__build_word2vec_array(data, method=params.METHOD, literals_mapping=params.USE_LITERALS)
     return data
 
   def __create_constraints(self, sources, similarity, searchArgPermutation=False, allowSameTargetMap=False):
@@ -177,93 +177,117 @@ class Transfer:
       return mapping
 
 
-  def __find_best_mapping(self, clause, targets, similarity_metric):
+  def __find_best_mapping(self, clause, targets, similarity_metric, targets_taken=[], constraints=[], allowSameTargetMap=False):
     """
+        Calculate pairs similarity and sorts dataframe to obtain the closest target to a given source
 
-    """
+        Args:
+            clause(str): source clause
+            targets(list): all targets found in the target domain
+            similarity_metric(str): similarity metric to be applied
+            targets_taken(list): forbidden target-predicates
+        Returns:
+            the closest target-predicate to the given source
+      """
     source = self.__build_word_vectors([utils.build_triple(clause)], similarity_metric)
     similarities = self.similarity.compute_similarities(source, targets, similarity_metric, self.model, self.model_name)
-    
-  def map_predicates(self, similarity_metric, trees, targets, predicate, to_predicate, arity, experiment_title, recursion):
+    similarities.to_csv('{}_{}_similarities.csv'.format(clause, similarity_metric))
+
+    targets_taken = {}
+    best_mapping = ''
+    indexes = similarities.index.tolist()
+
+    for index in tqdm(indexes):
+      index = re.split(r',\s*(?![^()]*\))', index)
+      source, target = index[0].rstrip(), index[1].rstrip()
+
+      # Literals must match
+      if(constraints and not self.__is_compatible(source, target, constraints)):
+        continue
+      
+      if(allowSameTargetMap):
+        return target, targets_taken
+      else:
+        if(target in targets_taken):
+          continue
+        else:
+          targets_taken[target] = 0
+          best_mapping = target
+      
+    return best_mapping, targets_taken
+
+  def map_literals(self, similarity_metric, preds_learned, targets):
+    """
+      Create mappings from literals found in source domain to literals found in target domain
+
+      Args:
+          similarity_metric(str): similarity metric to be applied
+          preds_learned(list): all predicates learned from source domain
+          target(list): all predicates found in target domain
+      Returns:
+          all sources mapped to the its closest target-predicate
+    """
+
+    source_literals = utils.get_all_literals(preds_learned)
+    target_literals = utils.get_all_literals(targets)
+
+    sources = self.__build_word_vectors(source_literals, similarity_metric)
+    targets = self.__build_word_vectors(target_literals, similarity_metric)
+
+    similarities = self.similarity.compute_similarities(sources, targets, similarity_metric, self.model, self.model_name)
+
+    constraints, literals_taken = {}, {}
+    indexes = similarities.index.tolist()
+
+    for index in tqdm(indexes):
+        index = re.split(r',\s*(?![^()]*\))', index)
+        source_literal, target_literal = index[0].rstrip(), index[1].rstrip()
+
+        if(source_literal in constraints or source_literal not in sources):
+          continue
+
+        if(target_literal in literals_taken):
+          continue
+        else:
+          constraints[source_literal] = target_literal
+          literals_taken[target_literal] = 0
+
+        if(len(constraints) == len(sources)):
+          # All source literals mapped to a target literal
+          break
+
+      # Adds source predicates to be mapped to 'empty'
+      #for s in sources:
+      #  if(s not in mapping):
+      #    mapping[s] = ''
+
+    del indexes
+    return constraints
+
+  def map_predicates(self, similarity_metric, trees, targets):
+    """
+      Create mappings from source to target predicates
+
+      Args:
+          similarity_metric(str): similarity metric to be applied
+          trees(list): all clauses learned from the source domain
+          targets(list): all predicates found in the target domain
+      Returns:
+          all sources mapped to the its closest target-predicate
+    """
 
     targets = utils.build_triples(targets)
     targets = self.__build_word_vectors(targets, similarity_metric)
-    print(targets.keys())
-    print(len(targets[targets.keys()[0]]))
-    KSOAKSOPAKSOPAKSPOAS
 
-    mappings = {}
+    mappings, targets_taken = {}, {}
     for tree in trees:
       for i in range(len(tree.keys())):
         #Process ith node
         clauses = re.split(r',\s*(?![^()]*\))', tree[i])
         for clause in clauses:
-          mappings[clause] = self.__find_best_mapping(clause, targets, similarity_metric)
-
-    # Map source predicates to targets and creates transfer file
-    mapping = transfer.map_predicates(nodes, similarities, allowSameTargetMap=params.ALLOW_SAME_TARGET_MAP)
-    #transfer.write_to_file_closest_distance(predicate, to_predicate, arity, mapping, 'experiments/' + experiment_title, recursion=recursion, allowSameTargetMap=params.ALLOW_SAME_TARGET_MAP)
-
-    #similarities.to_csv('experiments/{}/similarities_{}_{}.csv'.format(experiment_title, embeddingModel, similarityMetric))
-    #del similarities, preds_learned, mapping
-
-    #if(embeddingModel == 'word2vec'):
-    #    try:
-    #        del word2vec_sources, word2vec_targets
-    #    except NameError:
-    #        pass
-
-    #elif(embeddingModel == 'fasttext'):
-    #    try:
-    #        del fasttext_sources, fasttext_targets
-    #    except NameError:
-    #        pass
-
-  def map_predicates_bckp(self, sources, similarity, constraints=[], searchArgPermutation=False, allowSameTargetMap=False):
-      """
-        Sorts dataframe to obtain the closest target to a given source
-
-        Args:
-            source(array): all predicates from source dataset
-            similarity(dataframe): a pandas dataframe containing every pair (source, target) similarity
-        Returns:
-            a dictionary containing all predicates mapped
-      """
-
-      target_mapped, mapping = [], {}
-      indexes = similarity.index.tolist()
-      
-      for index in tqdm(indexes):
-        index = re.split(r',\s*(?![^()]*\))', index)
-        source, target = index[0].rstrip(), index[1].rstrip()
-
-        if(source in mapping or source not in sources):
-          continue
-        
-        # Literals must match
-        if(constraints and not self.__is_compatible(source, target, constraints)):
-          continue
-
-        if(allowSameTargetMap):
-          mapping[source] = target
-        else:
-          if(target in target_mapped):
-            continue
-          else:
-            mapping[source] = target
-            target_mapped.append(target)
-
-        if(len(mapping) == len(sources)):
-          # All sources mapped to a target
-          break
-
-      # Adds source predicates to be mapped to 'empty'
-      for s in sources:
-        if(s not in mapping):
-          mapping[s] = ''
-
-      del indexes
-      return mapping
+          if(clause.split('(')[0] not in mappings):
+            mappings[clause.split('(')[0]], targets_taken = self.__find_best_mapping(clause, targets, similarity_metric, targets_taken)
+    return mappings
 
   def write_to_file_closest_distance(self, from_predicate, to_predicate, arity, mapping, filename, recursion=False, searchArgPermutation=False, searchEmpty=False, allowSameTargetMap=False):
     """
