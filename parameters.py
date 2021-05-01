@@ -5,7 +5,7 @@ WORD2VEC = 'word2vec'
 GOOGLE_WORD2VEC = 'word2vec/GoogleNews-vectors-negative300.bin'
 GOOGLE_WORD2VEC_SPACY = 'word2vec/spacy'
 
-WIKIPEDIA_FASTTEXT_PATH = 'fasttext/wiki.en.vec'
+WIKIPEDIA_FASTTEXT = 'fasttext/wiki.en.vec'
 WIKIPEDIA_FASTTEXT_SPACY = 'fasttext/spacy'
 
 USE_LITERALS = True
