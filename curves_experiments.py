@@ -21,9 +21,6 @@ import time
 import sys
 import os
 
-#TODO: apagar essa linha
-import gensim.downloader as api
-
 #verbose=True
 source_balanced = 1
 balanced = 1
@@ -34,7 +31,6 @@ learn_from_source = True
 
 # Segmenter using the word statistics from Wikipedia
 seg = Segmenter(corpus="english")
-
 
 revision = TheoryRevision()
 
@@ -61,8 +57,7 @@ def load_model(model_name):
     if 'loadedModel' not in locals():
         logging.info('Loading word2vec model')
         start = time.time()
-        #loadedModel = KeyedVectors.load_word2vec_format(params.GOOGLE_WORD2VEC, binary=True, unicode_errors='ignore')
-        loadedModel = api.load('word2vec-google-news-300')
+        loadedModel = KeyedVectors.load_word2vec_format(params.GOOGLE_WORD2VEC, binary=True, unicode_errors='ignore')
 
         end = time.time()
         logging.info('Time to load Word2Vec model: {} seconds'.format(round(end-start, 2)))
@@ -216,7 +211,7 @@ def main():
                 copyfile(os.getcwd() + '/experiments/{}_{}_{}/{}'.format(_id, source, target, params.REFINE_FILENAME.split('/')[1]), os.getcwd() + '/' + params.REFINE_FILENAME)
                 
             # Get the list of predicates from source tree          
-            nodes = utils.deep_first_search_nodes(structured)
+            nodes = utils.deep_first_search_nodes(structured, utils.match_bk_source(set(bk[source])))
 
             # Get targets
             targets = [t.replace('.', '').replace('+', '').replace('-', '') for t in set(bk[target]) if t.split('(')[0] != to_predicate and 'recursion_' not in t]
@@ -245,10 +240,13 @@ def main():
                 if 'previous' in locals() and previous != embeddingModel:
                     del loadedModel
 
+                start = time.time()
+
                 loadedModel = load_model(embeddingModel)
                 transfer = Transfer(segmenter=seg, model=loadedModel, model_name=embeddingModel)
                 similarity = Similarity(seg)
                 
+                constraints = {}
                 if(params.USE_LITERALS):
                   preds_learned = [pred.split('(')[0] for pred in utils.sweep_tree(structured)]
                   preds_learned = [pred.replace('+', '').replace('-', '').replace('.', '') for pred in bk[source] if pred.split('(')[0] in preds_learned]
@@ -257,10 +255,13 @@ def main():
                   constraints = transfer.map_literals(similarityMetric, preds_learned, targets)
 
                 # Map and transfer using the loaded embedding model
-                mapping  = transfer.map_predicates(similarityMetric, nodes, targets)
+                mapping  = transfer.map_predicates(similarityMetric, nodes, targets, constraints)
                 transfer.write_to_file_closest_distance(predicate, to_predicate, arity, mapping, 'experiments/' + experiment_title, recursion=recursion, allowSameTargetMap=params.ALLOW_SAME_TARGET_MAP)
 
                 del nodes, mapping
+
+                end = time.time()
+                mapping_time = end-start
 
                 # Set number of folds
                 n_folds = datasets.get_n_folds(target)
@@ -300,7 +301,7 @@ def main():
                             model, t_results, learning_time, inference_time = train_and_test(background, part_tar_train_pos, part_tar_train_neg, tar_train_facts, tar_test_pos, tar_test_neg, tar_test_facts, params.REFINE_FILENAME, params.TRANSFER_FILENAME)
                             del model
                             
-                        utils.show_results(utils.get_results_dict(t_results, learning_time, inference_time))
+                        utils.show_results(utils.get_results_dict(t_results, learning_time+mapping_time, inference_time))
 
                         transboostler_experiments[embeddingModel][similarityMetric][amount]['CLL'].append(t_results['CLL'])
                         transboostler_experiments[embeddingModel][similarityMetric][amount]['AUC ROC'].append(t_results['AUC ROC'])

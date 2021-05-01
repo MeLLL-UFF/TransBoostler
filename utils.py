@@ -12,7 +12,6 @@ import re
 import logging
 logging.basicConfig(level=logging.INFO, format="%(message)s", handlers=[logging.FileHandler("app.log"),logging.StreamHandler()])
 
-
 def get_all_literals(predicates):
     """
         Get all literals of source/target predicates
@@ -37,21 +36,21 @@ def build_triple(triple):
           relation as a three-element array
 
       Example:
-          movie(A) -> movie, A, ''
-          father(A,B) -> father, A, B
+          movie(A) -> movie, [A]
+          father(A,B) -> father, [A, B]
   """
 
   triple = triple.replace('.','').split('(')
   predicate = triple[0]
 
-  if(',' in triple[1]):
-    predicate_literal_1 = triple[1].split(',')[0].replace('(', '').replace('+', '').replace('-', '')
-    predicate_literal_2 = triple[1].split(',')[1].split(')')[0].replace('+', '').replace('-', '')
-  else:
-    predicate_literal_1 = triple[1].split(',')[0].replace(')', '').replace('+', '').replace('-', '')
-    predicate_literal_2 = ''
+  # if(',' in triple[1]):
+  #   predicate_literal_1 = triple[1].split(',')[0].replace('(', '').replace('+', '').replace('-', '')
+  #   predicate_literal_2 = triple[1].split(',')[1].split(')')[0].replace('+', '').replace('-', '')
+  # else:
+  #   predicate_literal_1 = triple[1].split(',')[0].replace(')', '').replace('+', '').replace('-', '')
+  #   predicate_literal_2 = ''
 
-  return [predicate, predicate_literal_1, predicate_literal_2]
+  return [predicate, triple[1].replace('(', '').replace(')', '').replace('+', '').replace('-', '').split(',')]
 
 def build_triples(data):
   """
@@ -100,8 +99,23 @@ def sweep_tree(structure, preds=[]):
   else:
     return preds
 
+def match_bk_source(sources):
+  """
+      Match nodes to source background
 
-def deep_first_search_nodes(structure, trees=[]):
+      Args:
+          nodes(dict): dictionary with nodes in order of depth
+          sources(list): all predicates found in source background
+      Returns:
+          all nodes learned by the model
+  """
+  source_match = {}
+  for source in sources:
+    if(source.split('(')[0] not in source_match):
+      source_match[source.split('(')[0]] = source.replace('.', '').replace('+', '').replace('-', '')
+  return source_match
+
+def deep_first_search_nodes(structure, matches={}, trees=[]):
   """
       Uses Deep-First Search to return all nodes
 
@@ -113,14 +127,14 @@ def deep_first_search_nodes(structure, trees=[]):
   """
   if(isinstance(structure, list)):
     for element in structure:
-      trees = deep_first_search_nodes(element, trees)
+      trees = deep_first_search_nodes(element, matches, trees)
     return trees
   elif(isinstance(structure, dict)):
     node_number = 0
     nodes = {}
     for key in structure:
       if(isinstance(structure[key], str)):
-        nodes[node_number] = structure[key]
+        nodes[node_number] = matches.get(structure[key].split('(')[0], structure[key])
         node_number += 1
     if(nodes):
       trees.append(nodes)

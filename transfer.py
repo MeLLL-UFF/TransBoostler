@@ -42,7 +42,7 @@ class Transfer:
             return False
     return True
 
-  def __build_fasttext_array(self, data, method=None, literals_mapping=False):
+  def __build_fasttext_array(self, data, mapping_literals=False):
     """
         Turn relations into a single array
 
@@ -67,25 +67,22 @@ class Transfer:
       for word in predicate.split():
         try:
           #temp.append(model.get_word_vector(word.lower().strip()))
-          temp.append(self.model.wv[word.lower().strip()])
+          temp.append(self.model[word.lower().strip()])
         except:
           print('Word \'{}\' not present in pre-trained model'.format(word.lower().strip()))
           temp.append([0] * params.EMBEDDING_DIMENSION)
 
       predicate = temp.copy()
-      if(method):
-        predicate = utils.single_array(temp, method)
+      if(params.METHOD):
+        predicate = utils.single_array(temp, params.METHOD)
 
-      if(len(example) > 2 and example[2] == ''):
-        example.remove('')
-
-      if(literals_mapping):
-        dict[example.rstrip()] = [predicate]
+      if(mapping_literals):
+        dict[example.strip()] = [predicate, []]
       else:
-        dict[example[0].rstrip()] = [predicate, example[1:]]
+        dict[example[0].strip()] = [predicate, example[1]]
     return dict
 
-  def __build_word2vec_array(self, data, method=None, literals_mapping=False):
+  def __build_word2vec_array(self, data, mapping_literals=False):
     """
         Turn relations into a single array
 
@@ -111,25 +108,22 @@ class Transfer:
       for word in predicate.split():
         try:
           #temp.append(model.get_word_vector(word.lower().strip()))
-          temp.append(self.model.wv[word.lower().strip()])
+          temp.append(self.model[word.lower().strip()])
         except:
           print('Word \'{}\' not present in pre-trained model'.format(word.lower().strip()))
           temp.append([0] * params.EMBEDDING_DIMENSION)
 
       predicate = temp.copy()
-      if(method):
-        predicate = utils.single_array(temp, method)
-
-      if(len(example) > 2 and example[2] == ''):
-        example.remove('')
+      if(params.METHOD):
+        predicate = utils.single_array(temp, params.METHOD)
         
-      if(isinstance(example, str)):
-        dict[example.rstrip()] = [predicate, '']
+      if(mapping_literals):
+        dict[example.strip()] = [predicate, []]
       else:
-        dict[example[0].rstrip()] = [predicate, example[1:]]
+        dict[example[0].strip()] = [predicate, example[1]]
     return dict
 
-  def __build_word_vectors(self, data, similarity_metric):
+  def __build_word_vectors(self, data, similarity_metric, mapping_literals=False):
     """
         Create word vectors if needed (given the similarity metric)
 
@@ -140,9 +134,9 @@ class Transfer:
     """
     if(similarity_metric in params.WORD_VECTOR_SIMILARITIES):
       if(self.model_name == params.FASTTEXT):
-        return self.__build_fasttext_array(data, method=params.METHOD, literals_mapping=params.USE_LITERALS)
+        return self.__build_fasttext_array(data, mapping_literals=mapping_literals)
       else:
-        return self.__build_word2vec_array(data, method=params.METHOD, literals_mapping=params.USE_LITERALS)
+        return self.__build_word2vec_array(data, mapping_literals=mapping_literals)
     return data
 
   def __create_constraints(self, sources, similarity, searchArgPermutation=False, allowSameTargetMap=False):
@@ -177,7 +171,7 @@ class Transfer:
       return mapping
 
 
-  def __find_best_mapping(self, clause, targets, similarity_metric, targets_taken=[], constraints=[], allowSameTargetMap=False):
+  def __find_best_mapping(self, clause, targets, similarity_metric, constraints, targets_taken={}, allowSameTargetMap=False):
     """
         Calculate pairs similarity and sorts dataframe to obtain the closest target to a given source
 
@@ -191,10 +185,8 @@ class Transfer:
       """
     source = self.__build_word_vectors([utils.build_triple(clause)], similarity_metric)
     similarities = self.similarity.compute_similarities(source, targets, similarity_metric, self.model, self.model_name)
-    similarities.to_csv('{}_{}_similarities.csv'.format(clause, similarity_metric))
+    #similarities.to_csv('{}_{}_similarities.csv'.format(clause, similarity_metric))
 
-    targets_taken = {}
-    best_mapping = ''
     indexes = similarities.index.tolist()
 
     for index in tqdm(indexes):
@@ -212,9 +204,7 @@ class Transfer:
           continue
         else:
           targets_taken[target] = 0
-          best_mapping = target
-      
-    return best_mapping, targets_taken
+          return target, targets_taken
 
   def map_literals(self, similarity_metric, preds_learned, targets):
     """
@@ -231,8 +221,8 @@ class Transfer:
     source_literals = utils.get_all_literals(preds_learned)
     target_literals = utils.get_all_literals(targets)
 
-    sources = self.__build_word_vectors(source_literals, similarity_metric)
-    targets = self.__build_word_vectors(target_literals, similarity_metric)
+    sources = self.__build_word_vectors(source_literals, similarity_metric, mapping_literals=True)
+    targets = self.__build_word_vectors(target_literals, similarity_metric, mapping_literals=True)
 
     similarities = self.similarity.compute_similarities(sources, targets, similarity_metric, self.model, self.model_name)
 
@@ -264,7 +254,7 @@ class Transfer:
     del indexes
     return constraints
 
-  def map_predicates(self, similarity_metric, trees, targets):
+  def map_predicates(self, similarity_metric, trees, targets, constraints={}):
     """
       Create mappings from source to target predicates
 
@@ -272,6 +262,8 @@ class Transfer:
           similarity_metric(str): similarity metric to be applied
           trees(list): all clauses learned from the source domain
           targets(list): all predicates found in the target domain
+          constraints(dict): literals mapping
+
       Returns:
           all sources mapped to the its closest target-predicate
     """
@@ -285,8 +277,8 @@ class Transfer:
         #Process ith node
         clauses = re.split(r',\s*(?![^()]*\))', tree[i])
         for clause in clauses:
-          if(clause.split('(')[0] not in mappings):
-            mappings[clause.split('(')[0]], targets_taken = self.__find_best_mapping(clause, targets, similarity_metric, targets_taken)
+          if(clause not in mappings):
+            mappings[clause], targets_taken = self.__find_best_mapping(clause, targets, similarity_metric, constraints, targets_taken)
     return mappings
 
   def write_to_file_closest_distance(self, from_predicate, to_predicate, arity, mapping, filename, recursion=False, searchArgPermutation=False, searchEmpty=False, allowSameTargetMap=False):

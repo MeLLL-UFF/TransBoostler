@@ -137,7 +137,8 @@ class Similarity:
        Returns:
             a string corresponding that corresponds to the mapping
     """
-    if(source[1] != ''):
+
+    if(len(source) > 1 and source[1]):
         return source[0] + '(' + ','.join(source[1]) + ')' + ',' + target[0] + '(' + ','.join(target[1]) + ')'
         #key = s + '(' + ','.join([chr(65+i) for i in range(len(source[s][1]))]) + ')' + ',' + t + '(' + ','.join([chr(65+i) for i in range(len(target[t][1]))]) + ')'
     else:
@@ -191,10 +192,10 @@ class Similarity:
       for t in tqdm(target):
 
       	# Predicates must have the same arity
-        if(len(source[s][1]) != len(target[t][1])):
+        if(len(source[s]) > 1 and len(source[s][1]) != len(target[t][1])):
           continue
         
-        key = self.__create_key([s, source[s][1]], [t, target[t][1]])
+        key = self.__create_key([s, source[s][1:]], [t, target[t][1:]])
 
         if(len(source[s][0]) != len(target[t][0])):
           source[s][0], target[t][0] = utils.set_to_same_size(source[s][0], target[t][0], params.EMBEDDING_DIMENSION)
@@ -219,13 +220,10 @@ class Similarity:
 
     similarity = {}
     for source in tqdm(sources):
-        if(len(source) > 2 and source[2] == ''): source.remove('')
         for target in tqdm(targets):
 
-            if(len(target) > 2 and target[2] == ''): target.remove('')
-
       	    # Predicates must have the same arity
-            if(len(source[1:]) != len(target[1:])): 
+            if(len(source) > 1 and len(source[1]) != len(target[1])): 
               continue
 
             key = self.__create_key(source, target)
@@ -268,13 +266,10 @@ class Similarity:
 
     similarity = {}
     for source in tqdm(sources):
-      if(len(source) > 2 and source[2] == ''): source.remove('')
       for target in tqdm(targets):
 
-        if(len(target) > 2 and target[2] == ''): target.remove('')
-
         # Predicates must have the same arity
-        if(len(source[1:]) != len(target[1:])):
+        if(len(source) > 1 and len(source[1]) != len(target[1])):
           continue
 
         key = self.__create_key(source, target)
@@ -303,13 +298,10 @@ class Similarity:
 
       similarity = {}
       for source in tqdm(sources):
-        if(len(source) > 2 and source[2] == ''): source.remove('')
         for target in tqdm(targets):
 
-            if(len(target) > 2 and target[2] == ''): target.remove('')
-
       	    # Predicates must have the same arity
-            if(len(source[1:]) != len(target[1:])): 
+            if(len(source) > 1 and len(source[1]) != len(target[1])): 
               continue
           
             key = self.__create_key(source, target)
@@ -345,17 +337,17 @@ class Similarity:
 	        targets(list): all word embeddings from the target dataset
 	    Returns:
 	        a pandas dataframe containing every pair (source, target) similarity
-	"""
+    """
 
     similarity = {}
     for s in tqdm(sources):
       for t in tqdm(targets):
 
-      	# Predicates must have the same arity
-        if(len(sources[s][1]) != len(targets[t][1])):
+        # Predicates must have the same arity
+        if(len(sources[s]) > 1 and len(sources[s][1]) != len(targets[t][1])):
           continue
-
-        key = self.__create_key([s, sources[s][1]], [t, targets[t][1]])
+          
+        key = self.__create_key([s, sources[s][1:]], [t, targets[t][1:]])
 
         if(len(sources[s][0]) != len(targets[t][0]) and params.METHOD):
           sources[s][0], targets[t][0] = utils.set_to_same_size(sources[s][0], targets[t][0], params.EMBEDDING_DIMENSION)
