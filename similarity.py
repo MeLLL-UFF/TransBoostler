@@ -195,7 +195,7 @@ class Similarity:
         if(len(source[s]) > 1 and len(source[s][1]) != len(target[t][1])):
           continue
         
-        key = self.__create_key([s, source[s][1:]], [t, target[t][1:]])
+        key = self.__create_key([s, source[s][1]], [t, target[t][1]])
 
         if(len(source[s][0]) != len(target[t][0])):
           source[s][0], target[t][0] = utils.set_to_same_size(source[s][0], target[t][0], params.EMBEDDING_DIMENSION)
@@ -346,8 +346,8 @@ class Similarity:
         # Predicates must have the same arity
         if(len(sources[s]) > 1 and len(sources[s][1]) != len(targets[t][1])):
           continue
-          
-        key = self.__create_key([s, sources[s][1:]], [t, targets[t][1:]])
+
+        key = self.__create_key([s, sources[s][1]], [t, targets[t][1]])
 
         if(len(sources[s][0]) != len(targets[t][0]) and params.METHOD):
           sources[s][0], targets[t][0] = utils.set_to_same_size(sources[s][0], targets[t][0], params.EMBEDDING_DIMENSION)
