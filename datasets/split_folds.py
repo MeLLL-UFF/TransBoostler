@@ -18,6 +18,7 @@ balanced = 1
 
 for experiment in experiments:
 
+
     experiment_title = experiment['id'] + '_' + experiment['source'] + '_' + experiment['target']
     logging.info('Experiment {} \n'.format(experiment_title))
 
@@ -28,6 +29,10 @@ for experiment in experiments:
     to_predicate = experiment['to_predicate']
     arity = experiment['arity']
 
+    if os.path.exists(os.getcwd() + '/folds/{}'.format(target)):
+        continue
+    os.makedirs(os.getcwd() + '/folds/{}'.format(target))
+    
     # Load predicate target dataset
     tar_data = datasets.load(target, bk[target], target=to_predicate, balanced=balanced, seed=params.SEED)
 
@@ -58,8 +63,6 @@ for experiment in experiments:
         logging.info('Target test pos examples: %s' % len(tar_test_pos))
         logging.info('Target test neg examples: %s\n' % len(tar_test_neg))
 
-        if not os.path.exists(os.getcwd() + '/folds/{}'.format(target)):
-            os.makedirs(os.getcwd() + '/folds/{}'.format(target))
         os.makedirs(os.getcwd() + '/folds/{}/fold_{}'.format(target,i+1))
 
         # Write train folds into txt
