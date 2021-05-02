@@ -37,8 +37,11 @@ def create_fasttext_spacy_file():
     else:
 
         model = KeyedVectors.load_word2vec_format('/'.join([directory, 'fasttext/wiki.en.vec']), binary=False)
-        os.mkdir('/'.join([directory, 'fasttext/spacy']))
-        model.wv.save_word2vec_format('/'.join([directory,'fasttext/spacy/wiki.txt']), binary=False)
+
+        if(not os.path.exists(os.path.exists('/'.join([directory, 'fasttext/spacy'])))):
+            os.mkdir('/'.join([directory, 'fasttext/spacy']))
+        
+        model.save_word2vec_format('/'.join([directory,'fasttext/spacy/wiki.txt']), binary=False)
         
         call_process('cd ..; python3 -m spacy init vectors en fasttext/spacy/wiki.txt  fasttext/spacy/ --name en_wiki.vectors --verbose')
     

@@ -36,9 +36,12 @@ def create_word2vec_spacy_file():
         
     else:
         
-        model = KeyedVectors.load_word2vec_format('/'.join([directory, '/word2vec/GoogleNews-vectors-negative300.bin']), binary=True)
-        os.mkdir('/'.join([directory, '/word2vec/spacy']))
-        model.wv.save_word2vec_format('/'.join([directory, '/word2vec/GoogleNews-vectors-negative300.bin']), binary=False)
+        model = KeyedVectors.load_word2vec_format('/'.join([directory, '/word2vec/GoogleNews-vectors-negative300.bin']), binary=True, unicode_errors='ignore')
+        
+        if(not os.path.exists(os.path.exists('/'.join([directory, 'word2vec/spacy'])))):
+            os.mkdir('/'.join([directory, 'word2vec/spacy']))
+
+        model.save_word2vec_format('/'.join([directory, '/word2vec/spacy/googlenews.txt']), binary=False)
         
         call_process('cd ..; python3 -m spacy init vectors en word2vec/spacy/googlenews.txt  word2vec/spacy/ --name en_googlenews.vectors --verbose')
     
