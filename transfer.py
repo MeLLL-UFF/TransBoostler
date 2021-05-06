@@ -137,6 +137,7 @@ class Transfer:
         return self.__build_fasttext_array(data, mapping_literals=mapping_literals)
       else:
         return self.__build_word2vec_array(data, mapping_literals=mapping_literals)
+      raise 'In build_words_vectors: model should  be \'fasttext\' or \'word2vec\''
     return data
 
   def __create_constraints(self, sources, similarity, searchArgPermutation=False, allowSameTargetMap=False):
@@ -183,9 +184,11 @@ class Transfer:
         Returns:
             the closest target-predicate to the given source
       """
-    source = self.__build_word_vectors([utils.build_triple(clause)], similarity_metric)
+
+    source  = self.__build_word_vectors([utils.build_triple(clause)], similarity_metric, params.USE_LITERALS)
+    
     similarities = self.similarity.compute_similarities(source, targets, similarity_metric, self.model, self.model_name)
-    #similarities.to_csv('{}_{}_similarities.csv'.format(clause, similarity_metric))
+    similarities.to_csv('experiments/similarities/{}/{}/{}_similarities.csv'.format(self.model_name, similarity_metric, clause.split('(')[0]))
 
     indexes = similarities.index.tolist()
 
@@ -205,6 +208,7 @@ class Transfer:
         else:
           targets_taken[target] = 0
           return target, targets_taken
+    return '', targets_taken
 
   def map_literals(self, similarity_metric, preds_learned, targets):
     """
@@ -221,8 +225,8 @@ class Transfer:
     source_literals = utils.get_all_literals(preds_learned)
     target_literals = utils.get_all_literals(targets)
 
-    sources = self.__build_word_vectors(source_literals, similarity_metric, mapping_literals=True)
-    targets = self.__build_word_vectors(target_literals, similarity_metric, mapping_literals=True)
+    sources = self.__build_word_vectors(source_literals, mapping_literals=True)
+    targets = self.__build_word_vectors(target_literals, mapping_literals=True)
 
     similarities = self.similarity.compute_similarities(sources, targets, similarity_metric, self.model, self.model_name)
 
@@ -254,7 +258,7 @@ class Transfer:
     del indexes
     return constraints
 
-  def map_predicates(self, similarity_metric, trees, targets, constraints={}):
+  def map_predicates(self, similarity_metric, trees, targets, constraints):
     """
       Create mappings from source to target predicates
 
@@ -262,14 +266,14 @@ class Transfer:
           similarity_metric(str): similarity metric to be applied
           trees(list): all clauses learned from the source domain
           targets(list): all predicates found in the target domain
-          constraints(dict): literals mapping
+          constraints(dict): literals mapping (if enabled)
 
       Returns:
           all sources mapped to the its closest target-predicate
     """
 
     targets = utils.build_triples(targets)
-    targets = self.__build_word_vectors(targets, similarity_metric)
+    targets = self.__build_word_vectors(targets, similarity_metric, params.USE_LITERALS)
 
     mappings, targets_taken = {}, {}
     for tree in trees:
@@ -281,7 +285,7 @@ class Transfer:
             mappings[clause], targets_taken = self.__find_best_mapping(clause, targets, similarity_metric, constraints, targets_taken)
     return mappings
 
-  def write_to_file_closest_distance(self, from_predicate, to_predicate, arity, mapping, filename, recursion=False, searchArgPermutation=False, searchEmpty=False, allowSameTargetMap=False):
+  def write_to_file_closest_distance(self, similarity_metric, from_predicate, to_predicate, arity, mapping, filename, recursion=False, searchArgPermutation=False, searchEmpty=False, allowSameTargetMap=False):
     """
           Sorts dataframe to obtain the closest target to a given source
 
@@ -308,7 +312,7 @@ class Transfer:
       #file.write('setParam:searchEmpty=' + str(searchEmpty).lower() + '.\n')
       file.write('setParam:allowSameTargetMap=' + str(allowSameTargetMap).lower() + '.\n')
 
-    with open(filename + '/transfer.txt', 'w') as file:
+    with open(filename + '/transfer_{}.txt'.format(similarity_metric), 'w') as file:
       for source in mapping.keys():
         if(mapping[source] != ''):
           file.write((source.replace('`', '') + ': ' +  mapping[source]).replace('`', ''))

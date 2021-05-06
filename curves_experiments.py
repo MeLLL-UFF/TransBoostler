@@ -51,8 +51,8 @@ def load_model(model_name):
 
   elif(model_name == 'word2vec'):
 
-    #if not os.path.exists(params.GOOGLE_WORD2VEC): 
-    #    raise ValueError("SKIP: You need to download the google news model")
+    if not os.path.exists(params.GOOGLE_WORD2VEC): 
+        raise ValueError("SKIP: You need to download the google news model")
 
     if 'loadedModel' not in locals():
         logging.info('Loading word2vec model')
@@ -63,6 +63,7 @@ def load_model(model_name):
         logging.info('Time to load Word2Vec model: {} seconds'.format(round(end-start, 2)))
   else:
     raise ValueError("SKIP: Embedding models must be 'fasttext' or 'word2vec'")
+
   return loadedModel
 
 def train_and_test(background, train_pos, train_neg, train_facts, test_pos, test_neg, test_facts, refine=None, transfer=None):
@@ -237,14 +238,14 @@ def main():
 
                 logging.info('Starting experiments for {} using {} \n'.format(embeddingModel, similarityMetric))
             
-                if 'previous' in locals() and previous != embeddingModel:
-                    del loadedModel
+                if('previous' not in locals() or previous != embeddingModel):
+                    loadedModel = load_model(embeddingModel)
+                    previous = embeddingModel
 
-                start = time.time()
-
-                loadedModel = load_model(embeddingModel)
                 transfer = Transfer(segmenter=seg, model=loadedModel, model_name=embeddingModel)
                 similarity = Similarity(seg)
+                
+                start = time.time()
                 
                 constraints = {}
                 if(params.USE_LITERALS):
@@ -256,9 +257,7 @@ def main():
 
                 # Map and transfer using the loaded embedding model
                 mapping  = transfer.map_predicates(similarityMetric, nodes, targets, constraints)
-                transfer.write_to_file_closest_distance(predicate, to_predicate, arity, mapping, 'experiments/' + experiment_title, recursion=recursion, allowSameTargetMap=params.ALLOW_SAME_TARGET_MAP)
-
-                del nodes, mapping
+                transfer.write_to_file_closest_distance(similarityMetric, predicate, to_predicate, arity, mapping, 'experiments/' + experiment_title, recursion=recursion, allowSameTargetMap=params.ALLOW_SAME_TARGET_MAP)
 
                 end = time.time()
                 mapping_time = end-start

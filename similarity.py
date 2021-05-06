@@ -333,7 +333,7 @@ class Similarity:
 	    using Euclidean Distance for all possible pairs (source, target)
 
 	    Args:
-	        sources(list): all word embeddings from the source dataset
+	        sources(dict): all word embeddings from the source dataset
 	        targets(list): all word embeddings from the target dataset
 	    Returns:
 	        a pandas dataframe containing every pair (source, target) similarity
@@ -344,7 +344,7 @@ class Similarity:
       for t in tqdm(targets):
 
         # Predicates must have the same arity
-        if(len(sources[s]) > 1 and len(sources[s][1]) != len(targets[t][1])):
+        if(len(sources[s][1]) > 0 and len(sources[s][1]) != len(targets[t][1])):
           continue
 
         key = self.__create_key([s, sources[s][1]], [t, targets[t][1]])

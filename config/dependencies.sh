@@ -4,11 +4,12 @@ echo "Installing project dependencies.."
 pip3 install ekphrasis
 pip3 install gensim
 pip3 install git+git://github.com/ThaisLuca/boostsrl-python-package.git
+pip3 install git+git://github.com/ThaisLuca/wmd-relax
 pip3 install psutil
 pip3 install unidecode
 pip3 install pandas
 pip3 install pyemd
-pip3 install wmd
+
 
 pip3 install -U pip setuptools wheel
 pip3 install -U spacy
