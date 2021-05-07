@@ -16,6 +16,7 @@ import parameters as params
 import utils as utils
 import numpy as np
 import random
+import pickle
 import copy
 import time
 import sys
@@ -27,7 +28,7 @@ balanced = 1
 
 runTransBoostler = True
 runRDNB = False
-learn_from_source = True
+learn_from_source = False
 
 # Segmenter using the word statistics from Wikipedia
 seg = Segmenter(corpus="english")
@@ -127,6 +128,10 @@ def clean_previous_experiments_stuff():
     utils.delete_folder(params.TEST_FOLDER)
     utils.delete_folder(params.BEST_MODEL_FOLDER)
 
+def save_nodes_file(nodes, _id, source, target):
+    with open(os.getcwd() + '/experiments/{}_{}_{}/{}'.format(_id, source, target, params.SOURCE_TREE_NODES_FILES), 'wb') as file:
+        pickle.dump(nodes, file)
+
 def main():
 
     # Dictionaries to keep all experiments results
@@ -204,24 +209,27 @@ def main():
                     logging.info(w)
                 
                 del model
+
+                # Get the list of predicates from source tree          
+                nodes = utils.deep_first_search_nodes(structured, utils.match_bk_source(set(bk[source])))
+                save_nodes_file(nodes, _id, source, target)
+
+                # Get all rules learned by RDN-B
+                refine_structure = utils.get_all_rules_from_tree(structured)
+                utils.write_to_file(refine_structure, params.REFINE_FILENAME)
+                utils.write_to_file(refine_structure, os.getcwd() + '/experiments/{}_{}_{}/{}'.format(_id, source, target, params.REFINE_FILENAME.split('/')[1]))
             
             if(not learn_from_source):
+                logging.info('Loading pre-trained nodes.')
+
                 from shutil import copyfile
-                structured = ' '.join(open(os.getcwd() + '/experiments/{}_{}_{}/{}'.format(_id, source, target, params.REFINE_FILENAME.split('/')[1]), 'r').readlines())
-                structured = [p for p in bk[source] if p.split('(')[0] in structured]
                 copyfile(os.getcwd() + '/experiments/{}_{}_{}/{}'.format(_id, source, target, params.REFINE_FILENAME.split('/')[1]), os.getcwd() + '/' + params.REFINE_FILENAME)
-                
-            # Get the list of predicates from source tree          
-            nodes = utils.deep_first_search_nodes(structured, utils.match_bk_source(set(bk[source])))
+                with open(os.getcwd() + '/experiments/{}_{}_{}/{}'.format(_id, source, target, params.SOURCE_TREE_NODES_FILES), 'rb') as file:
+                    nodes = pickle.load(file)
 
             # Get targets
             targets = [t.replace('.', '').replace('+', '').replace('-', '') for t in set(bk[target]) if t.split('(')[0] != to_predicate and 'recursion_' not in t]
 
-            # Get all rules learned by RDN-B
-            refine_structure = utils.get_all_rules_from_tree(structured)
-            utils.write_to_file(refine_structure, params.REFINE_FILENAME)
-            utils.write_to_file(refine_structure, os.getcwd() + '/experiments/{}_{}_{}/{}'.format(_id, source, target, params.REFINE_FILENAME.split('/')[1]))
-            
             for setup in setups: 
                 embeddingModel = setup['model'].lower()
                 similarityMetric = setup['similarity_metric'].lower()

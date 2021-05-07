@@ -8,7 +8,7 @@ GOOGLE_WORD2VEC_SPACY = 'word2vec/spacy'
 WIKIPEDIA_FASTTEXT = 'fasttext/wiki.en.vec'
 WIKIPEDIA_FASTTEXT_SPACY = 'fasttext/spacy'
 
-USE_LITERALS = True
+USE_LITERALS = False
 WORD_VECTOR_SIMILARITIES = ['cosine', 'euclidean']
 
 EMBEDDING_DIMENSION = 300
@@ -33,6 +33,7 @@ TRANSFER_FILENAME = 'boostsrl/transfer.txt'
 REFINE_FILENAME = 'boostsrl/refine.txt'
 REFINE_REVISION_FILENAME = 'boostsrl/refine-revision.txt'
 WILLTHEORIES_FILENAME = 'boostsrl/train/models/WILLtheories/{}_learnedWILLregressionTrees.txt'
+SOURCE_TREE_NODES_FILES = 'source_tree_nodes.pkl'
 
 TEST_OUTPUT = 'boostsrl/test/results_{}.db'
 TEST_NEGATIVES = 'boostsrl/test/test_neg.txt'
