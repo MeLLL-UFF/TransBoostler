@@ -28,7 +28,7 @@ balanced = 1
 
 runTransBoostler = True
 runRDNB = False
-learn_from_source = False
+learn_from_source = True
 
 # Segmenter using the word statistics from Wikipedia
 seg = Segmenter(corpus="english")
@@ -121,7 +121,7 @@ def get_confusion_matrix(to_predicate, revision=False):
     return {'TP': TP, 'FP': FP, 'TN':TN, 'FN': FN}
 
 def clean_previous_experiments_stuff():
-    logging.info('Cleaning previous experiments mess')
+    logging.info('Cleaning previous experiment\'s mess')
     utils.delete_file(params.TRANSFER_FILENAME)
     utils.delete_file(params.REFINE_FILENAME)
     utils.delete_folder(params.TRAIN_FOLDER)
@@ -218,7 +218,7 @@ def main():
                 refine_structure = utils.get_all_rules_from_tree(structured)
                 utils.write_to_file(refine_structure, params.REFINE_FILENAME)
                 utils.write_to_file(refine_structure, os.getcwd() + '/experiments/{}_{}_{}/{}'.format(_id, source, target, params.REFINE_FILENAME.split('/')[1]))
-            
+
             if(not learn_from_source):
                 logging.info('Loading pre-trained nodes.')
 
@@ -266,6 +266,7 @@ def main():
                 # Map and transfer using the loaded embedding model
                 mapping  = transfer.map_predicates(similarityMetric, nodes, targets, constraints)
                 transfer.write_to_file_closest_distance(similarityMetric, predicate, to_predicate, arity, mapping, 'experiments/' + experiment_title, recursion=recursion, allowSameTargetMap=params.ALLOW_SAME_TARGET_MAP)
+                del mapping, nodes, targets, constraints
 
                 end = time.time()
                 mapping_time = end-start

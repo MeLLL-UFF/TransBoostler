@@ -17,7 +17,8 @@ METHOD = 'CONCATENATE'
 
 # Validation parameters
 N_FOLDS = 3
-AMOUNTS = [0.2, 0.4, 0.6, 0.8, 1.0] 
+#AMOUNTS = [0.2, 0.4, 0.6, 0.8, 1.0] 
+AMOUNTS = [0.2] 
 
 # BoostSRL parameters
 NODESIZE = 2

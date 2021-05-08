@@ -281,7 +281,7 @@ class Transfer:
         #Process ith node
         clauses = re.split(r',\s*(?![^()]*\))', tree[i])
         for clause in clauses:
-          if(clause not in mappings):
+          if(clause not in mappings and 'recursion' not in clause):
             mappings[clause], targets_taken = self.__find_best_mapping(clause, targets, similarity_metric, constraints, targets_taken)
     return mappings
 
