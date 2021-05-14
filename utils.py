@@ -12,12 +12,36 @@ import re
 import logging
 logging.basicConfig(level=logging.INFO, format="%(message)s", handlers=[logging.FileHandler("app.log"),logging.StreamHandler()])
 
+def remove_all_special_characters(atoms):
+    """
+        Remove special characters from string
+
+        Args:
+            atoms(list): list of predicates/literals
+       Returns:
+            list of the same predicates/literals with no special characters
+    """
+    for i in range(len(atoms)):
+      atoms[i] = remove_special_characters(atoms[i])
+    return atoms
+
+def remove_special_characters(string):
+    """
+        Remove special characters from string
+
+        Args:
+            string(array): predicate/literal
+       Returns:
+            string with no special characters
+    """ 
+    return re.sub('[^A-Za-z0-9]+', '', string)
+
 def get_all_literals(predicates):
     """
         Get all literals of source/target predicates
 
         Args:
-            preciates(array): array containing all predicates to be mapped
+            predicates(array): array containing all predicates to be mapped
        Returns:
             a list containing unique literals
     """ 
@@ -25,6 +49,24 @@ def get_all_literals(predicates):
     for predicate in predicates:
       literals += predicate.split('(')[1].replace(')', '').split(',')
     return literals
+
+def get_predicates(trees):
+  """
+      Return all predicates found in trees
+
+      Args:
+          trees(dict): all trees learned from source
+      Returns:
+          predicates found in trees learned from source
+  """
+  predicates = []
+  for tree in trees:
+    for i in range(len(tree.keys())):
+      #Process ith node
+      clauses = re.split(r',\s*(?![^()]*\))', tree[i])
+      for clause in clauses:
+        predicates.append(clause)
+  return predicates
 
 def build_triple(triple):
   """

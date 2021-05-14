@@ -6,7 +6,6 @@ from collections import OrderedDict
 from similarity import Similarity
 import parameters as params
 from scipy import spatial
-from tqdm import tqdm
 import utils as utils
 import pandas as pd
 import numpy as np
@@ -36,6 +35,7 @@ class Transfer:
             False if literals are not compatible
             True if literals are compatible
     """
+
     source_literals, target_literals = utils.get_all_literals([source]), utils.get_all_literals([target])
     for source_literal, target_literal in zip(source_literals, target_literals):
         if(constraints[source_literal] != target_literal):
@@ -55,7 +55,7 @@ class Transfer:
     """
 
     dict = {}
-    for example in tqdm(data):
+    for example in data:
       temp = []
 
       try:
@@ -95,7 +95,7 @@ class Transfer:
     """
 
     dict = {}
-    for example in tqdm(data):
+    for example in data:
       temp = []
 
       if(isinstance(example, list)):
@@ -140,38 +140,6 @@ class Transfer:
       raise 'In build_words_vectors: model should  be \'fasttext\' or \'word2vec\''
     return data
 
-  def __create_constraints(self, sources, similarity, searchArgPermutation=False, allowSameTargetMap=False):
-      """
-        Create constraints to predicate mapping
-
-        Args:
-            source(array): all predicates from source dataset
-            similarity(dataframe): a pandas dataframe containing every pair (source, target) similarity
-        Returns:
-            a dictionary containing all predicates mapped
-      """
-
-      mapped, mapping = [], {}
-      indexes = similarity.index.tolist()
-      
-      for index in tqdm(indexes):
-        source, target = index.split(',')[0].rstrip(), index.split(',')[1].rstrip()
-
-        if(source in mapping or source not in sources):
-          continue
-
-        if(target in mapped):
-          continue
-        else:
-          mapping[source] = target
-          mapped.append(target)
-
-        if(len(mapping) == len(sources)):
-          # All sources mapped to a target
-          break
-      return mapping
-
-
   def __find_best_mapping(self, clause, targets, similarity_metric, constraints, targets_taken={}, allowSameTargetMap=False):
     """
         Calculate pairs similarity and sorts dataframe to obtain the closest target to a given source
@@ -185,14 +153,13 @@ class Transfer:
             the closest target-predicate to the given source
       """
 
-    source  = self.__build_word_vectors([utils.build_triple(clause)], similarity_metric, params.USE_LITERALS)
+    source  = self.__build_word_vectors([utils.build_triple(clause)], similarity_metric)
     
     similarities = self.similarity.compute_similarities(source, targets, similarity_metric, self.model, self.model_name)
     similarities.to_csv('experiments/similarities/{}/{}/{}_similarities.csv'.format(self.model_name, similarity_metric, clause.split('(')[0]))
-
     indexes = similarities.index.tolist()
 
-    for index in tqdm(indexes):
+    for index in indexes:
       index = re.split(r',\s*(?![^()]*\))', index)
       source, target = index[0].rstrip(), index[1].rstrip()
 
@@ -222,19 +189,19 @@ class Transfer:
           all sources mapped to the its closest target-predicate
     """
 
-    source_literals = utils.get_all_literals(preds_learned)
-    target_literals = utils.get_all_literals(targets)
+    source_literals = utils.remove_all_special_characters(utils.get_all_literals(preds_learned))
+    target_literals = utils.remove_all_special_characters(utils.get_all_literals(targets))
 
-    sources = self.__build_word_vectors(source_literals, mapping_literals=True)
-    targets = self.__build_word_vectors(target_literals, mapping_literals=True)
+    sources = self.__build_word_vectors(source_literals, similarity_metric, mapping_literals=True)
+    targets = self.__build_word_vectors(target_literals, similarity_metric, mapping_literals=True)
 
     similarities = self.similarity.compute_similarities(sources, targets, similarity_metric, self.model, self.model_name)
 
     constraints, literals_taken = {}, {}
     indexes = similarities.index.tolist()
 
-    for index in tqdm(indexes):
-        index = re.split(r',\s*(?![^()]*\))', index)
+    for index in indexes:
+        index = index.split(',')
         source_literal, target_literal = index[0].rstrip(), index[1].rstrip()
 
         if(source_literal in constraints or source_literal not in sources):
@@ -250,10 +217,10 @@ class Transfer:
           # All source literals mapped to a target literal
           break
 
-      # Adds source predicates to be mapped to 'empty'
-      #for s in sources:
-      #  if(s not in mapping):
-      #    mapping[s] = ''
+    # Adds source predicates to be mapped to 'empty'
+    for s in sources:
+      if(s not in constraints):
+        constraints[s] = ''
 
     del indexes
     return constraints
@@ -273,7 +240,7 @@ class Transfer:
     """
 
     targets = utils.build_triples(targets)
-    targets = self.__build_word_vectors(targets, similarity_metric, params.USE_LITERALS)
+    targets = self.__build_word_vectors(targets, similarity_metric)
 
     mappings, targets_taken = {}, {}
     for tree in trees:
@@ -285,9 +252,29 @@ class Transfer:
             mappings[clause], targets_taken = self.__find_best_mapping(clause, targets, similarity_metric, constraints, targets_taken)
     return mappings
 
-  def write_to_file_closest_distance(self, similarity_metric, from_predicate, to_predicate, arity, mapping, filename, recursion=False, searchArgPermutation=False, searchEmpty=False, allowSameTargetMap=False):
+  def write_constraints_to_file(self, similarity_metric, embedding_model, mapping, filename):
     """
-          Sorts dataframe to obtain the closest target to a given source
+          Write constraints file
+
+          Args:
+              similarity_metric(str): similarity metric
+              embedding_model(str): model name
+              mapping(dict): a dictionary a pair of literal mapping (source, target)
+              filename(str): file path
+         Returns:
+              writes a file containing transfer information
+    """
+    with open(filename + '/constraints_{}_{}.txt'.format(embedding_model, similarity_metric), 'w') as file:
+      for source in mapping.keys():
+        if(mapping[source] != ''):
+          file.write((source.replace('`', '') + ': ' +  mapping[source]).replace('`', ''))
+        else:
+          file.write((source.replace('`', '') + ':'))
+        file.write('\n')
+
+  def write_to_file_closest_distance(self, similarity_metric, model_name, from_predicate, to_predicate, arity, mapping, filename, recursion=False, searchArgPermutation=False, searchEmpty=False, allowSameTargetMap=False):
+    """
+          Write transfer file
 
           Args:
               from_predicate(str): predicate of model trained using source data
@@ -312,7 +299,7 @@ class Transfer:
       #file.write('setParam:searchEmpty=' + str(searchEmpty).lower() + '.\n')
       file.write('setParam:allowSameTargetMap=' + str(allowSameTargetMap).lower() + '.\n')
 
-    with open(filename + '/transfer_{}.txt'.format(similarity_metric), 'w') as file:
+    with open(filename + '/transfer_{}_{}.txt'.format(model_name, similarity_metric), 'w') as file:
       for source in mapping.keys():
         if(mapping[source] != ''):
           file.write((source.replace('`', '') + ': ' +  mapping[source]).replace('`', ''))

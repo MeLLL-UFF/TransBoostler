@@ -4,7 +4,6 @@ from gensim.corpora.dictionary import Dictionary
 from gensim import matutils, corpora
 from scipy.spatial import distance
 import parameters as params
-from tqdm import tqdm
 import utils as utils
 from pyemd import emd
 import pandas as pd
@@ -95,6 +94,10 @@ class Similarity:
         
     dictionary = Dictionary(documents=[source, target])
     vocab_len = len(dictionary)
+
+    # If we are mapping literals, source and target can be of the same type, distance_matrix must have at least two unique tokens
+    if(len(dictionary) == 1):
+      return 1.0
         
     distance_matrix = self.__get_distance_matrix(source, target, model, dictionary, vocab_len)
     
@@ -132,17 +135,17 @@ class Similarity:
         Create key to to dataframe used for mapping
 
         Args:
-            source(str): source predicate or literal
-            target(str): target predicate or literal
+            source(list/str): source predicate and its literals or just a literal
+            target(list/str): target predicate and its literals or just a literal
        Returns:
             a string corresponding that corresponds to the mapping
     """
 
-    if(len(source) > 1 and source[1]):
+    if(isinstance(target, list)):
         return source[0] + '(' + ','.join(source[1]) + ')' + ',' + target[0] + '(' + ','.join(target[1]) + ')'
         #key = s + '(' + ','.join([chr(65+i) for i in range(len(source[s][1]))]) + ')' + ',' + t + '(' + ','.join([chr(65+i) for i in range(len(target[t][1]))]) + ')'
     else:
-        return source[0] + ',' + target[0]
+        return source + ',' + target
 
   def compute_similarities(self, source, targets, similarity_metric, model='', model_name=''):
     """
@@ -188,14 +191,16 @@ class Similarity:
     """
 
     similarity = {}
-    for s in tqdm(source):
-      for t in tqdm(target):
+    for s in source:
+      for t in target:
 
       	# Predicates must have the same arity
         if(len(source[s]) > 1 and len(source[s][1]) != len(target[t][1])):
           continue
-        
+
         key = self.__create_key([s, source[s][1]], [t, target[t][1]])
+
+        if '()' in key: key = key.replace('(', '').replace(')', '')
 
         if(len(source[s][0]) != len(target[t][0])):
           source[s][0], target[t][0] = utils.set_to_same_size(source[s][0], target[t][0], params.EMBEDDING_DIMENSION)
@@ -219,19 +224,23 @@ class Similarity:
     """
 
     similarity = {}
-    for source in tqdm(sources):
-        for target in tqdm(targets):
-
+    for source in sources:
+        for target in targets:
       	    # Predicates must have the same arity
             if(len(source) > 1 and len(source[1]) != len(target[1])): 
               continue
 
             key = self.__create_key(source, target)
 
+            _source, _target = source, target
+            # If we are mapping literals, target must be a string and not a list
+            if(isinstance(target, list)):
+              _source, _target = source[0], target[0]
+
             # Tokenize (segment) the predicates into words
             # wasbornin -> was, born, in
-            source_segmented = self.seg.segment(source[0]).split()
-            target_segmented = self.seg.segment(target[0]).split()
+            source_segmented = self.seg.segment(_source).split()
+            target_segmented = self.seg.segment(_target).split()
                 
             # Calculate similarity using single vectors
             sent_1 = [model[word] for word in source_segmented if word in model]
@@ -265,8 +274,8 @@ class Similarity:
     """
 
     similarity = {}
-    for source in tqdm(sources):
-      for target in tqdm(targets):
+    for source in sources:
+      for target in targets:
 
         # Predicates must have the same arity
         if(len(source) > 1 and len(source[1]) != len(target[1])):
@@ -274,7 +283,12 @@ class Similarity:
 
         key = self.__create_key(source, target)
 
-        similarity[key] = self.__wmdistance(source[0], target[0], model)
+        _source, _target = source, target
+        # If we are mapping literals, target must be a string and not a list
+        if(isinstance(target, list)):
+          _source, _target = source[0], target[0]
+
+        similarity[key] = self.__wmdistance(_source, _target, model)
 
     df = pd.DataFrame.from_dict(similarity, orient="index", columns=['similarity'])
     return df.sort_values(by='similarity')
@@ -297,8 +311,8 @@ class Similarity:
       wmd_instance = WMD.SpacySimilarityHook(nlp)
 
       similarity = {}
-      for source in tqdm(sources):
-        for target in tqdm(targets):
+      for source in sources:
+        for target in targets:
 
       	    # Predicates must have the same arity
             if(len(source) > 1 and len(source[1]) != len(target[1])): 
@@ -312,7 +326,7 @@ class Similarity:
                 
                 #embeddings = [np.concatenate([nlp.vocab[w].vector for w in self.seg.segment(source[0]).split()]),np.concatenate([nlp.vocab[w].vector for w in self.seg.segment(target[0]).split()])]
 
-                if(len(embeddings[0]) != len(embeddings[1])):
+                if(len(embeddings) > 1 and len(embeddings[0]) != len(embeddings[1])):
                     embeddings[0], embeddings[1] = utils.set_to_same_size(embeddings[0], embeddings[1], params.EMBEDDING_DIMENSION)
 
                 similarity[key] = wmd_instance.compute_similarity(nlp(source[0]), nlp(target[0]), evec=np.array(embeddings, dtype=np.float32), single_vector=True)
@@ -340,14 +354,16 @@ class Similarity:
     """
 
     similarity = {}
-    for s in tqdm(sources):
-      for t in tqdm(targets):
+    for s in sources:
+      for t in targets:
 
         # Predicates must have the same arity
         if(len(sources[s][1]) > 0 and len(sources[s][1]) != len(targets[t][1])):
           continue
 
         key = self.__create_key([s, sources[s][1]], [t, targets[t][1]])
+
+        if '()' in key: key = key.replace('(', '').replace(')', '')
 
         if(len(sources[s][0]) != len(targets[t][0]) and params.METHOD):
           sources[s][0], targets[t][0] = utils.set_to_same_size(sources[s][0], targets[t][0], params.EMBEDDING_DIMENSION)
