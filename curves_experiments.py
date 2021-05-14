@@ -28,7 +28,7 @@ balanced = 1
 
 runTransBoostler = True
 runRDNB = False
-learn_from_source = True
+learn_from_source = False
 
 # Segmenter using the word statistics from Wikipedia
 seg = Segmenter(corpus="english")
@@ -220,7 +220,7 @@ def main():
                 utils.write_to_file(refine_structure, os.getcwd() + '/experiments/{}_{}_{}/{}'.format(_id, source, target, params.REFINE_FILENAME.split('/')[1]))
 
             if(not learn_from_source):
-                logging.info('Loading pre-trained nodes.')
+                logging.info('Loading pre-trained trees.')
 
                 from shutil import copyfile
                 copyfile(os.getcwd() + '/experiments/{}_{}_{}/{}'.format(_id, source, target, params.REFINE_FILENAME.split('/')[1]), os.getcwd() + '/' + params.REFINE_FILENAME)
@@ -257,16 +257,14 @@ def main():
                 
                 constraints = {}
                 if(params.USE_LITERALS):
-                  preds_learned = [pred.split('(')[0] for pred in utils.sweep_tree(structured)]
-                  preds_learned = [pred.replace('+', '').replace('-', '').replace('.', '') for pred in bk[source] if pred.split('(')[0] in preds_learned]
                   targets = [t.replace('.', '') for t in targets]
-
-                  constraints = transfer.map_literals(similarityMetric, preds_learned, targets)
-
+                  constraints = transfer.map_literals(similarityMetric, utils.get_predicates(nodes), targets)
+                  transfer.write_constraints_to_file(similarityMetric, embeddingModel, constraints, 'experiments/' + experiment_title)
+                
                 # Map and transfer using the loaded embedding model
                 mapping  = transfer.map_predicates(similarityMetric, nodes, targets, constraints)
-                transfer.write_to_file_closest_distance(similarityMetric, predicate, to_predicate, arity, mapping, 'experiments/' + experiment_title, recursion=recursion, allowSameTargetMap=params.ALLOW_SAME_TARGET_MAP)
-                del mapping, nodes, targets, constraints
+                transfer.write_to_file_closest_distance(similarityMetric, embeddingModel, predicate, to_predicate, arity, mapping, 'experiments/' + experiment_title, recursion=recursion, allowSameTargetMap=params.ALLOW_SAME_TARGET_MAP)
+                del mapping, constraints
 
                 end = time.time()
                 mapping_time = end-start
@@ -308,8 +306,9 @@ def main():
                             # Learn and test model not revising theory
                             model, t_results, learning_time, inference_time = train_and_test(background, part_tar_train_pos, part_tar_train_neg, tar_train_facts, tar_test_pos, tar_test_neg, tar_test_facts, params.REFINE_FILENAME, params.TRANSFER_FILENAME)
                             del model
-                            
-                        utils.show_results(utils.get_results_dict(t_results, learning_time+mapping_time, inference_time))
+                        
+                        learning_time += mapping_time
+                        utils.show_results(utils.get_results_dict(t_results, learning_time, inference_time))
 
                         transboostler_experiments[embeddingModel][similarityMetric][amount]['CLL'].append(t_results['CLL'])
                         transboostler_experiments[embeddingModel][similarityMetric][amount]['AUC ROC'].append(t_results['AUC ROC'])
