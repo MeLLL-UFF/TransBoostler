@@ -255,16 +255,16 @@ def main():
                 
                 start = time.time()
                 
-                constraints = {}
-                if(params.USE_LITERALS):
-                  targets = [t.replace('.', '') for t in targets]
-                  constraints = transfer.map_literals(similarityMetric, utils.get_predicates(nodes), targets)
-                  transfer.write_constraints_to_file(similarityMetric, embeddingModel, constraints, 'experiments/' + experiment_title)
+                #constraints = {}
+                #if(params.USE_LITERALS):
+                #  targets = [t.replace('.', '') for t in targets]
+                #  constraints = transfer.map_literals(similarityMetric, utils.get_predicates(nodes), targets)
                 
                 # Map and transfer using the loaded embedding model
-                mapping  = transfer.map_predicates(similarityMetric, nodes, targets, constraints)
+                mapping  = transfer.map_predicates(similarityMetric, nodes, targets)
                 transfer.write_to_file_closest_distance(similarityMetric, embeddingModel, predicate, to_predicate, arity, mapping, 'experiments/' + experiment_title, recursion=recursion, allowSameTargetMap=params.ALLOW_SAME_TARGET_MAP)
-                del mapping, constraints
+                transfer.write_constraints_to_file(similarityMetric, embeddingModel, 'experiments/' + experiment_title)
+                del mapping
 
                 end = time.time()
                 mapping_time = end-start

@@ -22,25 +22,43 @@ class Transfer:
     self.model = model
     self.model_name = model_name
     self.similarity = Similarity(self.seg)
+    self.constraints = {}
 
-  def __is_compatible(self, source, target, constraints):
+  def __same_arity(self, source_literals, target_literals):
+    """
+        Check if predicates have the same arity
+
+        Args:
+            source_literals(list): source literals
+            target_literals(list): target literals
+       Returns:
+            False if different arity
+            True if same arity
+    """
+    return len(source_literals) == len(target_literals)
+
+  def __is_compatible(self, source, target):
     """
         Turn relations into a single array
 
         Args:
             source(str): source predicate
             target(str): target predicate
-            constraints(dict): dictionary mapping most similar literals 
+
        Returns:
             False if literals are not compatible
             True if literals are compatible
     """
-
     source_literals, target_literals = utils.get_all_literals([source]), utils.get_all_literals([target])
-    for source_literal, target_literal in zip(source_literals, target_literals):
-        if(constraints[source_literal] != target_literal):
+    if(self.__same_arity(source_literals, target_literals)):
+      for source_literal, target_literal in zip(source_literals, target_literals):
+        if(source_literal in self.constraints):
+          if(self.constraints[source_literal] != target_literal):
             return False
-    return True
+        else:
+          self.constraints[source_literal] = target_literal
+      return True
+    return False
 
   def __build_fasttext_array(self, data, mapping_literals=False):
     """
@@ -140,7 +158,7 @@ class Transfer:
       raise 'In build_words_vectors: model should  be \'fasttext\' or \'word2vec\''
     return data
 
-  def __find_best_mapping(self, clause, targets, similarity_metric, constraints, targets_taken={}, allowSameTargetMap=False):
+  def __find_best_mapping(self, clause, targets, similarity_metric, targets_taken={}, allowSameTargetMap=False):
     """
         Calculate pairs similarity and sorts dataframe to obtain the closest target to a given source
 
@@ -164,7 +182,7 @@ class Transfer:
       source, target = index[0].rstrip(), index[1].rstrip()
 
       # Literals must match
-      if(constraints and not self.__is_compatible(source, target, constraints)):
+      if(not self.__is_compatible(source, target)):
         continue
       
       if(allowSameTargetMap):
@@ -197,35 +215,35 @@ class Transfer:
 
     similarities = self.similarity.compute_similarities(sources, targets, similarity_metric, self.model, self.model_name)
 
-    constraints, literals_taken = {}, {}
+    literals_taken = {}
     indexes = similarities.index.tolist()
 
     for index in indexes:
         index = index.split(',')
         source_literal, target_literal = index[0].rstrip(), index[1].rstrip()
 
-        if(source_literal in constraints or source_literal not in sources):
+        if(source_literal in self.constraints or source_literal not in sources):
           continue
 
         if(target_literal in literals_taken):
           continue
         else:
-          constraints[source_literal] = target_literal
+          self.constraints[source_literal] = target_literal
           literals_taken[target_literal] = 0
 
-        if(len(constraints) == len(sources)):
+        if(len(self.constraints) == len(sources)):
           # All source literals mapped to a target literal
           break
 
     # Adds source predicates to be mapped to 'empty'
     for s in sources:
-      if(s not in constraints):
-        constraints[s] = ''
+      if(s not in self.constraints):
+        self.constraints[s] = ''
 
     del indexes
-    return constraints
+    return self.constraints
 
-  def map_predicates(self, similarity_metric, trees, targets, constraints):
+  def map_predicates(self, similarity_metric, trees, targets):
     """
       Create mappings from source to target predicates
 
@@ -233,7 +251,6 @@ class Transfer:
           similarity_metric(str): similarity metric to be applied
           trees(list): all clauses learned from the source domain
           targets(list): all predicates found in the target domain
-          constraints(dict): literals mapping (if enabled)
 
       Returns:
           all sources mapped to the its closest target-predicate
@@ -249,10 +266,10 @@ class Transfer:
         clauses = re.split(r',\s*(?![^()]*\))', tree[i])
         for clause in clauses:
           if(clause not in mappings and 'recursion' not in clause):
-            mappings[clause], targets_taken = self.__find_best_mapping(clause, targets, similarity_metric, constraints, targets_taken)
+            mappings[clause], targets_taken = self.__find_best_mapping(clause, targets, similarity_metric, targets_taken)
     return mappings
 
-  def write_constraints_to_file(self, similarity_metric, embedding_model, mapping, filename):
+  def write_constraints_to_file(self, similarity_metric, embedding_model, filename):
     """
           Write constraints file
 
@@ -265,9 +282,9 @@ class Transfer:
               writes a file containing transfer information
     """
     with open(filename + '/constraints_{}_{}.txt'.format(embedding_model, similarity_metric), 'w') as file:
-      for source in mapping.keys():
-        if(mapping[source] != ''):
-          file.write((source.replace('`', '') + ': ' +  mapping[source]).replace('`', ''))
+      for source in self.constraints.keys():
+        if(self.constraints[source] != ''):
+          file.write((source.replace('`', '') + ': ' +  self.constraints[source]).replace('`', ''))
         else:
           file.write((source.replace('`', '') + ':'))
         file.write('\n')
