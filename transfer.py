@@ -269,7 +269,7 @@ class Transfer:
             mappings[clause], targets_taken = self.__find_best_mapping(clause, targets, similarity_metric, targets_taken)
     return mappings
 
-  def write_constraints_to_file(self, similarity_metric, embedding_model, filename):
+  def write_constraints_to_file(self, filename):
     """
           Write constraints file
 
@@ -281,7 +281,7 @@ class Transfer:
          Returns:
               writes a file containing transfer information
     """
-    with open(filename + '/constraints_{}_{}.txt'.format(embedding_model, similarity_metric), 'w') as file:
+    with open(filename + '/constraints.txt', 'w') as file:
       for source in self.constraints.keys():
         if(self.constraints[source] != ''):
           file.write((source.replace('`', '') + ': ' +  self.constraints[source]).replace('`', ''))

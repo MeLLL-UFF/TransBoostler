@@ -12,7 +12,7 @@ import re
 import logging
 logging.basicConfig(level=logging.INFO, format="%(message)s", handlers=[logging.FileHandler("app.log"),logging.StreamHandler()])
 
-def remove_all_special_characters(atoms):
+def remove_special_characters_from_list(atoms):
     """
         Remove special characters from string
 

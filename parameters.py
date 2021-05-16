@@ -17,8 +17,7 @@ METHOD = 'CONCATENATE'
 
 # Validation parameters
 N_FOLDS = 3
-#AMOUNTS = [0.2, 0.4, 0.6, 0.8, 1.0] 
-AMOUNTS = [0.2] 
+AMOUNTS = [0.2, 0.4, 0.6, 0.8, 1.0] 
 
 # BoostSRL parameters
 NODESIZE = 2
@@ -35,6 +34,7 @@ REFINE_FILENAME = 'boostsrl/refine.txt'
 REFINE_REVISION_FILENAME = 'boostsrl/refine-revision.txt'
 WILLTHEORIES_FILENAME = 'boostsrl/train/models/WILLtheories/{}_learnedWILLregressionTrees.txt'
 SOURCE_TREE_NODES_FILES = 'source_tree_nodes.pkl'
+STRUCTURED_TREE_NODES_FILES = 'source_structured_nodes.pkl'
 
 TEST_OUTPUT = 'boostsrl/test/results_{}.db'
 TEST_NEGATIVES = 'boostsrl/test/test_neg.txt'
