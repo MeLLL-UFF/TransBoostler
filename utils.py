@@ -12,30 +12,6 @@ import re
 import logging
 logging.basicConfig(level=logging.INFO, format="%(message)s", handlers=[logging.FileHandler("app.log"),logging.StreamHandler()])
 
-def remove_special_characters_from_list(atoms):
-    """
-        Remove special characters from string
-
-        Args:
-            atoms(list): list of predicates/literals
-       Returns:
-            list of the same predicates/literals with no special characters
-    """
-    for i in range(len(atoms)):
-      atoms[i] = remove_special_characters(atoms[i])
-    return atoms
-
-def remove_special_characters(string):
-    """
-        Remove special characters from string
-
-        Args:
-            string(array): predicate/literal
-       Returns:
-            string with no special characters
-    """ 
-    return re.sub('[^A-Za-z0-9]+', '', string)
-
 def get_all_literals(predicates):
     """
         Get all literals of source/target predicates

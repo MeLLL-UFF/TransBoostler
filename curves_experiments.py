@@ -2,7 +2,6 @@
 import logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s %(message)s', handlers=[logging.FileHandler('app.log','w'),logging.StreamHandler()])
 
-from ekphrasis.classes.segmenter import Segmenter
 from experiments import experiments, bk, setups
 from gensim.models import KeyedVectors, FastText
 from gensim.test.utils import datapath
@@ -27,11 +26,8 @@ source_balanced = 1
 balanced = 1
 
 runTransBoostler = True
-runRDNB = False
-learn_from_source = False
-
-# Segmenter using the word statistics from Wikipedia
-seg = Segmenter(corpus="english")
+runRDNB = True
+learn_from_source = True
 
 revision = TheoryRevision()
 
@@ -239,6 +235,7 @@ def main():
                 embeddingModel = setup['model'].lower()
                 similarityMetric = setup['similarity_metric'].lower()
                 theoryRevision = setup['revision_theory']
+
                 
                 utils.delete_file(params.TRANSFER_FILENAME)
                 
@@ -254,22 +251,18 @@ def main():
                 if('previous' not in locals() or previous != embeddingModel):
                     loadedModel = load_model(embeddingModel)
                     previous = embeddingModel
-
-                transfer = Transfer(segmenter=seg, model=loadedModel, model_name=embeddingModel)
-                similarity = Similarity(seg)
+                
+                transfer = Transfer(model=loadedModel, model_name=embeddingModel)
                 
                 start = time.time()
-                
-                #constraints = {}
-                #if(params.USE_LITERALS):
-                #  targets = [t.replace('.', '') for t in targets]
-                #  constraints = transfer.map_literals(similarityMetric, utils.get_predicates(nodes), targets)
 
                 # Map and transfer using the loaded embedding model
                 mapping  = transfer.map_predicates(similarityMetric, nodes, targets)
                 transfer.write_to_file_closest_distance(similarityMetric, embeddingModel, predicate, to_predicate, arity, mapping, 'experiments/' + experiment_title, recursion=recursion, allowSameTargetMap=params.ALLOW_SAME_TARGET_MAP)
                 transfer.write_constraints_to_file('experiments/' + experiment_title)
                 del mapping
+
+                continue
 
                 end = time.time()
                 mapping_time = end-start
@@ -334,6 +327,9 @@ def main():
             RDNB_results = {key: {'CLL': [], 'AUC ROC': [], 'AUC PR': [], 'Learning Time': [], 'Inference Time': []} for key in params.AMOUNTS}
             RDNB_confusion_matrix = {key: {'TP': [], 'FP': [], 'TN': [], 'FN': []} for key in params.AMOUNTS}
             
+            # Set number of folds
+            n_folds = datasets.get_n_folds(target)
+
             for i in range(n_folds):
                 logging.info('\n Starting fold {} of {} folds \n'.format(i+1, n_folds))
 
@@ -401,10 +397,6 @@ def main():
             
             matrix_filename = os.getcwd() + '/experiments/{}_{}_{}/rdnb_curves_folds.json'.format(_id, source, target)
             folds_filename  = os.getcwd() + '/experiments/{}_{}_{}/rdnb_confusion_matrix.json'.format(_id, source, target)
-            
-            if(theoryRevision):
-                matrix_filename = matrix_filename.replace('.json', '_revision.json')
-                folds_filename  = folds_filename.replace('.json', '_revision.json')
             
             # Save all CV results
             utils.save_json_file(matrix_filename, RDNB_results)

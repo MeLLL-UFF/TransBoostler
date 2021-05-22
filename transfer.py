@@ -1,7 +1,7 @@
 
 from gensim.test.utils import datapath, get_tmpfile
-from ekphrasis.classes.segmenter import Segmenter
 from gensim.models import KeyedVectors, Word2Vec
+from preprocessing import Preprocessing
 from collections import OrderedDict
 from similarity import Similarity
 import parameters as params
@@ -17,11 +17,11 @@ import re
 
 class Transfer:
 
-  def __init__(self, segmenter, model, model_name):
-    self.seg = segmenter
+  def __init__(self, model, model_name):
     self.model = model
     self.model_name = model_name
-    self.similarity = Similarity(self.seg)
+    self.preprocessing = Preprocessing()
+    self.similarity = Similarity(self.preprocessing)
     self.constraints = {}
 
   def __same_arity(self, source_literals, target_literals):
@@ -76,13 +76,9 @@ class Transfer:
     for example in data:
       temp = []
 
-      try:
-          # Tokenize words of relation
-          predicate = self.seg.segment(example[0])
-      except:
-          predicate = self.seg.segment(example)
+      predicate = self.preprocessing.pre_process_text(example[0])
 
-      for word in predicate.split():
+      for word in predicate:
         try:
           #temp.append(model.get_word_vector(word.lower().strip()))
           temp.append(self.model[word.lower().strip()])
@@ -116,14 +112,10 @@ class Transfer:
     for example in data:
       temp = []
 
-      if(isinstance(example, list)):
-          # Tokenize words of relation
-          predicate = self.seg.segment(example[0])
-      else:
-          # Literals come as single elements of lists
-          predicate = self.seg.segment(example)
+      # Tokenize words of relation
+      predicate = self.preprocessing.pre_process_text(example[0])
 
-      for word in predicate.split():
+      for word in predicate:
         try:
           #temp.append(model.get_word_vector(word.lower().strip()))
           temp.append(self.model[word.lower().strip()])
@@ -141,7 +133,7 @@ class Transfer:
         dict[example[0].strip()] = [predicate, example[1]]
     return dict
 
-  def __build_word_vectors(self, data, similarity_metric, mapping_literals=False):
+  def __build_word_vectors(self, data, similarity_metric):
     """
         Create word vectors if needed (given the similarity metric)
 
@@ -152,10 +144,10 @@ class Transfer:
     """
     if(similarity_metric in params.WORD_VECTOR_SIMILARITIES):
       if(self.model_name == params.FASTTEXT):
-        return self.__build_fasttext_array(data, mapping_literals=mapping_literals)
+        return self.__build_fasttext_array(data)
       else:
-        return self.__build_word2vec_array(data, mapping_literals=mapping_literals)
-      raise 'In build_words_vectors: model should  be \'fasttext\' or \'word2vec\''
+        return self.__build_word2vec_array(data)
+      raise 'In build_words_vectors: model name should  be \'fasttext\' or \'word2vec\''
     return data
 
   def __find_best_mapping(self, clause, targets, similarity_metric, targets_taken={}, allowSameTargetMap=False):
@@ -194,54 +186,6 @@ class Transfer:
           targets_taken[target] = 0
           return target, targets_taken
     return '', targets_taken
-
-  def map_literals(self, similarity_metric, preds_learned, targets):
-    """
-      Create mappings from literals found in source domain to literals found in target domain
-
-      Args:
-          similarity_metric(str): similarity metric to be applied
-          preds_learned(list): all predicates learned from source domain
-          target(list): all predicates found in target domain
-      Returns:
-          all sources mapped to the its closest target-predicate
-    """
-
-    source_literals = utils.remove_all_special_characters(utils.get_all_literals(preds_learned))
-    target_literals = utils.remove_all_special_characters(utils.get_all_literals(targets))
-
-    sources = self.__build_word_vectors(source_literals, similarity_metric, mapping_literals=True)
-    targets = self.__build_word_vectors(target_literals, similarity_metric, mapping_literals=True)
-
-    similarities = self.similarity.compute_similarities(sources, targets, similarity_metric, self.model, self.model_name)
-
-    literals_taken = {}
-    indexes = similarities.index.tolist()
-
-    for index in indexes:
-        index = index.split(',')
-        source_literal, target_literal = index[0].rstrip(), index[1].rstrip()
-
-        if(source_literal in self.constraints or source_literal not in sources):
-          continue
-
-        if(target_literal in literals_taken):
-          continue
-        else:
-          self.constraints[source_literal] = target_literal
-          literals_taken[target_literal] = 0
-
-        if(len(self.constraints) == len(sources)):
-          # All source literals mapped to a target literal
-          break
-
-    # Adds source predicates to be mapped to 'empty'
-    for s in sources:
-      if(s not in self.constraints):
-        self.constraints[s] = ''
-
-    del indexes
-    return self.constraints
 
   def map_predicates(self, similarity_metric, trees, targets):
     """

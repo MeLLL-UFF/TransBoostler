@@ -1,6 +1,7 @@
 
 from __future__ import division
 from gensim.corpora.dictionary import Dictionary
+from preprocessing import Preprocessing
 from gensim import matutils, corpora
 from scipy.spatial import distance
 import parameters as params
@@ -15,19 +16,19 @@ import os
 
 class Similarity:
 
-  def __init__(self, segmenter):
-  	self.seg = segmenter
-  	
+  def __init__(self, preprocessing):
+    self.preprocessing = preprocessing
+  
   def __nbow(self, document, dictionary, vocab_len):
     """
-    	Return nBoW representation of a document using a dictionary of words 
+      nBoW representation of a document using a dictionary of words 
 
-	    Args:
-	        document(array): one given predicate
-	        dictionary(Dictionary): pair (source, target)
-	    Returns:
-	        a list of frequencies/size_of_document
-	"""
+      Args:
+          document(array): one given predicate
+          dictionary(Dictionary): pair (source, target)
+      Returns:
+          a list of frequencies/size_of_document
+    """
     d = np.zeros(vocab_len, dtype=np.double)
     nbow = dictionary.doc2bow(document)  # Word frequencies.
     doc_len = len(document)
@@ -48,7 +49,7 @@ class Similarity:
 	        a list of distancies
 	"""
 	
-	# Sets for faster look-up.
+	  # Sets for faster look-up.
     docset1 = set(source)
     docset2 = set(target)
 
@@ -61,7 +62,7 @@ class Similarity:
 
             if(params.METHOD):
                 # Concatenate word vectors before calculate Euclidean Distance
-                _t1, _t2 = np.concatenate([model[w] for w in self.seg.segment(t1).split()]),np.concatenate([model[w] for w in self.seg.segment(t2).split()])
+                _t1, _t2 = np.concatenate([model[w] for w in self.preprocessing.pre_process_text(t1)]),np.concatenate([model[w] for w in self.preprocessing.pre_process_text(t2)])
                 
                 if(len(_t1) != len(_t2)):
                     _t1, _t2 = utils.set_to_same_size(_t1, _t2, params.EMBEDDING_DIMENSION)
@@ -89,13 +90,13 @@ class Similarity:
     if(params.METHOD):
         source, target = [source], [target]
     else:
-        source, target = self.seg.segment(source).split(), self.seg.segment(target).split()
+        source, target = self.preprocessing.pre_process_text(source), self.preprocessing.pre_process_text(target)
         #source, target = source.split(), target.split()
         
     dictionary = Dictionary(documents=[source, target])
     vocab_len = len(dictionary)
 
-    # If we are mapping literals, source and target can be of the same type, distance_matrix must have at least two unique tokens
+    # Source and target can be of the same type, distance_matrix must have at least two unique tokens
     if(len(dictionary) == 1):
       return 1.0
         
@@ -135,17 +136,14 @@ class Similarity:
         Create key to to dataframe used for mapping
 
         Args:
-            source(list/str): source predicate and its literals or just a literal
-            target(list/str): target predicate and its literals or just a literal
+            source(list/str): source predicate and its types
+            target(list/str): target predicate and its types
        Returns:
             a string corresponding that corresponds to the mapping
     """
 
-    if(isinstance(target, list)):
-        return source[0] + '(' + ','.join(source[1]) + ')' + ',' + target[0] + '(' + ','.join(target[1]) + ')'
-        #key = s + '(' + ','.join([chr(65+i) for i in range(len(source[s][1]))]) + ')' + ',' + t + '(' + ','.join([chr(65+i) for i in range(len(target[t][1]))]) + ')'
-    else:
-        return source + ',' + target
+    return source[0] + '(' + ','.join(source[1]) + ')' + ',' + target[0] + '(' + ','.join(target[1]) + ')'
+    #key = s + '(' + ','.join([chr(65+i) for i in range(len(source[s][1]))]) + ')' + ',' + t + '(' + ','.join([chr(65+i) for i in range(len(target[t][1]))]) + ')'
 
   def compute_similarities(self, source, targets, similarity_metric, model='', model_name=''):
     """
@@ -189,14 +187,9 @@ class Similarity:
        Returns:
             a pandas dataframe containing every pair (source, target) similarity
     """
-
     similarity = {}
     for s in source:
       for t in target:
-
-      	# Predicates must have the same arity
-        if(len(source[s]) > 1 and len(source[s][1]) != len(target[t][1])):
-          continue
 
         key = self.__create_key([s, source[s][1]], [t, target[t][1]])
 
@@ -226,21 +219,11 @@ class Similarity:
     similarity = {}
     for source in sources:
         for target in targets:
-      	    # Predicates must have the same arity
-            if(len(source) > 1 and len(source[1]) != len(target[1])): 
-              continue
 
             key = self.__create_key(source, target)
-
-            _source, _target = source, target
-            # If we are mapping literals, target must be a string and not a list
-            if(isinstance(target, list)):
-              _source, _target = source[0], target[0]
-
-            # Tokenize (segment) the predicates into words
-            # wasbornin -> was, born, in
-            source_segmented = self.seg.segment(_source).split()
-            target_segmented = self.seg.segment(_target).split()
+            
+            source_segmented = self.preprocessing.pre_process_text(source[0])
+            target_segmented = self.preprocessing.pre_process_text(target[0])
                 
             # Calculate similarity using single vectors
             sent_1 = [model[word] for word in source_segmented if word in model]
@@ -277,18 +260,9 @@ class Similarity:
     for source in sources:
       for target in targets:
 
-        # Predicates must have the same arity
-        if(len(source) > 1 and len(source[1]) != len(target[1])):
-          continue
-
         key = self.__create_key(source, target)
 
-        _source, _target = source, target
-        # If we are mapping literals, target must be a string and not a list
-        if(isinstance(target, list)):
-          _source, _target = source[0], target[0]
-
-        similarity[key] = self.__wmdistance(_source, _target, model)
+        similarity[key] = self.__wmdistance(source[0], target[0], model)
 
     df = pd.DataFrame.from_dict(similarity, orient="index", columns=['similarity'])
     return df.sort_values(by='similarity')
@@ -313,16 +287,12 @@ class Similarity:
       similarity = {}
       for source in sources:
         for target in targets:
-
-      	    # Predicates must have the same arity
-            if(len(source) > 1 and len(source[1]) != len(target[1])): 
-              continue
           
             key = self.__create_key(source, target)
           
             if(params.METHOD):
                 words = set([source[0]]).union([target[0]])
-                embeddings = [np.concatenate([nlp.vocab[w].vector for w in self.seg.segment(word).split()]) for word in words]
+                embeddings = [np.concatenate([nlp.vocab[w].vector for w in self.preprocessing.pre_process_text(word)]) for word in words]
                 
                 #embeddings = [np.concatenate([nlp.vocab[w].vector for w in self.seg.segment(source[0]).split()]),np.concatenate([nlp.vocab[w].vector for w in self.seg.segment(target[0]).split()])]
 
@@ -340,7 +310,6 @@ class Similarity:
       df = pd.DataFrame.from_dict(similarity, orient="index", columns=['similarity'])
       return df.sort_values(by='similarity', ascending=True)
 
-
   def euclidean_distance(self, sources, targets):
     """
     	Calculate similarity of embedded arrays
@@ -352,23 +321,16 @@ class Similarity:
 	    Returns:
 	        a pandas dataframe containing every pair (source, target) similarity
     """
-
     similarity = {}
     for s in sources:
       for t in targets:
-
-        # Predicates must have the same arity
-        if(len(sources[s][1]) > 0 and len(sources[s][1]) != len(targets[t][1])):
-          continue
 
         key = self.__create_key([s, sources[s][1]], [t, targets[t][1]])
 
         if '()' in key: key = key.replace('(', '').replace(')', '')
 
-        if(len(sources[s][0]) != len(targets[t][0]) and params.METHOD):
+        if(len(sources[s][0]) != len(targets[t][0])):
           sources[s][0], targets[t][0] = utils.set_to_same_size(sources[s][0], targets[t][0], params.EMBEDDING_DIMENSION)
-        elif(len(sources[s][0]) != len(targets[t][0])):
-            sources[s][0], targets[t][0] = utils.add_dimension(sources[s][0], targets[t][0], params.EMBEDDING_DIMENSION)
 
         similarity[key] = distance.euclidean(sources[s][0], targets[t][0])
 
