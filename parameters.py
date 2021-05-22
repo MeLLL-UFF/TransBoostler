@@ -8,7 +8,6 @@ GOOGLE_WORD2VEC_SPACY = 'word2vec/spacy'
 WIKIPEDIA_FASTTEXT = 'fasttext/wiki.en.vec'
 WIKIPEDIA_FASTTEXT_SPACY = 'fasttext/spacy'
 
-USE_LITERALS = False
 WORD_VECTOR_SIMILARITIES = ['cosine', 'euclidean']
 
 EMBEDDING_DIMENSION = 300
@@ -17,7 +16,7 @@ METHOD = 'CONCATENATE'
 
 # Validation parameters
 N_FOLDS = 3
-AMOUNTS = [0.2, 0.4, 0.6, 0.8, 1.0] 
+AMOUNTS = [0.2, 0.4, 0.6, 0.8, 1.0]
 
 # BoostSRL parameters
 NODESIZE = 2
