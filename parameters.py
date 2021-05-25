@@ -29,6 +29,8 @@ TREES = 10
 SEED = 441773
 REFINE = None
 ALLOW_SAME_TARGET_MAP = False
+SEARCH_PERMUTATION = True
+SEARCH_EMPTY = False
 
 # Filenames
 TRANSFER_FILENAME = 'boostsrl/transfer.txt'

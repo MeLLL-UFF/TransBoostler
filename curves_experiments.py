@@ -235,7 +235,6 @@ def main():
                 embeddingModel = setup['model'].lower()
                 similarityMetric = setup['similarity_metric'].lower()
                 theoryRevision = setup['revision_theory']
-
                 
                 utils.delete_file(params.TRANSFER_FILENAME)
                 
@@ -258,11 +257,9 @@ def main():
 
                 # Map and transfer using the loaded embedding model
                 mapping  = transfer.map_predicates(similarityMetric, nodes, targets)
-                transfer.write_to_file_closest_distance(similarityMetric, embeddingModel, predicate, to_predicate, arity, mapping, 'experiments/' + experiment_title, recursion=recursion, allowSameTargetMap=params.ALLOW_SAME_TARGET_MAP)
+                transfer.write_to_file_closest_distance(similarityMetric, embeddingModel, predicate, to_predicate, arity, mapping, 'experiments/' + experiment_title, recursion=recursion, searchArgPermutation=params.SEARCH_PERMUTATION, searchEmpty=params.SEARCH_EMPTY, allowSameTargetMap=params.ALLOW_SAME_TARGET_MAP)
                 transfer.write_constraints_to_file('experiments/' + experiment_title)
                 del mapping
-
-                continue
 
                 end = time.time()
                 mapping_time = end-start

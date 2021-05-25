@@ -252,8 +252,8 @@ class Transfer:
       if(recursion):
           file.write('recursion_' + from_predicate + '(A,B): recursion_' + to_predicate + '(A,B)\n')
       file.write('setMap:' + from_predicate + '(' + ','.join([chr(65+i) for i in range(arity)]) + ')' + ',' + to_predicate + '(' + ','.join([chr(65+i) for i in range(arity)]) + ')' + '\n')
-      #file.write('setParam:searchArgPermutation=' + str(searchArgPermutation).lower() + '.\n')
-      #file.write('setParam:searchEmpty=' + str(searchEmpty).lower() + '.\n')
+      file.write('setParam:searchArgPermutation=' + str(searchArgPermutation).lower() + '.\n')
+      file.write('setParam:searchEmpty=' + str(searchEmpty).lower() + '.\n')
       file.write('setParam:allowSameTargetMap=' + str(allowSameTargetMap).lower() + '.\n')
 
     with open(filename + '/transfer_{}_{}.txt'.format(model_name, similarity_metric), 'w') as file:
@@ -267,6 +267,6 @@ class Transfer:
       if(recursion):
           file.write('recursion_' + from_predicate + '(A,B): recursion_' + to_predicate + '(A,B)\n')
       file.write('setMap:' + from_predicate + '(' + ','.join([chr(65+i) for i in range(arity)]) + ')' + ',' + to_predicate + '(' + ','.join([chr(65+i) for i in range(arity)]) + ')' + '\n')
-      #file.write('setParam:searchArgPermutation=' + str(searchArgPermutation).lower() + '.\n')
-      #file.write('setParam:searchEmpty=' + str(searchEmpty).lower() + '.\n')
+      file.write('setParam:searchArgPermutation=' + str(searchArgPermutation).lower() + '.\n')
+      file.write('setParam:searchEmpty=' + str(searchEmpty).lower() + '.\n')
       file.write('setParam:allowSameTargetMap=' + str(allowSameTargetMap).lower() + '.\n')
