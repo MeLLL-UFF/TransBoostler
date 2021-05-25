@@ -150,7 +150,7 @@ class Transfer:
       raise 'In build_words_vectors: model name should  be \'fasttext\' or \'word2vec\''
     return data
 
-  def __find_best_mapping(self, clause, targets, similarity_metric, targets_taken={}, allowSameTargetMap=False):
+  def __find_best_mapping(self, clause, targets, similarity_metric):
     """
         Calculate pairs similarity and sorts dataframe to obtain the closest target to a given source
 
@@ -158,7 +158,6 @@ class Transfer:
             clause(str): source clause
             targets(list): all targets found in the target domain
             similarity_metric(str): similarity metric to be applied
-            targets_taken(list): forbidden target-predicates
         Returns:
             the closest target-predicate to the given source
       """
@@ -169,23 +168,20 @@ class Transfer:
     similarities.to_csv('experiments/similarities/{}/{}/{}_similarities.csv'.format(self.model_name, similarity_metric, clause.split('(')[0]))
     indexes = similarities.index.tolist()
 
+    targets = []
+
     for index in indexes:
       index = re.split(r',\s*(?![^()]*\))', index)
       source, target = index[0].rstrip(), index[1].rstrip()
 
       # Literals must match
-      if(not self.__is_compatible(source, target)):
+      if(not self.__same_arity(utils.get_all_literals([source]), utils.get_all_literals([target]))):
         continue
-      
-      if(allowSameTargetMap):
-        return target, targets_taken
-      else:
-        if(target in targets_taken):
-          continue
-        else:
-          targets_taken[target] = 0
-          return target, targets_taken
-    return '', targets_taken
+
+      targets.append(target)
+      if(len(targets) == params.TOP_K):
+        return targets
+    return targets
 
   def map_predicates(self, similarity_metric, trees, targets):
     """
@@ -203,14 +199,14 @@ class Transfer:
     targets = utils.build_triples(targets)
     targets = self.__build_word_vectors(targets, similarity_metric)
 
-    mappings, targets_taken = {}, {}
+    mappings = {}
     for tree in trees:
       for i in range(len(tree.keys())):
         #Process ith node
         clauses = re.split(r',\s*(?![^()]*\))', tree[i])
         for clause in clauses:
           if(clause not in mappings and 'recursion' not in clause):
-            mappings[clause], targets_taken = self.__find_best_mapping(clause, targets, similarity_metric, targets_taken)
+            mappings[clause] = self.__find_best_mapping(clause, targets, similarity_metric)
     return mappings
 
   def write_constraints_to_file(self, filename):
@@ -247,8 +243,8 @@ class Transfer:
     """
     with open(params.TRANSFER_FILENAME, 'w') as file:
       for source in mapping.keys():
-        if(mapping[source] != ''):
-          file.write((source.replace('`', '') + ': ' +  mapping[source]).replace('`', ''))
+        if(mapping[source]):
+          file.write((source.replace('`', '') + ': ' +  ','.join(mapping[source])).replace('`', ''))
         else:
           file.write((source.replace('`', '') + ':'))
         file.write('\n')
@@ -263,7 +259,7 @@ class Transfer:
     with open(filename + '/transfer_{}_{}.txt'.format(model_name, similarity_metric), 'w') as file:
       for source in mapping.keys():
         if(mapping[source] != ''):
-          file.write((source.replace('`', '') + ': ' +  mapping[source]).replace('`', ''))
+          file.write((source.replace('`', '') + ': ' +  ','.join(mapping[source])).replace('`', ''))
         else:
           file.write((source.replace('`', '') + ':'))
         file.write('\n')
