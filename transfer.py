@@ -86,24 +86,19 @@ class Transfer:
           print('Word \'{}\' not present in pre-trained model'.format(word.lower().strip()))
           temp.append([0] * params.EMBEDDING_DIMENSION)
 
-      predicate = temp.copy()
-      if(params.METHOD):
-        predicate = utils.single_array(temp, params.METHOD)
+      #predicate = temp.copy()
+      #if(params.METHOD):
+      #  predicate = utils.single_array(temp, params.METHOD)
 
-      if(mapping_literals):
-        dict[example.strip()] = [predicate, []]
-      else:
-        dict[example[0].strip()] = [predicate, example[1]]
+      dict[example[0].strip()] = [temp, example[1]]
     return dict
 
-  def __build_word2vec_array(self, data, mapping_literals=False):
+  def __build_word2vec_array(self, data):
     """
         Turn relations into a single array
 
         Args:
             data(array): an array containing all predicates
-            model(object): word2vec embedding model
-            method(str): method to compact arrays of embedded words
        Returns:
             a dictionary that the keys are the words and the values are single arrays of embeddings
     """
@@ -123,14 +118,11 @@ class Transfer:
           print('Word \'{}\' not present in pre-trained model'.format(word.lower().strip()))
           temp.append([0] * params.EMBEDDING_DIMENSION)
 
-      predicate = temp.copy()
-      if(params.METHOD):
-        predicate = utils.single_array(temp, params.METHOD)
-        
-      if(mapping_literals):
-        dict[example.strip()] = [predicate, []]
-      else:
-        dict[example[0].strip()] = [predicate, example[1]]
+      #predicate = temp.copy()
+      #if(params.METHOD):
+      #  predicate = utils.single_array(temp, params.METHOD)
+
+      dict[example[0].strip()] = [temp, example[1]]
     return dict
 
   def __build_word_vectors(self, data, similarity_metric):

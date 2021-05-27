@@ -36,6 +36,32 @@ class Similarity:
         d[idx] = freq / float(doc_len)  # Normalized word frequencies.
     return d
 
+  def __bow(self, source, source_vectors, target, target_vectors, dimension):
+    """
+        Builds a Bag-of-Words so source and target predicates have the same size
+
+      Args:
+          source(str): source predicate
+          source_vectors: embedding vectors for source-predicate
+          target(str): target predicate
+          target_vectors: embedding vectors for target-predicate
+          dimension(int): size of word vectors
+      Returns:
+          source and target embeddings set to the same size
+    """
+    
+    words = list(set(source + target))
+    new_source, new_target = [[0]* dimension] * len(words), [[0]* dimension] * len(words)
+
+    for i in range(len(words)):
+      if words[i] in source:
+        index = source.index(words[i])
+        new_source[i] = source_vectors[index][:]
+      else:
+        index = target.index(words[i])
+        new_target[i] = target_vectors[index][:]
+    return new_source, new_target
+
   def __get_distance_matrix(self, source, target, model, dictionary, vocab_len):
     """
         Compute distance matrix between the predicates
@@ -47,9 +73,9 @@ class Similarity:
 	        vocab_len(int): size of the vocabulary
 	    Returns:
 	        a list of distancies
-	"""
-	
-	  # Sets for faster look-up.
+    """
+
+    # Sets for faster look-up.
     docset1 = set(source)
     docset2 = set(target)
 
@@ -61,11 +87,16 @@ class Similarity:
                 continue
 
             if(params.METHOD):
-                # Concatenate word vectors before calculate Euclidean Distance
-                _t1, _t2 = np.concatenate([model[w] for w in self.preprocessing.pre_process_text(t1)]),np.concatenate([model[w] for w in self.preprocessing.pre_process_text(t2)])
+                source_segmented = self.preprocessing.pre_process_text(t1)
+                target_segmented = self.preprocessing.pre_process_text(t2)
                 
-                if(len(_t1) != len(_t2)):
-                    _t1, _t2 = utils.set_to_same_size(_t1, _t2, params.EMBEDDING_DIMENSION)
+                sent_1 = [model[w] for w in source_segmented]
+                sent_2 = [model[w] for w in target_segmented]
+
+                sent_1, sent_2 = self.__bow(source_segmented, sent_1, target_segmented, sent_2, params.EMBEDDING_DIMENSION)
+                # Concatenate word vectors before calculate Euclidean Distance
+                _t1, _t2 = np.concatenate(sent_1), np.concatenate(sent_2)
+
             else:
                 _t1, _t2 = model[t1], model[t2]
             # Compute Euclidean distance between word vectors.
@@ -87,7 +118,7 @@ class Similarity:
        Returns:
             distance between two word vectors
     """
-    if(params.METHOD):
+    if(not params.METHOD):
         source, target = [source], [target]
     else:
         source, target = self.preprocessing.pre_process_text(source), self.preprocessing.pre_process_text(target)
@@ -176,31 +207,35 @@ class Similarity:
 
     raise "Similarity metric not implemented."
 
-  def cosine_similarities(self, source, target):
+  def cosine_similarities(self, sources, targets):
     """
         Calculate cosine similarity of embedded arrays
         for every possible pairs (source, target)
 
         Args:
-            source(dict): all word embeddings from the source dataset
-            target(dict): all word embeddings from the target dataset
+            sources(dict): all word embeddings from the source dataset
+            targets(dict): all word embeddings from the target dataset
        Returns:
             a pandas dataframe containing every pair (source, target) similarity
     """
     similarity = {}
-    for s in source:
-      for t in target:
+    for s in sources:
+      for t in targets:
 
-        key = self.__create_key([s, source[s][1]], [t, target[t][1]])
+        key = self.__create_key([s, sources[s][1]], [t, targets[t][1]])
 
         if '()' in key: key = key.replace('(', '').replace(')', '')
 
-        if(len(source[s][0]) != len(target[t][0])):
-          source[s][0], target[t][0] = utils.set_to_same_size(source[s][0], target[t][0], params.EMBEDDING_DIMENSION)
+        source_segmented = self.preprocessing.pre_process_text(s)
+        target_segmented = self.preprocessing.pre_process_text(t)
+
+        n_source, n_target = self.__bow(source_segmented, sources[s][0], target_segmented, targets[t][0], params.EMBEDDING_DIMENSION)
+
+        if(params.METHOD):
+          n_source, n_target = np.concatenate(n_source), np.concatenate(n_target)
 
         # This function corresponds to 1 - distance as presented at https://docs.scipy.org/doc/scipy/reference/generated/scipy.spatial.distance.cosine.html
-        similarity[key] = distance.cosine(source[s][0], target[t][0])
-
+        similarity[key] = distance.cosine(n_source, n_target)
     df = pd.DataFrame.from_dict(similarity, orient="index", columns=['similarity'])
     return df.sort_values(by='similarity')
 
@@ -228,12 +263,11 @@ class Similarity:
             # Calculate similarity using single vectors
             sent_1 = [model[word] for word in source_segmented if word in model]
             sent_2 = [model[word] for word in target_segmented if word in model]
+
+            sent_1, sent_2 = self.__bow(source_segmented, sent_1, target_segmented, sent_2, params.EMBEDDING_DIMENSION)
             
             if(params.METHOD):
                 sent_1, sent_2 = np.concatenate(sent_1), np.concatenate(sent_2)
-                
-                if(len(sent_1) != len(sent_2)):
-                    sent_1, sent_2 = utils.set_to_same_size(sent_1, sent_2, params.EMBEDDING_DIMENSION)
                 
                 similarity[key] = np.dot(matutils.unitvec(np.array(sent_1)), matutils.unitvec(np.array(sent_2)))
             else:
@@ -329,10 +363,15 @@ class Similarity:
 
         if '()' in key: key = key.replace('(', '').replace(')', '')
 
-        if(len(sources[s][0]) != len(targets[t][0])):
-          sources[s][0], targets[t][0] = utils.set_to_same_size(sources[s][0], targets[t][0], params.EMBEDDING_DIMENSION)
+        source_segmented = self.preprocessing.pre_process_text(s)
+        target_segmented = self.preprocessing.pre_process_text(t)
 
-        similarity[key] = distance.euclidean(sources[s][0], targets[t][0])
+        n_source, n_target = self.__bow(source_segmented, sources[s][0], target_segmented, targets[t][0], params.EMBEDDING_DIMENSION)
+
+        if(params.METHOD):
+          n_source, n_target = np.concatenate(n_source), np.concatenate(n_target)
+
+        similarity[key] = distance.euclidean(n_source, n_target)
 
     df = pd.DataFrame.from_dict(similarity, orient="index", columns=['similarity'])
     return df.sort_values(by='similarity')
