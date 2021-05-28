@@ -1,5 +1,6 @@
 
 from ekphrasis.classes.segmenter import Segmenter
+from abbreviations import abbreviations
 from nltk.stem import WordNetLemmatizer
 from nltk.stem import PorterStemmer
 from nltk import pos_tag
@@ -10,8 +11,21 @@ class Preprocessing:
 	def __init__(self):
 		# Segmenter using the word statistics from Wikipedia
 		self.seg = Segmenter(corpus="english")
-		self.porter_stemmer = PorterStemmer()
+		#self.porter_stemmer = PorterStemmer()
 		self.wordnet_lemmatizer = WordNetLemmatizer()
+
+	def __check_for_abbreviations(self, text):
+		"""
+			Replace abbreviations using a dictionary
+
+			Args:
+				text(list): list of words in a predicate
+			Returns:
+				list of the same words but abbreviations replaced by the full word
+		"""
+		for i in range(len(text)):
+			text[i] = abbreviations.get(text[i], text[i])
+		return text
 
 	def __remove_special_characters_from_list(literals):
 		"""
@@ -61,10 +75,10 @@ class Preprocessing:
 				the predicate after lemma and stemming
 		"""
 		predicate = []
-		for word_tag in pos_tag(self.__segment(text).split()):
+		for word_tag in pos_tag(self.__check_for_abbreviations(self.__segment(text).split())):
 			# If it's a verb, we apply lemmatization
 			predicate.append(self.wordnet_lemmatizer.lemmatize(word_tag[0], pos="v"))
 		return predicate
 
 #test = Preprocessing()
-#print(test.pre_process_text('companyhasoffices'))
+#print(test.pre_process_text('tempadvisedby'))
