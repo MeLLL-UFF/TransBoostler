@@ -8,11 +8,11 @@ setups = [
         {'model': 'fasttext', 'similarity_metric': 'euclidean', 'revision_theory': revision_theory},
         {'model': 'fasttext', 'similarity_metric': 'cosine', 'revision_theory': revision_theory},
         
-        {'model': 'word2vec', 'similarity_metric': 'softcosine', 'revision_theory': revision_theory},
-        {'model': 'word2vec', 'similarity_metric': 'wmd', 'revision_theory': revision_theory},
-        {'model': 'word2vec', 'similarity_metric': 'relax-wmd', 'revision_theory': revision_theory},
-        {'model': 'word2vec', 'similarity_metric': 'euclidean', 'revision_theory': revision_theory},
-        {'model': 'word2vec', 'similarity_metric': 'cosine', 'revision_theory': revision_theory},
+        ##{'model': 'word2vec', 'similarity_metric': 'softcosine', 'revision_theory': revision_theory},
+        ##{'model': 'word2vec', 'similarity_metric': 'wmd', 'revision_theory': revision_theory},
+        ##{'model': 'word2vec', 'similarity_metric': 'relax-wmd', 'revision_theory': revision_theory},
+        ##{'model': 'word2vec', 'similarity_metric': 'euclidean', 'revision_theory': revision_theory},
+        ##{'model': 'word2vec', 'similarity_metric': 'cosine', 'revision_theory': revision_theory},
         ]
 
 experiments = [
