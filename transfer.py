@@ -17,10 +17,10 @@ import re
 
 class Transfer:
 
-  def __init__(self, model, model_name):
+  def __init__(self, model, model_name, segmenter):
     self.model = model
     self.model_name = model_name
-    self.preprocessing = Preprocessing()
+    self.preprocessing = Preprocessing(segmenter)
     self.similarity = Similarity(self.preprocessing)
     self.constraints = {}
 
@@ -267,7 +267,7 @@ class Transfer:
               best_match, targets_taken = self.__find_best_single_mapping(clause, targets, similarity_metric, targets_taken)
               mappings[clause] = [best_match] if best_match != '' else []
             else:
-              mappings[clause] = self.__find_best_mapping(clause, targets, similarity_metric, targets_taken)
+              mappings[clause] = self.__find_best_mapping(clause, targets, similarity_metric)
     return mappings
 
   def write_constraints_to_file(self, filename):

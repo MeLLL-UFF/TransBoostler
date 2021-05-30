@@ -8,9 +8,9 @@ import nltk
 
 class Preprocessing:
 
-	def __init__(self):
+	def __init__(self, segmenter):
 		# Segmenter using the word statistics from Wikipedia
-		self.seg = Segmenter(corpus="english")
+		self.seg = segmenter
 		#self.porter_stemmer = PorterStemmer()
 		self.wordnet_lemmatizer = WordNetLemmatizer()
 
@@ -23,9 +23,13 @@ class Preprocessing:
 			Returns:
 				list of the same words but abbreviations replaced by the full word
 		"""
-		for i in range(len(text)):
-			text[i] = abbreviations.get(text[i], text[i])
-		return text
+		full_words = []
+		for word in text:
+			if word in abbreviations:
+				full_words += abbreviations[word].split()
+			else:
+				full_words.append(word)
+		return full_words
 
 	def __remove_special_characters_from_list(literals):
 		"""
@@ -81,4 +85,4 @@ class Preprocessing:
 		return predicate
 
 #test = Preprocessing()
-#print(test.pre_process_text('tempadvisedby'))
+#print(test.pre_process_text('actor'))
