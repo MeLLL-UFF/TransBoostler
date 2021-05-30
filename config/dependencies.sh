@@ -19,6 +19,6 @@ echo "Installation is complete!"
 echo "Generating SpaCy model from FastText and Word2Vec"
 
 python3 build_spacy_fasttext_model.py
-python3 build_spacy_word2vec_model.py
+#python3 build_spacy_word2vec_model.py
 
 echo "All set!"
