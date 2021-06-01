@@ -1,0 +1,16 @@
+advisedby(person68,person348).
+advisedby(person288,person348).
+advisedby(person309,person68).
+advisedby(person378,person303).
+advisedby(person68,person141).
+advisedby(person57,person68).
+advisedby(person348,person6).
+advisedby(person324,person303).
+advisedby(person57,person159).
+advisedby(person226,person29).
+advisedby(person29,person331).
+advisedby(person378,person242).
+advisedby(person348,person57).
+advisedby(person331,person226).
+advisedby(person141,person141).
+advisedby(person201,person324).
