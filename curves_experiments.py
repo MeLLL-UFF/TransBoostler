@@ -23,8 +23,8 @@ import sys
 import os
 
 #verbose=True
-source_balanced = 1
-balanced = 1
+source_balanced = False
+balanced = False
 
 runTransBoostler = True
 runRDNB = False
@@ -146,6 +146,9 @@ def main():
         os.makedirs('experiments/similarities/Fasttext')
         
     for experiment in experiments:
+
+        if 'nodes' in locals():
+            nodes.clear()
         
         #Clean folders if exists
         clean_previous_experiments_stuff()
