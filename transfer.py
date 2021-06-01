@@ -9,7 +9,6 @@ from scipy import spatial
 import utils as utils
 import pandas as pd
 import numpy as np
-import fasttext
 import operator
 import sys
 import os
