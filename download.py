@@ -15,3 +15,5 @@ def download_file(url):
                 #if chunk: 
                 f.write(chunk)
     return local_filename
+
+download_file(url)
