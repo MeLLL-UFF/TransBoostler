@@ -274,7 +274,6 @@ def main():
                 # Set number of folds
                 n_folds = datasets.get_n_folds(target)
 
-
                 for i in range(n_folds):
                     logging.info('\n Starting fold {} of {} folds \n'.format(i+1, n_folds))
 
