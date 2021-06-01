@@ -2,30 +2,32 @@
 revision_theory = True
 
 setups = [
+        {'model': 'fasttext', 'similarity_metric': 'cosine', 'revision_theory': revision_theory},
+        {'model': 'fasttext', 'similarity_metric': 'euclidean', 'revision_theory': revision_theory},
         {'model': 'fasttext', 'similarity_metric': 'softcosine', 'revision_theory': revision_theory},
         {'model': 'fasttext', 'similarity_metric': 'wmd', 'revision_theory': revision_theory},
-        {'model': 'fasttext', 'similarity_metric': 'relax-wmd', 'revision_theory': revision_theory},
-        {'model': 'fasttext', 'similarity_metric': 'euclidean', 'revision_theory': revision_theory},
-        {'model': 'fasttext', 'similarity_metric': 'cosine', 'revision_theory': revision_theory},
+        ##{'model': 'fasttext', 'similarity_metric': 'relax-wmd', 'revision_theory': revision_theory},
         
         ##{'model': 'word2vec', 'similarity_metric': 'softcosine', 'revision_theory': revision_theory},
         ##{'model': 'word2vec', 'similarity_metric': 'wmd', 'revision_theory': revision_theory},
         ##{'model': 'word2vec', 'similarity_metric': 'relax-wmd', 'revision_theory': revision_theory},
         ##{'model': 'word2vec', 'similarity_metric': 'euclidean', 'revision_theory': revision_theory},
         ##{'model': 'word2vec', 'similarity_metric': 'cosine', 'revision_theory': revision_theory},
+
+        # COLOCAR NA DISSERTAÇÃO -> RELAX-WMD
         ]
 
 experiments = [
             {'id': '1', 'source':'imdb', 'target':'uwcse', 'predicate':'workedunder', 'to_predicate':'advisedby', 'arity': 2},
             {'id': '2', 'source':'uwcse', 'target':'imdb', 'predicate':'advisedby', 'to_predicate':'workedunder', 'arity': 2},
             {'id': '3', 'source':'imdb', 'target':'cora', 'predicate':'workedunder', 'to_predicate':'samevenue', 'arity': 2},
-            {'id': '4', 'source':'cora', 'target':'imdb', 'predicate':'samevenue', 'to_predicate':'workedunder', 'arity': 2},
+            #{'id': '4', 'source':'cora', 'target':'imdb', 'predicate':'samevenue', 'to_predicate':'workedunder', 'arity': 2},
             ##{'id': '5', 'source':'uwcse', 'target':'cora', 'predicate':'advisedby', 'to_predicate':'samevenue', 'arity': 2},
             ##{'id': '6', 'source':'cora', 'target':'uwcse', 'predicate':'samevenue', 'to_predicate':'advisedby', 'arity': 2},
             {'id': '7', 'source':'yeast', 'target':'twitter', 'predicate':'proteinclass', 'to_predicate':'accounttype', 'arity': 2},
             {'id': '8', 'source':'twitter', 'target':'yeast', 'predicate':'accounttype', 'to_predicate':'proteinclass', 'arity': 2},
             {'id': '9', 'source':'nell_sports', 'target':'nell_finances', 'predicate':'teamplayssport', 'to_predicate':'companyeconomicsector', 'arity': 2},
-            {'id': '10', 'source':'nell_finances', 'target':'nell_sports', 'predicate':'companyeconomicsector', 'to_predicate':'teamplayssport', 'arity': 2},
+            #{'id': '10', 'source':'nell_finances', 'target':'nell_sports', 'predicate':'companyeconomicsector', 'to_predicate':'teamplayssport', 'arity': 2},
             #{'id': '11', 'source':'yeast', 'target':'webkb', 'predicate':'proteinclass', 'to_predicate':'departmentof', 'arity':2},
             #{'id': '12', 'source':'webkb', 'target':'yeast', 'predicate':'departmentof', 'to_predicate':'proteinclass', 'arity':2},
             #{'id': '13', 'source': 'yago2s', 'target': 'yeast', 'predicate': 'wasbornin', 'to_predicate': 'proteinclass', 'arity': 2},
