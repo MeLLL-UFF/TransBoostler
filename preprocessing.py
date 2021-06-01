@@ -2,9 +2,8 @@
 from ekphrasis.classes.segmenter import Segmenter
 from abbreviations import abbreviations
 from nltk.stem import WordNetLemmatizer
-from nltk.stem import PorterStemmer
+#from nltk.stem import PorterStemmer
 from nltk import pos_tag
-import nltk
 
 class Preprocessing:
 
@@ -76,7 +75,7 @@ class Preprocessing:
 			Args:
 				text(str): a single predicate
 			Returns:
-				the predicate after lemma and stemming
+				the predicate after lemma
 		"""
 		predicate = []
 		for word_tag in pos_tag(self.__check_for_abbreviations(self.__segment(text).split())):
