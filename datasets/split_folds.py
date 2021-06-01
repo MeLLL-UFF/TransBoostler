@@ -13,8 +13,8 @@ import utils as utils
 import logging
 
 #verbose=True
-source_balanced = 1
-balanced = 1
+source_balanced = False
+balanced = False
 
 for experiment in experiments:
 
