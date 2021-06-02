@@ -1,0 +1,80 @@
+0;;proteinclass(A, B) :- interaction(A, C), interaction(C, C).;true;true
+0;true;recursion_proteinclass(C, B).;false;true
+0;true,false;interaction(A, A).;false;true
+0;true,false,false;interaction(D, A), recursion_proteinclass(D, B).;false;false
+0;false;enzyme(A, E).;true;true
+0;false,true;enzyme(F, E), recursion_proteinclass(F, B).;false;false
+0;false,false;interaction(G, A), recursion_proteinclass(G, B).;false;true
+0;false,false,false;interaction(A, H), complex(A, I).;false;false
+1;;proteinclass(A, B) :- interaction(C, A), location(C, D).;true;true
+1;true;interaction(A, E), recursion_proteinclass(E, B).;false;true
+1;true,false;interaction(F, C), recursion_proteinclass(F, B).;true;false
+1;true,false,true;interaction(C, F), interaction(A, C).;false;false
+1;false;interaction(A, G), recursion_proteinclass(G, B).;false;true
+1;false,false;interaction(A, H), enzyme(H, I).;true;true
+1;false,false,true;phenotype(H, J).;false;false
+1;false,false,false;enzyme(A, K).;false;false
+2;;proteinclass(A, B) :- interaction(C, A), recursion_proteinclass(C, B).;true;true
+2;true;interaction(A, D), interaction(D, A).;false;false
+2;false;interaction(E, A), interaction(A, E).;true;true
+2;false,true;interaction(A, A).;false;true
+2;false,true,false;enzyme(E, F).;false;false
+2;false,false;interaction(G, A), interaction(H, G).;true;true
+2;false,false,true;location(G, I), location(H, I).;false;false
+2;false,false,false;interaction(A, J), recursion_proteinclass(J, B).;false;false
+3;;proteinclass(A, B) :- interaction(A, C), recursion_proteinclass(C, B).;true;true
+3;true;phenotype(A, D), enzyme(C, E).;true;true
+3;true,true;enzyme(A, E).;false;false
+3;true,false;interaction(F, A), recursion_proteinclass(F, B).;false;false
+3;false;interaction(A, A).;false;true
+3;false,false;interaction(A, G), enzyme(G, H).;true;true
+3;false,false,true;interaction(G, I), recursion_proteinclass(I, B).;false;false
+3;false,false,false;interaction(J, A).;false;false
+4;;proteinclass(A, B) :- interaction(C, A), interaction(A, C).;true;true
+4;true;recursion_proteinclass(C, B).;false;false
+4;false;interaction(D, A), location(A, E).;true;true
+4;false,true;recursion_proteinclass(D, B).;false;true
+4;false,true,false;interaction(A, F), recursion_proteinclass(F, B).;false;false
+4;false,false;phenotype(A, G), location(A, H).;true;true
+4;false,false,true;phenotype(I, G), recursion_proteinclass(I, B).;false;false
+4;false,false,false;interaction(A, J), recursion_proteinclass(J, B).;false;false
+5;;proteinclass(A, B) :- interaction(C, A), location(A, D).;true;true
+5;true;interaction(E, C), recursion_proteinclass(E, B).;false;true
+5;true,false;interaction(A, C).;false;true
+5;true,false,false;recursion_proteinclass(C, B).;false;false
+5;false;interaction(A, F), phenotype(F, G).;true;true
+5;false,true;interaction(F, H), recursion_proteinclass(H, B).;false;true
+5;false,true,false;phenotype(A, I), location(A, J).;false;false
+5;false,false;enzyme(A, K).;false;false
+6;;proteinclass(A, B) :- interaction(C, A), recursion_proteinclass(C, B).;true;true
+6;true;enzyme(A, D), location(A, E).;false;false
+6;false;interaction(F, A), interaction(A, F).;true;true
+6;false,true;interaction(A, A).;false;true
+6;false,true,false;interaction(F, F), complex(A, G).;false;false
+6;false,false;complex(A, H), interaction(I, A).;true;true
+6;false,false,true;complex(I, H), location(A, J).;false;false
+6;false,false,false;phenotype(A, K), enzyme(A, L).;false;false
+7;;proteinclass(A, B) :- interaction(C, A), recursion_proteinclass(C, B).;false;true
+7;false;interaction(D, A), complex(D, E).;true;true
+7;false,true;location(A, F), complex(A, E).;true;true
+7;false,true,true;interaction(G, D), recursion_proteinclass(G, B).;false;false
+7;false,true,false;interaction(H, D), recursion_proteinclass(H, B).;false;false
+7;false,false;interaction(I, A), enzyme(A, J).;true;true
+7;false,false,true;interaction(I, K), recursion_proteinclass(K, B).;false;false
+7;false,false,false;interaction(A, A).;false;false
+8;;proteinclass(A, B) :- interaction(A, C), recursion_proteinclass(C, B).;false;true
+8;false;interaction(A, D), complex(D, E).;true;true
+8;false,true;complex(A, E), location(A, F).;true;true
+8;false,true,true;enzyme(A, G), interaction(D, D).;false;false
+8;false,true,false;interaction(D, H), recursion_proteinclass(H, B).;false;false
+8;false,false;interaction(I, A), enzyme(I, J).;true;true
+8;false,false,true;interaction(K, I), interaction(I, K).;false;false
+8;false,false,false;phenotype(A, L), complex(A, M).;false;false
+9;;proteinclass(A, B) :- interaction(A, C), phenotype(A, D).;true;true
+9;true;complex(C, E), interaction(F, A).;true;true
+9;true,true;interaction(G, F), recursion_proteinclass(G, B).;false;false
+9;true,false;interaction(H, A), recursion_proteinclass(H, B).;false;true
+9;true,false,false;recursion_proteinclass(C, B).;false;false
+9;false;interaction(I, A), recursion_proteinclass(I, B).;false;true
+9;false,false;interaction(A, J), interaction(J, A).;false;true
+9;false,false,false;interaction(A, K), recursion_proteinclass(K, B).;false;false

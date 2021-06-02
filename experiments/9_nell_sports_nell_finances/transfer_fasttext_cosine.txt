@@ -1,0 +1,11 @@
+athleteplayssport(athlete,sport): cityhascompanyoffice(city,company)
+teamplaysagainstteam(sportsteam,sportsteam): bankchiefexecutiveceo(company,person)
+teamplaysinleague(sportsteam,sportsleague): acquired(company,company)
+teamalsoknownas(sportsteam,sportsteam): countryhascompanyoffice(country,company)
+athleteledsportsteam(athlete,sportsteam): companyceo(company,person)
+athleteplaysforteam(athlete,sportsteam): companyalsoknownas(company,company)
+recursion_teamplayssport(A,B): recursion_companyeconomicsector(A,B)
+setMap:teamplayssport(A,B),companyeconomicsector(A,B)
+setParam:searchArgPermutation=true.
+setParam:searchEmpty=false.
+setParam:allowSameTargetMap=false.
