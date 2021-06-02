@@ -13,7 +13,7 @@ word2vec/
 
 # Ignoring boostsrl outputs
 boostsrl/*.txt
-experiments/
+#experiments/
 
 # C extensions
 *.so
