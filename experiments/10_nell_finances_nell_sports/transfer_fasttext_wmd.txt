@@ -1,0 +1,12 @@
+companyalsoknownas(company,company): teamalsoknownas(sportsteam,sportsteam),teamplaysinleague(sportsteam,sportsleague),athleteplaysforteam(athlete,sportsteam)
+acquired(company,company): teamalsoknownas(sportsteam,sportsteam),teamplaysinleague(sportsteam,sportsleague),athleteplaysforteam(athlete,sportsteam)
+countryhascompanyoffice(country,company): teamalsoknownas(sportsteam,sportsteam),teamplaysinleague(sportsteam,sportsleague),athleteplaysforteam(athlete,sportsteam)
+economicsectorcompany(sector,company): teamalsoknownas(sportsteam,sportsteam),teamplaysinleague(sportsteam,sportsleague),athleteplaysforteam(athlete,sportsteam)
+companyceo(company,person): teamalsoknownas(sportsteam,sportsteam),teamplaysinleague(sportsteam,sportsleague),athleteplaysforteam(athlete,sportsteam)
+cityhascompanyoffice(city,company): teamalsoknownas(sportsteam,sportsteam),teamplaysinleague(sportsteam,sportsleague),athleteplaysforteam(athlete,sportsteam)
+bankchiefexecutiveceo(company,person): teamalsoknownas(sportsteam,sportsteam),teamplaysinleague(sportsteam,sportsleague),athleteplaysforteam(athlete,sportsteam)
+recursion_companyeconomicsector(A,B): recursion_teamplayssport(A,B)
+setMap:companyeconomicsector(A,B),teamplayssport(A,B)
+setParam:searchArgPermutation=true.
+setParam:searchEmpty=false.
+setParam:allowSameTargetMap=false.

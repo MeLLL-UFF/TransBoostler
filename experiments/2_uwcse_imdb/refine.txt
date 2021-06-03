@@ -1,0 +1,76 @@
+0;;advisedby(A, B) :- professor(B), student(A).;true;false
+0;true;publication(C, B), publication(C, A).;true;true
+0;true,true;tempadvisedby(D, B), ta(E, D, F).;false;true
+0;true,true,false;tempadvisedby(G, B).;false;false
+0;true,false;publication(H, A).;true;true
+0;true,false,true;publication(H, I), professor(I).;false;false
+0;true,false,false;publication(J, B).;false;false
+1;;advisedby(A, B) :- professor(B), student(A).;true;false
+1;true;publication(C, A), publication(C, B).;true;true
+1;true,true;publication(C, D), tempadvisedby(D, E).;false;true
+1;true,true,false;publication(C, F), ta(G, F, H).;false;false
+1;true,false;publication(I, A), publication(J, B).;true;true
+1;true,false,true;publication(I, K), ta(L, K, M).;false;false
+1;true,false,false;ta(N, A, P), publication(Q, B).;false;false
+2;;advisedby(A, B) :- professor(B), student(A).;true;false
+2;true;publication(C, A), publication(C, B).;true;true
+2;true,true;tempadvisedby(D, B).;true;true
+2;true,true,true;publication(E, D), ta(F, A, G).;false;false
+2;true,true,false;publication(C, H), tempadvisedby(I, H).;false;false
+2;true,false;tempadvisedby(J, B), publication(K, A).;true;true
+2;true,false,true;ta(L, J, M), publication(N, B).;false;false
+2;true,false,false;tempadvisedby(P, B), ta(Q, A, R).;false;false
+3;;advisedby(A, B) :- hasposition(B, C), student(A).;true;true
+3;true;publication(D, B), publication(D, A).;true;true
+3;true,true;publication(D, E), tempadvisedby(E, B).;false;true
+3;true,true,false;tempadvisedby(F, B).;false;false
+3;true,false;publication(G, A), publication(H, B).;true;true
+3;true,false,true;publication(G, I), professor(I).;false;false
+3;true,false,false;hasposition(J, C), tempadvisedby(K, J).;false;false
+3;false;ta(L, A, M).;false;false
+4;;advisedby(A, B) :- student(A), professor(B).;true;false
+4;true;publication(C, B), publication(C, A).;true;true
+4;true,true;tempadvisedby(D, B), ta(E, D, F).;true;true
+4;true,true,true;publication(G, D).;false;false
+4;true,true,false;publication(C, H), tempadvisedby(I, H).;false;false
+4;true,false;publication(J, A).;true;true
+4;true,false,true;publication(J, K), ta(L, K, M).;false;false
+4;true,false,false;tempadvisedby(N, B), ta(P, N, Q).;false;false
+5;;advisedby(A, B) :- student(A), professor(B).;true;false
+5;true;tempadvisedby(C, B), publication(D, C).;true;true
+5;true,true;publication(D, A).;false;true
+5;true,true,false;ta(E, A, F), publication(G, A).;false;false
+5;true,false;publication(H, A).;true;true
+5;true,false,true;projectmember(I, B).;false;false
+5;true,false,false;publication(J, B).;false;false
+6;;advisedby(A, B) :- professor(B), student(A).;true;false
+6;true;publication(C, B).;true;true
+6;true,true;publication(C, D), tempadvisedby(E, D).;true;false
+6;true,true,true;ta(F, E, G).;false;false
+6;true,false;tempadvisedby(H, B).;true;true
+6;true,false,true;ta(I, A, J).;false;false
+6;true,false,false;publication(K, A).;false;false
+7;;advisedby(A, B) :- hasposition(B, C), student(A).;true;true
+7;true;publication(D, B), publication(D, A).;true;true
+7;true,true;tempadvisedby(E, B), ta(F, E, G).;true;false
+7;true,true,true;ta(H, I, G), publication(D, I).;false;false
+7;true,false;hasposition(J, C), tempadvisedby(K, J).;true;true
+7;true,false,true;sameperson(B, J).;false;false
+7;true,false,false;publication(L, A).;false;false
+7;false;ta(M, A, N).;false;false
+8;;advisedby(A, B) :- publication(C, B), publication(C, A).;true;true
+8;true;student(A), professor(B).;false;false
+8;false;publication(D, A).;true;true
+8;false,true;tempadvisedby(E, B), publication(F, B).;true;true
+8;false,true,true;ta(G, E, H), ta(I, A, J).;false;false
+8;false,true,false;publication(K, B), professor(B).;false;false
+8;false,false;professor(B), student(A).;true;false
+8;false,false,true;tempadvisedby(L, B), publication(M, L).;false;false
+9;;advisedby(A, B) :- professor(B), ta(C, A, D).;true;true
+9;true;tempadvisedby(E, B).;true;true
+9;true,true;publication(F, B), publication(F, E).;false;true
+9;true,true,false;ta(G, E, H).;false;false
+9;true,false;publication(I, B).;true;false
+9;true,false,true;ta(J, K, D), publication(I, K).;false;false
+9;false;publication(L, A), publication(L, B).;false;true
+9;false,false;publication(M, B), tempadvisedby(N, B).;false;false

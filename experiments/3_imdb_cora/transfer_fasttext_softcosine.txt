@@ -1,0 +1,7 @@
+director(person): 
+movie(movie,person): haswordtitle(title,word),sametitle(title,title),title(class,title)
+actor(person): 
+setMap:workedunder(A,B),samevenue(A,B)
+setParam:searchArgPermutation=true.
+setParam:searchEmpty=false.
+setParam:allowSameTargetMap=false.

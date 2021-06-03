@@ -1,0 +1,12 @@
+professor(person): female(person),actor(person),director(person)
+publication(title,person): movie(movie,person),genre(person,genre)
+tempadvisedby(person,person): movie(movie,person),genre(person,genre)
+ta(course,person,quarter): 
+hasposition(person,faculty): movie(movie,person),genre(person,genre)
+student(person): female(person),actor(person),director(person)
+projectmember(project,person): movie(movie,person),genre(person,genre)
+sameperson(person,person): movie(movie,person),genre(person,genre)
+setMap:advisedby(A,B),workedunder(A,B)
+setParam:searchArgPermutation=true.
+setParam:searchEmpty=false.
+setParam:allowSameTargetMap=false.

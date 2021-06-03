@@ -1,0 +1,7 @@
+follows(account,account): complex(protein,com),enzyme(protein,enz),phenotype(protein,phe)
+tweets(account,word): complex(protein,com),enzyme(protein,enz),phenotype(protein,phe)
+recursion_accounttype(A,B): recursion_proteinclass(A,B)
+setMap:accounttype(A,B),proteinclass(A,B)
+setParam:searchArgPermutation=true.
+setParam:searchEmpty=false.
+setParam:allowSameTargetMap=false.
