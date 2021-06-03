@@ -14,7 +14,7 @@ EMBEDDING_DIMENSION = 300
 METHOD = 'CONCATENATE'
 #METHOD = None
 
-TOP_K = 3
+TOP_K = 2
 
 # Validation parameters
 N_FOLDS = 3
