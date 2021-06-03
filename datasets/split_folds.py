@@ -22,12 +22,8 @@ for experiment in experiments:
     experiment_title = experiment['id'] + '_' + experiment['source'] + '_' + experiment['target']
     logging.info('Experiment {} \n'.format(experiment_title))
 
-    _id = experiment['id']
-    source = experiment['source']
     target = experiment['target']
-    predicate = experiment['predicate']
     to_predicate = experiment['to_predicate']
-    arity = experiment['arity']
 
     if os.path.exists(os.getcwd() + '/folds/{}'.format(target)):
         continue
@@ -59,6 +55,8 @@ for experiment in experiments:
         logging.info('Target train facts examples: %s' % len(tar_train_facts))
         logging.info('Target train pos examples: %s' % len(tar_train_pos))
         logging.info('Target train neg examples: %s\n' % len(tar_train_neg))
+        
+        
         logging.info('Target test facts examples: %s' % len(tar_test_facts))
         logging.info('Target test pos examples: %s' % len(tar_test_pos))
         logging.info('Target test neg examples: %s\n' % len(tar_test_neg))
