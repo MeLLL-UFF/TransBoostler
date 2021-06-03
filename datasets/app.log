@@ -1,0 +1,240 @@
+Experiment 1_imdb_uwcse 
+
+Target train facts examples: 708
+Target train pos examples: 35
+Target train neg examples: 1814
+
+Target test facts examples: 1679
+Target test pos examples: 78
+Target test neg examples: 2265
+
+Target train facts examples: 422
+Target train pos examples: 20
+Target train neg examples: 341
+
+Target test facts examples: 1965
+Target test pos examples: 93
+Target test neg examples: 3738
+
+Target train facts examples: 162
+Target train pos examples: 9
+Target train neg examples: 91
+
+Target test facts examples: 2225
+Target test pos examples: 104
+Target test neg examples: 3988
+
+Target train facts examples: 681
+Target train pos examples: 33
+Target train neg examples: 1488
+
+Target test facts examples: 1706
+Target test pos examples: 80
+Target test neg examples: 2591
+
+Target train facts examples: 414
+Target train pos examples: 16
+Target train neg examples: 345
+
+Target test facts examples: 1973
+Target test pos examples: 97
+Target test neg examples: 3734
+
+Experiment 2_uwcse_imdb 
+
+Target train facts examples: 215
+Target train pos examples: 56
+Target train neg examples: 3308
+
+Target test facts examples: 863
+Target test pos examples: 326
+Target test neg examples: 10928
+
+Target train facts examples: 208
+Target train pos examples: 58
+Target train neg examples: 3423
+
+Target test facts examples: 870
+Target test pos examples: 324
+Target test neg examples: 10813
+
+Target train facts examples: 341
+Target train pos examples: 178
+Target train neg examples: 3543
+
+Target test facts examples: 737
+Target test pos examples: 204
+Target test neg examples: 10693
+
+Target train facts examples: 151
+Target train pos examples: 45
+Target train neg examples: 1891
+
+Target test facts examples: 927
+Target test pos examples: 337
+Target test neg examples: 12345
+
+Target train facts examples: 163
+Target train pos examples: 45
+Target train neg examples: 2071
+
+Target test facts examples: 915
+Target test pos examples: 337
+Target test neg examples: 12165
+
+Experiment 3_imdb_cora 
+
+Target train facts examples: 7463
+Target train pos examples: 368
+Target train neg examples: 688
+
+Target test facts examples: 35095
+Target test pos examples: 2649
+Target test neg examples: 4334
+
+Target train facts examples: 9016
+Target train pos examples: 771
+Target train neg examples: 544
+
+Target test facts examples: 33542
+Target test pos examples: 2246
+Target test neg examples: 4478
+
+Target train facts examples: 9306
+Target train pos examples: 581
+Target train neg examples: 2222
+
+Target test facts examples: 33252
+Target test pos examples: 2436
+Target test neg examples: 2800
+
+Target train facts examples: 8129
+Target train pos examples: 747
+Target train neg examples: 1068
+
+Target test facts examples: 34429
+Target test pos examples: 2270
+Target test neg examples: 3954
+
+Target train facts examples: 8644
+Target train pos examples: 550
+Target train neg examples: 500
+
+Target test facts examples: 33914
+Target test pos examples: 2467
+Target test neg examples: 4522
+
+Experiment 4_cora_imdb 
+
+Experiment 1_imdb_uwcse 
+
+Experiment 2_uwcse_imdb 
+
+Experiment 3_imdb_cora 
+
+Experiment 4_cora_imdb 
+
+Experiment 7_yeast_twitter 
+
+Target train facts examples: 1580
+Target train pos examples: 126
+Target train neg examples: 16128
+
+Target test facts examples: 1562
+Target test pos examples: 156
+Target test neg examples: 24648
+
+Target train facts examples: 1562
+Target train pos examples: 156
+Target train neg examples: 24648
+
+Target test facts examples: 1580
+Target test pos examples: 126
+Target test neg examples: 16128
+
+Experiment 8_twitter_yeast 
+
+Target train facts examples: 4517
+Target train pos examples: 87
+Target train neg examples: 11565
+
+Target test facts examples: 10498
+Target test pos examples: 282
+Target test neg examples: 39912
+
+Target train facts examples: 3856
+Target train pos examples: 104
+Target train neg examples: 16320
+
+Target test facts examples: 11159
+Target test pos examples: 265
+Target test neg examples: 35157
+
+Target train facts examples: 3421
+Target train pos examples: 92
+Target train neg examples: 12594
+
+Target test facts examples: 11594
+Target test pos examples: 277
+Target test neg examples: 38883
+
+Target train facts examples: 3221
+Target train pos examples: 86
+Target train neg examples: 10998
+
+Target test facts examples: 11794
+Target test pos examples: 283
+Target test neg examples: 40479
+
+Experiment 9_nell_sports_nell_finances 
+
+Target train facts examples: 5307
+Target train pos examples: 260
+Target train neg examples: 183219
+
+Target test facts examples: 5307
+Target test pos examples: 518
+Target test neg examples: 366436
+
+Target train facts examples: 5307
+Target train pos examples: 260
+Target train neg examples: 183219
+
+Target test facts examples: 5307
+Target test pos examples: 518
+Target test neg examples: 366436
+
+Target train facts examples: 5307
+Target train pos examples: 258
+Target train neg examples: 183217
+
+Target test facts examples: 5307
+Target test pos examples: 520
+Target test neg examples: 366438
+
+Experiment 10_nell_finances_nell_sports 
+
+Target train facts examples: 9691
+Target train pos examples: 133
+Target train neg examples: 53331
+
+Target test facts examples: 9691
+Target test pos examples: 264
+Target test neg examples: 106660
+
+Target train facts examples: 9691
+Target train pos examples: 133
+Target train neg examples: 53331
+
+Target test facts examples: 9691
+Target test pos examples: 264
+Target test neg examples: 106660
+
+Target train facts examples: 9691
+Target train pos examples: 131
+Target train neg examples: 53329
+
+Target test facts examples: 9691
+Target test pos examples: 266
+Target test neg examples: 106662
+

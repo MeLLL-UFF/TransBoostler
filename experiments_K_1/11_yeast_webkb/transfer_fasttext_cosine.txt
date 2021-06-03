@@ -1,9 +1,0 @@
-interaction(protein,protein): hasanchor(word,page)
-enzyme(protein,enz): membersofproject(page,page)
-phenotype(protein,phe): pageclass(page,class)
-location(protein,loc): has(word,page)
-complex(protein,com): instructorsof(page,page)
-setMap:proteinclass(A,B),departmentof(A,B)
-setParam:searchArgPermutation=true.
-setParam:searchEmpty=false.
-setParam:allowSameTargetMap=false.
