@@ -99,6 +99,7 @@ class Similarity:
 
             else:
                 _t1, _t2 = model[t1], model[t2]
+                
             # Compute Euclidean distance between word vectors.
             distance_matrix[i, j] = np.sqrt(np.sum((_t1 - _t2)**2))
 
@@ -188,7 +189,7 @@ class Similarity:
     """
 
     if(similarity_metric == 'cosine'):
-      return self.cosine_similarities(source, targets)
+      return self.cosine_similarities(source, targets, model)
 
     if(similarity_metric == 'euclidean'):
       return self.euclidean_distance(source, targets)
@@ -207,7 +208,7 @@ class Similarity:
 
     raise "Similarity metric not implemented."
 
-  def cosine_similarities(self, sources, targets):
+  def cosine_similarities(self, sources, targets, model):
     """
         Calculate cosine similarity of embedded arrays
         for every possible pairs (source, target)
@@ -229,13 +230,17 @@ class Similarity:
         source_segmented = self.preprocessing.pre_process_text(s)
         target_segmented = self.preprocessing.pre_process_text(t)
 
-        n_source, n_target = self.__bow(source_segmented, sources[s][0], target_segmented, targets[t][0], params.EMBEDDING_DIMENSION)
+        n_source = [model[word] for word in source_segmented if word in model]
+        n_target = [model[word] for word in target_segmented if word in model]
+
+        #n_source, n_target = self.__bow(source_segmented, sources[s][0], target_segmented, targets[t][0], params.EMBEDDING_DIMENSION)
 
         if(params.METHOD):
           n_source, n_target = np.concatenate(n_source), np.concatenate(n_target)
 
         # This function corresponds to 1 - distance as presented at https://docs.scipy.org/doc/scipy/reference/generated/scipy.spatial.distance.cosine.html
         similarity[key] = distance.cosine(n_source, n_target)
+
     df = pd.DataFrame.from_dict(similarity, orient="index", columns=['similarity'])
     return df.sort_values(by='similarity')
 
@@ -266,13 +271,11 @@ class Similarity:
 
             sent_1, sent_2 = self.__bow(source_segmented, sent_1, target_segmented, sent_2, params.EMBEDDING_DIMENSION)
             
-            if(params.METHOD):
-                sent_1, sent_2 = np.concatenate(sent_1), np.concatenate(sent_2)
-                
-                similarity[key] = np.dot(matutils.unitvec(np.array(sent_1)), matutils.unitvec(np.array(sent_2)))
-            else:
-                similarity[key] = np.dot(matutils.unitvec(np.array(sent_1).mean(axis=0)), matutils.unitvec(np.array(sent_2).mean(axis=0)))
-                
+            #if(params.METHOD):
+            #    sent_1, sent_2 = np.concatenate(sent_1), np.concatenate(sent_2)
+
+            similarity[key] = np.dot(matutils.unitvec(np.array(sent_1).mean(axis=0)), matutils.unitvec(np.array(sent_2).mean(axis=0)))
+
             #similarity[key] = word_vectors.n_similarity(source_segmented, target_segmented)
 
     df = pd.DataFrame.from_dict(similarity, orient="index", columns=['similarity'])
