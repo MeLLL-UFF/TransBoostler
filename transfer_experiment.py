@@ -33,6 +33,28 @@ folds_path = 'folds_transfer_experiment'
 revision = TheoryRevision()
 segmenter = Segmenter(corpus="english")
 
+def save_experiment(data, experiment_title, embeddingModel, similarityMetric):
+    if not os.path.exists('experiments/' + experiment_title):
+        os.makedirs('experiments/' + experiment_title)
+    results = []
+    if os.path.isfile('experiments/' + experiment_title + '/' + experiment_title + '_{}_{}.json'.format(embeddingModel, similarityMetric)):
+        with open('experiments/' + experiment_title + '/' + experiment_title + '_{}_{}.json'.format(embeddingModel, similarityMetric), 'r') as fp:
+            results = json.load(fp)
+    results.append(data)
+    with open('experiments/' + experiment_title + '/' + experiment_title + '_{}_{}.json'.format(embeddingModel, similarityMetric), 'w') as fp:
+        json.dump(results, fp)
+
+def save_confusion_matrix(data, experiment_title, embeddingModel, similarityMetric):
+    if not os.path.exists('experiments/' + experiment_title):
+        os.makedirs('experiments/' + experiment_title)
+    results = []
+    if os.path.isfile('experiments/' + experiment_title + '/confusion_matrix_{}_{}.json'.format(embeddingModel, similarityMetric)):
+        with open('experiments/' + experiment_title + '/confusion_matrix_{}_{}.json'.format(embeddingModel, similarityMetric), 'r') as fp:
+            results = json.load(fp)
+    results.append(data)
+    with open('experiments/' + experiment_title + '/confusion_matrix_{}_{}.json'.format(embeddingModel, similarityMetric), 'w') as fp:
+        json.dump(results, fp)
+
 def load_model(model_name):
 
   if(model_name == 'fasttext'):
@@ -116,7 +138,8 @@ def get_confusion_matrix(to_predicate, revision=False):
     for m in matrix:
         logging.info(m)
 
-    return {'TP': TP, 'FP': FP, 'TN':TN, 'FN': FN}
+    # Converts to int to fix JSON np.int64 problem
+    return {'TP': int(TP), 'FP': int(FP), 'TN': int(TN), 'FN': int(FN)}
 
 def clean_previous_experiments_stuff():
     logging.info('Cleaning previous experiment\'s mess')
@@ -136,10 +159,6 @@ def load_pickle_file(filename):
 
 def main():
 
-    # Dictionaries to keep all experiments results
-    transboostler_experiments = {}
-    transboostler_confusion_matrix = {}
-
     if not os.path.exists('experiments'):
         os.makedirs('experiments')
         os.makedirs('experiments/similarities')
@@ -149,30 +168,21 @@ def main():
         os.makedirs('experiments/similarities/fasttext/euclidean')
         os.makedirs('experiments/similarities/fasttext/wmd')
 
-    results = {}
+    results, confusion_matrix = {}, {}
 
-    #while results['save']['n_runs'] < n_runs:
+    # Dictionaries to keep all experiments results
+    #transboostler_experiments = {}
+    transboostler_confusion_matrix = {}
 
     for experiment in experiments:
+
+        confusion_matrix_save_all = []
 
         target = experiment['target']
     
         # n_runs = n_files - path - 1
         n_runs = len(list(os.walk('datasets/folds/{}/'.format(target)))) - 1
         results = { 'save': { }}
-        firstRun = True
-        
-        results['save'] = {
-            'experiment': 0,
-            'n_runs': 0,
-            'seed': 441773,
-            'source_balanced' : False,
-            'balanced' : False,
-            'folds' : n_runs,
-            'nodeSize' : params.NODESIZE,
-            'numOfClauses' : params.NUMOFCLAUSES,
-            'maxTreeDepth' : params.MAXTREEDEPTH
-            }
 
         if 'nodes' in locals():
             nodes.clear()
@@ -197,7 +207,11 @@ def main():
 
         # Get targets
         targets = [t.replace('.', '').replace('+', '').replace('-', '') for t in set(bk[target]) if t.split('(')[0] != to_predicate and 'recursion_' not in t]
-                
+        
+        path = os.getcwd() + '/experiments/' + experiment_title
+        if not os.path.exists(path):
+            os.mkdir(path)
+
         if(learn_from_source):
 
             # Load source dataset
@@ -259,37 +273,45 @@ def main():
             nodes = load_pickle_file(os.getcwd() + '/experiments/{}_{}_{}/{}'.format(_id, source, target, params.SOURCE_TREE_NODES_FILES))
             #structured = load_pickle_file(os.getcwd() + '/experiments/{}_{}_{}/{}'.format(_id, source, target, params.STRUCTURED_TREE_NODES_FILES))
 
-        while results['save']['n_runs'] < n_runs:
-            logging.info('Run: ' + str(results['save']['n_runs'] + 1))
+        for setup in setups: 
+            embeddingModel = setup['model'].lower()
+            similarityMetric = setup['similarity_metric'].lower()
+            theoryRevision = setup['revision_theory']
 
-            path = os.getcwd() + '/experiments/' + experiment_title
-            if not os.path.exists(path):
-                os.mkdir(path)
-
-            for setup in setups: 
-                embeddingModel = setup['model'].lower()
-                similarityMetric = setup['similarity_metric'].lower()
-                theoryRevision = setup['revision_theory']
-                
-                utils.delete_file(params.TRANSFER_FILENAME)
-                
-                if(embeddingModel not in transboostler_experiments):
-                    transboostler_experiments[embeddingModel] = {}
-                    transboostler_confusion_matrix[embeddingModel] = {}
-
-                transboostler_experiments[embeddingModel][similarityMetric] = []
-                experiment_metrics = {'CLL': [], 'AUC ROC': [], 'AUC PR': [], 'Learning Time': [], 'Inference Time': []}
-                transboostler_confusion_matrix[embeddingModel][similarityMetric] = []
-                confusion_matrix = {'TP': [], 'FP': [], 'TN': [], 'FN': []}
-
-                logging.info('Starting experiments for {} using {} \n'.format(embeddingModel, similarityMetric))
+            results['save'] = {
+            'experiment': 0,
+            'n_runs': 0,
+            'seed': 441773,
+            'source_balanced' : False,
+            'balanced' : False,
+            'folds' : n_runs,
+            'nodeSize' : params.NODESIZE,
+            'numOfClauses' : params.NUMOFCLAUSES,
+            'maxTreeDepth' : params.MAXTREEDEPTH
+            }
             
-                if('previous' not in locals() or previous != embeddingModel):
-                    loadedModel = load_model(embeddingModel)
-                    previous = embeddingModel
-                
-                transfer = Transfer(model=loadedModel, model_name=embeddingModel, segmenter=segmenter)
-                
+            utils.delete_file(params.TRANSFER_FILENAME)
+            
+            if(embeddingModel not in transboostler_confusion_matrix):
+            #    transboostler_experiments[embeddingModel] = {}
+                transboostler_confusion_matrix[embeddingModel] = {}
+
+            #transboostler_experiments[embeddingModel][similarityMetric] = []
+            #experiment_metrics = {key: {'CLL': [], 'AUC ROC': [], 'AUC PR': [], 'Learning Time': [], 'Inference Time': []} for key in params.AMOUNTS} 
+            transboostler_confusion_matrix[embeddingModel][similarityMetric] = []
+            confusion_matrix = {'TP': [], 'FP': [], 'TN': [], 'FN': []} 
+
+            logging.info('Starting experiments for {} using {} \n'.format(embeddingModel, similarityMetric))
+        
+            if('previous' not in locals() or previous != embeddingModel):
+                loadedModel = load_model(embeddingModel)
+                previous = embeddingModel
+            
+            transfer = Transfer(model=loadedModel, model_name=embeddingModel, segmenter=segmenter)
+
+            while results['save']['n_runs'] < n_runs:
+                logging.info('Run: ' + str(results['save']['n_runs'] + 1))
+            
                 start = time.time()
 
                 # Map and transfer using the loaded embedding model
@@ -309,29 +331,32 @@ def main():
                 else:
                     n_folds = len(tar_total_data[0])
 
+                results_save, confusion_matrix_save = [], []
                 for i in range(n_folds):
                     logging.info('\n Starting fold {} of {} folds \n'.format(i+1, n_folds))
 
+                    ob_save, cm_save = {}, {}
+
                     if target not in ['nell_sports', 'nell_finances', 'yago2s']:
-                        [tar_train_pos, tar_test_pos] = datasets.get_kfold_small(i, tar_total_data[0])
+                        [tar_train_pos, tar_test_pos] = datasets.get_kfold(i, tar_total_data[0])
                     else:
-                        t_total_data = datasets.load(target, bk[target], target=to_predicate, balanced=balanced, seed=results['save']['seed'])
-                        tar_train_pos = datasets.split_into_folds(t_total_data[1][0], n_folds=n_folds, seed=results['save']['seed'])[i] + t_total_data[0][0]
+                        t_total_data = datasets.load(target, bk[target], target=to_predicate, balanced=balanced, seed=params.SEED)
+                        tar_train_pos = datasets.split_into_folds(t_total_data[1][0], n_folds=n_folds, seed=params.SEED)[i] + t_total_data[0][0]
 
                     # Load new predicate target dataset
-                    tar_data = datasets.load(target, bk[target], target=to_predicate, balanced=balanced, seed=results['save']['seed'])
+                    tar_data = datasets.load(target, bk[target], target=to_predicate, balanced=balanced, seed=params.SEED)
 
                     # Group and shuffle
                     if target not in ['nell_sports', 'nell_finances', 'yago2s']:
-                        [tar_train_facts, tar_test_facts] =  datasets.get_kfold_small(i, tar_data[0])
-                        [tar_train_pos, tar_test_pos] =  datasets.get_kfold_small(i, tar_data[1])
-                        [tar_train_neg, tar_test_neg] =  datasets.get_kfold_small(i, tar_data[2])
+                        [tar_train_facts, tar_test_facts] =  datasets.get_kfold(i, tar_data[0])
+                        [tar_train_pos, tar_test_pos] =  datasets.get_kfold(i, tar_data[1])
+                        [tar_train_neg, tar_test_neg] =  datasets.get_kfold(i, tar_data[2])
                     else:
                         [tar_train_facts, tar_test_facts] =  [tar_data[0][0], tar_data[0][0]]
-                        to_folds_pos = datasets.split_into_folds(tar_data[1][0], n_folds=n_folds, seed=results['save']['seed'])
-                        to_folds_neg = datasets.split_into_folds(tar_data[2][0], n_folds=n_folds, seed=results['save']['seed'])
-                        [tar_train_pos, tar_test_pos] =  datasets.get_kfold_small(i, to_folds_pos)
-                        [tar_train_neg, tar_test_neg] =  datasets.get_kfold_small(i, to_folds_neg)
+                        to_folds_pos = datasets.split_into_folds(tar_data[1][0], n_folds=n_folds, seed=params.SEED)
+                        to_folds_neg = datasets.split_into_folds(tar_data[2][0], n_folds=n_folds, seed=params.SEED)
+                        [tar_train_pos, tar_test_pos] =  datasets.get_kfold(i, to_folds_pos)
+                        [tar_train_neg, tar_test_neg] =  datasets.get_kfold(i, to_folds_neg)
                     
                     random.shuffle(tar_train_pos)
                     random.shuffle(tar_train_neg)
@@ -354,24 +379,21 @@ def main():
 
                     if(theoryRevision):
                         # Learn and test model applying revision theory
-                        t_results, learning_time, inference_time = revision.apply(background,  tar_train_pos, tar_train_neg, tar_train_facts, tar_test_pos, tar_test_neg, tar_test_facts, structured)
+                        t_results, learning_time, inference_time = revision.apply(background, tar_train_pos, tar_train_neg, tar_train_facts, tar_test_pos, tar_test_neg, tar_test_facts, structured)
                     else:
                         # Learn and test model not revising theory
-                        model, t_results, learning_time, inference_time = train_and_test(background,  tar_train_pos, tar_train_neg, tar_train_facts, tar_test_pos, tar_test_neg, tar_test_facts, params.REFINE_FILENAME, params.TRANSFER_FILENAME)
+                        model, t_results, learning_time, inference_time = train_and_test(background, tar_train_pos, tar_train_neg, tar_train_facts, tar_test_pos, tar_test_neg, tar_test_facts, params.REFINE_FILENAME, params.TRANSFER_FILENAME)
                         del model
+
+                    t_results['Learning time'] = learning_time + mapping_time
+                    t_results['Mapping time'] = mapping_time
+                    ob_save['transfer'] = t_results
                     
                     learning_time += mapping_time
                     utils.show_results(utils.get_results_dict(t_results, learning_time, inference_time))
 
-                    experiment_metrics['CLL'].append(t_results['CLL'])
-                    experiment_metrics['AUC ROC'].append(t_results['AUC ROC'])
-                    experiment_metrics['AUC PR'].append(t_results['AUC PR'])
-                    experiment_metrics['Learning Time'].append(learning_time)
-                    experiment_metrics['Inference Time'].append(inference_time)
-
-                    transboostler_experiments[embeddingModel][similarityMetric].append(experiment_metrics)
-
                     cm = get_confusion_matrix(to_predicate, revision=theoryRevision)
+                    cm_save['transfer'] = cm
 
                     confusion_matrix['TP'].append(cm['TP'])
                     confusion_matrix['FP'].append(cm['FP'])
@@ -380,20 +402,24 @@ def main():
 
                     transboostler_confusion_matrix[embeddingModel][similarityMetric].append(confusion_matrix) 
                     del cm, t_results, learning_time, inference_time
+            
                     previous = setup['model'].lower()
 
-            results['save']['n_runs'] += 1
-            
+                    results_save.append(ob_save)
+                save_experiment(results_save, experiment_title, embeddingModel, similarityMetric)
+                #save_confusion_matrix(confusion_matrix_save, experiment_title, embeddingModel, similarityMetric)
+                results['save']['n_runs'] += 1
+        
         matrix_filename = os.getcwd() + '/experiments/{}_{}_{}/transboostler_confusion_matrix.json'.format(_id, source, target)
-        folds_filename  = os.getcwd() + '/experiments/{}_{}_{}/transboostler_curves_folds.json'.format(_id, source, target)
+        #folds_filename  = os.getcwd() + '/experiments/{}_{}_{}/transboostler_curves_folds.json'.format(_id, source, target)
         
         if(theoryRevision):
             matrix_filename = matrix_filename.replace('.json', '_revision.json')
-            folds_filename  = folds_filename.replace('.json', '_revision.json')
+            #folds_filename  = folds_filename.replace('.json', '_revision.json')
 
         # Save all results using transfer
         utils.save_json_file(matrix_filename, transboostler_confusion_matrix)
-        utils.save_json_file(folds_filename, transboostler_experiments)         
+        #utils.save_json_file(folds_filename, transboostler_experiments)   
 
 if __name__ == '__main__':
     sys.exit(main())
