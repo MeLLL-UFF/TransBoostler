@@ -18,8 +18,7 @@ TOP_K = 1
 
 # Validation parameters
 N_FOLDS = 3
-#AMOUNTS = [0.2, 0.4, 0.6, 0.8, 1.0] 
-AMOUNTS = [1.0] 
+AMOUNTS = [0.2, 0.4, 0.6, 0.8, 1.0] 
 
 # BoostSRL parameters
 NODESIZE = 2
