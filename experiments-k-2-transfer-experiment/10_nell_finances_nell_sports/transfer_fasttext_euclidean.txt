@@ -1,0 +1,12 @@
+acquired(company,company): teamalsoknownas(sportsteam,sportsteam),teamplaysagainstteam(sportsteam,sportsteam)
+companyalsoknownas(company,company): teamalsoknownas(sportsteam,sportsteam),teamplaysagainstteam(sportsteam,sportsteam)
+companyceo(company,person): teamalsoknownas(sportsteam,sportsteam),teamplaysagainstteam(sportsteam,sportsteam)
+countryhascompanyoffice(country,company): teamalsoknownas(sportsteam,sportsteam),teamplaysagainstteam(sportsteam,sportsteam)
+bankchiefexecutiveceo(company,person): teamalsoknownas(sportsteam,sportsteam),teamplaysagainstteam(sportsteam,sportsteam)
+cityhascompanyoffice(city,company): teamalsoknownas(sportsteam,sportsteam),teamplaysagainstteam(sportsteam,sportsteam)
+economicsectorcompany(sector,company): teamalsoknownas(sportsteam,sportsteam),teamplaysagainstteam(sportsteam,sportsteam)
+bankboughtbank(company,company): teamalsoknownas(sportsteam,sportsteam),teamplaysagainstteam(sportsteam,sportsteam)
+setMap:companyeconomicsector(A,B),teamplayssport(A,B)
+setParam:searchArgPermutation=true.
+setParam:searchEmpty=false.
+setParam:allowSameTargetMap=false.
