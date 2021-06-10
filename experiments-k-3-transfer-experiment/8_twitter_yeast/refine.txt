@@ -1,0 +1,80 @@
+0;;accounttype(A, B) :- follows(C, A), recursion_accounttype(C, B).;true;true
+0;true;follows(A, C), tweets(A, D).;false;true
+0;true,false;follows(A, E), follows(E, C).;true;false
+0;true,false,true;follows(A, F), recursion_accounttype(F, B).;false;false
+0;false;follows(A, G), recursion_accounttype(G, B).;false;true
+0;false,false;follows(H, A).;true;true
+0;false,false,true;follows(H, I), recursion_accounttype(I, B).;false;false
+0;false,false,false;follows(A, J).;false;false
+1;;accounttype(A, B) :- follows(C, A), recursion_accounttype(C, B).;true;true
+1;true;follows(C, D), follows(D, A).;false;false
+1;false;follows(A, E), recursion_accounttype(E, B).;true;true
+1;false,true;follows(E, F), follows(F, E).;true;false
+1;false,true,true;follows(G, A), follows(G, E).;false;false
+1;false,false;follows(H, A).;true;true
+1;false,false,true;follows(H, I), recursion_accounttype(I, B).;false;false
+1;false,false,false;tweets(A, J), follows(A, K).;false;false
+2;;accounttype(A, B) :- follows(C, A), recursion_accounttype(C, B).;true;true
+2;true;tweets(C, D), follows(A, C).;false;false
+2;false;follows(A, E), recursion_accounttype(E, B).;true;true
+2;false,true;follows(F, A), follows(E, G).;false;true
+2;false,true,false;tweets(A, H).;false;false
+2;false,false;follows(I, A).;true;true
+2;false,false,true;follows(J, I), recursion_accounttype(J, B).;false;false
+2;false,false,false;follows(A, K), follows(K, L).;false;false
+3;;accounttype(A, B) :- follows(C, A), recursion_accounttype(C, B).;true;true
+3;true;follows(C, D), follows(D, A).;false;true
+3;true,false;follows(A, C), tweets(C, E).;true;false
+3;true,false,true;tweets(F, E), follows(F, C).;false;false
+3;false;follows(A, G), recursion_accounttype(G, B).;false;true
+3;false,false;follows(H, A).;true;true
+3;false,false,true;follows(I, H), recursion_accounttype(I, B).;false;false
+3;false,false,false;tweets(A, J).;false;false
+4;;accounttype(A, B) :- follows(C, A), recursion_accounttype(C, B).;true;true
+4;true;follows(A, D).;false;false
+4;false;follows(E, A).;true;true
+4;false,true;follows(F, E), recursion_accounttype(F, B).;true;false
+4;false,true,true;follows(A, E).;false;false
+4;false,false;follows(A, G), recursion_accounttype(G, B).;true;true
+4;false,false,true;tweets(A, H).;false;false
+4;false,false,false;follows(A, I), follows(I, J).;false;false
+5;;accounttype(A, B) :- follows(C, A), recursion_accounttype(C, B).;true;true
+5;true;follows(A, D), follows(C, D).;false;true
+5;true,false;tweets(A, E).;true;false
+5;true,false,true;follows(A, F).;false;false
+5;false;follows(G, A).;false;true
+5;false,false;follows(A, H).;true;true
+5;false,false,true;follows(I, H), recursion_accounttype(I, B).;false;false
+5;false,false,false;tweets(A, J).;false;false
+6;;accounttype(A, B) :- follows(A, C), recursion_accounttype(C, B).;true;true
+6;true;follows(C, D), recursion_accounttype(D, B).;false;false
+6;false;follows(E, A), recursion_accounttype(E, B).;true;true
+6;false,true;follows(E, F), follows(F, A).;true;false
+6;false,true,true;recursion_accounttype(F, B), follows(F, E).;false;false
+6;false,false;follows(G, A).;true;true
+6;false,false,true;follows(G, H), follows(H, A).;false;false
+6;false,false,false;follows(A, I), follows(I, J).;false;false
+7;;accounttype(A, B) :- follows(C, A), recursion_accounttype(C, B).;true;true
+7;true;tweets(C, D).;true;true
+7;true,true;follows(A, C), tweets(A, D).;false;false
+7;true,false;follows(C, E), follows(E, A).;false;false
+7;false;follows(F, A).;false;true
+7;false,false;follows(A, G).;true;true
+7;false,false,true;follows(H, G), recursion_accounttype(H, B).;false;false
+7;false,false,false;tweets(A, I).;false;false
+8;;accounttype(A, B) :- follows(C, A), recursion_accounttype(C, B).;true;true
+8;true;follows(A, C), tweets(A, D).;true;false
+8;true,true;follows(C, E), follows(E, A).;false;false
+8;false;follows(A, F), recursion_accounttype(F, B).;true;true
+8;false,true;follows(G, A).;false;false
+8;false,false;follows(H, A).;true;true
+8;false,false,true;follows(I, H), recursion_accounttype(I, B).;false;false
+8;false,false,false;follows(A, J).;false;false
+9;;accounttype(A, B) :- follows(C, A), recursion_accounttype(C, B).;true;true
+9;true;follows(A, D), tweets(A, E).;true;false
+9;true,true;follows(D, F).;false;false
+9;false;follows(A, G), recursion_accounttype(G, B).;true;true
+9;false,true;follows(A, H), follows(H, G).;true;false
+9;false,true,true;recursion_accounttype(H, B), tweets(A, I).;false;false
+9;false,false;follows(J, A).;false;true
+9;false,false,false;follows(A, K).;false;false
