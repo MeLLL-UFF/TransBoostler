@@ -1,5 +1,10 @@
+from gensim.corpora.dictionary import Dictionary
+from gensim.similarities import WordEmbeddingSimilarityIndex
+from gensim.similarities import SparseTermSimilarityMatrix
 from sklearn.metrics import confusion_matrix
+from gensim import matutils, corpora
 import parameters as params
+import utils as utils
 import numpy as np
 import subprocess
 import shutil
@@ -9,8 +14,8 @@ import sys
 import os
 import re
 
-import logging
-logging.basicConfig(level=logging.INFO, format="%(message)s", handlers=[logging.FileHandler("app.log"),logging.StreamHandler()])
+#import logging
+#logging.basicConfig(level=logging.INFO, format="%(message)s", handlers=[logging.FileHandler("app.log"),logging.StreamHandler()])
 
 def get_all_literals(predicates):
     """
@@ -377,17 +382,17 @@ def get_confusion_matrix(y_true, y_pred):
   # True Negatives, False Positives, False Negatives, True Positives
   return confusion_matrix(y_true, y_pred).ravel()
 
-def show_results(results):
+def show_results(results, experiment_title):
     """
      Adds results to logging file.
 
       Args:
           results(dict): a dictionary containing results of the metrics used
     """
-    logging.info('Results \n')
+    utils.print_function('Results \n', experiment_title)
     res = ['{} : {} \n'.format(key, results[key]) for key in results]
     for r in res:
-        logging.info(r)
+        utils.print_function(r, experiment_title)
 
 def get_results_dict(t_results, learning_time, inference_time):
     """
@@ -456,6 +461,11 @@ def save_json_file(filename, data):
   with open(filename, 'w') as outfile:
     json.dump(data, outfile, default=myconverter)
 
+def load_json_file(filename):
+  with open(filename, 'r') as fp:
+    results = json.load(fp)
+  return results
+
 def save_best_model_files():
   """Delete files of last best model (if exists) and save results for the best model"""
 
@@ -490,6 +500,30 @@ def single_array(temp, method):
     elif(method == 'CONCATENATE'):
       predicate = np.concatenate(temp)
     return predicate
+
+def get_softcosine_matrix(sources, targets, model, preprocessing):
+  sources, targets = utils.build_triples(sources), utils.build_triples(targets)
+  similarity_index = WordEmbeddingSimilarityIndex(model)
+
+  # Prepare a dictionary and a corpus.
+  documents  = [preprocessing.pre_process_text(source[0]) for source in sources]
+  documents += [preprocessing.pre_process_text(target[0]) for target in targets]
+  dictionary = corpora.Dictionary(documents) 
+
+  print(documents)
+
+  # Prepare the similarity matrix
+  similarity_matrix = SparseTermSimilarityMatrix(similarity_index, dictionary)
+  del similarity_index
+
+  return similarity_matrix
+
+def print_function(message, experiment_title):
+    if not os.path.exists('experiments/' + experiment_title):
+        os.makedirs('experiments/' + experiment_title)
+    with open('experiments/' + experiment_title + '/' + experiment_title + '.txt', 'a') as f:
+        print(message, file=f)
+        print(message)
 
 #y_true, y_pred = read_results('boostsrl/test/results_{}.db'.format('advisedby'))
 #print(get_confusion_matrix(y_true, y_pred))

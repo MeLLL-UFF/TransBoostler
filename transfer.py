@@ -16,12 +16,19 @@ import re
 
 class Transfer:
 
-  def __init__(self, model, model_name, segmenter):
+  def __init__(self, model, model_name, segmenter, similarity_metric, sources, targets):
     self.model = model
     self.model_name = model_name
     self.preprocessing = Preprocessing(segmenter)
-    self.similarity = Similarity(self.preprocessing)
-    self.constraints = {}
+    self.similarity_metric = similarity_metric
+    self.sources = sources
+    self.targets = targets
+
+    self.similarity_matrix, self.dictionary = '', ''
+    if self.similarity_metric == 'softcosine':
+      self.similarity_matrix = utils.get_softcosine_matrix(self.sources, self.targets, self.model, self.preprocessing)
+    
+    self.similarity = Similarity(self.preprocessing, self.similarity_matrix)
 
   def __same_arity(self, source_literals, target_literals):
     """
@@ -170,7 +177,7 @@ class Transfer:
           return [target], targets_taken
     return [], targets_taken
 
-  def __find_best_single_mapping(self, clause, targets, similarity_metric, targets_taken={}, allowSameTargetMap=False):
+  def __find_best_single_mapping(self, clause, targets, similarity_metric, targets_taken={}, similarity_matrix='', dictionary='', allowSameTargetMap=False):
     """
         Calculate pairs similarity and sorts dataframe to obtain the closest target to a given source
         Args:
@@ -184,7 +191,7 @@ class Transfer:
 
     source  = self.__build_word_vectors([utils.build_triple(clause)], similarity_metric)
     
-    similarities = self.similarity.compute_similarities(source, targets, similarity_metric, self.model, self.model_name)
+    similarities = self.similarity.compute_similarities(source, targets, similarity_metric, self.model, self.model_name, similarity_matrix, dictionary)
     similarities.to_csv('experiments/similarities/{}/{}/{}_similarities.csv'.format(self.model_name, similarity_metric, clause.split('(')[0]))
     indexes = similarities.index.tolist()
 

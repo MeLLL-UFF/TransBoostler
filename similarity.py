@@ -1,6 +1,9 @@
 
 from __future__ import division
 from gensim.corpora.dictionary import Dictionary
+from gensim.similarities import WordEmbeddingSimilarityIndex
+from gensim.similarities import SparseTermSimilarityMatrix
+from gensim.models import KeyedVectors, FastText
 from preprocessing import Preprocessing
 from gensim import matutils, corpora
 from scipy.spatial import distance
@@ -16,8 +19,9 @@ import os
 
 class Similarity:
 
-  def __init__(self, preprocessing):
+  def __init__(self, preprocessing, similarity_matrix):
     self.preprocessing = preprocessing
+    self.similarity_matrix = similarity_matrix
   
   def __nbow(self, document, dictionary, vocab_len):
     """
@@ -49,17 +53,22 @@ class Similarity:
       Returns:
           source and target embeddings set to the same size
     """
-    
+
     words = list(set(source + target))
     new_source, new_target = [[0]* dimension] * len(words), [[0]* dimension] * len(words)
 
     for i in range(len(words)):
-      if words[i] in source:
+      if words[i] in source and words[i] in target:
+        index = target.index(words[i])
+        new_source[i] = source_vectors[index][:]
+        new_target[i] = target_vectors[index][:]
+      elif words[i] in source:
         index = source.index(words[i])
         new_source[i] = source_vectors[index][:]
-      else:
+      elif words[i] in target:
         index = target.index(words[i])
         new_target[i] = target_vectors[index][:]
+        
     return new_source, new_target
 
   def __get_distance_matrix(self, source, target, model, dictionary, vocab_len):
@@ -93,10 +102,6 @@ class Similarity:
                 sent_1 = [model[w] for w in source_segmented]
                 sent_2 = [model[w] for w in target_segmented]
 
-                sent_1, sent_2 = self.__bow(source_segmented, sent_1, target_segmented, sent_2, params.EMBEDDING_DIMENSION)
-                # Concatenate word vectors before calculate Euclidean Distance
-                _t1, _t2 = np.concatenate(sent_1), np.concatenate(sent_2)
-
             else:
                 _t1, _t2 = model[t1], model[t2]
                 
@@ -119,11 +124,8 @@ class Similarity:
        Returns:
             distance between two word vectors
     """
-    if(not params.METHOD):
-        source, target = [source], [target]
-    else:
-        source, target = self.preprocessing.pre_process_text(source), self.preprocessing.pre_process_text(target)
-        #source, target = source.split(), target.split()
+
+    source, target = self.preprocessing.pre_process_text(source), self.preprocessing.pre_process_text(target)
         
     dictionary = Dictionary(documents=[source, target])
     vocab_len = len(dictionary)
@@ -177,7 +179,7 @@ class Similarity:
     return source[0] + '(' + ','.join(source[1]) + ')' + ',' + target[0] + '(' + ','.join(target[1]) + ')'
     #key = s + '(' + ','.join([chr(65+i) for i in range(len(source[s][1]))]) + ')' + ',' + t + '(' + ','.join([chr(65+i) for i in range(len(target[t][1]))]) + ')'
 
-  def compute_similarities(self, source, targets, similarity_metric, model='', model_name=''):
+  def compute_similarities(self, source, targets, similarity_metric, model='', model_name='', similarity_index='', similarity_matrix='', dictionary=''):
     """
         Calculate similarities between a clause and the targets
 
@@ -195,7 +197,7 @@ class Similarity:
       return self.euclidean_distance(source, targets)
             
     if(similarity_metric == 'softcosine'):
-      return self.soft_cosine_similarities(source, targets, model)
+      return self.soft_cosine_similarities(source, targets)
     
     if(similarity_metric == 'wmd'):
       return self.wmd_similarities(source, targets, model)
@@ -214,37 +216,40 @@ class Similarity:
         for every possible pairs (source, target)
 
         Args:
-            sources(dict): all word embeddings from the source dataset
-            targets(dict): all word embeddings from the target dataset
+            sources(list): all word embeddings from the source dataset
+            targets(list): all word embeddings from the target dataset
        Returns:
             a pandas dataframe containing every pair (source, target) similarity
     """
     similarity = {}
-    for s in sources:
-      for t in targets:
+    for source in sources:
+      for target in targets:
 
-        key = self.__create_key([s, sources[s][1]], [t, targets[t][1]])
+        key = self.__create_key(source, target)
 
         if '()' in key: key = key.replace('(', '').replace(')', '')
 
-        source_segmented = self.preprocessing.pre_process_text(s)
-        target_segmented = self.preprocessing.pre_process_text(t)
+        if(len(source[1]) != len(target[1])):
+          continue
+
+        source_segmented = self.preprocessing.pre_process_text(source[0])
+        target_segmented = self.preprocessing.pre_process_text(target[0])
 
         n_source = [model[word] for word in source_segmented if word in model]
         n_target = [model[word] for word in target_segmented if word in model]
 
         #n_source, n_target = self.__bow(source_segmented, sources[s][0], target_segmented, targets[t][0], params.EMBEDDING_DIMENSION)
 
-        if(params.METHOD):
-          n_source, n_target = np.concatenate(n_source), np.concatenate(n_target)
+        #if(params.METHOD):
+        #  n_source, n_target = np.concatenate(n_source), np.concatenate(n_target)
 
         # This function corresponds to 1 - distance as presented at https://docs.scipy.org/doc/scipy/reference/generated/scipy.spatial.distance.cosine.html
-        similarity[key] = distance.cosine(n_source, n_target)
+        similarity[key] = np.dot(matutils.unitvec(np.array(n_source).mean(axis=0)), matutils.unitvec(np.array(n_target).mean(axis=0)))
 
     df = pd.DataFrame.from_dict(similarity, orient="index", columns=['similarity'])
-    return df.sort_values(by='similarity')
+    return df.sort_values(by='similarity', ascending=False)
 
-  def soft_cosine_similarities(self, sources, targets, model):
+  def soft_cosine_similarities(self, sources, targets):
     """
         Calculate soft cosine similarity of embedded arrays
         for every possible pairs (source, target)
@@ -261,25 +266,26 @@ class Similarity:
         for target in targets:
 
             key = self.__create_key(source, target)
+
+            if(len(source[1]) != len(target[1])):
+              continue
             
-            source_segmented = self.preprocessing.pre_process_text(source[0])
-            target_segmented = self.preprocessing.pre_process_text(target[0])
-                
-            # Calculate similarity using single vectors
-            sent_1 = [model[word] for word in source_segmented if word in model]
-            sent_2 = [model[word] for word in target_segmented if word in model]
+            sent_1 = self.preprocessing.pre_process_text(source[0])
+            sent_2 = self.preprocessing.pre_process_text(target[0])
 
-            sent_1, sent_2 = self.__bow(source_segmented, sent_1, target_segmented, sent_2, params.EMBEDDING_DIMENSION)
-            
-            #if(params.METHOD):
-            #    sent_1, sent_2 = np.concatenate(sent_1), np.concatenate(sent_2)
+            # Prepare a dictionary and a corpus.
+            documents  = [sent_1, sent_2]
+            dictionary = corpora.Dictionary(documents) 
 
-            similarity[key] = np.dot(matutils.unitvec(np.array(sent_1).mean(axis=0)), matutils.unitvec(np.array(sent_2).mean(axis=0)))
+            # Convert the sentences into bag-of-words vectors.
+            sent_1 = dictionary.doc2bow(sent_1)
+            sent_2 = dictionary.doc2bow(sent_2)
 
-            #similarity[key] = word_vectors.n_similarity(source_segmented, target_segmented)
+            # Compute soft cosine similarity
+            similarity[key] = self.similarity_matrix.inner_product(sent_1, sent_2, normalized=(True,True))
 
     df = pd.DataFrame.from_dict(similarity, orient="index", columns=['similarity'])
-    return df.sort_values(by='similarity', ascending=False)
+    return df.sort_values(by='similarity')
 
   def wmd_similarities(self, sources, targets, model):
     """
@@ -298,6 +304,9 @@ class Similarity:
       for target in targets:
 
         key = self.__create_key(source, target)
+
+        if(len(source[1]) != len(target[1])):
+          continue
 
         similarity[key] = self.__wmdistance(source[0], target[0], model)
 
@@ -369,10 +378,11 @@ class Similarity:
         source_segmented = self.preprocessing.pre_process_text(s)
         target_segmented = self.preprocessing.pre_process_text(t)
 
-        n_source, n_target = self.__bow(source_segmented, sources[s][0], target_segmented, targets[t][0], params.EMBEDDING_DIMENSION)
+        n_source, n_target = sources[s][0], targets[t][0]
+        if(len(source_segmented) != len(target_segmented)):
+          n_source, n_target = self.__bow(source_segmented, sources[s][0], target_segmented, targets[t][0], params.EMBEDDING_DIMENSION)
 
-        if(params.METHOD):
-          n_source, n_target = np.concatenate(n_source), np.concatenate(n_target)
+        n_source, n_target = np.concatenate(n_source), np.concatenate(n_target)
 
         similarity[key] = distance.euclidean(n_source, n_target)
 
@@ -380,19 +390,27 @@ class Similarity:
     return df.sort_values(by='similarity')
 
 # from ekphrasis.classes.segmenter import Segmenter
-# from gensim.models import KeyedVectors, FastText
 # from pyemd import emd
 
 # # Segmenter using the word statistics from Wikipedia
 # seg = Segmenter(corpus="english")
 
-# fraseA = 'obama speaks media illinois'
-# fraseB = 'president greets press chicago'
+# # fraseA = 'obama speaks media illinois'
+# # fraseB = 'president greets press chicago'
 
-# model = KeyedVectors.load_word2vec_format('word2vec/GoogleNews-vectors-negative300.bin', binary=True)
+# sent_1 = [['Dravid is a cricket player and a opening batsman', ['A']]]
+# sent_2 = [['Leo is a cricket player too He is a batsman,baller and keeper', ['B']]]
 
-# sim = Similarity(seg)
+# model = KeyedVectors.load_word2vec_format('resources/word2vec/GoogleNews-vectors-negative300.bin', binary=True)
+
+# preprocessing = Preprocessing(seg)
+# sim = Similarity(preprocessing)
+
+# a = sim.soft_cosine_similarities(sent_1, sent_2, model)
+
+# print(a)
+
 # #print(sim.wmd_similarities([['Obama speaks to the media in Illinois', 'person', 'person']], [['The president greets the press in Chicago', 'person', 'person']], model))
-# #params.METHOD = None
+
 # print(sim.wmd_similarities([[''.join(fraseA), 'person', 'person']], [[''.join(fraseB), 'person', 'person']], model))
 # print(model.wmdistance(''.join(fraseA), ''.join(fraseB)))
