@@ -1,6 +1,6 @@
 interaction(protein,protein): follows(account,account)
-enzyme(protein,enz): tweets(account,word)
-location(protein,loc): 
+location(protein,loc): tweets(account,word)
+enzyme(protein,enz): 
 complex(protein,com): 
 phenotype(protein,phe): 
 recursion_proteinclass(A,B): recursion_accounttype(A,B)

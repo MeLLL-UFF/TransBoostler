@@ -1,7 +1,6 @@
-director(person): student(person)
+director(person): professor(person)
 movie(movie,person): publication(title,person)
-actor(person): professor(person)
-female(person): 
+actor(person): student(person)
 setMap:workedunder(A,B),advisedby(A,B)
 setParam:searchArgPermutation=true.
 setParam:searchEmpty=false.

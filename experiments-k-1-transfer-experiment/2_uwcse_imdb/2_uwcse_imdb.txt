@@ -1,0 +1,1688 @@
+Starting experiment 2_uwcse_imdb 
+
+Start learning from source dataset
+
+Source train facts examples: 2387
+Source train pos examples: 113
+Source train neg examples: 4079
+
+Model training time 16.076313495635986 
+
+Building refine structure 
+
+WILL Produced-Tree #1
+% FOR advisedby(A, B):
+%   if ( professor(B), student(A) )
+%   then if ( publication(C, B), publication(C, A) )
+%   | then if ( tempadvisedby(D, B), ta(E, D, F) )
+%   | | then if ( publication(G, D) )
+%   | | | then return 0.7152917922423694;  // std dev = 0.926, 7.000 (wgt'ed) examples reached here.  /* #neg=1 #pos=6 */
+%   | | | else return 0.8581489350995123;  // std dev = 0.000, 12.000 (wgt'ed) examples reached here.  /* #pos=12 */
+%   | | else return 0.8581489350995123;  // std dev = 0.000, 23.000 (wgt'ed) examples reached here.  /* #pos=23 */
+%   | else if ( tempadvisedby(H, B), ta(I, H, J) )
+%   | | then if ( projectmember(K, B) )
+%   | | | then return 0.8581489350995122;  // std dev = 0.000, 4.000 (wgt'ed) examples reached here.  /* #pos=4 */
+%   | | | else return 0.6081489350995123;  // std dev = 2.121, 24.000 (wgt'ed) examples reached here.  /* #neg=6 #pos=18 */
+%   | | else if ( publication(L, A) )
+%   | | | then return 0.2905813675319448;  // std dev = 3.013, 37.000 (wgt'ed) examples reached here.  /* #neg=21 #pos=16 */
+%   | | | else return 0.511995088945665;  // std dev = 3.431, 52.000 (wgt'ed) examples reached here.  /* #neg=18 #pos=34 */
+%   else return -0.14185106490048818;  // std dev = 0.000, 196.000 (wgt'ed) examples reached here.  /* #neg=196 */
+WILL Produced-Tree #2
+% FOR advisedby(A, B):
+%   if ( hasposition(B, C), student(A) )
+%   then if ( publication(D, B), publication(D, A) )
+%   | then if ( tempadvisedby(E, B), publication(F, E) )
+%   | | then if ( publication(F, B) )
+%   | | | then return 0.3907918324215583;  // std dev = 1.163, 6.000 (wgt'ed) examples reached here.  /* #neg=2 #pos=4 */
+%   | | | else return 0.739409498827828;  // std dev = 0.033, 7.000 (wgt'ed) examples reached here.  /* #pos=7 */
+%   | | else return 0.7194734122109542;  // std dev = 8.43e-08, 30.000 (wgt'ed) examples reached here.  /* #pos=30 */
+%   | else if ( publication(G, A), publication(H, B) )
+%   | | then if ( tempadvisedby(I, B), ta(J, I, K) )
+%   | | | then return -0.23292803776327825;  // std dev = 1.05e-08, 11.000 (wgt'ed) examples reached here.  /* #neg=11 */
+%   | | | else return 0.27730836556192495;  // std dev = 2.441, 24.000 (wgt'ed) examples reached here.  /* #neg=13 #pos=11 */
+%   | | else if ( tempadvisedby(L, B) )
+%   | | | then return 0.41681195673651417;  // std dev = 3.561, 56.000 (wgt'ed) examples reached here.  /* #neg=20 #pos=36 */
+%   | | | else return 0.7095912870105292;  // std dev = 1.364, 26.000 (wgt'ed) examples reached here.  /* #neg=2 #pos=24 */
+%   else if ( professor(B), student(A) )
+%   | then return 0.14058645756651342;  // std dev = 0.788, 3.000 (wgt'ed) examples reached here.  /* #neg=2 #pos=1 */
+%   | else return -0.12544463852839147;  // std dev = 0.000, 197.000 (wgt'ed) examples reached here.  /* #neg=197 */
+WILL Produced-Tree #3
+% FOR advisedby(A, B):
+%   if ( professor(B), student(A) )
+%   then if ( publication(C, A), publication(C, B) )
+%   | then if ( tempadvisedby(D, B), publication(E, D) )
+%   | | then if ( publication(E, B) )
+%   | | | then return 0.6424953738106656;  // std dev = 0.028, 4.000 (wgt'ed) examples reached here.  /* #pos=4 */
+%   | | | else return 0.5754659759783294;  // std dev = 0.042, 7.000 (wgt'ed) examples reached here.  /* #pos=7 */
+%   | | else if ( publication(C, F), ta(G, F, H) )
+%   | | | then return 0.5553664367462846;  // std dev = 0.000, 12.000 (wgt'ed) examples reached here.  /* #pos=12 */
+%   | | | else return 0.45536643674628463;  // std dev = 1.342, 20.000 (wgt'ed) examples reached here.  /* #neg=2 #pos=18 */
+%   | else if ( publication(I, B), publication(J, A) )
+%   | | then if ( publication(J, K), professor(K) )
+%   | | | then return -0.021115677774039793;  // std dev = 1.989, 25.000 (wgt'ed) examples reached here.  /* #neg=20 #pos=5 */
+%   | | | else return 0.6313305640436228;  // std dev = 0.926, 7.000 (wgt'ed) examples reached here.  /* #neg=1 #pos=6 */
+%   | | else if ( tempadvisedby(L, B) )
+%   | | | then return 0.4921137131655746;  // std dev = 2.660, 45.000 (wgt'ed) examples reached here.  /* #neg=9 #pos=36 */
+%   | | | else return 0.2910744280946711;  // std dev = 2.994, 39.000 (wgt'ed) examples reached here.  /* #neg=14 #pos=25 */
+%   else return -0.11231637819360629;  // std dev = 8.43e-08, 178.000 (wgt'ed) examples reached here.  /* #neg=178 */
+WILL Produced-Tree #4
+% FOR advisedby(A, B):
+%   if ( hasposition(B, C), student(A) )
+%   then if ( publication(D, B), publication(D, A) )
+%   | then if ( ta(E, A, F) )
+%   | | then if ( tempadvisedby(G, B), ta(H, G, I) )
+%   | | | then return 0.4211131974530796;  // std dev = 0.023, 7.000 (wgt'ed) examples reached here.  /* #pos=7 */
+%   | | | else return 0.181211512011652;  // std dev = 1.257, 8.000 (wgt'ed) examples reached here.  /* #neg=2 #pos=6 */
+%   | | else return 0.44170601773709145;  // std dev = 0.019, 28.000 (wgt'ed) examples reached here.  /* #pos=28 */
+%   | else if ( publication(J, B), ta(K, A, L) )
+%   | | then if ( tempadvisedby(M, B), ta(N, M, P) )
+%   | | | then return 0.5640600099121503;  // std dev = 0.059, 10.000 (wgt'ed) examples reached here.  /* #pos=10 */
+%   | | | else return 0.30199649400461126;  // std dev = 2.683, 34.000 (wgt'ed) examples reached here.  /* #neg=11 #pos=23 */
+%   | | else if ( tempadvisedby(Q, B), publication(R, Q) )
+%   | | | then return -0.14546044176463277;  // std dev = 1.182, 10.000 (wgt'ed) examples reached here.  /* #neg=8 #pos=2 */
+%   | | | else return 0.17450903102389914;  // std dev = 3.848, 64.000 (wgt'ed) examples reached here.  /* #neg=28 #pos=36 */
+%   else if ( student(B) )
+%   | then return -0.10159632948783653;  // std dev = 0.000, 192.000 (wgt'ed) examples reached here.  /* #neg=192 */
+%   | else return -0.08293825033584366;  // std dev = 0.180, 22.000 (wgt'ed) examples reached here.  /* #neg=21 #pos=1 */
+WILL Produced-Tree #5
+% FOR advisedby(A, B):
+%   if ( professor(B), student(A) )
+%   then if ( ta(C, A, D), tempadvisedby(E, B) )
+%   | then if ( projectmember(F, B) )
+%   | | then return -0.012416721130644709;  // std dev = 1.027, 4.000 (wgt'ed) examples reached here.  /* #neg=2 #pos=2 */
+%   | | else if ( ta(G, E, H) )
+%   | | | then return 0.25241785445615617;  // std dev = 1.508, 20.000 (wgt'ed) examples reached here.  /* #neg=3 #pos=17 */
+%   | | | else return 0.4392226786135692;  // std dev = 1.008, 14.000 (wgt'ed) examples reached here.  /* #neg=1 #pos=13 */
+%   | else if ( publication(I, B), publication(J, A) )
+%   | | then if ( publication(I, A) )
+%   | | | then return 0.2479772640722018;  // std dev = 1.671, 33.000 (wgt'ed) examples reached here.  /* #neg=3 #pos=30 */
+%   | | | else return 0.04889928839713193;  // std dev = 2.140, 24.000 (wgt'ed) examples reached here.  /* #neg=16 #pos=8 */
+%   | | else if ( ta(K, A, L) )
+%   | | | then return 0.143394564616653;  // std dev = 1.970, 17.000 (wgt'ed) examples reached here.  /* #neg=6 #pos=11 */
+%   | | | else return 0.3456515721918044;  // std dev = 2.533, 40.000 (wgt'ed) examples reached here.  /* #neg=8 #pos=32 */
+%   else return -0.09287406312206264;  // std dev = 0.007, 173.000 (wgt'ed) examples reached here.  /* #neg=173 */
+WILL Produced-Tree #6
+% FOR advisedby(A, B):
+%   if ( student(A), hasposition(B, C) )
+%   then if ( hasposition(D, C), projectmember(E, D) )
+%   | then if ( tempadvisedby(F, B), publication(G, F) )
+%   | | then if ( publication(H, A), publication(H, B) )
+%   | | | then return 0.2144997815358325;  // std dev = 0.945, 12.000 (wgt'ed) examples reached here.  /* #neg=1 #pos=11 */
+%   | | | else return -0.15434743958788294;  // std dev = 1.544, 13.000 (wgt'ed) examples reached here.  /* #neg=9 #pos=4 */
+%   | | else if ( tempadvisedby(I, B), ta(J, I, K) )
+%   | | | then return 0.1911729402265486;  // std dev = 2.084, 38.000 (wgt'ed) examples reached here.  /* #neg=8 #pos=30 */
+%   | | | else return 0.292471682830794;  // std dev = 2.817, 68.000 (wgt'ed) examples reached here.  /* #neg=11 #pos=57 */
+%   | else if ( publication(L, B) )
+%   | | then if ( tempadvisedby(M, B) )
+%   | | | then return -0.07224573799479633;  // std dev = 0.768, 4.000 (wgt'ed) examples reached here.  /* #neg=2 #pos=2 */
+%   | | | else return 0.3063530342690783;  // std dev = 0.975, 6.000 (wgt'ed) examples reached here.  /* #neg=1 #pos=5 */
+%   | | else if ( publication(N, A) )
+%   | | | then return -0.16951855720231082;  // std dev = 0.816, 3.000 (wgt'ed) examples reached here.  /* #neg=2 #pos=1 */
+%   | | | else return -0.22461051355824094;  // std dev = 1.155, 6.000 (wgt'ed) examples reached here.  /* #neg=4 #pos=2 */
+%   else return -0.08386462064736672;  // std dev = 0.058, 187.000 (wgt'ed) examples reached here.  /* #neg=186 #pos=1 */
+WILL Produced-Tree #7
+% FOR advisedby(A, B):
+%   if ( hasposition(B, C), student(A) )
+%   then if ( publication(D, A), publication(D, B) )
+%   | then if ( tempadvisedby(E, B) )
+%   | | then return 0.2453539150975575;  // std dev = 0.025, 29.000 (wgt'ed) examples reached here.  /* #pos=29 */
+%   | | else if ( ta(F, A, G) )
+%   | | | then return -0.07500001489177995;  // std dev = 0.816, 3.000 (wgt'ed) examples reached here.  /* #neg=1 #pos=2 */
+%   | | | else return 0.13610083537094095;  // std dev = 0.952, 11.000 (wgt'ed) examples reached here.  /* #neg=1 #pos=10 */
+%   | else if ( publication(H, A), projectmember(I, B) )
+%   | | then return 0.47691466107357394;  // std dev = 0.073, 3.000 (wgt'ed) examples reached here.  /* #pos=3 */
+%   | | else if ( publication(J, A) )
+%   | | | then return -0.005326426795155803;  // std dev = 2.661, 34.000 (wgt'ed) examples reached here.  /* #neg=20 #pos=14 */
+%   | | | else return 0.11281290279374256;  // std dev = 3.834, 74.000 (wgt'ed) examples reached here.  /* #neg=20 #pos=54 */
+%   else if ( ta(K, A, L) )
+%   | then return -0.08612408553966337;  // std dev = 0.037, 53.000 (wgt'ed) examples reached here.  /* #neg=53 */
+%   | else if ( professor(B) )
+%   | | then return -0.06399837217017396;  // std dev = 0.143, 30.000 (wgt'ed) examples reached here.  /* #neg=29 #pos=1 */
+%   | | else return -0.0788593324352391;  // std dev = 4.34e-08, 105.000 (wgt'ed) examples reached here.  /* #neg=105 */
+WILL Produced-Tree #8
+% FOR advisedby(A, B):
+%   if ( professor(B), student(A) )
+%   then if ( publication(C, A) )
+%   | then if ( publication(C, B) )
+%   | | then if ( publication(C, D), tempadvisedby(D, B) )
+%   | | | then return 0.24106002292620388;  // std dev = 0.011, 3.000 (wgt'ed) examples reached here.  /* #pos=3 */
+%   | | | else return 0.2038423487266012;  // std dev = 0.139, 38.000 (wgt'ed) examples reached here.  /* #pos=38 */
+%   | | else if ( publication(C, E), professor(E) )
+%   | | | then return -0.13442926167263558;  // std dev = 2.570, 36.000 (wgt'ed) examples reached here.  /* #neg=26 #pos=10 */
+%   | | | else return 0.2540949078021785;  // std dev = 1.181, 9.000 (wgt'ed) examples reached here.  /* #neg=2 #pos=7 */
+%   | else if ( publication(F, B) )
+%   | | then if ( publication(F, G), inphase(G, H) )
+%   | | | then return 0.262251706356468;  // std dev = 1.908, 41.000 (wgt'ed) examples reached here.  /* #neg=4 #pos=37 */
+%   | | | else return 0.1656065595541586;  // std dev = 1.285, 12.000 (wgt'ed) examples reached here.  /* #neg=2 #pos=10 */
+%   | | else if ( projectmember(I, B) )
+%   | | | then return 0.0893072466751833;  // std dev = 0.836, 4.000 (wgt'ed) examples reached here.  /* #neg=1 #pos=3 */
+%   | | | else return 0.034716129749649986;  // std dev = 1.487, 9.000 (wgt'ed) examples reached here.  /* #neg=4 #pos=5 */
+%   else return -0.0735146332969367;  // std dev = 0.011, 170.000 (wgt'ed) examples reached here.  /* #neg=170 */
+WILL Produced-Tree #9
+% FOR advisedby(A, B):
+%   if ( student(A), professor(B) )
+%   then if ( ta(C, A, D), publication(E, B) )
+%   | then if ( ta(C, F, D), publication(G, F) )
+%   | | then if ( sameperson(A, F) )
+%   | | | then return 0.09116779997477271;  // std dev = 1.985, 27.000 (wgt'ed) examples reached here.  /* #neg=7 #pos=20 */
+%   | | | else return -0.37589854740246254;  // std dev = 0.834, 3.000 (wgt'ed) examples reached here.  /* #neg=2 #pos=1 */
+%   | | else if ( ta(C, H, I), tempadvisedby(H, J) )
+%   | | | then return 0.29182984670074325;  // std dev = 0.123, 15.000 (wgt'ed) examples reached here.  /* #pos=15 */
+%   | | | else return 0.047131772143223394;  // std dev = 1.508, 13.000 (wgt'ed) examples reached here.  /* #neg=3 #pos=10 */
+%   | else if ( publication(K, A), publication(K, B) )
+%   | | then if ( publication(K, L), ta(M, L, N) )
+%   | | | then return -0.161641206419046;  // std dev = 1.154, 6.000 (wgt'ed) examples reached here.  /* #neg=2 #pos=4 */
+%   | | | else return 0.13315939809766789;  // std dev = 0.997, 25.000 (wgt'ed) examples reached here.  /* #neg=1 #pos=24 */
+%   | | else if ( projectmember(P, B) )
+%   | | | then return 0.1319691303872928;  // std dev = 1.188, 9.000 (wgt'ed) examples reached here.  /* #neg=2 #pos=7 */
+%   | | | else return -0.06513093669825017;  // std dev = 3.812, 66.000 (wgt'ed) examples reached here.  /* #neg=34 #pos=32 */
+%   else return -0.06863180061833617;  // std dev = 0.010, 167.000 (wgt'ed) examples reached here.  /* #neg=167 */
+WILL Produced-Tree #10
+% FOR advisedby(A, B):
+%   if ( student(A), professor(B) )
+%   then if ( publication(C, A), ta(D, A, E) )
+%   | then if ( publication(C, B) )
+%   | | then if ( tempadvisedby(F, B), ta(G, F, H) )
+%   | | | then return 0.151044946406457;  // std dev = 0.010, 7.000 (wgt'ed) examples reached here.  /* #pos=7 */
+%   | | | else return 0.03370257986354984;  // std dev = 0.959, 7.000 (wgt'ed) examples reached here.  /* #neg=1 #pos=6 */
+%   | | else if ( tempadvisedby(I, B), publication(J, I) )
+%   | | | then return -0.3285077378006438;  // std dev = 0.000, 3.000 (wgt'ed) examples reached here.  /* #neg=3 */
+%   | | | else return -0.05725629030622648;  // std dev = 2.157, 21.000 (wgt'ed) examples reached here.  /* #neg=12 #pos=9 */
+%   | else if ( tempadvisedby(K, B), ta(L, K, M) )
+%   | | then if ( ta(N, A, P), ta(N, Q, M) )
+%   | | | then return 0.024363954273382872;  // std dev = 1.276, 10.000 (wgt'ed) examples reached here.  /* #neg=2 #pos=8 */
+%   | | | else return 0.19403708443535536;  // std dev = 1.063, 26.000 (wgt'ed) examples reached here.  /* #neg=2 #pos=24 */
+%   | | else if ( tempadvisedby(R, B) )
+%   | | | then return -0.02372786155789003;  // std dev = 2.382, 33.000 (wgt'ed) examples reached here.  /* #neg=12 #pos=21 */
+%   | | | else return 0.06070595658387098;  // std dev = 3.126, 54.000 (wgt'ed) examples reached here.  /* #neg=16 #pos=38 */
+%   else return -0.06434449468737731;  // std dev = 0.010, 202.000 (wgt'ed) examples reached here.  /* #neg=202 */
+Starting experiments for fasttext using euclidean 
+
+Run: 1
+
+ Starting fold 1 of 1 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 863
+Target train pos examples: 326
+Target train neg examples: 10928
+
+Target test facts examples: 215
+Target test pos examples: 56
+Target test neg examples: 3308
+
+Training using transfer 
+
+Results 
+
+CLL : -0.238259 
+
+AUC ROC : 0.983055 
+
+AUC PR : 0.338212 
+
+Precision : 0.346154 
+
+Recall : 0.482143 
+
+F1 : 0.402985 
+
+Total Learning Time : 2.6093990802764893 
+
+Total Inference Time : 1.0686891078948975 
+
+Run: 2
+
+ Starting fold 1 of 1 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 863
+Target train pos examples: 326
+Target train neg examples: 10928
+
+Target test facts examples: 215
+Target test pos examples: 56
+Target test neg examples: 3308
+
+Training using transfer 
+
+Results 
+
+CLL : -0.238718 
+
+AUC ROC : 0.983055 
+
+AUC PR : 0.338212 
+
+Precision : 0.346154 
+
+Recall : 0.482143 
+
+F1 : 0.402985 
+
+Total Learning Time : 2.8084936141967773 
+
+Total Inference Time : 1.095494031906128 
+
+Run: 3
+
+ Starting fold 1 of 1 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 863
+Target train pos examples: 326
+Target train neg examples: 10928
+
+Target test facts examples: 215
+Target test pos examples: 56
+Target test neg examples: 3308
+
+Training using transfer 
+
+Results 
+
+CLL : -0.239718 
+
+AUC ROC : 0.983055 
+
+AUC PR : 0.338212 
+
+Precision : 0.346154 
+
+Recall : 0.482143 
+
+F1 : 0.402985 
+
+Total Learning Time : 2.7342426776885986 
+
+Total Inference Time : 1.1860573291778564 
+
+Run: 4
+
+ Starting fold 1 of 1 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 863
+Target train pos examples: 326
+Target train neg examples: 10928
+
+Target test facts examples: 215
+Target test pos examples: 56
+Target test neg examples: 3308
+
+Training using transfer 
+
+Results 
+
+CLL : -0.235727 
+
+AUC ROC : 0.983055 
+
+AUC PR : 0.338212 
+
+Precision : 0.346154 
+
+Recall : 0.482143 
+
+F1 : 0.402985 
+
+Total Learning Time : 2.688100814819336 
+
+Total Inference Time : 1.1798591613769531 
+
+Run: 5
+
+ Starting fold 1 of 1 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 863
+Target train pos examples: 326
+Target train neg examples: 10928
+
+Target test facts examples: 215
+Target test pos examples: 56
+Target test neg examples: 3308
+
+Training using transfer 
+
+Results 
+
+CLL : -0.23998 
+
+AUC ROC : 0.983055 
+
+AUC PR : 0.338212 
+
+Precision : 0.346154 
+
+Recall : 0.482143 
+
+F1 : 0.402985 
+
+Total Learning Time : 2.7795002460479736 
+
+Total Inference Time : 1.0837864875793457 
+
+Starting experiments for fasttext using softcosine 
+
+Run: 1
+
+ Starting fold 1 of 1 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 863
+Target train pos examples: 326
+Target train neg examples: 10928
+
+Target test facts examples: 215
+Target test pos examples: 56
+Target test neg examples: 3308
+
+Training using transfer 
+
+Results 
+
+CLL : -0.237215 
+
+AUC ROC : 0.983525 
+
+AUC PR : 0.339394 
+
+Precision : 0.339394 
+
+Recall : 1.0 
+
+F1 : 0.506787 
+
+Total Learning Time : 1.8974254131317139 
+
+Total Inference Time : 1.058732032775879 
+
+Run: 2
+
+ Starting fold 1 of 1 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 863
+Target train pos examples: 326
+Target train neg examples: 10928
+
+Target test facts examples: 215
+Target test pos examples: 56
+Target test neg examples: 3308
+
+Training using transfer 
+
+Results 
+
+CLL : -0.239164 
+
+AUC ROC : 0.983525 
+
+AUC PR : 0.339394 
+
+Precision : 0.339394 
+
+Recall : 1.0 
+
+F1 : 0.506787 
+
+Total Learning Time : 1.8637256622314453 
+
+Total Inference Time : 1.0794858932495117 
+
+Run: 3
+
+ Starting fold 1 of 1 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 863
+Target train pos examples: 326
+Target train neg examples: 10928
+
+Target test facts examples: 215
+Target test pos examples: 56
+Target test neg examples: 3308
+
+Training using transfer 
+
+Results 
+
+CLL : -0.239657 
+
+AUC ROC : 0.983525 
+
+AUC PR : 0.339394 
+
+Precision : 0.339394 
+
+Recall : 1.0 
+
+F1 : 0.506787 
+
+Total Learning Time : 1.908787727355957 
+
+Total Inference Time : 1.1474812030792236 
+
+Run: 4
+
+ Starting fold 1 of 1 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 863
+Target train pos examples: 326
+Target train neg examples: 10928
+
+Target test facts examples: 215
+Target test pos examples: 56
+Target test neg examples: 3308
+
+Training using transfer 
+
+Results 
+
+CLL : -0.243181 
+
+AUC ROC : 0.983525 
+
+AUC PR : 0.339394 
+
+Precision : 0.339394 
+
+Recall : 1.0 
+
+F1 : 0.506787 
+
+Total Learning Time : 1.8974647521972656 
+
+Total Inference Time : 1.0690031051635742 
+
+Run: 5
+
+ Starting fold 1 of 1 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 863
+Target train pos examples: 326
+Target train neg examples: 10928
+
+Target test facts examples: 215
+Target test pos examples: 56
+Target test neg examples: 3308
+
+Training using transfer 
+
+Results 
+
+CLL : -0.240176 
+
+AUC ROC : 0.983525 
+
+AUC PR : 0.339394 
+
+Precision : 0.339394 
+
+Recall : 1.0 
+
+F1 : 0.506787 
+
+Total Learning Time : 2.0340816974639893 
+
+Total Inference Time : 1.0914554595947266 
+
+Starting experiments for fasttext using wmd 
+
+Run: 1
+
+ Starting fold 1 of 1 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 863
+Target train pos examples: 326
+Target train neg examples: 10928
+
+Target test facts examples: 215
+Target test pos examples: 56
+Target test neg examples: 3308
+
+Training using transfer 
+
+Results 
+
+CLL : -0.240345 
+
+AUC ROC : 0.983055 
+
+AUC PR : 0.338212 
+
+Precision : 0.346154 
+
+Recall : 0.482143 
+
+F1 : 0.402985 
+
+Total Learning Time : 2.760221242904663 
+
+Total Inference Time : 1.1351773738861084 
+
+Run: 2
+
+ Starting fold 1 of 1 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 863
+Target train pos examples: 326
+Target train neg examples: 10928
+
+Target test facts examples: 215
+Target test pos examples: 56
+Target test neg examples: 3308
+
+Training using transfer 
+
+Results 
+
+CLL : -0.236997 
+
+AUC ROC : 0.983055 
+
+AUC PR : 0.338212 
+
+Precision : 0.346154 
+
+Recall : 0.482143 
+
+F1 : 0.402985 
+
+Total Learning Time : 2.693819999694824 
+
+Total Inference Time : 1.1182684898376465 
+
+Run: 3
+
+ Starting fold 1 of 1 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 863
+Target train pos examples: 326
+Target train neg examples: 10928
+
+Target test facts examples: 215
+Target test pos examples: 56
+Target test neg examples: 3308
+
+Training using transfer 
+
+Results 
+
+CLL : -0.242254 
+
+AUC ROC : 0.983055 
+
+AUC PR : 0.338212 
+
+Precision : 0.346154 
+
+Recall : 0.482143 
+
+F1 : 0.402985 
+
+Total Learning Time : 2.855991840362549 
+
+Total Inference Time : 1.1033618450164795 
+
+Run: 4
+
+ Starting fold 1 of 1 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 863
+Target train pos examples: 326
+Target train neg examples: 10928
+
+Target test facts examples: 215
+Target test pos examples: 56
+Target test neg examples: 3308
+
+Training using transfer 
+
+Results 
+
+CLL : -0.236287 
+
+AUC ROC : 0.983055 
+
+AUC PR : 0.338212 
+
+Precision : 0.346154 
+
+Recall : 0.482143 
+
+F1 : 0.402985 
+
+Total Learning Time : 2.7462730407714844 
+
+Total Inference Time : 1.0846154689788818 
+
+Run: 5
+
+ Starting fold 1 of 1 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 863
+Target train pos examples: 326
+Target train neg examples: 10928
+
+Target test facts examples: 215
+Target test pos examples: 56
+Target test neg examples: 3308
+
+Training using transfer 
+
+Results 
+
+CLL : -0.236508 
+
+AUC ROC : 0.983055 
+
+AUC PR : 0.338212 
+
+Precision : 0.346154 
+
+Recall : 0.482143 
+
+F1 : 0.402985 
+
+Total Learning Time : 2.813051223754883 
+
+Total Inference Time : 1.139437198638916 
+
+Starting experiment 2_uwcse_imdb 
+
+Start learning from source dataset
+
+Source train facts examples: 2387
+Source train pos examples: 113
+Source train neg examples: 4079
+
+Model training time 18.330458402633667 
+
+Building refine structure 
+
+WILL Produced-Tree #1
+% FOR advisedby(A, B):
+%   if ( professor(B), student(A) )
+%   then if ( publication(C, B), publication(C, A) )
+%   | then if ( tempadvisedby(D, B), ta(E, D, F) )
+%   | | then return 0.8581489350995123;  // std dev = 0.000, 18.000 (wgt'ed) examples reached here.  /* #pos=18 */
+%   | | else if ( tempadvisedby(G, B) )
+%   | | | then return 0.7043027812533584;  // std dev = 1.301, 13.000 (wgt'ed) examples reached here.  /* #neg=2 #pos=11 */
+%   | | | else return 0.8581489350995123;  // std dev = 0.000, 12.000 (wgt'ed) examples reached here.  /* #pos=12 */
+%   | else if ( publication(H, A) )
+%   | | then if ( tempadvisedby(I, B), publication(J, I) )
+%   | | | then return -0.14185106490048777;  // std dev = 0.000, 4.000 (wgt'ed) examples reached here.  /* #neg=4 */
+%   | | | else return 0.35814893509951234;  // std dev = 2.915, 34.000 (wgt'ed) examples reached here.  /* #neg=17 #pos=17 */
+%   | | else if ( publication(K, B) )
+%   | | | then return 0.6547591045910379;  // std dev = 3.092, 59.000 (wgt'ed) examples reached here.  /* #neg=12 #pos=47 */
+%   | | | else return 0.4735335504841277;  // std dev = 1.754, 13.000 (wgt'ed) examples reached here.  /* #neg=5 #pos=8 */
+%   else return -0.14185106490048816;  // std dev = 0.000, 196.000 (wgt'ed) examples reached here.  /* #neg=196 */
+WILL Produced-Tree #2
+% FOR advisedby(A, B):
+%   if ( professor(B), student(A) )
+%   then if ( publication(C, B), publication(C, A) )
+%   | then if ( tempadvisedby(D, B), publication(E, D) )
+%   | | then if ( publication(E, B) )
+%   | | | then return 0.41112309050208373;  // std dev = 1.146, 6.000 (wgt'ed) examples reached here.  /* #neg=2 #pos=4 */
+%   | | | else return 0.7280390161964844;  // std dev = 0.036, 7.000 (wgt'ed) examples reached here.  /* #pos=7 */
+%   | | else return 0.7254693350008253;  // std dev = 0.066, 30.000 (wgt'ed) examples reached here.  /* #pos=30 */
+%   | else if ( publication(F, B), publication(G, A) )
+%   | | then if ( ta(H, A, I) )
+%   | | | then return 0.6837411357856349;  // std dev = 0.935, 8.000 (wgt'ed) examples reached here.  /* #neg=1 #pos=7 */
+%   | | | else return 0.005485347755727725;  // std dev = 1.788, 21.000 (wgt'ed) examples reached here.  /* #neg=17 #pos=4 */
+%   | | else if ( tempadvisedby(J, B), ta(K, J, L) )
+%   | | | then return 0.5776528145803959;  // std dev = 2.030, 27.000 (wgt'ed) examples reached here.  /* #neg=5 #pos=22 */
+%   | | | else return 0.45367132937581234;  // std dev = 3.517, 57.000 (wgt'ed) examples reached here.  /* #neg=18 #pos=39 */
+%   else return -0.12544463852839147;  // std dev = 0.000, 191.000 (wgt'ed) examples reached here.  /* #neg=191 */
+WILL Produced-Tree #3
+% FOR advisedby(A, B):
+%   if ( professor(B), student(A) )
+%   then if ( publication(C, B), publication(C, A) )
+%   | then if ( tempadvisedby(D, B), publication(E, D) )
+%   | | then return 0.5974515344532197;  // std dev = 0.156, 11.000 (wgt'ed) examples reached here.  /* #pos=11 */
+%   | | else if ( tempadvisedby(F, B) )
+%   | | | then return 0.4670553915355356;  // std dev = 1.336, 20.000 (wgt'ed) examples reached here.  /* #neg=2 #pos=18 */
+%   | | | else return 0.5538853489605184;  // std dev = 0.000, 12.000 (wgt'ed) examples reached here.  /* #pos=12 */
+%   | else if ( publication(G, A) )
+%   | | then if ( publication(G, H), professor(H) )
+%   | | | then return 0.10362250392328941;  // std dev = 2.455, 29.000 (wgt'ed) examples reached here.  /* #neg=19 #pos=10 */
+%   | | | else return 0.4922411253533015;  // std dev = 1.309, 9.000 (wgt'ed) examples reached here.  /* #neg=2 #pos=7 */
+%   | | else if ( tempadvisedby(I, B), publication(J, I) )
+%   | | | then return 0.10139059057365837;  // std dev = 1.479, 9.000 (wgt'ed) examples reached here.  /* #neg=5 #pos=4 */
+%   | | | else return 0.47440085565235635;  // std dev = 3.075, 63.000 (wgt'ed) examples reached here.  /* #neg=12 #pos=51 */
+%   else return -0.11231637819360643;  // std dev = 4.21e-08, 194.000 (wgt'ed) examples reached here.  /* #neg=194 */
+WILL Produced-Tree #4
+% FOR advisedby(A, B):
+%   if ( professor(B), student(A) )
+%   then if ( publication(C, B), publication(C, A) )
+%   | then return 0.4405911149341273;  // std dev = 0.206, 41.000 (wgt'ed) examples reached here.  /* #pos=41 */
+%   | else if ( publication(D, B), publication(E, A) )
+%   | | then if ( tempadvisedby(F, B), ta(G, F, H) )
+%   | | | then return -0.22778532078505265;  // std dev = 0.203, 9.000 (wgt'ed) examples reached here.  /* #neg=9 */
+%   | | | else return 0.17065496864911897;  // std dev = 2.240, 24.000 (wgt'ed) examples reached here.  /* #neg=13 #pos=11 */
+%   | | else if ( tempadvisedby(I, B), ta(J, I, K) )
+%   | | | then return 0.4331517610988022;  // std dev = 1.503, 25.000 (wgt'ed) examples reached here.  /* #neg=3 #pos=22 */
+%   | | | else return 0.31151673967435645;  // std dev = 3.237, 54.000 (wgt'ed) examples reached here.  /* #neg=15 #pos=39 */
+%   else return -0.10159632948783646;  // std dev = 0.000, 196.000 (wgt'ed) examples reached here.  /* #neg=196 */
+WILL Produced-Tree #5
+% FOR advisedby(A, B):
+%   if ( student(A), hasposition(B, C) )
+%   then if ( hasposition(D, C), projectmember(E, D) )
+%   | then if ( publication(F, B), publication(F, A) )
+%   | | then return 0.33754963069963767;  // std dev = 0.188, 38.000 (wgt'ed) examples reached here.  /* #pos=38 */
+%   | | else if ( publication(G, B), publication(H, A) )
+%   | | | then return 0.1210698196386345;  // std dev = 2.137, 23.000 (wgt'ed) examples reached here.  /* #neg=13 #pos=10 */
+%   | | | else return 0.2790060759910321;  // std dev = 3.233, 68.000 (wgt'ed) examples reached here.  /* #neg=14 #pos=54 */
+%   | else if ( publication(I, A), publication(J, B) )
+%   | | then return 0.28546316760654217;  // std dev = 0.572, 5.000 (wgt'ed) examples reached here.  /* #neg=1 #pos=4 */
+%   | | else if ( tempadvisedby(K, B) )
+%   | | | then return -0.5841819082612817;  // std dev = 0.000, 3.000 (wgt'ed) examples reached here.  /* #neg=3 */
+%   | | | else return 0.03832101081443264;  // std dev = 1.682, 12.000 (wgt'ed) examples reached here.  /* #neg=6 #pos=6 */
+%   else if ( ta(L, A, M) )
+%   | then if ( ta(L, N, M), tempadvisedby(N, P) )
+%   | | then return -0.14777741808354564;  // std dev = 0.135, 7.000 (wgt'ed) examples reached here.  /* #neg=7 */
+%   | | else return -0.1001067183673378;  // std dev = 0.053, 52.000 (wgt'ed) examples reached here.  /* #neg=52 */
+%   | else return -0.08845405545312277;  // std dev = 0.051, 145.000 (wgt'ed) examples reached here.  /* #neg=144 #pos=1 */
+WILL Produced-Tree #6
+% FOR advisedby(A, B):
+%   if ( professor(B), student(A) )
+%   then if ( ta(C, A, D), publication(E, B) )
+%   | then if ( ta(F, G, D), publication(E, G) )
+%   | | then if ( publication(E, A) )
+%   | | | then return 0.27445574256947614;  // std dev = 0.107, 13.000 (wgt'ed) examples reached here.  /* #pos=13 */
+%   | | | else return 0.46746234843259976;  // std dev = 0.236, 8.000 (wgt'ed) examples reached here.  /* #pos=8 */
+%   | | else if ( ta(C, H, I), publication(E, H) )
+%   | | | then return -0.2584574301895421;  // std dev = 0.820, 3.000 (wgt'ed) examples reached here.  /* #neg=2 #pos=1 */
+%   | | | else return 0.22680016229287678;  // std dev = 2.094, 30.000 (wgt'ed) examples reached here.  /* #neg=6 #pos=24 */
+%   | else if ( publication(J, A), publication(J, B) )
+%   | | then if ( publication(J, K), tempadvisedby(L, K) )
+%   | | | then return 0.2680353747137183;  // std dev = 0.115, 22.000 (wgt'ed) examples reached here.  /* #pos=22 */
+%   | | | else return 0.1039629598225392;  // std dev = 0.926, 7.000 (wgt'ed) examples reached here.  /* #neg=1 #pos=6 */
+%   | | else if ( publication(M, A) )
+%   | | | then return 0.050589973238978805;  // std dev = 2.330, 26.000 (wgt'ed) examples reached here.  /* #neg=16 #pos=10 */
+%   | | | else return 0.2017501030923558;  // std dev = 2.448, 37.000 (wgt'ed) examples reached here.  /* #neg=8 #pos=29 */
+%   else return -0.08522848322670916;  // std dev = 0.009, 180.000 (wgt'ed) examples reached here.  /* #neg=180 */
+WILL Produced-Tree #7
+% FOR advisedby(A, B):
+%   if ( professor(B), student(A) )
+%   then if ( publication(C, A) )
+%   | then if ( publication(D, B), tempadvisedby(E, B) )
+%   | | then if ( publication(C, B) )
+%   | | | then return 0.2245873731550677;  // std dev = 0.128, 29.000 (wgt'ed) examples reached here.  /* #pos=29 */
+%   | | | else return -0.12864611265868459;  // std dev = 1.524, 17.000 (wgt'ed) examples reached here.  /* #neg=13 #pos=4 */
+%   | | else if ( publication(C, F), ta(G, F, H) )
+%   | | | then return 0.42928186807132707;  // std dev = 0.522, 12.000 (wgt'ed) examples reached here.  /* #pos=12 */
+%   | | | else return 0.19017809531499164;  // std dev = 1.384, 17.000 (wgt'ed) examples reached here.  /* #neg=4 #pos=13 */
+%   | else if ( tempadvisedby(I, B), publication(J, I) )
+%   | | then if ( ta(K, I, L) )
+%   | | | then return -0.21247161049624336;  // std dev = 1.094, 5.000 (wgt'ed) examples reached here.  /* #neg=3 #pos=2 */
+%   | | | else return 0.11425081402899524;  // std dev = 0.814, 3.000 (wgt'ed) examples reached here.  /* #neg=1 #pos=2 */
+%   | | else if ( publication(M, B) )
+%   | | | then return 0.11378234998321164;  // std dev = 3.063, 56.000 (wgt'ed) examples reached here.  /* #neg=13 #pos=43 */
+%   | | | else return -0.006337750469885035;  // std dev = 1.827, 14.000 (wgt'ed) examples reached here.  /* #neg=6 #pos=8 */
+%   else return -0.07881284654978724;  // std dev = 0.008, 179.000 (wgt'ed) examples reached here.  /* #neg=179 */
+WILL Produced-Tree #8
+% FOR advisedby(A, B):
+%   if ( student(A), professor(B) )
+%   then if ( publication(C, A), publication(C, B) )
+%   | then if ( ta(D, A, E) )
+%   | | then if ( tempadvisedby(F, B), ta(G, F, H) )
+%   | | | then return 0.1756422479321073;  // std dev = 0.017, 7.000 (wgt'ed) examples reached here.  /* #pos=7 */
+%   | | | else return 0.05020423129406374;  // std dev = 0.921, 7.000 (wgt'ed) examples reached here.  /* #neg=1 #pos=6 */
+%   | | else return 0.1854503154449567;  // std dev = 0.100, 28.000 (wgt'ed) examples reached here.  /* #pos=28 */
+%   | else if ( ta(I, A, J), publication(K, B) )
+%   | | then if ( tempadvisedby(L, B), ta(M, L, N) )
+%   | | | then return -0.09495017486948548;  // std dev = 1.925, 17.000 (wgt'ed) examples reached here.  /* #neg=7 #pos=10 */
+%   | | | else return 0.1800382388164168;  // std dev = 2.050, 28.000 (wgt'ed) examples reached here.  /* #neg=5 #pos=23 */
+%   | | else if ( tempadvisedby(P, B), publication(Q, B) )
+%   | | | then return -0.08023177345634443;  // std dev = 2.306, 27.000 (wgt'ed) examples reached here.  /* #neg=14 #pos=13 */
+%   | | | else return 0.031881589275117105;  // std dev = 3.109, 46.000 (wgt'ed) examples reached here.  /* #neg=20 #pos=26 */
+%   else return -0.07331844105582128;  // std dev = 0.008, 195.000 (wgt'ed) examples reached here.  /* #neg=195 */
+WILL Produced-Tree #9
+% FOR advisedby(A, B):
+%   if ( tempadvisedby(C, B), student(A) )
+%   then if ( publication(D, C) )
+%   | then if ( ta(E, C, F), publication(G, A) )
+%   | | then return 0.14412896621229196;  // std dev = 0.038, 6.000 (wgt'ed) examples reached here.  /* #pos=6 */
+%   | | else if ( publication(D, B), ta(H, A, I) )
+%   | | | then return 0.3025129254073067;  // std dev = 0.191, 3.000 (wgt'ed) examples reached here.  /* #pos=3 */
+%   | | | else return -0.18686553681384296;  // std dev = 1.754, 13.000 (wgt'ed) examples reached here.  /* #neg=7 #pos=6 */
+%   | else if ( ta(J, A, K) )
+%   | | then if ( projectmember(L, B), ta(M, C, N) )
+%   | | | then return -0.4203598660528063;  // std dev = 0.830, 4.000 (wgt'ed) examples reached here.  /* #neg=3 #pos=1 */
+%   | | | else return 0.14201456662771203;  // std dev = 1.930, 31.000 (wgt'ed) examples reached here.  /* #neg=5 #pos=26 */
+%   | | else if ( ta(P, C, Q), publication(R, A) )
+%   | | | then return 0.054195640614310495;  // std dev = 0.659, 7.000 (wgt'ed) examples reached here.  /* #neg=1 #pos=6 */
+%   | | | else return 0.25951052425946897;  // std dev = 1.196, 23.000 (wgt'ed) examples reached here.  /* #neg=2 #pos=21 */
+%   else if ( professor(B), publication(S, B) )
+%   | then return 0.006795173587714251;  // std dev = 0.370, 74.000 (wgt'ed) examples reached here.  /* #neg=35 #pos=39 */
+%   | else return -0.07205673174987977;  // std dev = 0.137, 164.000 (wgt'ed) examples reached here.  /* #neg=159 #pos=5 */
+WILL Produced-Tree #10
+% FOR advisedby(A, B):
+%   if ( student(A), professor(B) )
+%   then if ( tempadvisedby(C, B), publication(D, C) )
+%   | then if ( publication(E, A), publication(E, B) )
+%   | | then if ( publication(D, A) )
+%   | | | then return -0.0635671432268457;  // std dev = 0.810, 4.000 (wgt'ed) examples reached here.  /* #neg=1 #pos=3 */
+%   | | | else return 0.15057434464363623;  // std dev = 0.116, 8.000 (wgt'ed) examples reached here.  /* #pos=8 */
+%   | | else if ( ta(F, C, G) )
+%   | | | then return 0.01870377972226195;  // std dev = 0.868, 4.000 (wgt'ed) examples reached here.  /* #neg=2 #pos=2 */
+%   | | | else return -0.1930758289761749;  // std dev = 1.184, 9.000 (wgt'ed) examples reached here.  /* #neg=7 #pos=2 */
+%   | else if ( publication(H, B) )
+%   | | then if ( publication(H, I), tempadvisedby(J, I) )
+%   | | | then return 0.13078216968101308;  // std dev = 3.158, 99.000 (wgt'ed) examples reached here.  /* #neg=17 #pos=82 */
+%   | | | else return -0.2955680777198815;  // std dev = 1.017, 5.000 (wgt'ed) examples reached here.  /* #neg=3 #pos=2 */
+%   | | else if ( tempadvisedby(K, B), ta(L, K, M) )
+%   | | | then return -0.3233017037557971;  // std dev = 1.349, 9.000 (wgt'ed) examples reached here.  /* #neg=6 #pos=3 */
+%   | | | else return 0.14059414332274064;  // std dev = 1.707, 16.000 (wgt'ed) examples reached here.  /* #neg=5 #pos=11 */
+%   else return -0.06442223800879437;  // std dev = 0.020, 184.000 (wgt'ed) examples reached here.  /* #neg=184 */
+Starting experiments for fasttext using euclidean 
+
+Run: 1
+
+ Starting fold 1 of 1 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 863
+Target train pos examples: 326
+Target train neg examples: 10928
+
+Target test facts examples: 215
+Target test pos examples: 56
+Target test neg examples: 3308
+
+Training using transfer 
+
+Results 
+
+CLL : -0.073963 
+
+AUC ROC : 1.0 
+
+AUC PR : 1.0 
+
+Precision : 1.0 
+
+Recall : 1.0 
+
+F1 : 1.0 
+
+Total Learning Time : 4.527543306350708 
+
+Total Inference Time : 3.156264305114746 
+
+Results 
+
+CLL : -0.073963 
+
+AUC ROC : 1.0 
+
+AUC PR : 1.0 
+
+Precision : 1.0 
+
+Recall : 1.0 
+
+F1 : 1.0 
+
+Total Learning Time : 13.00824522972107 
+
+Total Inference Time : 3.156264305114746 
+
+Run: 2
+
+ Starting fold 1 of 1 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 863
+Target train pos examples: 326
+Target train neg examples: 10928
+
+Target test facts examples: 215
+Target test pos examples: 56
+Target test neg examples: 3308
+
+Training using transfer 
+
+Results 
+
+CLL : -0.073581 
+
+AUC ROC : 1.0 
+
+AUC PR : 1.0 
+
+Precision : 1.0 
+
+Recall : 1.0 
+
+F1 : 1.0 
+
+Total Learning Time : 4.460065603256226 
+
+Total Inference Time : 3.1556217670440674 
+
+Results 
+
+CLL : -0.073581 
+
+AUC ROC : 1.0 
+
+AUC PR : 1.0 
+
+Precision : 1.0 
+
+Recall : 1.0 
+
+F1 : 1.0 
+
+Total Learning Time : 12.809554815292358 
+
+Total Inference Time : 3.1556217670440674 
+
+Run: 3
+
+ Starting fold 1 of 1 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 863
+Target train pos examples: 326
+Target train neg examples: 10928
+
+Target test facts examples: 215
+Target test pos examples: 56
+Target test neg examples: 3308
+
+Training using transfer 
+
+Results 
+
+CLL : -0.072521 
+
+AUC ROC : 1.0 
+
+AUC PR : 1.0 
+
+Precision : 1.0 
+
+Recall : 1.0 
+
+F1 : 1.0 
+
+Total Learning Time : 4.426292657852173 
+
+Total Inference Time : 2.9854674339294434 
+
+Results 
+
+CLL : -0.072521 
+
+AUC ROC : 1.0 
+
+AUC PR : 1.0 
+
+Precision : 1.0 
+
+Recall : 1.0 
+
+F1 : 1.0 
+
+Total Learning Time : 12.68362545967102 
+
+Total Inference Time : 2.9854674339294434 
+
+Run: 4
+
+ Starting fold 1 of 1 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 863
+Target train pos examples: 326
+Target train neg examples: 10928
+
+Target test facts examples: 215
+Target test pos examples: 56
+Target test neg examples: 3308
+
+Training using transfer 
+
+Results 
+
+CLL : -0.073444 
+
+AUC ROC : 1.0 
+
+AUC PR : 1.0 
+
+Precision : 1.0 
+
+Recall : 1.0 
+
+F1 : 1.0 
+
+Total Learning Time : 4.566503524780273 
+
+Total Inference Time : 3.2156269550323486 
+
+Results 
+
+CLL : -0.073444 
+
+AUC ROC : 1.0 
+
+AUC PR : 1.0 
+
+Precision : 1.0 
+
+Recall : 1.0 
+
+F1 : 1.0 
+
+Total Learning Time : 13.151453971862793 
+
+Total Inference Time : 3.2156269550323486 
+
+Run: 5
+
+ Starting fold 1 of 1 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 863
+Target train pos examples: 326
+Target train neg examples: 10928
+
+Target test facts examples: 215
+Target test pos examples: 56
+Target test neg examples: 3308
+
+Training using transfer 
+
+Results 
+
+CLL : -0.073684 
+
+AUC ROC : 1.0 
+
+AUC PR : 1.0 
+
+Precision : 1.0 
+
+Recall : 1.0 
+
+F1 : 1.0 
+
+Total Learning Time : 4.505043268203735 
+
+Total Inference Time : 3.054884195327759 
+
+Results 
+
+CLL : -0.073684 
+
+AUC ROC : 1.0 
+
+AUC PR : 1.0 
+
+Precision : 1.0 
+
+Recall : 1.0 
+
+F1 : 1.0 
+
+Total Learning Time : 12.959285497665405 
+
+Total Inference Time : 3.054884195327759 
+
+Starting experiments for fasttext using softcosine 
+
+Run: 1
+
+ Starting fold 1 of 1 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 863
+Target train pos examples: 326
+Target train neg examples: 10928
+
+Target test facts examples: 215
+Target test pos examples: 56
+Target test neg examples: 3308
+
+Training using transfer 
+
+Results 
+
+CLL : -0.063421 
+
+AUC ROC : 1.0 
+
+AUC PR : 1.0 
+
+Precision : 1.0 
+
+Recall : 1.0 
+
+F1 : 1.0 
+
+Total Learning Time : 2.966214656829834 
+
+Total Inference Time : 1.4081110954284668 
+
+Results 
+
+CLL : -0.063421 
+
+AUC ROC : 1.0 
+
+AUC PR : 1.0 
+
+Precision : 1.0 
+
+Recall : 1.0 
+
+F1 : 1.0 
+
+Total Learning Time : 8.435098648071289 
+
+Total Inference Time : 1.4081110954284668 
+
+Run: 2
+
+ Starting fold 1 of 1 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 863
+Target train pos examples: 326
+Target train neg examples: 10928
+
+Target test facts examples: 215
+Target test pos examples: 56
+Target test neg examples: 3308
+
+Training using transfer 
+
+Results 
+
+CLL : -0.063421 
+
+AUC ROC : 1.0 
+
+AUC PR : 1.0 
+
+Precision : 1.0 
+
+Recall : 1.0 
+
+F1 : 1.0 
+
+Total Learning Time : 2.93794584274292 
+
+Total Inference Time : 1.3816547393798828 
+
+Results 
+
+CLL : -0.063421 
+
+AUC ROC : 1.0 
+
+AUC PR : 1.0 
+
+Precision : 1.0 
+
+Recall : 1.0 
+
+F1 : 1.0 
+
+Total Learning Time : 8.68764615058899 
+
+Total Inference Time : 1.3816547393798828 
+
+Run: 3
+
+ Starting fold 1 of 1 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 863
+Target train pos examples: 326
+Target train neg examples: 10928
+
+Target test facts examples: 215
+Target test pos examples: 56
+Target test neg examples: 3308
+
+Training using transfer 
+
+Results 
+
+CLL : -0.063421 
+
+AUC ROC : 1.0 
+
+AUC PR : 1.0 
+
+Precision : 1.0 
+
+Recall : 1.0 
+
+F1 : 1.0 
+
+Total Learning Time : 3.1513373851776123 
+
+Total Inference Time : 1.4989440441131592 
+
+Results 
+
+CLL : -0.063421 
+
+AUC ROC : 1.0 
+
+AUC PR : 1.0 
+
+Precision : 1.0 
+
+Recall : 1.0 
+
+F1 : 1.0 
+
+Total Learning Time : 8.953311204910278 
+
+Total Inference Time : 1.4989440441131592 
+
+Run: 4
+
+ Starting fold 1 of 1 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 863
+Target train pos examples: 326
+Target train neg examples: 10928
+
+Target test facts examples: 215
+Target test pos examples: 56
+Target test neg examples: 3308
+
+Training using transfer 
+
+Results 
+
+CLL : -0.063421 
+
+AUC ROC : 1.0 
+
+AUC PR : 1.0 
+
+Precision : 1.0 
+
+Recall : 1.0 
+
+F1 : 1.0 
+
+Total Learning Time : 2.9326038360595703 
+
+Total Inference Time : 1.4615416526794434 
+
+Results 
+
+CLL : -0.063421 
+
+AUC ROC : 1.0 
+
+AUC PR : 1.0 
+
+Precision : 1.0 
+
+Recall : 1.0 
+
+F1 : 1.0 
+
+Total Learning Time : 8.675581932067871 
+
+Total Inference Time : 1.4615416526794434 
+
+Run: 5
+
+ Starting fold 1 of 1 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 863
+Target train pos examples: 326
+Target train neg examples: 10928
+
+Target test facts examples: 215
+Target test pos examples: 56
+Target test neg examples: 3308
+
+Training using transfer 
+
+Results 
+
+CLL : -0.063183 
+
+AUC ROC : 1.0 
+
+AUC PR : 1.0 
+
+Precision : 1.0 
+
+Recall : 1.0 
+
+F1 : 1.0 
+
+Total Learning Time : 3.0548224449157715 
+
+Total Inference Time : 1.4032433032989502 
+
+Results 
+
+CLL : -0.063183 
+
+AUC ROC : 1.0 
+
+AUC PR : 1.0 
+
+Precision : 1.0 
+
+Recall : 1.0 
+
+F1 : 1.0 
+
+Total Learning Time : 8.83781123161316 
+
+Total Inference Time : 1.4032433032989502 
+
+Starting experiments for fasttext using wmd 
+
+Run: 1
+
+ Starting fold 1 of 1 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 863
+Target train pos examples: 326
+Target train neg examples: 10928
+
+Target test facts examples: 215
+Target test pos examples: 56
+Target test neg examples: 3308
+
+Training using transfer 
+
+Results 
+
+CLL : -0.073667 
+
+AUC ROC : 1.0 
+
+AUC PR : 1.0 
+
+Precision : 1.0 
+
+Recall : 1.0 
+
+F1 : 1.0 
+
+Total Learning Time : 4.68241810798645 
+
+Total Inference Time : 3.1845123767852783 
+
+Results 
+
+CLL : -0.073667 
+
+AUC ROC : 1.0 
+
+AUC PR : 1.0 
+
+Precision : 1.0 
+
+Recall : 1.0 
+
+F1 : 1.0 
+
+Total Learning Time : 13.229619026184082 
+
+Total Inference Time : 3.1845123767852783 
+
+Run: 2
+
+ Starting fold 1 of 1 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 863
+Target train pos examples: 326
+Target train neg examples: 10928
+
+Target test facts examples: 215
+Target test pos examples: 56
+Target test neg examples: 3308
+
+Training using transfer 
+
+Results 
+
+CLL : -0.073443 
+
+AUC ROC : 1.0 
+
+AUC PR : 1.0 
+
+Precision : 1.0 
+
+Recall : 1.0 
+
+F1 : 1.0 
+
+Total Learning Time : 4.662996768951416 
+
+Total Inference Time : 3.0030291080474854 
+
+Results 
+
+CLL : -0.073443 
+
+AUC ROC : 1.0 
+
+AUC PR : 1.0 
+
+Precision : 1.0 
+
+Recall : 1.0 
+
+F1 : 1.0 
+
+Total Learning Time : 12.908321142196655 
+
+Total Inference Time : 3.0030291080474854 
+
+Run: 3
+
+ Starting fold 1 of 1 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 863
+Target train pos examples: 326
+Target train neg examples: 10928
+
+Target test facts examples: 215
+Target test pos examples: 56
+Target test neg examples: 3308
+
+Training using transfer 
+
+Results 
+
+CLL : -0.073446 
+
+AUC ROC : 1.0 
+
+AUC PR : 1.0 
+
+Precision : 1.0 
+
+Recall : 1.0 
+
+F1 : 1.0 
+
+Total Learning Time : 4.5041656494140625 
+
+Total Inference Time : 3.1853272914886475 
+
+Results 
+
+CLL : -0.073446 
+
+AUC ROC : 1.0 
+
+AUC PR : 1.0 
+
+Precision : 1.0 
+
+Recall : 1.0 
+
+F1 : 1.0 
+
+Total Learning Time : 12.988138675689697 
+
+Total Inference Time : 3.1853272914886475 
+
+Run: 4
+
+ Starting fold 1 of 1 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 863
+Target train pos examples: 326
+Target train neg examples: 10928
+
+Target test facts examples: 215
+Target test pos examples: 56
+Target test neg examples: 3308
+
+Training using transfer 
+
+Results 
+
+CLL : -0.073501 
+
+AUC ROC : 1.0 
+
+AUC PR : 1.0 
+
+Precision : 1.0 
+
+Recall : 1.0 
+
+F1 : 1.0 
+
+Total Learning Time : 4.491408109664917 
+
+Total Inference Time : 3.0368096828460693 
+
+Results 
+
+CLL : -0.073501 
+
+AUC ROC : 1.0 
+
+AUC PR : 1.0 
+
+Precision : 1.0 
+
+Recall : 1.0 
+
+F1 : 1.0 
+
+Total Learning Time : 12.924525499343872 
+
+Total Inference Time : 3.0368096828460693 
+
+Run: 5
+
+ Starting fold 1 of 1 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 863
+Target train pos examples: 326
+Target train neg examples: 10928
+
+Target test facts examples: 215
+Target test pos examples: 56
+Target test neg examples: 3308
+
+Training using transfer 
+
+Results 
+
+CLL : -0.073002 
+
+AUC ROC : 1.0 
+
+AUC PR : 1.0 
+
+Precision : 1.0 
+
+Recall : 1.0 
+
+F1 : 1.0 
+
+Total Learning Time : 4.4601616859436035 
+
+Total Inference Time : 2.9409096240997314 
+
+Results 
+
+CLL : -0.073002 
+
+AUC ROC : 1.0 
+
+AUC PR : 1.0 
+
+Precision : 1.0 
+
+Recall : 1.0 
+
+F1 : 1.0 
+
+Total Learning Time : 12.552235841751099 
+
+Total Inference Time : 2.9409096240997314 
+

@@ -1,0 +1,996 @@
+Starting experiment 4_cora_imdb 
+
+Start learning from source dataset
+
+Source train facts examples: 42558
+Source train pos examples: 3017
+Source train neg examples: 5022
+
+Starting experiment 4_cora_imdb 
+
+Start learning from source dataset
+
+Source train facts examples: 42558
+Source train pos examples: 3017
+Source train neg examples: 5022
+
+Model training time 8352.376814603806 
+
+Building refine structure 
+
+WILL Produced-Tree #1
+% FOR samevenue(A, B):
+%   if ( haswordvenue(A, C), haswordvenue(B, C) )
+%   then if ( haswordtitle(D, C) )
+%   | then if ( title(E, D), venue(E, A) )
+%   | | then return 0.25375166443991654;  // std dev = 0.489, 6,595.000 (wgt'ed) examples reached here.  /* #neg=3,986 #pos=2,609 */
+%   | | else if ( title(F, D), venue(F, B) )
+%   | | | then return 0.11529179224236855;  // std dev = 4.479, 105.000 (wgt'ed) examples reached here.  /* #neg=78 #pos=27 */
+%   | | | else return 0.31078051404687906;  // std dev = 6.861, 190.000 (wgt'ed) examples reached here.  /* #neg=104 #pos=86 */
+%   | else if ( haswordvenue(A, G), haswordtitle(H, G) )
+%   | | then if ( haswordtitle(H, I), haswordauthor(J, I) )
+%   | | | then return 0.46790503266048855;  // std dev = 4.417, 82.000 (wgt'ed) examples reached here.  /* #neg=32 #pos=50 */
+%   | | | else return 0.20814893509951235;  // std dev = 2.133, 20.000 (wgt'ed) examples reached here.  /* #neg=13 #pos=7 */
+%   | | else if ( haswordvenue(B, K), haswordtitle(L, K) )
+%   | | | then return 0.4748156017661778;  // std dev = 3.766, 60.000 (wgt'ed) examples reached here.  /* #neg=23 #pos=37 */
+%   | | | else return 0.6142464960751212;  // std dev = 2.750, 41.000 (wgt'ed) examples reached here.  /* #neg=10 #pos=31 */
+%   else if ( haswordvenue(A, M), haswordtitle(N, M) )
+%   | then return 0.045745834324316524;  // std dev = 0.390, 645.000 (wgt'ed) examples reached here.  /* #neg=524 #pos=121 */
+%   | else return 0.02093963277393071;  // std dev = 0.369, 301.000 (wgt'ed) examples reached here.  /* #neg=252 #pos=49 */
+WILL Produced-Tree #2
+% FOR samevenue(A, B):
+%   if ( haswordvenue(A, C), haswordvenue(B, C) )
+%   then if ( haswordtitle(D, C) )
+%   | then if ( title(E, D), venue(E, B) )
+%   | | then return 0.2202789253000489;  // std dev = 0.489, 6,595.000 (wgt'ed) examples reached here.  /* #neg=3,986 #pos=2,609 */
+%   | | else if ( title(F, D), venue(F, A) )
+%   | | | then return 0.0815140714063931;  // std dev = 4.479, 105.000 (wgt'ed) examples reached here.  /* #neg=78 #pos=27 */
+%   | | | else return 0.2685926717395528;  // std dev = 6.861, 190.000 (wgt'ed) examples reached here.  /* #neg=104 #pos=86 */
+%   | else if ( haswordvenue(B, G), haswordtitle(H, G) )
+%   | | then if ( haswordtitle(H, I), haswordauthor(J, I) )
+%   | | | then return 0.40837613259448097;  // std dev = 4.389, 82.000 (wgt'ed) examples reached here.  /* #neg=32 #pos=50 */
+%   | | | else return 0.14101535675698904;  // std dev = 2.134, 20.000 (wgt'ed) examples reached here.  /* #neg=13 #pos=7 */
+%   | | else if ( haswordvenue(A, K), haswordauthor(L, K) )
+%   | | | then return 0.7848853972746143;  // std dev = 0.022, 4.000 (wgt'ed) examples reached here.  /* #pos=4 */
+%   | | | else return 0.44181395471449136;  // std dev = 4.632, 97.000 (wgt'ed) examples reached here.  /* #neg=33 #pos=64 */
+%   else if ( haswordvenue(B, M), haswordtitle(N, M) )
+%   | then return 0.04145180608364211;  // std dev = 0.390, 645.000 (wgt'ed) examples reached here.  /* #neg=524 #pos=121 */
+%   | else return 0.015443642182564108;  // std dev = 0.369, 301.000 (wgt'ed) examples reached here.  /* #neg=252 #pos=49 */
+WILL Produced-Tree #3
+% FOR samevenue(A, B):
+%   if ( haswordvenue(A, C), haswordvenue(B, C) )
+%   then if ( haswordtitle(D, C) )
+%   | then if ( title(E, D), venue(E, A) )
+%   | | then return 0.18612745546670761;  // std dev = 0.489, 6,595.000 (wgt'ed) examples reached here.  /* #neg=3,986 #pos=2,609 */
+%   | | else if ( haswordtitle(D, F), haswordauthor(G, F) )
+%   | | | then return 0.1417697000866624;  // std dev = 7.707, 263.000 (wgt'ed) examples reached here.  /* #neg=170 #pos=93 */
+%   | | | else return 0.39717383827381164;  // std dev = 2.739, 32.000 (wgt'ed) examples reached here.  /* #neg=12 #pos=20 */
+%   | else if ( haswordvenue(A, H), haswordtitle(I, H) )
+%   | | then if ( haswordtitle(I, J), haswordauthor(K, J) )
+%   | | | then return 0.3286333906661143;  // std dev = 4.362, 82.000 (wgt'ed) examples reached here.  /* #neg=32 #pos=50 */
+%   | | | else return 0.11466388020802412;  // std dev = 2.136, 20.000 (wgt'ed) examples reached here.  /* #neg=13 #pos=7 */
+%   | | else if ( haswordvenue(B, L), haswordtitle(M, L) )
+%   | | | then return 0.33362325130600723;  // std dev = 3.742, 60.000 (wgt'ed) examples reached here.  /* #neg=23 #pos=37 */
+%   | | | else return 0.4320284206375123;  // std dev = 2.744, 41.000 (wgt'ed) examples reached here.  /* #neg=10 #pos=31 */
+%   else if ( haswordvenue(A, N), haswordtitle(P, N) )
+%   | then return 0.036270579657639114;  // std dev = 0.390, 645.000 (wgt'ed) examples reached here.  /* #neg=524 #pos=121 */
+%   | else return 0.013348050031270688;  // std dev = 0.369, 301.000 (wgt'ed) examples reached here.  /* #neg=252 #pos=49 */
+WILL Produced-Tree #4
+% FOR samevenue(A, B):
+%   if ( haswordvenue(A, C), haswordvenue(B, C) )
+%   then if ( haswordtitle(D, C) )
+%   | then if ( haswordauthor(E, C) )
+%   | | then return 0.43767110207876836;  // std dev = 0.467, 19.000 (wgt'ed) examples reached here.  /* #neg=6 #pos=13 */
+%   | | else if ( title(F, D), venue(F, B) )
+%   | | | then return 0.15296539939283543;  // std dev = 39.650, 6,583.000 (wgt'ed) examples reached here.  /* #neg=3,984 #pos=2,599 */
+%   | | | else return 0.13562236771008074;  // std dev = 8.152, 288.000 (wgt'ed) examples reached here.  /* #neg=178 #pos=110 */
+%   | else if ( haswordvenue(B, G), haswordauthor(H, G) )
+%   | | then return 0.42945331874064585;  // std dev = 0.371, 10.000 (wgt'ed) examples reached here.  /* #neg=2 #pos=8 */
+%   | | else if ( haswordvenue(B, I), haswordtitle(J, I) )
+%   | | | then return 0.2149065296212601;  // std dev = 4.762, 94.000 (wgt'ed) examples reached here.  /* #neg=43 #pos=51 */
+%   | | | else return 0.2808667660315747;  // std dev = 4.607, 99.000 (wgt'ed) examples reached here.  /* #neg=33 #pos=66 */
+%   else if ( haswordvenue(B, K), haswordtitle(L, K) )
+%   | then if ( haswordtitle(L, M), haswordauthor(N, M) )
+%   | | then return 0.02514433186422628;  // std dev = 0.384, 557.000 (wgt'ed) examples reached here.  /* #neg=457 #pos=100 */
+%   | | else return 0.08122273680394675;  // std dev = 0.426, 88.000 (wgt'ed) examples reached here.  /* #neg=67 #pos=21 */
+%   | else return 0.008982215589516453;  // std dev = 0.369, 301.000 (wgt'ed) examples reached here.  /* #neg=252 #pos=49 */
+WILL Produced-Tree #5
+% FOR samevenue(A, B):
+%   if ( haswordvenue(A, C), haswordvenue(B, C) )
+%   then if ( haswordtitle(D, C) )
+%   | then if ( title(E, D), venue(E, B) )
+%   | | then return 0.12451563636713676;  // std dev = 0.489, 6,595.000 (wgt'ed) examples reached here.  /* #neg=3,986 #pos=2,609 */
+%   | | else if ( title(F, D), venue(F, A) )
+%   | | | then return 0.015370021632381551;  // std dev = 4.479, 105.000 (wgt'ed) examples reached here.  /* #neg=78 #pos=27 */
+%   | | | else return 0.16085939999652035;  // std dev = 6.826, 190.000 (wgt'ed) examples reached here.  /* #neg=104 #pos=86 */
+%   | else if ( haswordvenue(A, G), haswordtitle(H, G) )
+%   | | then if ( title(I, H), venue(I, A) )
+%   | | | then return 0.20567472435217807;  // std dev = 4.028, 71.000 (wgt'ed) examples reached here.  /* #neg=27 #pos=44 */
+%   | | | else return 0.07087719395858856;  // std dev = 2.685, 31.000 (wgt'ed) examples reached here.  /* #neg=18 #pos=13 */
+%   | | else if ( haswordvenue(B, J), haswordtitle(K, J) )
+%   | | | then return 0.20821153028198738;  // std dev = 3.722, 60.000 (wgt'ed) examples reached here.  /* #neg=23 #pos=37 */
+%   | | | else return 0.2609087550846064;  // std dev = 2.742, 41.000 (wgt'ed) examples reached here.  /* #neg=10 #pos=31 */
+%   else if ( haswordvenue(B, L), haswordtitle(M, L) )
+%   | then return 0.02842505639320115;  // std dev = 0.390, 645.000 (wgt'ed) examples reached here.  /* #neg=524 #pos=121 */
+%   | else return 0.007809545790365885;  // std dev = 0.369, 301.000 (wgt'ed) examples reached here.  /* #neg=252 #pos=49 */
+WILL Produced-Tree #6
+% FOR samevenue(A, B):
+%   if ( haswordvenue(A, C), haswordvenue(B, C) )
+%   then if ( haswordtitle(D, C) )
+%   | then if ( title(E, D), venue(E, A) )
+%   | | then return 0.09947425524709749;  // std dev = 0.489, 6,595.000 (wgt'ed) examples reached here.  /* #neg=3,986 #pos=2,609 */
+%   | | else if ( title(F, D), venue(F, B) )
+%   | | | then return -0.0030091693229691327;  // std dev = 4.479, 105.000 (wgt'ed) examples reached here.  /* #neg=78 #pos=27 */
+%   | | | else return 0.12663466633960527;  // std dev = 6.824, 190.000 (wgt'ed) examples reached here.  /* #neg=104 #pos=86 */
+%   | else if ( haswordvenue(A, G), haswordauthor(H, G) )
+%   | | then return 0.3091456051331359;  // std dev = 0.359, 10.000 (wgt'ed) examples reached here.  /* #neg=2 #pos=8 */
+%   | | else if ( haswordvenue(A, I), haswordtitle(J, I) )
+%   | | | then return 0.11127776968751149;  // std dev = 4.708, 94.000 (wgt'ed) examples reached here.  /* #neg=43 #pos=51 */
+%   | | | else return 0.16824515789574504;  // std dev = 4.612, 99.000 (wgt'ed) examples reached here.  /* #neg=33 #pos=66 */
+%   else if ( haswordvenue(A, K), haswordtitle(L, K) )
+%   | then if ( haswordauthor(M, K) )
+%   | | then return 0.10601305429823901;  // std dev = 0.444, 63.000 (wgt'ed) examples reached here.  /* #neg=46 #pos=17 */
+%   | | else return 0.01677374025342417;  // std dev = 0.383, 582.000 (wgt'ed) examples reached here.  /* #neg=478 #pos=104 */
+%   | else return 0.004843307775714213;  // std dev = 0.369, 301.000 (wgt'ed) examples reached here.  /* #neg=252 #pos=49 */
+WILL Produced-Tree #7
+% FOR samevenue(A, B):
+%   if ( haswordvenue(A, C), haswordvenue(B, C) )
+%   then if ( haswordtitle(D, C) )
+%   | then if ( haswordauthor(E, C) )
+%   | | then if ( author(F, E), title(F, D) )
+%   | | | then return 0.6173182433185396;  // std dev = 0.000, 4.000 (wgt'ed) examples reached here.  /* #pos=4 */
+%   | | | else return 0.20340893326062973;  // std dev = 1.917, 15.000 (wgt'ed) examples reached here.  /* #neg=6 #pos=9 */
+%   | | else if ( title(G, D), venue(G, B) )
+%   | | | then return 0.07771716522730476;  // std dev = 39.643, 6,583.000 (wgt'ed) examples reached here.  /* #neg=3,984 #pos=2,599 */
+%   | | | else return 0.062161908575713416;  // std dev = 8.101, 288.000 (wgt'ed) examples reached here.  /* #neg=178 #pos=110 */
+%   | else if ( haswordvenue(B, H), haswordauthor(I, H) )
+%   | | then return 0.2349590140742177;  // std dev = 0.356, 10.000 (wgt'ed) examples reached here.  /* #neg=2 #pos=8 */
+%   | | else if ( haswordvenue(B, J), haswordtitle(K, J) )
+%   | | | then return 0.08564141458577351;  // std dev = 4.752, 94.000 (wgt'ed) examples reached here.  /* #neg=43 #pos=51 */
+%   | | | else return 0.12542839782419885;  // std dev = 4.569, 99.000 (wgt'ed) examples reached here.  /* #neg=33 #pos=66 */
+%   else if ( haswordvenue(A, L), haswordtitle(M, L) )
+%   | then return 0.021955774599377934;  // std dev = 0.390, 645.000 (wgt'ed) examples reached here.  /* #neg=524 #pos=121 */
+%   | else return 0.0041980986242952795;  // std dev = 0.369, 301.000 (wgt'ed) examples reached here.  /* #neg=252 #pos=49 */
+WILL Produced-Tree #8
+% FOR samevenue(A, B):
+%   if ( haswordvenue(A, C), haswordvenue(B, C) )
+%   then if ( haswordtitle(D, C) )
+%   | then if ( title(E, D), venue(E, B) )
+%   | | then return 0.06121633278067724;  // std dev = 0.489, 6,595.000 (wgt'ed) examples reached here.  /* #neg=3,986 #pos=2,609 */
+%   | | else if ( haswordtitle(D, F), haswordauthor(G, F) )
+%   | | | then return 0.02695006614926847;  // std dev = 7.675, 263.000 (wgt'ed) examples reached here.  /* #neg=170 #pos=93 */
+%   | | | else return 0.20874705151558348;  // std dev = 2.739, 32.000 (wgt'ed) examples reached here.  /* #neg=12 #pos=20 */
+%   | else if ( haswordvenue(A, H), haswordtitle(I, H) )
+%   | | then if ( title(J, I), venue(J, A) )
+%   | | | then return 0.09654221855897398;  // std dev = 4.017, 71.000 (wgt'ed) examples reached here.  /* #neg=27 #pos=44 */
+%   | | | else return -0.005766827502777038;  // std dev = 2.671, 31.000 (wgt'ed) examples reached here.  /* #neg=18 #pos=13 */
+%   | | else if ( haswordvenue(B, K), haswordtitle(L, K) )
+%   | | | then return 0.09156553264799956;  // std dev = 3.708, 60.000 (wgt'ed) examples reached here.  /* #neg=23 #pos=37 */
+%   | | | else return 0.12441510710512298;  // std dev = 2.740, 41.000 (wgt'ed) examples reached here.  /* #neg=10 #pos=31 */
+%   else if ( haswordvenue(B, M), haswordauthor(N, M) )
+%   | then return 0.04204225912152945;  // std dev = 0.405, 91.000 (wgt'ed) examples reached here.  /* #neg=72 #pos=19 */
+%   | else return 0.0110638438033411;  // std dev = 0.381, 855.000 (wgt'ed) examples reached here.  /* #neg=704 #pos=151 */
+WILL Produced-Tree #9
+% FOR samevenue(A, B):
+%   if ( haswordvenue(A, C), haswordvenue(B, C) )
+%   then if ( haswordtitle(D, C) )
+%   | then if ( haswordauthor(E, C) )
+%   | | then if ( author(F, E), title(F, D) )
+%   | | | then return 0.4500784786582014;  // std dev = 0.000, 4.000 (wgt'ed) examples reached here.  /* #pos=4 */
+%   | | | else return 0.14273700042393792;  // std dev = 1.912, 15.000 (wgt'ed) examples reached here.  /* #neg=6 #pos=9 */
+%   | | else if ( title(G, D), venue(G, A) )
+%   | | | then return 0.04700310185750857;  // std dev = 39.641, 6,583.000 (wgt'ed) examples reached here.  /* #neg=3,984 #pos=2,599 */
+%   | | | else return 0.03548155739468263;  // std dev = 8.078, 288.000 (wgt'ed) examples reached here.  /* #neg=178 #pos=110 */
+%   | else if ( haswordvenue(B, H), haswordauthor(I, H) )
+%   | | then return 0.1606424203229105;  // std dev = 0.353, 10.000 (wgt'ed) examples reached here.  /* #neg=2 #pos=8 */
+%   | | else if ( haswordvenue(A, J), haswordauthor(K, J) )
+%   | | | then return 0.17046833838832468;  // std dev = 1.108, 7.000 (wgt'ed) examples reached here.  /* #neg=2 #pos=5 */
+%   | | | else return 0.055381736670266746;  // std dev = 6.486, 186.000 (wgt'ed) examples reached here.  /* #neg=74 #pos=112 */
+%   else if ( haswordvenue(B, L), haswordtitle(M, L) )
+%   | then return 0.01793270019564267;  // std dev = 0.390, 645.000 (wgt'ed) examples reached here.  /* #neg=524 #pos=121 */
+%   | else return -4.354529443665525E-4;  // std dev = 0.369, 301.000 (wgt'ed) examples reached here.  /* #neg=252 #pos=49 */
+WILL Produced-Tree #10
+% FOR samevenue(A, B):
+%   if ( haswordvenue(A, C), haswordvenue(B, C) )
+%   then if ( haswordtitle(D, C) )
+%   | then if ( title(E, D), venue(E, A) )
+%   | | then return 0.036736464652150524;  // std dev = 0.488, 6,595.000 (wgt'ed) examples reached here.  /* #neg=3,986 #pos=2,609 */
+%   | | else if ( title(F, D), venue(F, B) )
+%   | | | then return -0.037327039510347444;  // std dev = 4.479, 105.000 (wgt'ed) examples reached here.  /* #neg=78 #pos=27 */
+%   | | | else return 0.059523181305667264;  // std dev = 6.807, 190.000 (wgt'ed) examples reached here.  /* #neg=104 #pos=86 */
+%   | else if ( haswordvenue(A, G), haswordtitle(H, G) )
+%   | | then if ( title(I, H), venue(I, A) )
+%   | | | then return 0.05761594086871897;  // std dev = 4.015, 71.000 (wgt'ed) examples reached here.  /* #neg=27 #pos=44 */
+%   | | | else return -0.024669703638178206;  // std dev = 2.664, 31.000 (wgt'ed) examples reached here.  /* #neg=18 #pos=13 */
+%   | | else if ( haswordvenue(B, J), haswordtitle(K, J) )
+%   | | | then return 0.05406190696424682;  // std dev = 3.704, 60.000 (wgt'ed) examples reached here.  /* #neg=23 #pos=37 */
+%   | | | else return 0.08336386556214344;  // std dev = 2.740, 41.000 (wgt'ed) examples reached here.  /* #neg=10 #pos=31 */
+%   else if ( haswordvenue(A, L), haswordtitle(M, L) )
+%   | then return 0.015394449315713848;  // std dev = 0.390, 645.000 (wgt'ed) examples reached here.  /* #neg=524 #pos=121 */
+%   | else return -3.797825880497603E-4;  // std dev = 0.369, 301.000 (wgt'ed) examples reached here.  /* #neg=252 #pos=49 */
+Starting experiments for fasttext using euclidean 
+
+Run: 1
+
+ Starting fold 1 of 1 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 863
+Target train pos examples: 326
+Target train neg examples: 10928
+
+Target test facts examples: 215
+Target test pos examples: 56
+Target test neg examples: 3308
+
+Training using transfer 
+
+Results 
+
+CLL : -0.063421 
+
+AUC ROC : 1.0 
+
+AUC PR : 1.0 
+
+Precision : 1.0 
+
+Recall : 1.0 
+
+F1 : 1.0 
+
+Total Learning Time : 2.522169351577759 
+
+Total Inference Time : 1.4620437622070312 
+
+Results 
+
+CLL : -0.063421 
+
+AUC ROC : 1.0 
+
+AUC PR : 1.0 
+
+Precision : 1.0 
+
+Recall : 1.0 
+
+F1 : 1.0 
+
+Total Learning Time : 8.0318603515625 
+
+Total Inference Time : 1.4620437622070312 
+
+Run: 2
+
+ Starting fold 1 of 1 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 863
+Target train pos examples: 326
+Target train neg examples: 10928
+
+Target test facts examples: 215
+Target test pos examples: 56
+Target test neg examples: 3308
+
+Training using transfer 
+
+Results 
+
+CLL : -0.063421 
+
+AUC ROC : 1.0 
+
+AUC PR : 1.0 
+
+Precision : 1.0 
+
+Recall : 1.0 
+
+F1 : 1.0 
+
+Total Learning Time : 2.5174753665924072 
+
+Total Inference Time : 1.6037063598632812 
+
+Results 
+
+CLL : -0.063421 
+
+AUC ROC : 1.0 
+
+AUC PR : 1.0 
+
+Precision : 1.0 
+
+Recall : 1.0 
+
+F1 : 1.0 
+
+Total Learning Time : 8.292737007141113 
+
+Total Inference Time : 1.6037063598632812 
+
+Run: 3
+
+ Starting fold 1 of 1 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 863
+Target train pos examples: 326
+Target train neg examples: 10928
+
+Target test facts examples: 215
+Target test pos examples: 56
+Target test neg examples: 3308
+
+Training using transfer 
+
+Results 
+
+CLL : -0.063421 
+
+AUC ROC : 1.0 
+
+AUC PR : 1.0 
+
+Precision : 1.0 
+
+Recall : 1.0 
+
+F1 : 1.0 
+
+Total Learning Time : 2.7334868907928467 
+
+Total Inference Time : 1.682234764099121 
+
+Results 
+
+CLL : -0.063421 
+
+AUC ROC : 1.0 
+
+AUC PR : 1.0 
+
+Precision : 1.0 
+
+Recall : 1.0 
+
+F1 : 1.0 
+
+Total Learning Time : 8.637005805969238 
+
+Total Inference Time : 1.682234764099121 
+
+Run: 4
+
+ Starting fold 1 of 1 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 863
+Target train pos examples: 326
+Target train neg examples: 10928
+
+Target test facts examples: 215
+Target test pos examples: 56
+Target test neg examples: 3308
+
+Training using transfer 
+
+Results 
+
+CLL : -0.063421 
+
+AUC ROC : 1.0 
+
+AUC PR : 1.0 
+
+Precision : 1.0 
+
+Recall : 1.0 
+
+F1 : 1.0 
+
+Total Learning Time : 2.6086244583129883 
+
+Total Inference Time : 1.5449144840240479 
+
+Results 
+
+CLL : -0.063421 
+
+AUC ROC : 1.0 
+
+AUC PR : 1.0 
+
+Precision : 1.0 
+
+Recall : 1.0 
+
+F1 : 1.0 
+
+Total Learning Time : 8.470023393630981 
+
+Total Inference Time : 1.5449144840240479 
+
+Run: 5
+
+ Starting fold 1 of 1 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 863
+Target train pos examples: 326
+Target train neg examples: 10928
+
+Target test facts examples: 215
+Target test pos examples: 56
+Target test neg examples: 3308
+
+Training using transfer 
+
+Results 
+
+CLL : -0.063421 
+
+AUC ROC : 1.0 
+
+AUC PR : 1.0 
+
+Precision : 1.0 
+
+Recall : 1.0 
+
+F1 : 1.0 
+
+Total Learning Time : 2.471015214920044 
+
+Total Inference Time : 1.4690613746643066 
+
+Results 
+
+CLL : -0.063421 
+
+AUC ROC : 1.0 
+
+AUC PR : 1.0 
+
+Precision : 1.0 
+
+Recall : 1.0 
+
+F1 : 1.0 
+
+Total Learning Time : 8.326066255569458 
+
+Total Inference Time : 1.4690613746643066 
+
+Starting experiments for fasttext using softcosine 
+
+Run: 1
+
+ Starting fold 1 of 1 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 863
+Target train pos examples: 326
+Target train neg examples: 10928
+
+Target test facts examples: 215
+Target test pos examples: 56
+Target test neg examples: 3308
+
+Training using transfer 
+
+Results 
+
+CLL : -0.063415 
+
+AUC ROC : 1.0 
+
+AUC PR : 1.0 
+
+Precision : 1.0 
+
+Recall : 1.0 
+
+F1 : 1.0 
+
+Total Learning Time : 3.298945665359497 
+
+Total Inference Time : 1.6314516067504883 
+
+Results 
+
+CLL : -0.063415 
+
+AUC ROC : 1.0 
+
+AUC PR : 1.0 
+
+Precision : 1.0 
+
+Recall : 1.0 
+
+F1 : 1.0 
+
+Total Learning Time : 8.430219650268555 
+
+Total Inference Time : 1.6314516067504883 
+
+Run: 2
+
+ Starting fold 1 of 1 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 863
+Target train pos examples: 326
+Target train neg examples: 10928
+
+Target test facts examples: 215
+Target test pos examples: 56
+Target test neg examples: 3308
+
+Training using transfer 
+
+Results 
+
+CLL : -0.063421 
+
+AUC ROC : 1.0 
+
+AUC PR : 1.0 
+
+Precision : 1.0 
+
+Recall : 1.0 
+
+F1 : 1.0 
+
+Total Learning Time : 3.3575408458709717 
+
+Total Inference Time : 1.5139975547790527 
+
+Results 
+
+CLL : -0.063421 
+
+AUC ROC : 1.0 
+
+AUC PR : 1.0 
+
+Precision : 1.0 
+
+Recall : 1.0 
+
+F1 : 1.0 
+
+Total Learning Time : 8.36509895324707 
+
+Total Inference Time : 1.5139975547790527 
+
+Run: 3
+
+ Starting fold 1 of 1 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 863
+Target train pos examples: 326
+Target train neg examples: 10928
+
+Target test facts examples: 215
+Target test pos examples: 56
+Target test neg examples: 3308
+
+Training using transfer 
+
+Results 
+
+CLL : -0.063421 
+
+AUC ROC : 1.0 
+
+AUC PR : 1.0 
+
+Precision : 1.0 
+
+Recall : 1.0 
+
+F1 : 1.0 
+
+Total Learning Time : 3.1508045196533203 
+
+Total Inference Time : 1.4962544441223145 
+
+Results 
+
+CLL : -0.063421 
+
+AUC ROC : 1.0 
+
+AUC PR : 1.0 
+
+Precision : 1.0 
+
+Recall : 1.0 
+
+F1 : 1.0 
+
+Total Learning Time : 8.206133842468262 
+
+Total Inference Time : 1.4962544441223145 
+
+Run: 4
+
+ Starting fold 1 of 1 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 863
+Target train pos examples: 326
+Target train neg examples: 10928
+
+Target test facts examples: 215
+Target test pos examples: 56
+Target test neg examples: 3308
+
+Training using transfer 
+
+Results 
+
+CLL : -0.063421 
+
+AUC ROC : 1.0 
+
+AUC PR : 1.0 
+
+Precision : 1.0 
+
+Recall : 1.0 
+
+F1 : 1.0 
+
+Total Learning Time : 3.2336788177490234 
+
+Total Inference Time : 1.5183773040771484 
+
+Results 
+
+CLL : -0.063421 
+
+AUC ROC : 1.0 
+
+AUC PR : 1.0 
+
+Precision : 1.0 
+
+Recall : 1.0 
+
+F1 : 1.0 
+
+Total Learning Time : 8.279270887374878 
+
+Total Inference Time : 1.5183773040771484 
+
+Run: 5
+
+ Starting fold 1 of 1 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 863
+Target train pos examples: 326
+Target train neg examples: 10928
+
+Target test facts examples: 215
+Target test pos examples: 56
+Target test neg examples: 3308
+
+Training using transfer 
+
+Results 
+
+CLL : -0.063421 
+
+AUC ROC : 1.0 
+
+AUC PR : 1.0 
+
+Precision : 1.0 
+
+Recall : 1.0 
+
+F1 : 1.0 
+
+Total Learning Time : 3.3794710636138916 
+
+Total Inference Time : 1.4966843128204346 
+
+Results 
+
+CLL : -0.063421 
+
+AUC ROC : 1.0 
+
+AUC PR : 1.0 
+
+Precision : 1.0 
+
+Recall : 1.0 
+
+F1 : 1.0 
+
+Total Learning Time : 8.374860048294067 
+
+Total Inference Time : 1.4966843128204346 
+
+Starting experiments for fasttext using wmd 
+
+Run: 1
+
+ Starting fold 1 of 1 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 863
+Target train pos examples: 326
+Target train neg examples: 10928
+
+Target test facts examples: 215
+Target test pos examples: 56
+Target test neg examples: 3308
+
+Training using transfer 
+
+Results 
+
+CLL : -0.063421 
+
+AUC ROC : 1.0 
+
+AUC PR : 1.0 
+
+Precision : 1.0 
+
+Recall : 1.0 
+
+F1 : 1.0 
+
+Total Learning Time : 2.6970582008361816 
+
+Total Inference Time : 1.4707543849945068 
+
+Results 
+
+CLL : -0.063421 
+
+AUC ROC : 1.0 
+
+AUC PR : 1.0 
+
+Precision : 1.0 
+
+Recall : 1.0 
+
+F1 : 1.0 
+
+Total Learning Time : 8.30251431465149 
+
+Total Inference Time : 1.4707543849945068 
+
+Run: 2
+
+ Starting fold 1 of 1 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 863
+Target train pos examples: 326
+Target train neg examples: 10928
+
+Target test facts examples: 215
+Target test pos examples: 56
+Target test neg examples: 3308
+
+Training using transfer 
+
+Results 
+
+CLL : -0.063421 
+
+AUC ROC : 1.0 
+
+AUC PR : 1.0 
+
+Precision : 1.0 
+
+Recall : 1.0 
+
+F1 : 1.0 
+
+Total Learning Time : 2.726714849472046 
+
+Total Inference Time : 1.3962857723236084 
+
+Results 
+
+CLL : -0.063421 
+
+AUC ROC : 1.0 
+
+AUC PR : 1.0 
+
+Precision : 1.0 
+
+Recall : 1.0 
+
+F1 : 1.0 
+
+Total Learning Time : 8.399242401123047 
+
+Total Inference Time : 1.3962857723236084 
+
+Run: 3
+
+ Starting fold 1 of 1 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 863
+Target train pos examples: 326
+Target train neg examples: 10928
+
+Target test facts examples: 215
+Target test pos examples: 56
+Target test neg examples: 3308
+
+Training using transfer 
+
+Results 
+
+CLL : -0.063421 
+
+AUC ROC : 1.0 
+
+AUC PR : 1.0 
+
+Precision : 1.0 
+
+Recall : 1.0 
+
+F1 : 1.0 
+
+Total Learning Time : 2.3589861392974854 
+
+Total Inference Time : 1.443772792816162 
+
+Results 
+
+CLL : -0.063421 
+
+AUC ROC : 1.0 
+
+AUC PR : 1.0 
+
+Precision : 1.0 
+
+Recall : 1.0 
+
+F1 : 1.0 
+
+Total Learning Time : 8.11940050125122 
+
+Total Inference Time : 1.443772792816162 
+
+Run: 4
+
+ Starting fold 1 of 1 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 863
+Target train pos examples: 326
+Target train neg examples: 10928
+
+Target test facts examples: 215
+Target test pos examples: 56
+Target test neg examples: 3308
+
+Training using transfer 
+
+Results 
+
+CLL : -0.063421 
+
+AUC ROC : 1.0 
+
+AUC PR : 1.0 
+
+Precision : 1.0 
+
+Recall : 1.0 
+
+F1 : 1.0 
+
+Total Learning Time : 2.587981939315796 
+
+Total Inference Time : 1.5094172954559326 
+
+Results 
+
+CLL : -0.063421 
+
+AUC ROC : 1.0 
+
+AUC PR : 1.0 
+
+Precision : 1.0 
+
+Recall : 1.0 
+
+F1 : 1.0 
+
+Total Learning Time : 8.220460176467896 
+
+Total Inference Time : 1.5094172954559326 
+
+Run: 5
+
+ Starting fold 1 of 1 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 863
+Target train pos examples: 326
+Target train neg examples: 10928
+
+Target test facts examples: 215
+Target test pos examples: 56
+Target test neg examples: 3308
+
+Training using transfer 
+
+Results 
+
+CLL : -0.063421 
+
+AUC ROC : 1.0 
+
+AUC PR : 1.0 
+
+Precision : 1.0 
+
+Recall : 1.0 
+
+F1 : 1.0 
+
+Total Learning Time : 2.6346747875213623 
+
+Total Inference Time : 1.5103614330291748 
+
+Results 
+
+CLL : -0.063421 
+
+AUC ROC : 1.0 
+
+AUC PR : 1.0 
+
+Precision : 1.0 
+
+Recall : 1.0 
+
+F1 : 1.0 
+
+Total Learning Time : 8.289703369140625 
+
+Total Inference Time : 1.5103614330291748 
+

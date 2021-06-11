@@ -1,0 +1,1466 @@
+Starting experiment 3_imdb_cora 
+
+Start learning from source dataset
+
+Source train facts examples: 1078
+Source train pos examples: 382
+Source train neg examples: 14236
+
+Model training time 3.5703532695770264 
+
+Building refine structure 
+
+WILL Produced-Tree #1
+% FOR workedunder(A, B):
+%   if ( director(B), actor(A) )
+%   then if ( movie(C, A), movie(C, B) )
+%   | then return 0.8581489350995083;  // std dev = 1.43e-06, 382.000 (wgt'ed) examples reached here.  /* #pos=382 */
+%   | else return -0.14185106490048766;  // std dev = 6.14e-08, 60.000 (wgt'ed) examples reached here.  /* #neg=60 */
+%   else return -0.1418510649004893;  // std dev = 0.000, 758.000 (wgt'ed) examples reached here.  /* #neg=758 */
+WILL Produced-Tree #2
+% FOR workedunder(A, B):
+%   if ( director(B), actor(A) )
+%   then if ( movie(C, A), movie(C, B) )
+%   | then return 0.7194734122109581;  // std dev = 0.000, 382.000 (wgt'ed) examples reached here.  /* #pos=382 */
+%   | else return -0.12544463852839155;  // std dev = 0.000, 70.000 (wgt'ed) examples reached here.  /* #neg=70 */
+%   else return -0.12544463852839233;  // std dev = 0.000, 667.000 (wgt'ed) examples reached here.  /* #neg=667 */
+WILL Produced-Tree #3
+% FOR workedunder(A, B):
+%   if ( director(B), actor(A) )
+%   then if ( movie(C, A), movie(C, B) )
+%   | then return 0.555366436746283;  // std dev = 0.000, 382.000 (wgt'ed) examples reached here.  /* #pos=382 */
+%   | else return -0.11231637819360628;  // std dev = 4.34e-08, 59.000 (wgt'ed) examples reached here.  /* #neg=59 */
+%   else return -0.11231637819360679;  // std dev = 0.000, 729.000 (wgt'ed) examples reached here.  /* #neg=729 */
+WILL Produced-Tree #4
+% FOR workedunder(A, B):
+%   if ( actor(A), director(B) )
+%   then if ( movie(C, A), movie(C, B) )
+%   | then return 0.417513584158312;  // std dev = 0.000, 382.000 (wgt'ed) examples reached here.  /* #pos=382 */
+%   | else return -0.10159632948783621;  // std dev = 4.08e-08, 58.000 (wgt'ed) examples reached here.  /* #neg=58 */
+%   else return -0.10159632948783524;  // std dev = 4.10e-07, 660.000 (wgt'ed) examples reached here.  /* #neg=660 */
+WILL Produced-Tree #5
+% FOR workedunder(A, B):
+%   if ( director(B), actor(A) )
+%   then if ( movie(C, A), movie(C, B) )
+%   | then return 0.32071184716015166;  // std dev = 0.000, 382.000 (wgt'ed) examples reached here.  /* #pos=382 */
+%   | else return -0.09269127618926107;  // std dev = 0.000, 61.000 (wgt'ed) examples reached here.  /* #neg=61 */
+%   else return -0.09269127618926196;  // std dev = 0.000, 730.000 (wgt'ed) examples reached here.  /* #neg=730 */
+WILL Produced-Tree #6
+% FOR workedunder(A, B):
+%   if ( actor(A), director(B) )
+%   then if ( movie(C, A), movie(C, B) )
+%   | then return 0.25517224256948734;  // std dev = 4.42e-07, 382.000 (wgt'ed) examples reached here.  /* #pos=382 */
+%   | else return -0.08518475138839679;  // std dev = 1.83e-08, 62.000 (wgt'ed) examples reached here.  /* #neg=62 */
+%   else return -0.08518475138839675;  // std dev = 1.33e-07, 707.000 (wgt'ed) examples reached here.  /* #neg=707 */
+WILL Produced-Tree #7
+% FOR workedunder(A, B):
+%   if ( director(B), actor(A) )
+%   then if ( movie(C, A), movie(C, B) )
+%   | then return 0.20975771563253462;  // std dev = 2.53e-07, 382.000 (wgt'ed) examples reached here.  /* #pos=382 */
+%   | else return -0.07877675473109173;  // std dev = 2.36e-08, 60.000 (wgt'ed) examples reached here.  /* #neg=60 */
+%   else return -0.07877675473109284;  // std dev = 0.000, 720.000 (wgt'ed) examples reached here.  /* #neg=720 */
+WILL Produced-Tree #8
+% FOR workedunder(A, B):
+%   if ( actor(A), director(B) )
+%   then if ( movie(C, A), movie(C, B) )
+%   | then return 0.17709649774527667;  // std dev = 2.60e-07, 382.000 (wgt'ed) examples reached here.  /* #pos=382 */
+%   | else return -0.07324622576333704;  // std dev = 1.29e-08, 48.000 (wgt'ed) examples reached here.  /* #neg=48 */
+%   else return -0.07324622576333642;  // std dev = 2.63e-07, 709.000 (wgt'ed) examples reached here.  /* #neg=709 */
+WILL Produced-Tree #9
+% FOR workedunder(A, B):
+%   if ( director(B), actor(A) )
+%   then if ( movie(C, A), movie(C, B) )
+%   | then return 0.15274385809367164;  // std dev = 0.000, 382.000 (wgt'ed) examples reached here.  /* #pos=382 */
+%   | else return -0.0684269778442027;  // std dev = 1.67e-08, 54.000 (wgt'ed) examples reached here.  /* #neg=54 */
+%   else return -0.06842697784420262;  // std dev = 1.76e-07, 732.000 (wgt'ed) examples reached here.  /* #neg=732 */
+WILL Produced-Tree #10
+% FOR workedunder(A, B):
+%   if ( actor(A), director(B) )
+%   then if ( movie(C, A), movie(C, B) )
+%   | then return 0.13400703000801212;  // std dev = 0.000, 382.000 (wgt'ed) examples reached here.  /* #pos=382 */
+%   | else return -0.06419184008202625;  // std dev = 0.000, 54.000 (wgt'ed) examples reached here.  /* #neg=54 */
+%   else return -0.06419184008202537;  // std dev = 2.18e-07, 710.000 (wgt'ed) examples reached here.  /* #neg=710 */
+Starting experiments for fasttext using euclidean 
+
+Run: 1
+
+ Starting fold 1 of 1 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 35095
+Target train pos examples: 2649
+Target train neg examples: 4334
+
+Target test facts examples: 7463
+Target test pos examples: 368
+Target test neg examples: 688
+
+Training using transfer 
+
+Results 
+
+CLL : -0.646529 
+
+AUC ROC : 0.5 
+
+AUC PR : 0.348485 
+
+Precision : nan 
+
+Recall : 0.0 
+
+F1 : nan 
+
+Total Learning Time : 5.2839741706848145 
+
+Total Inference Time : 0.7186441421508789 
+
+Run: 2
+
+ Starting fold 1 of 1 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 35095
+Target train pos examples: 2649
+Target train neg examples: 4334
+
+Target test facts examples: 7463
+Target test pos examples: 368
+Target test neg examples: 688
+
+Training using transfer 
+
+Results 
+
+CLL : -0.646529 
+
+AUC ROC : 0.5 
+
+AUC PR : 0.348485 
+
+Precision : nan 
+
+Recall : 0.0 
+
+F1 : nan 
+
+Total Learning Time : 5.207457542419434 
+
+Total Inference Time : 0.666494607925415 
+
+Run: 3
+
+ Starting fold 1 of 1 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 35095
+Target train pos examples: 2649
+Target train neg examples: 4334
+
+Target test facts examples: 7463
+Target test pos examples: 368
+Target test neg examples: 688
+
+Training using transfer 
+
+Results 
+
+CLL : -0.646529 
+
+AUC ROC : 0.5 
+
+AUC PR : 0.348485 
+
+Precision : nan 
+
+Recall : 0.0 
+
+F1 : nan 
+
+Total Learning Time : 5.050863027572632 
+
+Total Inference Time : 0.7086396217346191 
+
+Run: 4
+
+ Starting fold 1 of 1 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 35095
+Target train pos examples: 2649
+Target train neg examples: 4334
+
+Target test facts examples: 7463
+Target test pos examples: 368
+Target test neg examples: 688
+
+Training using transfer 
+
+Results 
+
+CLL : -0.646529 
+
+AUC ROC : 0.5 
+
+AUC PR : 0.348485 
+
+Precision : nan 
+
+Recall : 0.0 
+
+F1 : nan 
+
+Total Learning Time : 5.277713298797607 
+
+Total Inference Time : 0.7688422203063965 
+
+Run: 5
+
+ Starting fold 1 of 1 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 35095
+Target train pos examples: 2649
+Target train neg examples: 4334
+
+Target test facts examples: 7463
+Target test pos examples: 368
+Target test neg examples: 688
+
+Training using transfer 
+
+Results 
+
+CLL : -0.646529 
+
+AUC ROC : 0.5 
+
+AUC PR : 0.348485 
+
+Precision : nan 
+
+Recall : 0.0 
+
+F1 : nan 
+
+Total Learning Time : 5.031122446060181 
+
+Total Inference Time : 0.7533893585205078 
+
+Starting experiments for fasttext using softcosine 
+
+Run: 1
+
+ Starting fold 1 of 1 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 35095
+Target train pos examples: 2649
+Target train neg examples: 4334
+
+Target test facts examples: 7463
+Target test pos examples: 368
+Target test neg examples: 688
+
+Training using transfer 
+
+Results 
+
+CLL : -0.611918 
+
+AUC ROC : 0.630435 
+
+AUC PR : 0.597315 
+
+Precision : 1.0 
+
+Recall : 0.26087 
+
+F1 : 0.413793 
+
+Total Learning Time : 5.919530630111694 
+
+Total Inference Time : 0.7553911209106445 
+
+Run: 2
+
+ Starting fold 1 of 1 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 35095
+Target train pos examples: 2649
+Target train neg examples: 4334
+
+Target test facts examples: 7463
+Target test pos examples: 368
+Target test neg examples: 688
+
+Training using transfer 
+
+Results 
+
+CLL : -0.611918 
+
+AUC ROC : 0.630435 
+
+AUC PR : 0.597315 
+
+Precision : 1.0 
+
+Recall : 0.26087 
+
+F1 : 0.413793 
+
+Total Learning Time : 5.928548574447632 
+
+Total Inference Time : 0.7772316932678223 
+
+Run: 3
+
+ Starting fold 1 of 1 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 35095
+Target train pos examples: 2649
+Target train neg examples: 4334
+
+Target test facts examples: 7463
+Target test pos examples: 368
+Target test neg examples: 688
+
+Training using transfer 
+
+Results 
+
+CLL : -0.611918 
+
+AUC ROC : 0.630435 
+
+AUC PR : 0.597315 
+
+Precision : 1.0 
+
+Recall : 0.26087 
+
+F1 : 0.413793 
+
+Total Learning Time : 7.195707321166992 
+
+Total Inference Time : 0.7976813316345215 
+
+Run: 4
+
+ Starting fold 1 of 1 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 35095
+Target train pos examples: 2649
+Target train neg examples: 4334
+
+Target test facts examples: 7463
+Target test pos examples: 368
+Target test neg examples: 688
+
+Training using transfer 
+
+Results 
+
+CLL : -0.611918 
+
+AUC ROC : 0.630435 
+
+AUC PR : 0.597315 
+
+Precision : 1.0 
+
+Recall : 0.26087 
+
+F1 : 0.413793 
+
+Total Learning Time : 5.818407773971558 
+
+Total Inference Time : 0.7495319843292236 
+
+Run: 5
+
+ Starting fold 1 of 1 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 35095
+Target train pos examples: 2649
+Target train neg examples: 4334
+
+Target test facts examples: 7463
+Target test pos examples: 368
+Target test neg examples: 688
+
+Training using transfer 
+
+Results 
+
+CLL : -0.611918 
+
+AUC ROC : 0.630435 
+
+AUC PR : 0.597315 
+
+Precision : 1.0 
+
+Recall : 0.26087 
+
+F1 : 0.413793 
+
+Total Learning Time : 5.842952489852905 
+
+Total Inference Time : 0.7070443630218506 
+
+Starting experiments for fasttext using wmd 
+
+Run: 1
+
+ Starting fold 1 of 1 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 35095
+Target train pos examples: 2649
+Target train neg examples: 4334
+
+Target test facts examples: 7463
+Target test pos examples: 368
+Target test neg examples: 688
+
+Training using transfer 
+
+Results 
+
+CLL : -0.646529 
+
+AUC ROC : 0.5 
+
+AUC PR : 0.348485 
+
+Precision : nan 
+
+Recall : 0.0 
+
+F1 : nan 
+
+Total Learning Time : 5.121340751647949 
+
+Total Inference Time : 0.7548303604125977 
+
+Run: 2
+
+ Starting fold 1 of 1 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 35095
+Target train pos examples: 2649
+Target train neg examples: 4334
+
+Target test facts examples: 7463
+Target test pos examples: 368
+Target test neg examples: 688
+
+Training using transfer 
+
+Results 
+
+CLL : -0.646529 
+
+AUC ROC : 0.5 
+
+AUC PR : 0.348485 
+
+Precision : nan 
+
+Recall : 0.0 
+
+F1 : nan 
+
+Total Learning Time : 5.150261640548706 
+
+Total Inference Time : 0.6673707962036133 
+
+Run: 3
+
+ Starting fold 1 of 1 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 35095
+Target train pos examples: 2649
+Target train neg examples: 4334
+
+Target test facts examples: 7463
+Target test pos examples: 368
+Target test neg examples: 688
+
+Training using transfer 
+
+Results 
+
+CLL : -0.646529 
+
+AUC ROC : 0.5 
+
+AUC PR : 0.348485 
+
+Precision : nan 
+
+Recall : 0.0 
+
+F1 : nan 
+
+Total Learning Time : 4.979816436767578 
+
+Total Inference Time : 0.7000722885131836 
+
+Run: 4
+
+ Starting fold 1 of 1 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 35095
+Target train pos examples: 2649
+Target train neg examples: 4334
+
+Target test facts examples: 7463
+Target test pos examples: 368
+Target test neg examples: 688
+
+Training using transfer 
+
+Results 
+
+CLL : -0.646529 
+
+AUC ROC : 0.5 
+
+AUC PR : 0.348485 
+
+Precision : nan 
+
+Recall : 0.0 
+
+F1 : nan 
+
+Total Learning Time : 4.925617694854736 
+
+Total Inference Time : 0.7507085800170898 
+
+Run: 5
+
+ Starting fold 1 of 1 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 35095
+Target train pos examples: 2649
+Target train neg examples: 4334
+
+Target test facts examples: 7463
+Target test pos examples: 368
+Target test neg examples: 688
+
+Training using transfer 
+
+Results 
+
+CLL : -0.646529 
+
+AUC ROC : 0.5 
+
+AUC PR : 0.348485 
+
+Precision : nan 
+
+Recall : 0.0 
+
+F1 : nan 
+
+Total Learning Time : 5.148011684417725 
+
+Total Inference Time : 0.7003493309020996 
+
+Starting experiment 3_imdb_cora 
+
+Start learning from source dataset
+
+Source train facts examples: 1078
+Source train pos examples: 382
+Source train neg examples: 14236
+
+Model training time 3.57145094871521 
+
+Building refine structure 
+
+WILL Produced-Tree #1
+% FOR workedunder(A, B):
+%   if ( director(B), actor(A) )
+%   then if ( movie(C, A), movie(C, B) )
+%   | then return 0.8581489350995083;  // std dev = 1.43e-06, 382.000 (wgt'ed) examples reached here.  /* #pos=382 */
+%   | else return -0.14185106490048766;  // std dev = 6.66e-08, 65.000 (wgt'ed) examples reached here.  /* #neg=65 */
+%   else return -0.14185106490048904;  // std dev = 0.000, 686.000 (wgt'ed) examples reached here.  /* #neg=686 */
+WILL Produced-Tree #2
+% FOR workedunder(A, B):
+%   if ( director(B), actor(A) )
+%   then if ( movie(C, A), movie(C, B) )
+%   | then return 0.7194734122109581;  // std dev = 0.000, 382.000 (wgt'ed) examples reached here.  /* #pos=382 */
+%   | else return -0.12544463852839158;  // std dev = 0.000, 56.000 (wgt'ed) examples reached here.  /* #neg=56 */
+%   else return -0.12544463852839235;  // std dev = 0.000, 737.000 (wgt'ed) examples reached here.  /* #neg=737 */
+WILL Produced-Tree #3
+% FOR workedunder(A, B):
+%   if ( director(B), actor(A) )
+%   then if ( movie(C, A), movie(C, B) )
+%   | then return 0.555366436746283;  // std dev = 0.000, 382.000 (wgt'ed) examples reached here.  /* #pos=382 */
+%   | else return -0.1123163781936063;  // std dev = 3.65e-08, 54.000 (wgt'ed) examples reached here.  /* #neg=54 */
+%   else return -0.11231637819360675;  // std dev = 0.000, 739.000 (wgt'ed) examples reached here.  /* #neg=739 */
+WILL Produced-Tree #4
+% FOR workedunder(A, B):
+%   if ( actor(A), director(B) )
+%   then if ( movie(C, A), movie(C, B) )
+%   | then return 0.417513584158312;  // std dev = 0.000, 382.000 (wgt'ed) examples reached here.  /* #pos=382 */
+%   | else return -0.10159632948783634;  // std dev = 1.05e-08, 41.000 (wgt'ed) examples reached here.  /* #neg=41 */
+%   else return -0.10159632948783529;  // std dev = 4.02e-07, 667.000 (wgt'ed) examples reached here.  /* #neg=667 */
+WILL Produced-Tree #5
+% FOR workedunder(A, B):
+%   if ( director(B), actor(A) )
+%   then if ( movie(C, A), movie(C, B) )
+%   | then return 0.32071184716015166;  // std dev = 0.000, 382.000 (wgt'ed) examples reached here.  /* #pos=382 */
+%   | else return -0.09269127618926103;  // std dev = 0.000, 51.000 (wgt'ed) examples reached here.  /* #neg=51 */
+%   else return -0.09269127618926203;  // std dev = 0.000, 717.000 (wgt'ed) examples reached here.  /* #neg=717 */
+WILL Produced-Tree #6
+% FOR workedunder(A, B):
+%   if ( actor(A), director(B) )
+%   then if ( movie(C, A), movie(C, B) )
+%   | then return 0.25517224256948734;  // std dev = 4.42e-07, 382.000 (wgt'ed) examples reached here.  /* #pos=382 */
+%   | else return -0.08518475138839679;  // std dev = 1.67e-08, 66.000 (wgt'ed) examples reached here.  /* #neg=66 */
+%   else return -0.08518475138839675;  // std dev = 1.26e-07, 713.000 (wgt'ed) examples reached here.  /* #neg=713 */
+WILL Produced-Tree #7
+% FOR workedunder(A, B):
+%   if ( director(B), actor(A) )
+%   then if ( movie(C, A), movie(C, B) )
+%   | then return 0.20975771563253462;  // std dev = 2.53e-07, 382.000 (wgt'ed) examples reached here.  /* #pos=382 */
+%   | else return -0.07877675473109173;  // std dev = 2.24e-08, 59.000 (wgt'ed) examples reached here.  /* #neg=59 */
+%   else return -0.07877675473109279;  // std dev = 0.000, 715.000 (wgt'ed) examples reached here.  /* #neg=715 */
+WILL Produced-Tree #8
+% FOR workedunder(A, B):
+%   if ( actor(A), director(B) )
+%   then if ( movie(C, A), movie(C, B) )
+%   | then return 0.17709649774527667;  // std dev = 2.60e-07, 382.000 (wgt'ed) examples reached here.  /* #pos=382 */
+%   | else return -0.07324622576333704;  // std dev = 1.29e-08, 48.000 (wgt'ed) examples reached here.  /* #neg=48 */
+%   else return -0.07324622576333664;  // std dev = 2.02e-07, 651.000 (wgt'ed) examples reached here.  /* #neg=651 */
+WILL Produced-Tree #9
+% FOR workedunder(A, B):
+%   if ( director(B), actor(A) )
+%   then if ( movie(C, A), movie(C, B) )
+%   | then return 0.15274385809367164;  // std dev = 0.000, 382.000 (wgt'ed) examples reached here.  /* #pos=382 */
+%   | else return -0.06842697784420268;  // std dev = 1.49e-08, 55.000 (wgt'ed) examples reached here.  /* #neg=55 */
+%   else return -0.06842697784420264;  // std dev = 1.75e-07, 741.000 (wgt'ed) examples reached here.  /* #neg=741 */
+WILL Produced-Tree #10
+% FOR workedunder(A, B):
+%   if ( actor(A), director(B) )
+%   then if ( movie(C, A), movie(C, B) )
+%   | then return 0.13400703000801212;  // std dev = 0.000, 382.000 (wgt'ed) examples reached here.  /* #pos=382 */
+%   | else return -0.06419184008202625;  // std dev = 0.000, 47.000 (wgt'ed) examples reached here.  /* #neg=47 */
+%   else return -0.06419184008202532;  // std dev = 2.21e-07, 708.000 (wgt'ed) examples reached here.  /* #neg=708 */
+Starting experiments for fasttext using euclidean 
+
+Run: 1
+
+ Starting fold 1 of 1 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 35095
+Target train pos examples: 2649
+Target train neg examples: 4334
+
+Target test facts examples: 7463
+Target test pos examples: 368
+Target test neg examples: 688
+
+Training using transfer 
+
+Results 
+
+CLL : -0.624331 
+
+AUC ROC : 0.58309 
+
+AUC PR : 0.415283 
+
+Precision : 0.578947 
+
+Recall : 0.059783 
+
+F1 : 0.108374 
+
+Total Learning Time : 1028.4937300682068 
+
+Total Inference Time : 25.89891266822815 
+
+Results 
+
+CLL : -0.624331 
+
+AUC ROC : 0.58309 
+
+AUC PR : 0.415283 
+
+Precision : 0.578947 
+
+Recall : 0.059783 
+
+F1 : 0.108374 
+
+Total Learning Time : 1061.0118522644043 
+
+Total Inference Time : 25.89891266822815 
+
+Run: 2
+
+ Starting fold 1 of 1 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 35095
+Target train pos examples: 2649
+Target train neg examples: 4334
+
+Target test facts examples: 7463
+Target test pos examples: 368
+Target test neg examples: 688
+
+Training using transfer 
+
+Results 
+
+CLL : -0.624384 
+
+AUC ROC : 0.582782 
+
+AUC PR : 0.415198 
+
+Precision : 0.578947 
+
+Recall : 0.059783 
+
+F1 : 0.108374 
+
+Total Learning Time : 1001.9085431098938 
+
+Total Inference Time : 25.119672775268555 
+
+Results 
+
+CLL : -0.624384 
+
+AUC ROC : 0.582782 
+
+AUC PR : 0.415198 
+
+Precision : 0.578947 
+
+Recall : 0.059783 
+
+F1 : 0.108374 
+
+Total Learning Time : 1033.636924982071 
+
+Total Inference Time : 25.119672775268555 
+
+Run: 3
+
+ Starting fold 1 of 1 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 35095
+Target train pos examples: 2649
+Target train neg examples: 4334
+
+Target test facts examples: 7463
+Target test pos examples: 368
+Target test neg examples: 688
+
+Training using transfer 
+
+Results 
+
+CLL : -0.624605 
+
+AUC ROC : 0.582363 
+
+AUC PR : 0.413987 
+
+Precision : 0.578947 
+
+Recall : 0.059783 
+
+F1 : 0.108374 
+
+Total Learning Time : 1064.351956129074 
+
+Total Inference Time : 26.987789392471313 
+
+Results 
+
+CLL : -0.624605 
+
+AUC ROC : 0.582363 
+
+AUC PR : 0.413987 
+
+Precision : 0.578947 
+
+Recall : 0.059783 
+
+F1 : 0.108374 
+
+Total Learning Time : 1098.094232559204 
+
+Total Inference Time : 26.987789392471313 
+
+Run: 4
+
+ Starting fold 1 of 1 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 35095
+Target train pos examples: 2649
+Target train neg examples: 4334
+
+Target test facts examples: 7463
+Target test pos examples: 368
+Target test neg examples: 688
+
+Training using transfer 
+
+Results 
+
+CLL : -0.624348 
+
+AUC ROC : 0.582359 
+
+AUC PR : 0.41509 
+
+Precision : 0.578947 
+
+Recall : 0.059783 
+
+F1 : 0.108374 
+
+Total Learning Time : 1131.3826305866241 
+
+Total Inference Time : 26.937317848205566 
+
+Results 
+
+CLL : -0.624348 
+
+AUC ROC : 0.582359 
+
+AUC PR : 0.41509 
+
+Precision : 0.578947 
+
+Recall : 0.059783 
+
+F1 : 0.108374 
+
+Total Learning Time : 1164.9632093906403 
+
+Total Inference Time : 26.937317848205566 
+
+Run: 5
+
+ Starting fold 1 of 1 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 35095
+Target train pos examples: 2649
+Target train neg examples: 4334
+
+Target test facts examples: 7463
+Target test pos examples: 368
+Target test neg examples: 688
+
+Training using transfer 
+
+Results 
+
+CLL : -0.624344 
+
+AUC ROC : 0.582853 
+
+AUC PR : 0.415218 
+
+Precision : 0.578947 
+
+Recall : 0.059783 
+
+F1 : 0.108374 
+
+Total Learning Time : 968.5978419780731 
+
+Total Inference Time : 27.26844096183777 
+
+Results 
+
+CLL : -0.624344 
+
+AUC ROC : 0.582853 
+
+AUC PR : 0.415218 
+
+Precision : 0.578947 
+
+Recall : 0.059783 
+
+F1 : 0.108374 
+
+Total Learning Time : 1002.3836467266083 
+
+Total Inference Time : 27.26844096183777 
+
+Starting experiments for fasttext using softcosine 
+
+Run: 1
+
+ Starting fold 1 of 1 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 35095
+Target train pos examples: 2649
+Target train neg examples: 4334
+
+Target test facts examples: 7463
+Target test pos examples: 368
+Target test neg examples: 688
+
+Training using transfer 
+
+Results 
+
+CLL : -0.624467 
+
+AUC ROC : 0.582221 
+
+AUC PR : 0.415051 
+
+Precision : 0.578947 
+
+Recall : 0.059783 
+
+F1 : 0.108374 
+
+Total Learning Time : 1147.5944023132324 
+
+Total Inference Time : 27.208345890045166 
+
+Results 
+
+CLL : -0.624467 
+
+AUC ROC : 0.582221 
+
+AUC PR : 0.415051 
+
+Precision : 0.578947 
+
+Recall : 0.059783 
+
+F1 : 0.108374 
+
+Total Learning Time : 1181.4869303703308 
+
+Total Inference Time : 27.208345890045166 
+
+Run: 2
+
+ Starting fold 1 of 1 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 35095
+Target train pos examples: 2649
+Target train neg examples: 4334
+
+Target test facts examples: 7463
+Target test pos examples: 368
+Target test neg examples: 688
+
+Training using transfer 
+
+Results 
+
+CLL : -0.624474 
+
+AUC ROC : 0.582221 
+
+AUC PR : 0.415051 
+
+Precision : 0.578947 
+
+Recall : 0.059783 
+
+F1 : 0.108374 
+
+Total Learning Time : 1091.1422917842865 
+
+Total Inference Time : 26.372929573059082 
+
+Results 
+
+CLL : -0.624474 
+
+AUC ROC : 0.582221 
+
+AUC PR : 0.415051 
+
+Precision : 0.578947 
+
+Recall : 0.059783 
+
+F1 : 0.108374 
+
+Total Learning Time : 1123.9025988578796 
+
+Total Inference Time : 26.372929573059082 
+
+Run: 3
+
+ Starting fold 1 of 1 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 35095
+Target train pos examples: 2649
+Target train neg examples: 4334
+
+Target test facts examples: 7463
+Target test pos examples: 368
+Target test neg examples: 688
+
+Training using transfer 
+
+Results 
+
+CLL : -0.624051 
+
+AUC ROC : 0.584109 
+
+AUC PR : 0.417024 
+
+Precision : 0.578947 
+
+Recall : 0.059783 
+
+F1 : 0.108374 
+
+Total Learning Time : 1065.2871069908142 
+
+Total Inference Time : 24.932039976119995 
+
+Results 
+
+CLL : -0.624051 
+
+AUC ROC : 0.584109 
+
+AUC PR : 0.417024 
+
+Precision : 0.578947 
+
+Recall : 0.059783 
+
+F1 : 0.108374 
+
+Total Learning Time : 1096.954915523529 
+
+Total Inference Time : 24.932039976119995 
+
+Run: 4
+
+ Starting fold 1 of 1 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 35095
+Target train pos examples: 2649
+Target train neg examples: 4334
+
+Target test facts examples: 7463
+Target test pos examples: 368
+Target test neg examples: 688
+
+Training using transfer 
+
+Results 
+
+CLL : -0.62435 
+
+AUC ROC : 0.583404 
+
+AUC PR : 0.417092 
+
+Precision : 0.578947 
+
+Recall : 0.059783 
+
+F1 : 0.108374 
+
+Total Learning Time : 1058.7029802799225 
+
+Total Inference Time : 25.22530961036682 
+
+Results 
+
+CLL : -0.62435 
+
+AUC ROC : 0.583404 
+
+AUC PR : 0.417092 
+
+Precision : 0.578947 
+
+Recall : 0.059783 
+
+F1 : 0.108374 
+
+Total Learning Time : 1090.357326745987 
+
+Total Inference Time : 25.22530961036682 
+
+Run: 5
+
+ Starting fold 1 of 1 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 35095
+Target train pos examples: 2649
+Target train neg examples: 4334
+
+Target test facts examples: 7463
+Target test pos examples: 368
+Target test neg examples: 688
+
+Training using transfer 
+
+Results 
+
+CLL : -0.624316 
+
+AUC ROC : 0.582359 
+
+AUC PR : 0.41509 
+
+Precision : 0.578947 
+
+Recall : 0.059783 
+
+F1 : 0.108374 
+
+Total Learning Time : 1115.1494235992432 
+
+Total Inference Time : 28.02761173248291 
+
+Results 
+
+CLL : -0.624316 
+
+AUC ROC : 0.582359 
+
+AUC PR : 0.41509 
+
+Precision : 0.578947 
+
+Recall : 0.059783 
+
+F1 : 0.108374 
+
+Total Learning Time : 1149.646700143814 
+
+Total Inference Time : 28.02761173248291 
+
+Starting experiments for fasttext using wmd 
+
+Run: 1
+
+ Starting fold 1 of 1 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 35095
+Target train pos examples: 2649
+Target train neg examples: 4334
+
+Target test facts examples: 7463
+Target test pos examples: 368
+Target test neg examples: 688
+
+Training using transfer 
+
+Results 
+
+CLL : -0.624347 
+
+AUC ROC : 0.582458 
+
+AUC PR : 0.415114 
+
+Precision : 0.578947 
+
+Recall : 0.059783 
+
+F1 : 0.108374 
+
+Total Learning Time : 1034.4931602478027 
+
+Total Inference Time : 26.150663137435913 
+
+Results 
+
+CLL : -0.624347 
+
+AUC ROC : 0.582458 
+
+AUC PR : 0.415114 
+
+Precision : 0.578947 
+
+Recall : 0.059783 
+
+F1 : 0.108374 
+
+Total Learning Time : 1067.2275528907776 
+
+Total Inference Time : 26.150663137435913 
+
+Run: 2
+
+ Starting fold 1 of 1 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 35095
+Target train pos examples: 2649
+Target train neg examples: 4334
+
+Target test facts examples: 7463
+Target test pos examples: 368
+Target test neg examples: 688
+
+Training using transfer 
+
+Results 
+
+CLL : -0.624515 
+
+AUC ROC : 0.582221 
+
+AUC PR : 0.415051 
+
+Precision : 0.578947 
+
+Recall : 0.059783 
+
+F1 : 0.108374 
+
+Total Learning Time : 1085.7856092453003 
+
+Total Inference Time : 25.080198049545288 
+
+Results 
+
+CLL : -0.624515 
+
+AUC ROC : 0.582221 
+
+AUC PR : 0.415051 
+
+Precision : 0.578947 
+
+Recall : 0.059783 
+
+F1 : 0.108374 
+
+Total Learning Time : 1117.2236495018005 
+
+Total Inference Time : 25.080198049545288 
+
+Run: 3
+
+ Starting fold 1 of 1 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 35095
+Target train pos examples: 2649
+Target train neg examples: 4334
+
+Target test facts examples: 7463
+Target test pos examples: 368
+Target test neg examples: 688
+
+Training using transfer 
+
+Results 
+
+CLL : -0.624291 
+
+AUC ROC : 0.582517 
+
+AUC PR : 0.41513 
+
+Precision : 0.578947 
+
+Recall : 0.059783 
+
+F1 : 0.108374 
+
+Total Learning Time : 1050.8405435085297 
+
+Total Inference Time : 25.037514209747314 
+
+Results 
+
+CLL : -0.624291 
+
+AUC ROC : 0.582517 
+
+AUC PR : 0.41513 
+
+Precision : 0.578947 
+
+Recall : 0.059783 
+
+F1 : 0.108374 
+
+Total Learning Time : 1082.6290075778961 
+
+Total Inference Time : 25.037514209747314 
+
+Run: 4
+
+ Starting fold 1 of 1 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 35095
+Target train pos examples: 2649
+Target train neg examples: 4334
+
+Target test facts examples: 7463
+Target test pos examples: 368
+Target test neg examples: 688
+
+Training using transfer 
+
+Results 
+
+CLL : -0.624459 
+
+AUC ROC : 0.582853 
+
+AUC PR : 0.415218 
+
+Precision : 0.578947 
+
+Recall : 0.059783 
+
+F1 : 0.108374 
+
+Total Learning Time : 987.5674779415131 
+
+Total Inference Time : 30.054792642593384 
+
+Results 
+
+CLL : -0.624459 
+
+AUC ROC : 0.582853 
+
+AUC PR : 0.415218 
+
+Precision : 0.578947 
+
+Recall : 0.059783 
+
+F1 : 0.108374 
+
+Total Learning Time : 1024.1341578960419 
+
+Total Inference Time : 30.054792642593384 
+
+Run: 5
+
+ Starting fold 1 of 1 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 35095
+Target train pos examples: 2649
+Target train neg examples: 4334
+
+Target test facts examples: 7463
+Target test pos examples: 368
+Target test neg examples: 688
+
+Training using transfer 
+
+Results 
+
+CLL : -0.624304 
+
+AUC ROC : 0.582853 
+
+AUC PR : 0.415218 
+
+Precision : 0.578947 
+
+Recall : 0.059783 
+
+F1 : 0.108374 
+
+Total Learning Time : 1118.3554747104645 
+
+Total Inference Time : 26.397938013076782 
+
+Results 
+
+CLL : -0.624304 
+
+AUC ROC : 0.582853 
+
+AUC PR : 0.415218 
+
+Precision : 0.578947 
+
+Recall : 0.059783 
+
+F1 : 0.108374 
+
+Total Learning Time : 1151.2349438667297 
+
+Total Inference Time : 26.397938013076782 
+
