@@ -26,7 +26,7 @@ import os
 source_balanced = False
 balanced = False
 
-learn_from_source = True
+learn_from_source = False
 
 folds_path = 'folds_transfer_experiment'
 
@@ -277,8 +277,6 @@ def main():
             utils.write_to_file(refine_structure, params.REFINE_FILENAME)
             utils.write_to_file(refine_structure, os.getcwd() + '/experiments/{}_{}_{}/{}'.format(_id, source, target, params.REFINE_FILENAME.split('/')[1]))
             utils.write_to_file(refine_structure, os.getcwd() + '/resources/{}_{}_{}/{}'.format(_id, source, target, params.REFINE_FILENAME.split('/')[1]))
-
-            return
 
         else:
             utils.print_function('Loading pre-trained trees.', experiment_title)
