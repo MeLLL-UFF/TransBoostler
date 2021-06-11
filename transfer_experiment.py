@@ -152,7 +152,12 @@ def clean_previous_experiments_stuff():
     utils.delete_folder(params.BEST_MODEL_FOLDER)
 
 def save_pickle_file(nodes, _id, source, target, filename):
-    with open(os.getcwd() + '/experiments/{}_{}_{}/{}'.format(_id, source, target, filename), 'wb') as file:
+    if not os.path.exists(os.getcwd() + '/resources/' + experiment_title):
+        os.makedirs(os.getcwd() + '/resources/' + experiment_title)
+    if not os.path.exists(os.getcwd() + '/resources/{}_{}_{}'.format(_id, source, target)):
+        os.makedirs(os.getcwd() +'/resources/{}_{}_{}'.format(_id, source, target))
+
+    with open(os.getcwd() + '/resources/{}_{}_{}/{}'.format(_id, source, target, filename), 'wb') as file:
         pickle.dump(nodes, file)
 
 def load_pickle_file(filename):
@@ -230,7 +235,7 @@ def main():
             src_pos   = datasets.group_folds(src_data[1])
             src_neg   = datasets.group_folds(src_data[2])
                         
-            utils.print_function('Start learning from source dataset\n')
+            utils.print_function('Start learning from source dataset\n', experiment_title)
             
             utils.print_function('Source train facts examples: {}'.format(len(src_facts)), experiment_title)
             utils.print_function('Source train pos examples: {}'.format(len(src_pos)), experiment_title)

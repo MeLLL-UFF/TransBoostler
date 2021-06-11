@@ -191,6 +191,7 @@ class Transfer:
 
     source  = self.__build_word_vectors([utils.build_triple(clause)], similarity_metric)
     
+    similarities = {}
     similarities = self.similarity.compute_similarities(source, targets, similarity_metric, self.model, self.model_name, similarity_matrix, dictionary)
     similarities.to_csv('experiments/similarities/{}/{}/{}_similarities.csv'.format(self.model_name, similarity_metric, clause.split('(')[0]))
     indexes = similarities.index.tolist()
@@ -227,6 +228,7 @@ class Transfer:
 
     source  = self.__build_word_vectors([utils.build_triple(clause)], similarity_metric)
     
+    similarities = {}
     similarities = self.similarity.compute_similarities(source, targets, similarity_metric, self.model, self.model_name)
     similarities.to_csv('experiments/similarities/{}/{}/{}_similarities.csv'.format(self.model_name, similarity_metric, clause.split('(')[0]))
     indexes = similarities.index.tolist()
