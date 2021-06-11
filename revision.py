@@ -124,7 +124,7 @@ class TheoryRevision:
 			refine += self.get_refine_file(structs[i], treenumber=i+1, forceLearning=forceLearning)
 		return refine
 
-	def apply(self, background, train_pos, train_neg, train_facts, test_pos, test_neg, test_facts, source_structure):
+	def apply(self, background, train_pos, train_neg, train_facts, test_pos, test_neg, test_facts, source_structure, experiment_title):
 		'''Function responsible for starting the theory revision process'''
 
 		total_revision_time = 0
@@ -238,7 +238,7 @@ class TheoryRevision:
 		logging.info('Best model found')
 		logging.info('******************************************')
 
-		utils.show_results(utils.get_results_dict(best_model_results, learning_time, inference_time))
+		utils.show_results(utils.get_results_dict(best_model_results, learning_time, inference_time), experiment_title)
 
 		utils.delete_folder(params.TRAIN_FOLDER_FILES[:-1])
 		utils.delete_folder(params.TEST_FOLDER_FILES[:-1])
