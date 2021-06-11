@@ -227,10 +227,10 @@ class Similarity:
 
         key = self.__create_key(source, target)
 
-        if '()' in key: key = key.replace('(', '').replace(')', '')
-
         if(len(source[1]) != len(target[1])):
           continue
+
+        if '()' in key: key = key.replace('(', '').replace(')', '')
 
         source_segmented = self.preprocessing.pre_process_text(source[0])
         target_segmented = self.preprocessing.pre_process_text(target[0])
@@ -265,10 +265,10 @@ class Similarity:
     for source in sources:
         for target in targets:
 
-            key = self.__create_key(source, target)
-
             if(len(source[1]) != len(target[1])):
               continue
+
+            key = self.__create_key(source, target)
             
             sent_1 = self.preprocessing.pre_process_text(source[0])
             sent_2 = self.preprocessing.pre_process_text(target[0])
@@ -285,7 +285,7 @@ class Similarity:
             similarity[key] = self.similarity_matrix.inner_product(sent_1, sent_2, normalized=(True,True))
 
     df = pd.DataFrame.from_dict(similarity, orient="index", columns=['similarity'])
-    return df.sort_values(by='similarity')
+    return df.sort_values(by='similarity', ascending=False)
 
   def wmd_similarities(self, sources, targets, model):
     """
@@ -303,10 +303,10 @@ class Similarity:
     for source in sources:
       for target in targets:
 
-        key = self.__create_key(source, target)
-
         if(len(source[1]) != len(target[1])):
           continue
+
+        key = self.__create_key(source, target)
 
         similarity[key] = self.__wmdistance(source[0], target[0], model)
 
@@ -371,9 +371,13 @@ class Similarity:
     for s in sources:
       for t in targets:
 
+        if(len(source[1]) != len(target[1])):
+          continue
+
         key = self.__create_key([s, sources[s][1]], [t, targets[t][1]])
 
         if '()' in key: key = key.replace('(', '').replace(')', '')
+
 
         source_segmented = self.preprocessing.pre_process_text(s)
         target_segmented = self.preprocessing.pre_process_text(t)
