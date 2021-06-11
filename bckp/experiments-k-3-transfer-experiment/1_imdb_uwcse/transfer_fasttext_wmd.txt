@@ -1,0 +1,7 @@
+director(person): student(person),professor(person)
+movie(movie,person): samecourse(course,course),sameperson(person,person),sameproject(project,project)
+actor(person): student(person),professor(person)
+setMap:workedunder(A,B),advisedby(A,B)
+setParam:searchArgPermutation=true.
+setParam:searchEmpty=false.
+setParam:allowSameTargetMap=false.
