@@ -6,8 +6,8 @@ import copy
 import math
 import time
 
-import logging
-logging.basicConfig(level=logging.INFO, format="%(message)s", handlers=[logging.FileHandler("app.log"),logging.StreamHandler()])
+#import logging
+#logging.basicConfig(level=utils.print_function, format="%(message)s", handlers=[logging.FileHandler("app.log"),logging.StreamHandler()])
 
 class TheoryRevision:
 
@@ -134,13 +134,13 @@ class TheoryRevision:
 		pl_t_results = 0
 
 		# Parameter learning
-		logging.info('******************************************')
-		logging.info('Performing Parameter Learning')
-		logging.info('******************************************')
-		logging.info('Refine')
+		utils.print_function('******************************************', experiment_title)
+		utils.print_function('Performing Parameter Learning', experiment_title)
+		utils.print_function('******************************************', experiment_title)
+		utils.print_function('Refine', experiment_title)
 		for item in self.get_boosted_refine_file(source_structure):
-			logging.info(item)
-		logging.info('\n')
+			utils.print_function(item, experiment_title)
+		utils.print_function('\n', experiment_title)
 
 		model, t_results, learning_time, inference_time = self.train_and_test(background, train_pos, train_neg, train_facts, test_pos, test_neg, test_facts, refine=params.REFINE_FILENAME, transfer=params.TRANSFER_FILENAME)
 		pl_t_results = copy.deepcopy(t_results)
@@ -163,43 +163,43 @@ class TheoryRevision:
 
 		total_revision_time = learning_time + inference_time
 
-		logging.info('Parameter learned model CLL:{} \n'.format(scored_results['CLL']))
-		logging.info('Strucuture after Parameter Learning \n')
+		utils.print_function('Parameter learned model CLL:{} \n'.format(scored_results['CLL']), experiment_title)
+		utils.print_function('Strucuture after Parameter Learning \n', experiment_title)
 
 		best_model_structured = copy.deepcopy(structured)
-		logging.info('Structure after Parameter Learning')
+		utils.print_function('Structure after Parameter Learning', experiment_title)
 
 		for w in structured:
-			logging.info(w)
+			utils.print_function(w, experiment_title)
 
 		for v in variances:
-			logging.info(v)
-		logging.info('\n')
+			utils.print_function(v, experiment_title)
+		utils.print_function('\n', experiment_title)
 
 		utils.save_best_model_files()
 
-		logging.info('******************************************')
-		logging.info('Performing Theory Revision')
-		logging.info('******************************************')
+		utils.print_function('******************************************', experiment_title)
+		utils.print_function('Performing Theory Revision', experiment_title)
+		utils.print_function('******************************************', experiment_title)
 
 		for i in range(params.MAX_REVISION_ITERATIONS):
-			logging.info('Refining iteration {}'.format(str(i+1)))
-			logging.info('********************************')
+			utils.print_function('Refining iteration {}'.format(str(i+1)), experiment_title)
+			utils.print_function('********************************', experiment_title)
 			found_better = False
 			candidate = self.get_boosted_candidate(best_model_structured, variances)
 
 			if not len(candidate):
 				# Perform revision without pruning
-				logging.info('Pruning resulted in null theory\n')
+				utils.print_function('Pruning resulted in null theory\n', experiment_title)
 				candidate = self.get_boosted_candidate(best_model_structured, variances, no_pruning=True)
 
-			logging.info('Candidate for revision')
+			utils.print_function('Candidate for revision', experiment_title)
 			for item in candidate:
-				logging.info(item)
-			logging.info('\n')
+				utils.print_function(item, experiment_title)
+			utils.print_function('\n', experiment_title)
 
-			logging.info('Refining candidate')
-			logging.info('***************************')
+			utils.print_function('Refining candidate', experiment_title)
+			utils.print_function('***************************', experiment_title)
 
 			utils.write_to_file(candidate, params.REFINE_REVISION_FILENAME)
 			model, t_results, learning_time, inference_time = self.train_and_test(background, train_pos, train_neg, train_facts, test_pos, test_neg, test_facts, refine=params.REFINE_REVISION_FILENAME)
@@ -226,17 +226,17 @@ class TheoryRevision:
 				best_model_results = copy.deepcopy(t_results)
 				utils.save_best_model_files()
 
-			logging.info('Refined model CLL: %s' % scored_results['CLL'])
-			logging.info('\n')
+			utils.print_function('Refined model CLL: %s' % scored_results['CLL'], experiment_title)
+			utils.print_function('\n', experiment_title)
 			if found_better == False:
 				break
 
 		# set total revision time to t_results learning time
 		best_model_results['Learning time'] = total_revision_time
 
-		logging.info('******************************************')
-		logging.info('Best model found')
-		logging.info('******************************************')
+		utils.print_function('******************************************', experiment_title)
+		utils.print_function('Best model found', experiment_title)
+		utils.print_function('******************************************', experiment_title)
 
 		utils.show_results(utils.get_results_dict(best_model_results, learning_time, inference_time), experiment_title)
 
@@ -246,9 +246,9 @@ class TheoryRevision:
 		utils.delete_file(params.TRAIN_OUTPUT_FILE)
 		utils.delete_file(params.TEST_OUTPUT_FILE)
 
-		logging.info('Total revision time: %s' % total_revision_time)
-		logging.info('Best scored revision CLL: %s' % best_model_cll)
-		logging.info('\n')
+		utils.print_function('Total revision time: %s' % total_revision_time, experiment_title)
+		utils.print_function('Best scored revision CLL: %s' % best_model_cll, experiment_title)
+		utils.print_function('\n', experiment_title)
 
 		return best_model_results, total_revision_time, inference_time
 
@@ -263,11 +263,11 @@ class TheoryRevision:
 		end = time.time()
 		learning_time = end-start
 
-		logging.info('Model training time {}'.format(learning_time))
+		utils.print_function('Model training time {}'.format(learning_time), experiment_title)
 
 		will = ['WILL Produced-Tree #'+str(i+1)+'\n'+('\n'.join(model.get_will_produced_tree(treenumber=i+1))) for i in range(params.TREES)]
 		for w in will:
-			logging.info(w)
+			utils.print_function(w, experiment_title)
 
 		start = time.time()
 
@@ -277,6 +277,6 @@ class TheoryRevision:
 		end = time.time()
 		inference_time = end-start
 
-		logging.info('Inference time using transfer learning {}'.format(inference_time))
+		utils.print_function('Inference time using transfer learning {}'.format(inference_time), experiment_title)
 
 		return model, results.summarize_results(), learning_time, inference_time
