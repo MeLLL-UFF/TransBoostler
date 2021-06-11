@@ -176,8 +176,6 @@ def main():
         # n_runs = n_files - path - 1
         n_runs = len(list(os.walk('datasets/folds/{}/'.format(target)))) - 1
 
-
-        n_runs = 1
         results = { 'save': { }}
 
         if 'nodes' in locals():
