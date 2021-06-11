@@ -371,7 +371,7 @@ class Similarity:
     for s in sources:
       for t in targets:
 
-        if(len(source[1]) != len(target[1])):
+        if(len(sources[s][1]) != len(targets[t][1])):
           continue
 
         key = self.__create_key([s, sources[s][1]], [t, targets[t][1]])
