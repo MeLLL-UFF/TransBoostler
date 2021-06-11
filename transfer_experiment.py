@@ -26,7 +26,7 @@ import os
 source_balanced = False
 balanced = False
 
-learn_from_source = False
+learn_from_source = True
 
 folds_path = 'folds_transfer_experiment'
 
