@@ -2,19 +2,19 @@
 FASTTEXT = 'fasttext'
 WORD2VEC = 'word2vec'
 
-GOOGLE_WORD2VEC = 'word2vec/GoogleNews-vectors-negative300.bin'
-GOOGLE_WORD2VEC_SPACY = 'word2vec/spacy'
+GOOGLE_WORD2VEC = 'resources/word2vec/GoogleNews-vectors-negative300.bin'
+GOOGLE_WORD2VEC_SPACY = 'resources/word2vec/spacy'
 
-WIKIPEDIA_FASTTEXT = 'fasttext/wiki.en.vec'
-WIKIPEDIA_FASTTEXT_SPACY = 'fasttext/spacy'
+WIKIPEDIA_FASTTEXT = 'resources/fasttext/wiki.en.vec'
+WIKIPEDIA_FASTTEXT_SPACY = 'resources/fasttext/spacy'
 
-WORD_VECTOR_SIMILARITIES = ['cosine', 'euclidean']
+WORD_VECTOR_SIMILARITIES = ['cosine','euclidean']
 
 EMBEDDING_DIMENSION = 300
-METHOD = 'CONCATENATE'
-#METHOD = None
+#METHOD = 'CONCATENATE'
+METHOD = None
 
-TOP_K = 3
+TOP_K = 1
 
 # Validation parameters
 N_FOLDS = 3
