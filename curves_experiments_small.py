@@ -293,7 +293,7 @@ def main():
             #transboostler_experiments[embeddingModel][similarityMetric] = []
             #experiment_metrics = {key: {'CLL': [], 'AUC ROC': [], 'AUC PR': [], 'Learning Time': [], 'Inference Time': []} for key in params.AMOUNTS} 
             transboostler_confusion_matrix[embeddingModel][similarityMetric] = []
-            confusion_matrix = {key: {'TP': [], 'FP': [], 'TN': [], 'FN': []} for key in params.AMOUNTS} 
+            confusion_matrix = {key: {'TP': [], 'FP': [], 'TN': [], 'FN': []} for key in params.AMOUNTS_SMALL} 
 
             utils.print_function('Starting experiments for {} using {} \n'.format(embeddingModel, similarityMetric), experiment_title)
         
