@@ -1,5 +1,5 @@
 
-revision_theory = False
+revision_theory = True
 
 setups = [
         ##{'model': 'fasttext', 'similarity_metric': 'cosine', 'revision_theory': revision_theory},
