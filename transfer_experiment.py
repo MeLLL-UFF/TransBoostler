@@ -26,7 +26,7 @@ import os
 source_balanced = False
 balanced = False
 
-learn_from_source = True
+learn_from_source = False
 
 folds_path = 'folds_transfer_experiment'
 
@@ -190,7 +190,16 @@ def main():
         target = experiment['target']
     
         # n_runs = n_files - path - 1
-        n_runs = len(list(os.walk('datasets/folds/{}/'.format(target)))) - 1
+        #n_runs = len(list(os.walk('datasets/folds/{}/'.format(target)))) - 1
+
+        # Load total target dataset
+        tar_total_data = datasets.load(target, bk[target], seed=params.SEED)
+
+        if target in ['nell_sports', 'nell_finances', 'yago2s']:
+            n_runs = params.N_FOLDS
+        else:
+            n_runs = len(tar_total_data[0])
+
         results = { 'save': { }}
 
         if 'nodes' in locals():
@@ -335,9 +344,6 @@ def main():
 
                 end = time.time()
                 mapping_time = end-start
-
-                # Load total target dataset
-                tar_total_data = datasets.load(target, bk[target], seed=results['save']['seed'])
 
                 if target in ['nell_sports', 'nell_finances', 'yago2s']:
                     n_folds = params.N_FOLDS
