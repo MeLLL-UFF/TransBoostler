@@ -3,6 +3,8 @@ from ekphrasis.classes.segmenter import Segmenter
 from abbreviations import abbreviations
 from nltk.stem import WordNetLemmatizer
 #from nltk.stem import PorterStemmer
+from collections import defaultdict
+from nltk.corpus import wordnet
 from nltk import pos_tag
 
 class Preprocessing:
@@ -77,11 +79,18 @@ class Preprocessing:
 			Returns:
 				the predicate after lemma
 		"""
+		tag_map = defaultdict(lambda : wordnet.NOUN)
+		tag_map['V'] = wordnet.VERB
+
 		predicate = []
-		for word_tag in pos_tag(self.__check_for_abbreviations(self.__segment(text).split())):
-			# If it's a verb, we apply lemmatization
-			predicate.append(self.wordnet_lemmatizer.lemmatize(word_tag[0], pos="v"))
+		for token, tag in pos_tag(self.__check_for_abbreviations(self.__segment(text).split())):
+			# If it's a verb or a noun in plural, we apply lemmatization
+			predicate.append(self.wordnet_lemmatizer.lemmatize(token, tag_map[tag[0]]))
 		return predicate
 
-#test = Preprocessing()
-#print(test.pre_process_text('actor'))
+
+#from ekphrasis.classes.segmenter import Segmenter
+#segmenter = Segmenter(corpus="english")
+
+#test = Preprocessing(segmenter)
+#print(test.pre_process_text('actorhasmembersofproject'))
