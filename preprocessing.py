@@ -85,6 +85,9 @@ class Preprocessing:
 		predicate = []
 		for token, tag in pos_tag(self.__check_for_abbreviations(self.__segment(text).split())):
 			# If it's a verb or a noun in plural, we apply lemmatization
+			if token == 'as':
+				predicate.append(token)
+				continue
 			predicate.append(self.wordnet_lemmatizer.lemmatize(token, tag_map[tag[0]]))
 		return predicate
 
