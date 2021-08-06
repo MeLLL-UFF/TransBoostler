@@ -4,6 +4,7 @@ from abbreviations import abbreviations
 from nltk.stem import WordNetLemmatizer
 #from nltk.stem import PorterStemmer
 from collections import defaultdict
+from nltk.corpus import stopwords
 from nltk.corpus import wordnet
 from nltk import pos_tag
 
@@ -14,6 +15,7 @@ class Preprocessing:
 		self.seg = segmenter
 		#self.porter_stemmer = PorterStemmer()
 		self.wordnet_lemmatizer = WordNetLemmatizer()
+		self.en_stopwords = set(stopwords.words('english'))
 
 	def __check_for_abbreviations(self, text):
 		"""
@@ -32,7 +34,7 @@ class Preprocessing:
 				full_words.append(word)
 		return full_words
 
-	def __remove_special_characters_from_list(literals):
+	def __remove_special_characters_from_list(self,literals):
 		"""
 			Remove special characters from string
 
@@ -45,7 +47,7 @@ class Preprocessing:
 			literals[i] = remove_special_characters(literals[i])
 		return atoms
 
-	def __remove_special_characters(string):
+	def __remove_special_characters(self,string):
 		"""
 			Remove special characters from string
 
@@ -55,6 +57,17 @@ class Preprocessing:
 				string with no special characters
 		""" 
 		return re.sub('[^A-Za-z0-9]+', '', string)
+
+	def __remove_stopwords(self, predicate):
+		"""
+			Remove stopwords from string
+
+			Args:
+				predicate(str): list of predicate/literal
+			Returns:
+				the same predicate/literal with no stopwords
+		"""
+		return [word for word in predicate if word not in self.en_stopwords]
 
 	def __segment(self, text):
 		"""
@@ -83,7 +96,7 @@ class Preprocessing:
 		tag_map['V'] = wordnet.VERB
 
 		predicate = []
-		for token, tag in pos_tag(self.__check_for_abbreviations(self.__segment(text).split())):
+		for token, tag in pos_tag(self.__remove_stopwords(self.__check_for_abbreviations(self.__segment(text).split()))):
 			# If it's a verb or a noun in plural, we apply lemmatization
 			if token == 'as':
 				predicate.append(token)
