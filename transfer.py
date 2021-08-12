@@ -16,13 +16,14 @@ import re
 
 class Transfer:
 
-  def __init__(self, model, model_name, segmenter, similarity_metric, sources, targets):
+  def __init__(self, model, model_name, segmenter, similarity_metric, sources, targets, experiment):
     self.model = model
     self.model_name = model_name
     self.preprocessing = Preprocessing(segmenter)
     self.similarity_metric = similarity_metric
     self.sources = sources
     self.targets = targets
+    self.experiment_title = experiment
 
     self.similarity_matrix, self.dictionary = '', ''
     if self.similarity_metric == 'softcosine':
@@ -193,7 +194,7 @@ class Transfer:
     
     similarities = {}
     similarities = self.similarity.compute_similarities(source, targets, similarity_metric, self.model, self.model_name, similarity_matrix, dictionary)
-    similarities.to_csv('experiments/similarities/{}/{}/{}_similarities.csv'.format(self.model_name, similarity_metric, clause.split('(')[0]))
+    similarities.to_csv('experiments/{}/similarities/{}/{}/{}_similarities.csv'.format(self.experiment_title, self.model_name, similarity_metric, clause.split('(')[0]))
     indexes = similarities.index.tolist()
 
     for index in indexes:
@@ -230,7 +231,7 @@ class Transfer:
     
     similarities = {}
     similarities = self.similarity.compute_similarities(source, targets, similarity_metric, self.model, self.model_name)
-    similarities.to_csv('experiments/similarities/{}/{}/{}_similarities.csv'.format(self.model_name, similarity_metric, clause.split('(')[0]))
+    similarities.to_csv('experiments/{}/similarities/{}/{}/{}_similarities.csv'.format(self.experiment_title, self.model_name, similarity_metric, clause.split('(')[0]))
     indexes = similarities.index.tolist()
 
     targets = []

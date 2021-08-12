@@ -508,9 +508,8 @@ def get_softcosine_matrix(sources, targets, model, preprocessing):
   # Prepare a dictionary and a corpus.
   documents  = [preprocessing.pre_process_text(source[0]) for source in sources]
   documents += [preprocessing.pre_process_text(target[0]) for target in targets]
-  dictionary = corpora.Dictionary(documents) 
 
-  print(documents)
+  dictionary = corpora.Dictionary(documents)
 
   # Prepare the similarity matrix
   similarity_matrix = SparseTermSimilarityMatrix(similarity_index, dictionary)

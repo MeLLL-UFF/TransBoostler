@@ -54,14 +54,15 @@ class Similarity:
           source and target embeddings set to the same size
     """
 
-    words = list(set(source + target))
+    words = source + target
     new_source, new_target = [[0]* dimension] * len(words), [[0]* dimension] * len(words)
 
     for i in range(len(words)):
       if words[i] in source and words[i] in target:
-        index = target.index(words[i])
-        new_source[i] = source_vectors[index][:]
-        new_target[i] = target_vectors[index][:]
+        source_index = source.index(words[i])
+        target_index = target.index(words[i])
+        new_source[i] = source_vectors[source_index][:]
+        new_target[i] = target_vectors[target_index][:]
       elif words[i] in source:
         index = source.index(words[i])
         new_source[i] = source_vectors[index][:]
@@ -208,6 +209,9 @@ class Similarity:
     if(similarity_metric == 'relax-wmd' and model_name==params.WORD2VEC):
       return self.relaxed_wmd_similarities(source, targets, params.GOOGLE_WORD2VEC_SPACY)
 
+    if(similarity_metric == 'ensemble'):
+        return self.ensemble_similarities(source, targets)
+
     raise "Similarity metric not implemented."
 
   def cosine_similarities(self, sources, targets, model):
@@ -275,7 +279,7 @@ class Similarity:
 
             # Prepare a dictionary and a corpus.
             documents  = [sent_1, sent_2]
-            dictionary = corpora.Dictionary(documents) 
+            dictionary = corpora.Dictionary(documents)
 
             # Convert the sentences into bag-of-words vectors.
             sent_1 = dictionary.doc2bow(sent_1)
@@ -333,6 +337,9 @@ class Similarity:
       similarity = {}
       for source in sources:
         for target in targets:
+
+            if(len(source[1]) != len(target[1])):
+                continue
           
             key = self.__create_key(source, target)
           
@@ -348,8 +355,8 @@ class Similarity:
                 similarity[key] = wmd_instance.compute_similarity(nlp(source[0]), nlp(target[0]), evec=np.array(embeddings, dtype=np.float32), single_vector=True)
             else:
                 # Convert the sentences into SpaCy format.
-                sent_1 = nlp(self.seg.segment(source[0]))
-                sent_2 = nlp(self.seg.segment(target[0]))
+                sent_1 = nlp(' '.join(self.preprocessing.pre_process_text(source[0])))
+                sent_2 = nlp(' '.join(self.preprocessing.pre_process_text(target[0])))
             
                 similarity[key] = wmd_instance.compute_similarity(sent_1, sent_2)
 
