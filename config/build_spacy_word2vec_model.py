@@ -27,7 +27,7 @@ def create_word2vec_spacy_file():
     # When download is over, please create a new directory named word2vec inside TransBoostler's and place the model file in it.
 
     directory = os.path.abspath('..')
-    if(not os.path.exists(os.path.exists('/'.join([directory, '/word2vec/GoogleNews-vectors-negative300.bin'])))):
+    if(not os.path.exists(os.path.exists('/'.join([directory, 'resources/word2vec/GoogleNews-vectors-negative300.bin'])))):
         
         #Creates new folder to download Word2Vec pre-trained model
         os.mkdir('/'.join([directory, '/word2vec']))
@@ -36,14 +36,14 @@ def create_word2vec_spacy_file():
         
     else:
         
-        model = KeyedVectors.load_word2vec_format('/'.join([directory, '/word2vec/GoogleNews-vectors-negative300.bin']), binary=True, unicode_errors='ignore')
+        model = KeyedVectors.load_word2vec_format('/'.join([directory, 'resources/word2vec/GoogleNews-vectors-negative300.bin']), binary=True, unicode_errors='ignore')
         
-        if(not os.path.exists(os.path.exists('/'.join([directory, 'word2vec/spacy'])))):
-            os.mkdir('/'.join([directory, 'word2vec/spacy']))
+        if(not os.path.exists(os.path.exists('/'.join([directory, 'resources/word2vec/spacy'])))):
+            os.mkdir('/'.join([directory, 'resources/word2vec/spacy']))
 
-        model.save_word2vec_format('/'.join([directory, '/word2vec/spacy/googlenews.txt']), binary=False)
+        model.save_word2vec_format('/'.join([directory, 'resources/word2vec/spacy/googlenews.txt']), binary=False)
         
-        call_process('cd ..; python3 -m spacy init vectors en word2vec/spacy/googlenews.txt  word2vec/spacy/ --name en_googlenews.vectors --verbose')
+        call_process('cd ..; python3 -m spacy init vectors en resources/word2vec/spacy/googlenews.txt  resources/word2vec/spacy/ --name en_googlenews.vectors --verbose')
     
     return 'SpaCy model created successfully. You can access it by en_googlenews.vectors'
     
