@@ -1,0 +1,71 @@
+Starting experiment 7_yeast_twitter 
+
+Run: 1
+Starting experiments for RDN-B 
+
+
+ Starting fold 1 of 2 folds 
+
+Start training from scratch
+
+Target train facts examples: 1580
+Target train pos examples: 126
+Target train neg examples: 16128
+
+Target test facts examples: 1562
+Target test pos examples: 156
+Target test neg examples: 24648
+
+Training from scratch 
+
+Results 
+
+CLL : -0.137385 
+
+AUC ROC : 0.987263 
+
+AUC PR : 0.309896 
+
+Precision : 0.345882 
+
+Recall : 0.942308 
+
+F1 : 0.506024 
+
+Total Learning Time : 26.72231364250183 
+
+Total Inference Time : 23.867265701293945 
+
+
+ Starting fold 2 of 2 folds 
+
+Start training from scratch
+
+Target train facts examples: 1562
+Target train pos examples: 156
+Target train neg examples: 24648
+
+Target test facts examples: 1580
+Target test pos examples: 126
+Target test neg examples: 16128
+
+Training from scratch 
+
+Results 
+
+CLL : -0.106767 
+
+AUC ROC : 0.993725 
+
+AUC PR : 0.385002 
+
+Precision : 0.338936 
+
+Recall : 0.960317 
+
+F1 : 0.501035 
+
+Total Learning Time : 20.182408571243286 
+
+Total Inference Time : 14.212573766708374 
+

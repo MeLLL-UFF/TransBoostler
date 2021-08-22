@@ -1,0 +1,592 @@
+Starting experiment 3_imdb_cora 
+
+
+ Starting fold 1 of 5 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 35095
+Target train pos examples: 2649
+Target train neg examples: 4334
+
+Target test facts examples: 7463
+Target test pos examples: 368
+Target test neg examples: 688
+
+Amount of data: 0.2
+Training from scratch 
+
+Results 
+
+CLL : -0.488744 
+
+AUC ROC : 0.820372 
+
+AUC PR : 0.652443 
+
+Precision : 0.70726 
+
+Recall : 0.820652 
+
+F1 : 0.759748 
+
+Total Learning Time : 547.2508990764618 
+
+Total Inference Time : 2.297982692718506 
+
+Amount of data: 0.4
+Training from scratch 
+
+Results 
+
+CLL : -0.459343 
+
+AUC ROC : 0.836293 
+
+AUC PR : 0.658299 
+
+Precision : 0.705607 
+
+Recall : 0.820652 
+
+F1 : 0.758794 
+
+Total Learning Time : 2256.141928911209 
+
+Total Inference Time : 3.0956501960754395 
+
+Amount of data: 0.6
+Training from scratch 
+
+Results 
+
+CLL : -0.624969 
+
+AUC ROC : 0.605731 
+
+AUC PR : 0.441608 
+
+Precision : 0.578947 
+
+Recall : 0.059783 
+
+F1 : 0.108374 
+
+Total Learning Time : 4580.394239664078 
+
+Total Inference Time : 2.958031415939331 
+
+Amount of data: 0.8
+Training from scratch 
+
+Results 
+
+CLL : -0.624122 
+
+AUC ROC : 0.608445 
+
+AUC PR : 0.443077 
+
+Precision : 0.578947 
+
+Recall : 0.059783 
+
+F1 : 0.108374 
+
+Total Learning Time : 5464.435306072235 
+
+Total Inference Time : 3.1066131591796875 
+
+Amount of data: 1.0
+Training from scratch 
+
+Results 
+
+CLL : -0.625004 
+
+AUC ROC : 0.604576 
+
+AUC PR : 0.439895 
+
+Precision : 0.578947 
+
+Recall : 0.059783 
+
+F1 : 0.108374 
+
+Total Learning Time : 8329.147019147873 
+
+Total Inference Time : 2.660430908203125 
+
+
+ Starting fold 2 of 5 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 33542
+Target train pos examples: 2246
+Target train neg examples: 4478
+
+Target test facts examples: 9016
+Target test pos examples: 771
+Target test neg examples: 544
+
+Amount of data: 0.2
+Training from scratch 
+
+Results 
+
+CLL : -0.564296 
+
+AUC ROC : 0.746781 
+
+AUC PR : 0.74569 
+
+Precision : 0.744637 
+
+Recall : 0.945525 
+
+F1 : 0.833143 
+
+Total Learning Time : 798.237701177597 
+
+Total Inference Time : 4.1711695194244385 
+
+Amount of data: 0.4
+Training from scratch 
+
+Results 
+
+CLL : -0.565782 
+
+AUC ROC : 0.757774 
+
+AUC PR : 0.756478 
+
+Precision : 0.745322 
+
+Recall : 0.929961 
+
+F1 : 0.827467 
+
+Total Learning Time : 1700.0504670143127 
+
+Total Inference Time : 3.744152069091797 
+
+Amount of data: 0.6
+Training from scratch 
+
+Results 
+
+CLL : -0.59227 
+
+AUC ROC : 0.720693 
+
+AUC PR : 0.738796 
+
+Precision : 0.722906 
+
+Recall : 0.761349 
+
+F1 : 0.74163 
+
+Total Learning Time : 1871.5045945644379 
+
+Total Inference Time : 3.07853102684021 
+
+Amount of data: 0.8
+Training from scratch 
+
+Results 
+
+CLL : -0.823002 
+
+AUC ROC : 0.517332 
+
+AUC PR : 0.619284 
+
+Precision : 0.74359 
+
+Recall : 0.037613 
+
+F1 : 0.071605 
+
+Total Learning Time : 5335.037634372711 
+
+Total Inference Time : 3.5813887119293213 
+
+Amount of data: 1.0
+Training from scratch 
+
+Results 
+
+CLL : -0.822124 
+
+AUC ROC : 0.517249 
+
+AUC PR : 0.619189 
+
+Precision : 0.74359 
+
+Recall : 0.037613 
+
+F1 : 0.071605 
+
+Total Learning Time : 6461.879435062408 
+
+Total Inference Time : 4.126692771911621 
+
+
+ Starting fold 3 of 5 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 33252
+Target train pos examples: 2436
+Target train neg examples: 2800
+
+Target test facts examples: 9306
+Target test pos examples: 581
+Target test neg examples: 2222
+
+Amount of data: 0.2
+Training from scratch 
+
+Results 
+
+CLL : -0.60874 
+
+AUC ROC : 0.539988 
+
+AUC PR : 0.221343 
+
+Precision : 0.222222 
+
+Recall : 0.006885 
+
+F1 : 0.013356 
+
+Total Learning Time : 263.835165977478 
+
+Total Inference Time : 2.9783406257629395 
+
+Amount of data: 0.4
+Training from scratch 
+
+Results 
+
+CLL : -0.605868 
+
+AUC ROC : 0.56159 
+
+AUC PR : 0.245873 
+
+Precision : 0.517241 
+
+Recall : 0.025818 
+
+F1 : 0.04918 
+
+Total Learning Time : 585.3681488037109 
+
+Total Inference Time : 3.195838451385498 
+
+Amount of data: 0.6
+Training from scratch 
+
+Results 
+
+CLL : -0.603718 
+
+AUC ROC : 0.558699 
+
+AUC PR : 0.2481 
+
+Precision : 0.472222 
+
+Recall : 0.02926 
+
+F1 : 0.055105 
+
+Total Learning Time : 991.3444390296936 
+
+Total Inference Time : 2.959604263305664 
+
+Amount of data: 0.8
+Training from scratch 
+
+Results 
+
+CLL : -0.600608 
+
+AUC ROC : 0.561568 
+
+AUC PR : 0.249062 
+
+Precision : 0.47619 
+
+Recall : 0.034423 
+
+F1 : 0.064205 
+
+Total Learning Time : 1505.4057712554932 
+
+Total Inference Time : 3.0538811683654785 
+
+Amount of data: 1.0
+Training from scratch 
+
+Results 
+
+CLL : -0.603929 
+
+AUC ROC : 0.560205 
+
+AUC PR : 0.248484 
+
+Precision : 0.47619 
+
+Recall : 0.034423 
+
+F1 : 0.064205 
+
+Total Learning Time : 1497.612075805664 
+
+Total Inference Time : 3.0946085453033447 
+
+
+ Starting fold 4 of 5 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 34429
+Target train pos examples: 2270
+Target train neg examples: 3954
+
+Target test facts examples: 8129
+Target test pos examples: 747
+Target test neg examples: 1068
+
+Amount of data: 0.2
+Training from scratch 
+
+Results 
+
+CLL : -0.673117 
+
+AUC ROC : 0.540671 
+
+AUC PR : 0.456121 
+
+Precision : 0.8 
+
+Recall : 0.021419 
+
+F1 : 0.041721 
+
+Total Learning Time : 345.91292214393616 
+
+Total Inference Time : 2.524665594100952 
+
+Amount of data: 0.4
+Training from scratch 
+
+Results 
+
+CLL : -0.5574 
+
+AUC ROC : 0.884344 
+
+AUC PR : 0.80295 
+
+Precision : 1.0 
+
+Recall : 0.016064 
+
+F1 : 0.031621 
+
+Total Learning Time : 839.5931830406189 
+
+Total Inference Time : 2.834439754486084 
+
+Amount of data: 0.6
+Training from scratch 
+
+Results 
+
+CLL : -0.43969 
+
+AUC ROC : 0.868284 
+
+AUC PR : 0.752255 
+
+Precision : 0.790671 
+
+Recall : 0.930388 
+
+F1 : 0.854859 
+
+Total Learning Time : 2149.6971414089203 
+
+Total Inference Time : 4.782578706741333 
+
+Amount of data: 0.8
+Training from scratch 
+
+Results 
+
+CLL : -0.675873 
+
+AUC ROC : 0.541207 
+
+AUC PR : 0.4544 
+
+Precision : 0.606557 
+
+Recall : 0.049531 
+
+F1 : 0.091584 
+
+Total Learning Time : 5813.862057924271 
+
+Total Inference Time : 3.751438617706299 
+
+Amount of data: 1.0
+Training from scratch 
+
+Results 
+
+CLL : -0.676473 
+
+AUC ROC : 0.549575 
+
+AUC PR : 0.470826 
+
+Precision : 1.0 
+
+Recall : 0.001339 
+
+F1 : 0.002674 
+
+Total Learning Time : 1795.0682163238525 
+
+Total Inference Time : 2.578683614730835 
+
+
+ Starting fold 5 of 5 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 33914
+Target train pos examples: 2467
+Target train neg examples: 4522
+
+Target test facts examples: 8644
+Target test pos examples: 550
+Target test neg examples: 500
+
+Amount of data: 0.2
+Training from scratch 
+
+Results 
+
+CLL : -0.450196 
+
+AUC ROC : 0.919089 
+
+AUC PR : 0.898208 
+
+Precision : 0.9 
+
+Recall : 0.867273 
+
+F1 : 0.883333 
+
+Total Learning Time : 1104.5120830535889 
+
+Total Inference Time : 3.1487691402435303 
+
+Amount of data: 0.4
+Training from scratch 
+
+Results 
+
+CLL : -0.457307 
+
+AUC ROC : 0.912875 
+
+AUC PR : 0.883988 
+
+Precision : 0.897059 
+
+Recall : 0.887273 
+
+F1 : 0.892139 
+
+Total Learning Time : 2010.6614451408386 
+
+Total Inference Time : 2.7880120277404785 
+
+Amount of data: 0.6
+Training from scratch 
+
+Results 
+
+CLL : -0.745644 
+
+AUC ROC : 0.670267 
+
+AUC PR : 0.674444 
+
+Precision : 0.884615 
+
+Recall : 0.041818 
+
+F1 : 0.079861 
+
+Total Learning Time : 5765.431117534637 
+
+Total Inference Time : 3.0689845085144043 
+
+Amount of data: 0.8
+Training from scratch 
+
+Results 
+
+CLL : -0.740023 
+
+AUC ROC : 0.669705 
+
+AUC PR : 0.674245 
+
+Precision : 0.9 
+
+Recall : 0.081818 
+
+F1 : 0.15 
+
+Total Learning Time : 6105.929102420807 
+
+Total Inference Time : 2.7292683124542236 
+
+Amount of data: 1.0
+Training from scratch 
+
+Results 
+
+CLL : -0.731056 
+
+AUC ROC : 0.699225 
+
+AUC PR : 0.702831 
+
+Precision : 0.878788 
+
+Recall : 0.052727 
+
+F1 : 0.099485 
+
+Total Learning Time : 7136.153727531433 
+
+Total Inference Time : 3.299607992172241 
+
