@@ -27,7 +27,7 @@ def create_fasttext_spacy_file():
     # When download is over, please create a new directory named fasttext inside TransBoostler's and place the model file in it.
 
     directory = os.path.abspath('..')
-    if(not os.path.exists(os.path.exists('/'.join([directory, 'fasttext/wiki.en.bin'])))):
+    if(not os.path.exists(os.path.exists('/'.join([directory, 'resources/fasttext/wiki.en.bin'])))):
         
         #Creates new folder to download Word2Vec pre-trained model
         os.mkdir(os.path.join(directory, '/fasttext'))
@@ -36,14 +36,14 @@ def create_fasttext_spacy_file():
         
     else:
 
-        model = KeyedVectors.load_word2vec_format('/'.join([directory, 'fasttext/wiki.en.vec']), binary=False)
+        model = KeyedVectors.load_word2vec_format('/'.join([directory, 'resources/fasttext/wiki.en.vec']), binary=False)
 
-        if(not os.path.exists(os.path.exists('/'.join([directory, 'fasttext/spacy'])))):
-            os.mkdir('/'.join([directory, 'fasttext/spacy']))
+        if(not os.path.exists(os.path.exists('/'.join([directory, 'resources/fasttext/spacy'])))):
+            os.mkdir('/'.join([directory, 'resources/fasttext/spacy']))
         
-        model.save_word2vec_format('/'.join([directory,'fasttext/spacy/wiki.txt']), binary=False)
+        model.save_word2vec_format('/'.join([directory,'resources/fasttext/spacy/wiki.txt']), binary=False)
         
-        call_process('cd ..; python3 -m spacy init vectors en fasttext/spacy/wiki.txt  fasttext/spacy/ --name en_wiki.vectors --verbose')
+        call_process('cd ..; python3 -m spacy init vectors en resources/fasttext/spacy/wiki.txt  resources/fasttext/spacy/ --name en_wiki.vectors --verbose')
     
     return 'SpaCy model created successfully. You can access it by en_googlenews.vectors'
     
