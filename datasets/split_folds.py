@@ -42,15 +42,15 @@ for experiment in experiments:
     
         # Group and shuffle
         if target not in ['nell_sports', 'nell_finances', 'yago2s', 'yeast2', 'fly']:
-            [tar_train_facts, tar_test_facts] =  datasets.get_kfold_small(i, tar_data[0])
-            [tar_train_pos, tar_test_pos] =  datasets.get_kfold_small(i, tar_data[1])
-            [tar_train_neg, tar_test_neg] =  datasets.get_kfold_small(i, tar_data[2])
+            [tar_train_facts, tar_test_facts] =  datasets.get_kfold(i, tar_data[0])
+            [tar_train_pos, tar_test_pos] =  datasets.get_kfold(i, tar_data[1])
+            [tar_train_neg, tar_test_neg] =  datasets.get_kfold(i, tar_data[2])
         else:
             [tar_train_facts, tar_test_facts] =  [tar_data[0][0], tar_data[0][0]]
             to_folds_pos = datasets.split_into_folds(tar_data[1][0], n_folds=n_folds, seed=params.SEED)
             to_folds_neg = datasets.split_into_folds(tar_data[2][0], n_folds=n_folds, seed=params.SEED)
-            [tar_train_pos, tar_test_pos] =  datasets.get_kfold_small(i, to_folds_pos)
-            [tar_train_neg, tar_test_neg] =  datasets.get_kfold_small(i, to_folds_neg)
+            [tar_train_pos, tar_test_pos] =  datasets.get_kfold(i, to_folds_pos)
+            [tar_train_neg, tar_test_neg] =  datasets.get_kfold(i, to_folds_neg)
         
         logging.info('Target train facts examples: %s' % len(tar_train_facts))
         logging.info('Target train pos examples: %s' % len(tar_train_pos))
