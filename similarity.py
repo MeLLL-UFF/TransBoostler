@@ -251,7 +251,7 @@ class Similarity:
         similarity[key] = np.dot(matutils.unitvec(np.array(n_source).mean(axis=0)), matutils.unitvec(np.array(n_target).mean(axis=0)))
 
     df = pd.DataFrame.from_dict(similarity, orient="index", columns=['similarity'])
-    return df.sort_values(by='similarity', ascending=False)
+    return df.rename_axis('candidates').sort_values(by=['similarity', 'candidates'], ascending=[False, True])
 
   def soft_cosine_similarities(self, sources, targets):
     """
@@ -289,7 +289,7 @@ class Similarity:
             similarity[key] = self.similarity_matrix.inner_product(sent_1, sent_2, normalized=(True,True))
 
     df = pd.DataFrame.from_dict(similarity, orient="index", columns=['similarity'])
-    return df.sort_values(by='similarity', ascending=False)
+    return df.rename_axis('candidates').sort_values(by=['similarity', 'candidates'], ascending=[False, True])
 
   def wmd_similarities(self, sources, targets, model):
     """
@@ -315,7 +315,7 @@ class Similarity:
         similarity[key] = self.__wmdistance(source[0], target[0], model)
 
     df = pd.DataFrame.from_dict(similarity, orient="index", columns=['similarity'])
-    return df.sort_values(by='similarity')
+    return df.rename_axis('candidates').sort_values(by=['similarity', 'candidates'])
 
   def relaxed_wmd_similarities(self, sources, targets, modelname):
       """
@@ -361,7 +361,7 @@ class Similarity:
                 similarity[key] = wmd_instance.compute_similarity(sent_1, sent_2)
 
       df = pd.DataFrame.from_dict(similarity, orient="index", columns=['similarity'])
-      return df.sort_values(by='similarity', ascending=True)
+      return df.rename_axis('candidates').sort_values(by=['similarity', 'candidates'])
 
   def euclidean_distance(self, sources, targets):
     """
@@ -385,7 +385,6 @@ class Similarity:
 
         if '()' in key: key = key.replace('(', '').replace(')', '')
 
-
         source_segmented = self.preprocessing.pre_process_text(s)
         target_segmented = self.preprocessing.pre_process_text(t)
 
@@ -398,7 +397,7 @@ class Similarity:
         similarity[key] = distance.euclidean(n_source, n_target)
 
     df = pd.DataFrame.from_dict(similarity, orient="index", columns=['similarity'])
-    return df.sort_values(by='similarity')
+    return df.rename_axis('candidates').sort_values(by=['similarity', 'candidates'])
 
 # from ekphrasis.classes.segmenter import Segmenter
 # from pyemd import emd
