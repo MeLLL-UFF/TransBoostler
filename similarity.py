@@ -19,9 +19,10 @@ import os
 
 class Similarity:
 
-  def __init__(self, preprocessing, similarity_matrix):
+  def __init__(self, preprocessing, similarity_matrix, dictionary):
     self.preprocessing = preprocessing
     self.similarity_matrix = similarity_matrix
+    self.dictionary = dictionary
   
   def __nbow(self, document, dictionary, vocab_len):
     """
@@ -278,12 +279,14 @@ class Similarity:
             sent_2 = self.preprocessing.pre_process_text(target[0])
 
             # Prepare a dictionary and a corpus.
-            documents  = [sent_1, sent_2]
-            dictionary = corpora.Dictionary(documents)
+            #documents  = [sent_1, sent_2]
+            #dictionary = corpora.Dictionary(documents)
+
+            #similarity_matrix = SparseTermSimilarityMatrix(self.similarity_matrix, dictionary)
 
             # Convert the sentences into bag-of-words vectors.
-            sent_1 = dictionary.doc2bow(sent_1)
-            sent_2 = dictionary.doc2bow(sent_2)
+            sent_1 = self.dictionary.doc2bow(sent_1)
+            sent_2 = self.dictionary.doc2bow(sent_2)
 
             # Compute soft cosine similarity
             similarity[key] = self.similarity_matrix.inner_product(sent_1, sent_2, normalized=(True,True))
@@ -402,26 +405,67 @@ class Similarity:
 
 # from ekphrasis.classes.segmenter import Segmenter
 # from pyemd import emd
+# import gensim.downloader as api
 
 # # Segmenter using the word statistics from Wikipedia
 # seg = Segmenter(corpus="english")
 
-# # fraseA = 'obama speaks media illinois'
-# # fraseB = 'president greets press chicago'
+# fraseA = 'Obama speaks to the media in Illinois'
+# fraseB = 'The president greets the press in Chicago'
+# fraseC = 'Having a tough time finding an orange juice press machine?'
 
-# sent_1 = [['Dravid is a cricket player and a opening batsman', ['A']]]
-# sent_2 = [['Leo is a cricket player too He is a batsman,baller and keeper', ['B']]]
+# # sent_1 = [['Dravid is a cricket player and a opening batsman', ['A']]]
+# # sent_2 = [['Leo is a cricket player too He is a batsman,baller and keeper', ['B']]]
 
-# model = KeyedVectors.load_word2vec_format('resources/word2vec/GoogleNews-vectors-negative300.bin', binary=True)
+# #model = KeyedVectors.load_word2vec_format('resources/word2vec/GoogleNews-vectors-negative300.bin', binary=True)
+# model = api.load("glove-wiki-gigaword-50")
 
 # preprocessing = Preprocessing(seg)
-# sim = Similarity(preprocessing)
 
-# a = sim.soft_cosine_similarities(sent_1, sent_2, model)
+# similarity_matrix, dictionary = '', ''
+# similarity_matrix, dictionary = utils.get_softcosine_matrix([fraseA + '(A,B)'], [fraseB + '(A,B)',fraseC + '(A,B)'], model, preprocessing)
+
+# similarity = Similarity(preprocessing, similarity_matrix, dictionary)
+
+# #sim = Similarity(preprocessing, similarity_matrix)
+
+# a = similarity.soft_cosine_similarities([[fraseA, ['', '']]], [[fraseB, ['', '']], [fraseC, ['', '']]])
 
 # print(a)
 
-# #print(sim.wmd_similarities([['Obama speaks to the media in Illinois', 'person', 'person']], [['The president greets the press in Chicago', 'person', 'person']], model))
+# from nltk.corpus import stopwords
 
-# print(sim.wmd_similarities([[''.join(fraseA), 'person', 'person']], [[''.join(fraseB), 'person', 'person']], model))
-# print(model.wmdistance(''.join(fraseA), ''.join(fraseB)))
+# fraseA = 'Obama speaks to the media in Illinois'
+# fraseB = 'The president greets the press in Chicago'
+# fraseC = 'Having a tough time finding an orange juice press machine?'
+
+# # Remove stopwords.
+# stop_words = stopwords.words('english')
+# fraseA = [w for w in fraseA if w not in stop_words]
+# fraseB = [w for w in fraseB if w not in stop_words]
+# fraseC = [w for w in fraseC if w not in stop_words]
+
+# # Prepare a dictionary and a corpus.
+# from gensim import corpora
+# documents = [fraseA, fraseB, fraseC]
+# dictionary = corpora.Dictionary(documents)
+
+# # Convert the sentences into bag-of-words vectors.
+# fraseA = dictionary.doc2bow(fraseA)
+# fraseB = dictionary.doc2bow(fraseB)
+# fraseC = dictionary.doc2bow(fraseC)
+
+# similarity_index = WordEmbeddingSimilarityIndex(model)
+# similarity_matrix = SparseTermSimilarityMatrix(similarity_index, dictionary)
+
+# similarity = similarity_matrix.inner_product(fraseA, fraseB, normalized=(True,True))
+# print('similarity = %.4f' % similarity)
+
+# similarity = similarity_matrix.inner_product(fraseA, fraseC, normalized=(True,True))
+# print('similarity = %.4f' % similarity)
+
+
+#print(sim.wmd_similarities([['Obama speaks to the media in Illinois', 'person', 'person']], [['The president greets the press in Chicago', 'person', 'person']], model))
+
+#print(sim.wmd_similarities([[''.join(fraseA), 'person', 'person']], [[''.join(fraseB), 'person', 'person']], model))
+#print(model.wmdistance(''.join(fraseA), ''.join(fraseB)))
