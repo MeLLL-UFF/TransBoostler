@@ -28,8 +28,6 @@ balanced = False
 
 learn_from_source = False
 
-folds_path = 'folds_transfer_experiment'
-
 revision = TheoryRevision()
 segmenter = Segmenter(corpus="english")
 
@@ -68,6 +66,8 @@ def load_model(model_name):
         start = time.time()
         #loadedModel = FastText.load_fasttext_format(params.WIKIPEDIA_FASTTEXT)
         loadedModel = KeyedVectors.load_word2vec_format(params.WIKIPEDIA_FASTTEXT, binary=False, unicode_errors='ignore')
+
+        #loadedModel.init_sims(replace=True)
 
         end = time.time()
         utils.print_function('Time to load FastText model: {} seconds'.format(round(end-start, 2)), experiment_title)
@@ -242,6 +242,8 @@ def main():
                 'maxTreeDepth' : params.MAXTREEDEPTH
                 }
 
+        # APAGAR ISSO AQUI
+        n_runs = 1
         while results['save']['n_runs'] < n_runs:
 
             utils.print_function('Run: ' + str(results['save']['n_runs'] + 1), experiment_title)
@@ -312,6 +314,16 @@ def main():
                 embeddingModel = setup['model'].lower()
                 similarityMetric = setup['similarity_metric'].lower()
                 theoryRevision = setup['revision_theory']
+
+                path = os.getcwd() + '/experiments/' + experiment_title + '/similarities'
+                if not os.path.exists(path):
+                    os.mkdir(path)
+
+                if not os.path.exists(path + '/' + embeddingModel):
+                    os.mkdir(path + '/' + embeddingModel)
+
+                if not os.path.exists(path + '/' + embeddingModel + '/' + similarityMetric):
+                    os.mkdir(path + '/' + embeddingModel + '/' + similarityMetric)
                 
                 utils.delete_file(params.TRANSFER_FILENAME)
                 
@@ -346,6 +358,9 @@ def main():
                     n_folds = params.N_FOLDS
                 else:
                     n_folds = len(tar_total_data[0])
+
+                # APAGAR ISSO AQUI
+                n_folds = 0
 
                 results_save, confusion_matrix_save = [], []
                 for i in range(n_folds):
