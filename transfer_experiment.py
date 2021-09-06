@@ -267,7 +267,7 @@ def main():
                 loadedModel = load_model(embeddingModel)
                 previous = embeddingModel
             
-            transfer = Transfer(model=loadedModel, model_name=embeddingModel, segmenter=segmenter, similarity_metric=similarityMetric, sources=sources, targets=targets)
+            transfer = Transfer(model=loadedModel, model_name=embeddingModel, segmenter=segmenter, similarity_metric=similarityMetric, sources=sources, targets=targets, experiment=experiment_title)
 
             while results['save']['n_runs'] < n_runs:
                 utils.print_function('Run: ' + str(results['save']['n_runs'] + 1), experiment_title)
@@ -351,6 +351,7 @@ def main():
                     n_folds = len(tar_total_data[0])
 
                 results_save, confusion_matrix_save = [], []
+                
                 for i in range(n_folds):
                     utils.print_function('\n Starting fold {} of {} folds \n'.format(i+1, n_folds), experiment_title)
 
