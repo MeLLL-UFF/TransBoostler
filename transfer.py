@@ -27,9 +27,9 @@ class Transfer:
 
     self.similarity_matrix, self.dictionary = '', ''
     if self.similarity_metric == 'softcosine':
-      self.similarity_matrix = utils.get_softcosine_matrix(self.sources, self.targets, self.model, self.preprocessing)
+      self.similarity_matrix, self.dictionary = utils.get_softcosine_matrix(self.sources, self.targets, self.model, self.preprocessing)
     
-    self.similarity = Similarity(self.preprocessing, self.similarity_matrix)
+    self.similarity = Similarity(self.preprocessing, self.similarity_matrix, self.dictionary)
 
   def __same_arity(self, source_literals, target_literals):
     """

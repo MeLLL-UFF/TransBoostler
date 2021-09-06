@@ -506,7 +506,8 @@ def get_softcosine_matrix(sources, targets, model, preprocessing):
   similarity_index = WordEmbeddingSimilarityIndex(model)
 
   # Prepare a dictionary and a corpus.
-  documents  = [preprocessing.pre_process_text(source[0]) for source in sources]
+  documents = []
+  documents += [preprocessing.pre_process_text(source[0]) for source in sources]
   documents += [preprocessing.pre_process_text(target[0]) for target in targets]
 
   dictionary = corpora.Dictionary(documents)
@@ -515,7 +516,7 @@ def get_softcosine_matrix(sources, targets, model, preprocessing):
   similarity_matrix = SparseTermSimilarityMatrix(similarity_index, dictionary)
   del similarity_index
 
-  return similarity_matrix
+  return similarity_matrix, dictionary
 
 def print_function(message, experiment_title):
     if not os.path.exists('experiments/' + experiment_title):
