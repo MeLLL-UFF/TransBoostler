@@ -143,91 +143,98 @@ def main():
                 'numOfClauses' : params.NUMOFCLAUSES,
                 'maxTreeDepth' : params.MAXTREEDEPTH
                 }
-        
-        if('rdn-b' not in rdnb_confusion_matrix):
-            #transboostler_experiments[embeddingModel] = {}
-            rdnb_confusion_matrix['rdn-b'] = {}
 
-        #transboostler_experiments[embeddingModel][similarityMetric] = []
-        #experiment_metrics = {key: {'CLL': [], 'AUC ROC': [], 'AUC PR': [], 'Learning Time': [], 'Inference Time': []} for key in params.AMOUNTS} 
-        rdnb_confusion_matrix['rdn-b'] = []
-        confusion_matrix = {'TP': [], 'FP': [], 'TN': [], 'FN': []} 
+        # APAGAR ISSO AQUI
+        n_runs = 1
+        while results['save']['n_runs'] < n_runs:
 
-        utils.print_function('Starting experiments for RDN-B \n', experiment_title)
+            utils.print_function('Run: ' + str(results['save']['n_runs'] + 1), experiment_title)
+            
+            if('rdn-b' not in rdnb_confusion_matrix):
+                #transboostler_experiments[embeddingModel] = {}
+                rdnb_confusion_matrix['rdn-b'] = {}
 
-        if target in ['nell_sports', 'nell_finances', 'yago2s']:
-            n_folds = params.N_FOLDS
-        else:
-            n_folds = len(tar_total_data[0])
+            #transboostler_experiments[embeddingModel][similarityMetric] = []
+            #experiment_metrics = {key: {'CLL': [], 'AUC ROC': [], 'AUC PR': [], 'Learning Time': [], 'Inference Time': []} for key in params.AMOUNTS} 
+            rdnb_confusion_matrix['rdn-b'] = []
+            confusion_matrix = {'TP': [], 'FP': [], 'TN': [], 'FN': []} 
 
-        results_save, confusion_matrix_save = [], []
-        for i in range(n_folds):
-            utils.print_function('\n Starting fold {} of {} folds \n'.format(i+1, n_folds), experiment_title)
+            utils.print_function('Starting experiments for RDN-B \n', experiment_title)
 
-            ob_save, cm_save = {}, {}
-
-            if target not in ['nell_sports', 'nell_finances', 'yago2s']:
-                [tar_train_pos, tar_test_pos] = datasets.get_kfold_small(i, tar_total_data[0])
+            if target in ['nell_sports', 'nell_finances', 'yago2s']:
+                n_folds = params.N_FOLDS
             else:
-                t_total_data = datasets.load(target, bk[target], target=to_predicate, balanced=balanced, seed=params.SEED)
-                tar_train_pos = datasets.split_into_folds(t_total_data[1][0], n_folds=n_folds, seed=params.SEED)[i] + t_total_data[0][0]
+                n_folds = len(tar_total_data[0])
 
-            # Load new predicate target dataset
-            tar_data = datasets.load(target, bk[target], target=to_predicate, balanced=balanced, seed=params.SEED)
+            results_save, confusion_matrix_save = [], []
+            for i in range(n_folds):
+                utils.print_function('\n Starting fold {} of {} folds \n'.format(i+1, n_folds), experiment_title)
 
-            # Group and shuffle
-            if target not in ['nell_sports', 'nell_finances', 'yago2s']:
-                [tar_train_facts, tar_test_facts] =  datasets.get_kfold_small(i, tar_data[0])
-                [tar_train_pos, tar_test_pos] =  datasets.get_kfold_small(i, tar_data[1])
-                [tar_train_neg, tar_test_neg] =  datasets.get_kfold_small(i, tar_data[2])
-            else:
-                [tar_train_facts, tar_test_facts] =  [tar_data[0][0], tar_data[0][0]]
-                to_folds_pos = datasets.split_into_folds(tar_data[1][0], n_folds=n_folds, seed=params.SEED)
-                to_folds_neg = datasets.split_into_folds(tar_data[2][0], n_folds=n_folds, seed=params.SEED)
-                [tar_train_pos, tar_test_pos] =  datasets.get_kfold_small(i, to_folds_pos)
-                [tar_train_neg, tar_test_neg] =  datasets.get_kfold_small(i, to_folds_neg)
-            
-            random.shuffle(tar_train_pos)
-            random.shuffle(tar_train_neg)
-            
-            utils.print_function('Start training from scratch\n', experiment_title)
+                ob_save, cm_save = {}, {}
 
-            utils.print_function('Target train facts examples: %s' % len(tar_train_facts), experiment_title)
-            utils.print_function('Target train pos examples: %s' % len(tar_train_pos), experiment_title)
-            utils.print_function('Target train neg examples: %s\n' % len(tar_train_neg), experiment_title)
+                if target not in ['nell_sports', 'nell_finances', 'yago2s']:
+                    [tar_train_pos, tar_test_pos] = datasets.get_kfold_small(i, tar_total_data[0])
+                else:
+                    t_total_data = datasets.load(target, bk[target], target=to_predicate, balanced=balanced, seed=params.SEED)
+                    tar_train_pos = datasets.split_into_folds(t_total_data[1][0], n_folds=n_folds, seed=params.SEED)[i] + t_total_data[0][0]
 
-            utils.print_function('Target test facts examples: %s' % len(tar_test_facts), experiment_title)
-            utils.print_function('Target test pos examples: %s' % len(tar_test_pos), experiment_title)
-            utils.print_function('Target test neg examples: %s\n' % len(tar_test_neg), experiment_title)
+                # Load new predicate target dataset
+                tar_data = datasets.load(target, bk[target], target=to_predicate, balanced=balanced, seed=params.SEED)
 
-            # Creating background
-            background = boostsrl.modes(bk[target], [to_predicate], useStdLogicVariables=False, maxTreeDepth=params.MAXTREEDEPTH, nodeSize=params.NODESIZE, numOfClauses=params.NUMOFCLAUSES)
+                # Group and shuffle
+                if target not in ['nell_sports', 'nell_finances', 'yago2s']:
+                    [tar_train_facts, tar_test_facts] =  datasets.get_kfold_small(i, tar_data[0])
+                    [tar_train_pos, tar_test_pos] =  datasets.get_kfold_small(i, tar_data[1])
+                    [tar_train_neg, tar_test_neg] =  datasets.get_kfold_small(i, tar_data[2])
+                else:
+                    [tar_train_facts, tar_test_facts] =  [tar_data[0][0], tar_data[0][0]]
+                    to_folds_pos = datasets.split_into_folds(tar_data[1][0], n_folds=n_folds, seed=params.SEED)
+                    to_folds_neg = datasets.split_into_folds(tar_data[2][0], n_folds=n_folds, seed=params.SEED)
+                    [tar_train_pos, tar_test_pos] =  datasets.get_kfold_small(i, to_folds_pos)
+                    [tar_train_neg, tar_test_neg] =  datasets.get_kfold_small(i, to_folds_neg)
+                
+                random.shuffle(tar_train_pos)
+                random.shuffle(tar_train_neg)
+                
+                utils.print_function('Start training from scratch\n', experiment_title)
 
-            # Train and test
-            utils.print_function('Training from scratch \n', experiment_title)
+                utils.print_function('Target train facts examples: %s' % len(tar_train_facts), experiment_title)
+                utils.print_function('Target train pos examples: %s' % len(tar_train_pos), experiment_title)
+                utils.print_function('Target train neg examples: %s\n' % len(tar_train_neg), experiment_title)
 
-            # Learn and test model not revising theory
-            model, t_results, learning_time, inference_time = train_and_test(background, tar_train_pos, tar_train_neg, tar_train_facts, tar_test_pos, tar_test_neg, tar_test_facts)
-            del model
+                utils.print_function('Target test facts examples: %s' % len(tar_test_facts), experiment_title)
+                utils.print_function('Target test pos examples: %s' % len(tar_test_pos), experiment_title)
+                utils.print_function('Target test neg examples: %s\n' % len(tar_test_neg), experiment_title)
 
-            t_results['Learning time'] = learning_time
-            ob_save['rdn-b'] = t_results
-            
-            utils.show_results(utils.get_results_dict(t_results, learning_time, inference_time), experiment_title)
+                # Creating background
+                background = boostsrl.modes(bk[target], [to_predicate], useStdLogicVariables=False, maxTreeDepth=params.MAXTREEDEPTH, nodeSize=params.NODESIZE, numOfClauses=params.NUMOFCLAUSES)
 
-            cm = get_confusion_matrix(to_predicate)
-            cm_save['rdn-b'] = cm
+                # Train and test
+                utils.print_function('Training from scratch \n', experiment_title)
 
-            confusion_matrix['TP'].append(cm['TP'])
-            confusion_matrix['FP'].append(cm['FP'])
-            confusion_matrix['TN'].append(cm['TN'])
-            confusion_matrix['FN'].append(cm['FN'])
+                # Learn and test model not revising theory
+                model, t_results, learning_time, inference_time = train_and_test(background, tar_train_pos, tar_train_neg, tar_train_facts, tar_test_pos, tar_test_neg, tar_test_facts)
+                del model
 
-            rdnb_confusion_matrix['rdn-b'].append(confusion_matrix) 
-            del cm, t_results, learning_time, inference_time
+                t_results['Learning time'] = learning_time
+                ob_save['rdn-b'] = t_results
+                
+                utils.show_results(utils.get_results_dict(t_results, learning_time, inference_time), experiment_title)
 
-            results_save.append(ob_save)
-        save_experiment(results_save, experiment_title)
+                cm = get_confusion_matrix(to_predicate)
+                cm_save['rdn-b'] = cm
+
+                confusion_matrix['TP'].append(cm['TP'])
+                confusion_matrix['FP'].append(cm['FP'])
+                confusion_matrix['TN'].append(cm['TN'])
+                confusion_matrix['FN'].append(cm['FN'])
+
+                rdnb_confusion_matrix['rdn-b'].append(confusion_matrix) 
+                del cm, t_results, learning_time, inference_time
+
+                results_save.append(ob_save)
+            save_experiment(results_save, experiment_title)
+            results['save']['n_runs'] += 1
         
         matrix_filename = os.getcwd() + '/experiments/{}_{}_{}/rdnb_confusion_matrix.json'.format(_id, source, target)
 
