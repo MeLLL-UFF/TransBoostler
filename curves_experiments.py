@@ -1,7 +1,4 @@
 
-#import logging
-#logging.basicConfig(level=logging.INFO, format='%(asctime)s %(message)s', handlers=[logging.FileHandler('app.log','w'),logging.StreamHandler()])
-
 from ekphrasis.classes.segmenter import Segmenter
 from experiments import experiments, bk, setups
 from gensim.models import KeyedVectors, FastText
