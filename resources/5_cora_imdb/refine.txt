@@ -1,0 +1,53 @@
+0;;sametitle(A, B) :- haswordtitle(A, C), haswordauthor(D, C).;true;true
+0;true;haswordtitle(B, C).;true;true
+0;true,true;author(E, D), title(E, A).;false;false
+0;true,false;haswordvenue(F, C).;true;false
+0;true,false,true;author(G, D), title(G, B).;false;false
+0;false;haswordtitle(B, H), haswordauthor(I, H).;true;false
+0;false,true;haswordvenue(J, H).;false;false
+1;;sametitle(A, B) :- haswordtitle(A, C), haswordauthor(D, C).;true;true
+1;true;haswordtitle(B, C).;false;true
+1;true,false;haswordvenue(E, C).;false;false
+1;false;haswordtitle(B, F), haswordauthor(G, F).;true;false
+1;false,true;haswordvenue(H, F).;false;false
+2;;sametitle(A, B) :- haswordtitle(A, C), haswordauthor(D, C).;true;false
+2;true;haswordtitle(B, C).;false;true
+2;true,false;haswordvenue(E, C).;false;false
+3;;sametitle(A, B) :- haswordtitle(A, C), haswordauthor(D, C).;true;false
+3;true;haswordtitle(B, C).;false;true
+3;true,false;haswordvenue(E, C).;false;false
+4;;sametitle(A, B) :- haswordtitle(A, C), haswordauthor(D, C).;true;true
+4;true;haswordtitle(B, C).;true;true
+4;true,true;author(E, D), title(E, A).;false;false
+4;true,false;author(F, D), title(F, B).;false;true
+4;true,false,false;haswordvenue(G, C).;false;false
+4;false;haswordtitle(B, H), haswordauthor(I, H).;true;false
+4;false,true;haswordvenue(J, H).;false;false
+5;;sametitle(A, B) :- haswordtitle(B, C), haswordauthor(D, C).;true;true
+5;true;haswordtitle(A, C).;false;true
+5;true,false;author(E, D), title(E, A).;false;true
+5;true,false,false;haswordvenue(F, C).;false;false
+5;false;haswordtitle(A, G), haswordauthor(H, G).;true;false
+5;false,true;author(I, H), title(I, B).;false;true
+5;false,true,false;haswordvenue(J, G).;false;false
+6;;sametitle(A, B) :- haswordtitle(B, C), haswordauthor(D, C).;true;false
+6;true;haswordvenue(E, C).;true;false
+6;true,true;haswordtitle(A, C).;false;true
+6;true,true,false;author(F, D), title(F, A).;false;false
+7;;sametitle(A, B) :- haswordtitle(B, C), haswordauthor(D, C).;true;true
+7;true;haswordtitle(A, C).;false;true
+7;true,false;haswordvenue(E, C).;false;false
+7;false;haswordtitle(A, F), haswordauthor(G, F).;true;false
+7;false,true;author(H, G), title(H, B).;false;true
+7;false,true,false;haswordvenue(I, F).;false;false
+8;;sametitle(A, B) :- haswordtitle(B, C), haswordauthor(D, C).;true;true
+8;true;haswordtitle(A, C).;false;true
+8;true,false;author(E, D), title(E, A).;false;true
+8;true,false,false;haswordvenue(F, C).;false;false
+8;false;haswordtitle(A, G), haswordauthor(H, G).;true;false
+8;false,true;author(I, H), title(I, B).;false;true
+8;false,true,false;haswordvenue(J, G).;false;false
+9;;sametitle(A, B) :- haswordtitle(B, C), haswordauthor(D, C).;true;false
+9;true;haswordtitle(A, C).;false;true
+9;true,false;haswordvenue(E, C).;true;false
+9;true,false,true;author(F, D), venue(F, E).;false;false

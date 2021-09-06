@@ -1,0 +1,9 @@
+,0
+professor(person),director(person)
+"publication(title,person)","movie(movie,person)"
+student(person),female(person)
+"sameperson(person,person)","genre(person,genre)"
+"hasposition(person,faculty)",empty
+"inphase(person,prequals)",empty
+"projectmember(project,person)",empty
+"tempadvisedby(person,person)",empty

@@ -1,0 +1,4 @@
+,0
+actor(person),professor(person)
+"movie(movie,person)","courselevel(course,level)"
+director(person),student(person)
