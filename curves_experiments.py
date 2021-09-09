@@ -152,6 +152,7 @@ def main():
     # Dictionaries to keep all experiments results
     #transboostler_experiments = {}
     transboostler_confusion_matrix = {}
+    loadedModel = ''
 
     if not os.path.exists('experiments'):
         os.makedirs('experiments')
@@ -234,7 +235,7 @@ def main():
                 src_pos   = datasets.group_folds(src_data[1])
                 src_neg   = datasets.group_folds(src_data[2])
                             
-                utils.print_function('Start learning from source dataset\n')
+                utils.print_function('Start learning from source dataset\n', experiment_title)
                 
                 utils.print_function('Source train facts examples: {}'.format(len(src_facts)), experiment_title)
                 utils.print_function('Source train pos examples: {}'.format(len(src_pos)), experiment_title)
@@ -302,22 +303,27 @@ def main():
 
                 utils.print_function('Starting experiments for {} using {} \n'.format(embeddingModel, similarityMetric), experiment_title)
             
-                if('previous' not in locals() or previous != embeddingModel):
+                if(('previous' not in locals() or previous != embeddingModel) and similarityMetric != 'relax-wmd'):
                     loadedModel = load_model(embeddingModel)
                     previous = embeddingModel
 
-                transfer = Transfer(model=loadedModel, model_name=embeddingModel, segmenter=segmenter, similarity_metric=similarityMetric, sources=sources, targets=targets)
+                transfer = Transfer(model=loadedModel, model_name=embeddingModel, segmenter=segmenter, similarity_metric=similarityMetric, sources=sources, targets=targets, experiment=experiment_title)
                     
                 start = time.time()
 
-                # Map and transfer using the loaded embedding model
-                mapping  = transfer.map_predicates(similarityMetric, nodes, targets)
+                mapping_time_clauses = 0
+                if(similarityMetric == 'relax-wmd'):
+                    mapping, mapping_time_clauses = transfer.map_predicates(similarityMetric, nodes, targets)
+                else:
+                    # Map and transfer using the loaded embedding model
+                    mapping  = transfer.map_predicates(similarityMetric, nodes, targets)
+
                 transfer.write_to_file_closest_distance(similarityMetric, embeddingModel, predicate, to_predicate, arity, mapping, 'experiments/' + experiment_title, recursion=recursion, searchArgPermutation=params.SEARCH_PERMUTATION, searchEmpty=params.SEARCH_EMPTY, allowSameTargetMap=params.ALLOW_SAME_TARGET_MAP)
                 #transfer.write_constraints_to_file('experiments/' + experiment_title)
                 del mapping
 
                 end = time.time()
-                mapping_time = end-start
+                mapping_time = end-start + mapping_time_clauses
 
                 if target in ['nell_sports', 'nell_finances', 'yago2s']:
                     n_folds = params.N_FOLDS
