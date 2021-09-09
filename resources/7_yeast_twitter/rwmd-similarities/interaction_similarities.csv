@@ -1,0 +1,3 @@
+candidates,similarity
+"interaction(protein,protein),follows(account,account)",4.676661968231201
+"interaction(protein,protein),tweets(account,word)",5.603933811187744

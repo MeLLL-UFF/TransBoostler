@@ -1,0 +1,10 @@
+candidates,similarity
+"movie(movie,person),sameauthor(author,author)",4.417647361755371
+"movie(movie,person),haswordauthor(author,word)",4.572859287261963
+"movie(movie,person),author(class,author)",4.690475940704346
+"movie(movie,person),haswordvenue(venue,word)",4.784782886505127
+"movie(movie,person),sametitle(title,title)",4.80010986328125
+"movie(movie,person),haswordtitle(title,word)",4.827834129333496
+"movie(movie,person),samebib(class,class)",5.123079776763916
+"movie(movie,person),venue(class,venue)",5.3262457847595215
+"movie(movie,person),title(class,title)",5.4554009437561035

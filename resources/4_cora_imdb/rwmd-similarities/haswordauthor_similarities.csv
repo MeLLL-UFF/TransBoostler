@@ -1,0 +1,3 @@
+candidates,similarity
+"haswordauthor(author,word),movie(movie,person)",4.572859287261963
+"haswordauthor(author,word),genre(person,genre)",5.137548923492432

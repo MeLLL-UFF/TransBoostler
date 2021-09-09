@@ -1,0 +1,3 @@
+candidates,similarity
+"yearsinprogram(person,year),movie(movie,person)",4.5297322273254395
+"yearsinprogram(person,year),genre(person,genre)",5.28743839263916

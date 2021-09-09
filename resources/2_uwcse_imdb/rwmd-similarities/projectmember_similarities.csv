@@ -1,0 +1,3 @@
+candidates,similarity
+"projectmember(project,person),movie(movie,person)",4.956645488739014
+"projectmember(project,person),genre(person,genre)",5.603146553039551

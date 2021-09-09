@@ -1,0 +1,6 @@
+candidates,similarity
+"hasposition(person,faculty),has(word,page)",2.083589553833008
+"hasposition(person,faculty),hasanchor(word,page)",2.629554510116577
+"hasposition(person,faculty),instructorsof(page,page)",3.8961451053619385
+"hasposition(person,faculty),membersofproject(page,page)",3.9864816665649414
+"hasposition(person,faculty),pageclass(page,class)",5.305330276489258

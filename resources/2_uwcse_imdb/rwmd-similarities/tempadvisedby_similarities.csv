@@ -1,0 +1,3 @@
+candidates,similarity
+"tempadvisedby(person,person),movie(movie,person)",4.829348564147949
+"tempadvisedby(person,person),genre(person,genre)",5.565415382385254

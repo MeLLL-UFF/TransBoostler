@@ -1,0 +1,7 @@
+candidates,similarity
+"student(person),studentpage(page)",2.7806174755096436
+"student(person),allwordscapitalized(id)",4.760529518127441
+"student(person),facultypage(page)",4.848039627075195
+"student(person),coursepage(page)",4.900764465332031
+"student(person),researchprojectpage(page)",4.95275354385376
+"student(person),hasalphanumericword(id)",5.220669746398926

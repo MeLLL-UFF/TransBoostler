@@ -1,0 +1,6 @@
+candidates,similarity
+"tempadvisedby(person,person),has(word,page)",3.5968220233917236
+"tempadvisedby(person,person),instructorsof(page,page)",4.055312156677246
+"tempadvisedby(person,person),membersofproject(page,page)",4.118095397949219
+"tempadvisedby(person,person),hasanchor(word,page)",4.434452533721924
+"tempadvisedby(person,person),pageclass(page,class)",5.4208269119262695

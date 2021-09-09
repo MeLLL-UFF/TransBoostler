@@ -1,0 +1,6 @@
+candidates,similarity
+"samecourse(course,course),has(word,page)",3.1537981033325195
+"samecourse(course,course),instructorsof(page,page)",3.4169139862060547
+"samecourse(course,course),membersofproject(page,page)",3.789247512817383
+"samecourse(course,course),hasanchor(word,page)",4.174923419952393
+"samecourse(course,course),pageclass(page,class)",5.067410469055176

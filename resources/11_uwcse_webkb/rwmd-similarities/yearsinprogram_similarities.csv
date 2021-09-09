@@ -1,0 +1,6 @@
+candidates,similarity
+"yearsinprogram(person,year),membersofproject(page,page)",3.572042465209961
+"yearsinprogram(person,year),has(word,page)",3.584141731262207
+"yearsinprogram(person,year),instructorsof(page,page)",3.6981418132781982
+"yearsinprogram(person,year),hasanchor(word,page)",4.3250813484191895
+"yearsinprogram(person,year),pageclass(page,class)",5.348074913024902

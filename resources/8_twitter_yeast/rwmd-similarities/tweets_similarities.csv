@@ -1,0 +1,7 @@
+candidates,similarity
+"tweets(account,word),complex(protein,com)",5.545722007751465
+"tweets(account,word),interaction(protein,protein)",5.603933811187744
+"tweets(account,word),location(protein,loc)",5.615184783935547
+"tweets(account,word),function(protein,fun)",5.953911781311035
+"tweets(account,word),phenotype(protein,phe)",6.348622798919678
+"tweets(account,word),enzyme(protein,enz)",7.5167927742004395

@@ -1,0 +1,6 @@
+candidates,similarity
+"inphase(person,prequals),has(word,page)",3.5934765338897705
+"inphase(person,prequals),membersofproject(page,page)",3.7622084617614746
+"inphase(person,prequals),instructorsof(page,page)",3.972059488296509
+"inphase(person,prequals),hasanchor(word,page)",4.497045993804932
+"inphase(person,prequals),pageclass(page,class)",5.386569499969482

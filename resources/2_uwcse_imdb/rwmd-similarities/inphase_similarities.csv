@@ -1,0 +1,3 @@
+candidates,similarity
+"inphase(person,prequals),movie(movie,person)",4.654685974121094
+"inphase(person,prequals),genre(person,genre)",5.441676139831543

@@ -1,0 +1,7 @@
+candidates,similarity
+"follows(account,account),complex(protein,com)",4.543264865875244
+"follows(account,account),interaction(protein,protein)",4.676661968231201
+"follows(account,account),location(protein,loc)",4.835389137268066
+"follows(account,account),function(protein,fun)",5.15451717376709
+"follows(account,account),phenotype(protein,phe)",5.774702072143555
+"follows(account,account),enzyme(protein,enz)",7.122838973999023

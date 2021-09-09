@@ -1,0 +1,3 @@
+candidates,similarity
+"enzyme(protein,enz),follows(account,account)",7.122838020324707
+"enzyme(protein,enz),tweets(account,word)",7.5167927742004395
