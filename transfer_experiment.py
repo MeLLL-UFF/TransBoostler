@@ -223,7 +223,7 @@ def main():
             recursion = False
 
         # Get sources and targets
-        sources = [s.replace('.', '').replace('+', '').replace('-', '') for s in set(bk[source]) if s.split('(')[0] != to_predicate and 'recursion_' not in s]
+        sources = [s.replace('.', '').replace('+', '').replace('-', '') for s in set(bk[source]) if s.split('(')[0] != predicate and 'recursion_' not in s]
         targets = [t.replace('.', '').replace('+', '').replace('-', '') for t in set(bk[target]) if t.split('(')[0] != to_predicate and 'recursion_' not in t]
         
         path = os.getcwd() + '/experiments/' + experiment_title
@@ -242,8 +242,6 @@ def main():
                 'maxTreeDepth' : params.MAXTREEDEPTH
                 }
 
-        # APAGAR ISSO AQUI
-        n_runs = 1
         while results['save']['n_runs'] < n_runs:
 
             utils.print_function('Run: ' + str(results['save']['n_runs'] + 1), experiment_title)
@@ -339,28 +337,31 @@ def main():
                 utils.print_function('Starting experiments for {} using {} \n'.format(embeddingModel, similarityMetric), experiment_title)
             
                 if('previous' not in locals() or previous != embeddingModel):
-                    loadedModel = load_model(embeddingModel)
+                    #loadedModel = load_model(embeddingModel)
+                    loadedModel = ''
                     previous = embeddingModel
                 
                 transfer = Transfer(model=loadedModel, model_name=embeddingModel, segmenter=segmenter, similarity_metric=similarityMetric, sources=sources, targets=targets, experiment=experiment_title)
             
                 start = time.time()
 
-                # Map and transfer using the loaded embedding model
-                mapping  = transfer.map_predicates(similarityMetric, nodes, targets)
+                mapping_time_clauses = 0
+                if(similarityMetric == 'relax-wmd'):
+                    mapping, mapping_time_clauses = transfer.map_predicates(similarityMetric, nodes, targets)
+                else:
+                    # Map and transfer using the loaded embedding model
+                    mapping  = transfer.map_predicates(similarityMetric, nodes, targets)
+
                 transfer.write_to_file_closest_distance(similarityMetric, embeddingModel, predicate, to_predicate, arity, mapping, 'experiments/' + experiment_title, recursion=recursion, searchArgPermutation=params.SEARCH_PERMUTATION, searchEmpty=params.SEARCH_EMPTY, allowSameTargetMap=params.ALLOW_SAME_TARGET_MAP)
                 del mapping
 
                 end = time.time()
-                mapping_time = end-start
+                mapping_time = end-start + mapping_time_clauses
 
                 if target in ['nell_sports', 'nell_finances', 'yago2s']:
                     n_folds = params.N_FOLDS
                 else:
                     n_folds = len(tar_total_data[0])
-
-                # APAGAR ISSO AQUI
-                n_folds = 0
 
                 results_save, confusion_matrix_save = [], []
                 for i in range(n_folds):
