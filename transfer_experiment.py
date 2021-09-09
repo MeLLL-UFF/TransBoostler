@@ -26,7 +26,7 @@ import os
 source_balanced = False
 balanced = False
 
-learn_from_source = False
+learn_from_source = True
 
 revision = TheoryRevision()
 segmenter = Segmenter(corpus="english")
@@ -180,6 +180,7 @@ def main():
     # Dictionaries to keep all experiments results
     #transboostler_experiments = {}
     transboostler_confusion_matrix = {}
+    loadedModel = ''
 
     for experiment in experiments:
 
@@ -335,10 +336,9 @@ def main():
                 confusion_matrix = {'TP': [], 'FP': [], 'TN': [], 'FN': []} 
 
                 utils.print_function('Starting experiments for {} using {} \n'.format(embeddingModel, similarityMetric), experiment_title)
-            
-                if('previous' not in locals() or previous != embeddingModel):
-                    #loadedModel = load_model(embeddingModel)
-                    loadedModel = ''
+
+                if(('previous' not in locals() or previous != embeddingModel) and similarityMetric != 'relax-wmd'):
+                    loadedModel = load_model(embeddingModel)
                     previous = embeddingModel
                 
                 transfer = Transfer(model=loadedModel, model_name=embeddingModel, segmenter=segmenter, similarity_metric=similarityMetric, sources=sources, targets=targets, experiment=experiment_title)
