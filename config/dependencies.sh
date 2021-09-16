@@ -5,6 +5,7 @@ pip3 install ekphrasis
 pip3 install gensim
 pip3 install git+git://github.com/ThaisLuca/boostsrl-python-package.git
 pip3 install git+git://github.com/ThaisLuca/wmd-relax
+pip3 install -U scikit-learn
 pip3 install psutil
 pip3 install unidecode
 pip3 install pandas
