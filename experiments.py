@@ -1,5 +1,5 @@
 
-revision_theory = False
+revision_theory = True
 
 setups = [
         ##{'model': 'fasttext', 'similarity_metric': 'cosine', 'revision_theory': revision_theory},
@@ -29,7 +29,7 @@ experiments = [
             {'id': '8', 'source':'twitter', 'target':'yeast', 'predicate':'accounttype', 'to_predicate':'proteinclass', 'arity': 2},
             {'id': '9', 'source':'nell_sports', 'target':'nell_finances', 'predicate':'teamplayssport', 'to_predicate':'companyeconomicsector', 'arity': 2},
             {'id': '10', 'source':'nell_finances', 'target':'nell_sports', 'predicate':'companyeconomicsector', 'to_predicate':'teamplayssport', 'arity': 2},
-            {'id': '11', 'source':'uwcse', 'target':'webkb', 'predicate':'advisedby', 'to_predicate':'departmentof', 'arity':2},
+            #{'id': '11', 'source':'uwcse', 'target':'webkb', 'predicate':'advisedby', 'to_predicate':'departmentof', 'arity':2},
             #{'id': '12', 'source':'webkb', 'target':'yeast', 'predicate':'departmentof', 'to_predicate':'proteinclass', 'arity':2},
             #{'id': '13', 'source': 'yago2s', 'target': 'yeast', 'predicate': 'wasbornin', 'to_predicate': 'proteinclass', 'arity': 2},
             #{'id': '14', 'source': 'yeast', 'target': 'yago2s', 'predicate': 'proteinclass', 'to_predicate': 'wasbornin', 'arity': 2},
