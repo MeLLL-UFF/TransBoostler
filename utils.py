@@ -382,17 +382,17 @@ def get_confusion_matrix(y_true, y_pred):
   # True Negatives, False Positives, False Negatives, True Positives
   return confusion_matrix(y_true, y_pred).ravel()
 
-def show_results(results, experiment_title):
+def show_results(results, experiment_title, experiment_type):
     """
      Adds results to logging file.
 
       Args:
           results(dict): a dictionary containing results of the metrics used
     """
-    utils.print_function('Results \n', experiment_title)
+    utils.print_function('Results \n', experiment_title, experiment_type)
     res = ['{} : {} \n'.format(key, results[key]) for key in results]
     for r in res:
-        utils.print_function(r, experiment_title)
+        utils.print_function(r, experiment_title, experiment_type)
 
 def get_results_dict(t_results, learning_time, inference_time):
     """
@@ -424,7 +424,7 @@ def delete_folder(folder_name):
         folder_name(str): name of the folder to empty
   """
   try:
-    shutil.rmtree(os.getcwd() + '/' + folder_name)
+    shutil.rmtree(params.ROOT_PATH + '/' + folder_name)
   except FileNotFoundError as e:
     pass
 
@@ -437,7 +437,7 @@ def delete_file(filename):
         filename(str): name of the file to be deleted
   """
   try:
-    os.remove(os.getcwd() + '/' + filename)
+    os.remove(params.ROOT_PATH + '/' + filename)
   except FileNotFoundError as e:
     pass
 
@@ -518,10 +518,10 @@ def get_softcosine_matrix(sources, targets, model, preprocessing):
 
   return similarity_matrix, dictionary
 
-def print_function(message, experiment_title):
-    if not os.path.exists('experiments/' + experiment_title):
-        os.makedirs('experiments/' + experiment_title)
-    with open('experiments/' + experiment_title + '/' + experiment_title + '.txt', 'a') as f:
+def print_function(message, experiment_title, experiment_type):
+    if not os.path.exists(params.ROOT_PATH + experiment_type + '/' + experiment_title):
+        os.makedirs(params.ROOT_PATH + experiment_type + '/' + experiment_title)
+    with open(params.ROOT_PATH + experiment_type + '/' + experiment_title + '/' + experiment_title + '.txt', 'a') as f:
         print(message, file=f)
         print(message)
 

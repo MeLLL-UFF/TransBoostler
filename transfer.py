@@ -16,7 +16,7 @@ import re
 
 class Transfer:
 
-  def __init__(self, model, model_name, segmenter, similarity_metric, sources, targets, experiment):
+  def __init__(self, model, model_name, segmenter, similarity_metric, sources, targets, experiment, experiment_type):
     self.model = model
     self.model_name = model_name
     self.preprocessing = Preprocessing(segmenter)
@@ -24,6 +24,7 @@ class Transfer:
     self.sources = sources
     self.targets = targets
     self.experiment_title = experiment
+    self.experiment_type = experiment_type
 
     self.similarity_matrix, self.dictionary = '', ''
     if self.similarity_metric == 'softcosine':
@@ -202,12 +203,12 @@ class Transfer:
     # 
     if(similarity_metric == 'relax-wmd'):
       import pandas as pd
-      similarities = pd.read_csv('resources/{}/rwmd-similarities/{}_similarities.csv'.format(self.experiment_title,clause.split('(')[0])).set_index('candidates')
+      similarities = pd.read_csv(params.ROOT_PATH + 'resources/{}/rwmd-similarities/{}_similarities.csv'.format(self.experiment_title,clause.split('(')[0])).set_index('candidates')
     else:
       similarities = self.similarity.compute_similarities(source, targets, similarity_metric, self.model, self.model_name, similarity_matrix, dictionary, self.experiment_title)
     
-    similarities.to_csv('experiments/{}/similarities/{}/{}/{}_similarities.csv'.format(self.experiment_title, self.model_name, similarity_metric, clause.split('(')[0]))
-    #similarities.to_csv('resources/{}/rwmd-similarities/{}_similarities.csv'.format(self.experiment_title, clause.split('(')[0]))
+    similarities.to_csv(params.ROOT_PATH + '{}/{}/similarities/{}/{}/{}_similarities.csv'.format(self.experiment_type, self.experiment_title, self.model_name, similarity_metric, clause.split('(')[0]))
+    #similarities.to_csv(params.ROOT_PATH + 'resources/{}/rwmd-similarities/{}_similarities.csv'.format(self.experiment_title, clause.split('(')[0]))
     
     #end = time.time()
 
@@ -251,7 +252,7 @@ class Transfer:
     
     similarities = {}
     similarities = self.similarity.compute_similarities(source, targets, similarity_metric, self.model, self.model_name)
-    similarities.to_csv('experiments/{}/similarities/{}/{}/{}_similarities.csv'.format(self.experiment_title, self.model_name, similarity_metric, clause.split('(')[0]))
+    similarities.to_csv(params.ROOT_PATH + '{}/{}/similarities/{}/{}/{}_similarities.csv'.format(self.experiment_type, self.experiment_title, self.model_name, similarity_metric, clause.split('(')[0]))
     indexes = similarities.index.tolist()
 
     targets = []
@@ -300,7 +301,7 @@ class Transfer:
 
               #for RWMD
               if(similarity_metric == 'relax-wmd'):
-                with open('resources/{}/rwmd-similarities/{}time.txt'.format(self.experiment_title,clause.split('(')[0]), 'r') as file:
+                with open(params.ROOT_PATH + 'resources/{}/rwmd-similarities/{}time.txt'.format(self.experiment_title,clause.split('(')[0]), 'r') as file:
                   mapping_time += float(file.read())
 
               mappings[clause] = [best_match] if best_match != '' else []
