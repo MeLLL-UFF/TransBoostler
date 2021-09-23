@@ -396,7 +396,7 @@ def main():
 
                         if(theoryRevision):
                             # Learn and test model applying revision theory
-                            t_results, learning_time, inference_time, pl_t_results = revision.apply(background, part_tar_train_pos, part_tar_train_neg, tar_train_facts, tar_test_pos, tar_test_neg, tar_test_facts, structured, experiment_title)
+                            t_results, learning_time, inference_time, pl_t_results = revision.apply(background, part_tar_train_pos, part_tar_train_neg, tar_train_facts, tar_test_pos, tar_test_neg, tar_test_facts, structured, experiment_title, experiment_type)
                             t_results['parameter'] = pl_t_results
                         else:
                             # Learn and test model not revising theory
