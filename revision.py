@@ -137,12 +137,12 @@ class TheoryRevision:
 		utils.print_function('******************************************', experiment_title, experiment_type)
 		utils.print_function('Performing Parameter Learning', experiment_title, experiment_type)
 		utils.print_function('******************************************', experiment_title, experiment_type)
-		utils.print_function('Refine', experiment_title)
+		utils.print_function('Refine', experiment_title, experiment_type)
 		for item in self.get_boosted_refine_file(source_structure):
 			utils.print_function(item, experiment_title, experiment_type)
 		utils.print_function('\n', experiment_title, experiment_type)
 
-		model, t_results, learning_time, inference_time = self.train_and_test(background, train_pos, train_neg, train_facts, test_pos, test_neg, test_facts, experiment_title, refine=params.REFINE_FILENAME, transfer=params.TRANSFER_FILENAME)
+		model, t_results, learning_time, inference_time = self.train_and_test(background, train_pos, train_neg, train_facts, test_pos, test_neg, test_facts, experiment_title, experiment_type, refine=params.REFINE_FILENAME, transfer=params.TRANSFER_FILENAME)
 		pl_t_results = copy.deepcopy(t_results)
 
 		structured = []
@@ -179,7 +179,7 @@ class TheoryRevision:
 		utils.save_best_model_files()
 
 		utils.print_function('******************************************', experiment_title, experiment_type)
-		utils.print_function('Performing Theory Revision', experiment_title)
+		utils.print_function('Performing Theory Revision', experiment_title, experiment_type)
 		utils.print_function('******************************************', experiment_title, experiment_type)
 
 		for i in range(params.MAX_REVISION_ITERATIONS):
@@ -201,8 +201,8 @@ class TheoryRevision:
 			utils.print_function('Refining candidate', experiment_title, experiment_type)
 			utils.print_function('***************************', experiment_title, experiment_type)
 
-			utils.write_to_file(candidate, params.REFINE_REVISION_FILENAME, experiment_type)
-			model, t_results, learning_time, inference_time = self.train_and_test(background, train_pos, train_neg, train_facts, test_pos, test_neg, test_facts, experiment_title, refine=params.REFINE_REVISION_FILENAME)
+			utils.write_to_file(candidate, params.REFINE_REVISION_FILENAME)
+			model, t_results, learning_time, inference_time = self.train_and_test(background, train_pos, train_neg, train_facts, test_pos, test_neg, test_facts, experiment_title, experiment_type, refine=params.REFINE_REVISION_FILENAME)
 
 			structured = []
 			for i in range(params.TREES):
@@ -226,8 +226,8 @@ class TheoryRevision:
 				best_model_results = copy.deepcopy(t_results)
 				utils.save_best_model_files()
 
-			utils.print_function('Refined model CLL: %s' % scored_results['CLL'], experiment_title)
-			utils.print_function('\n', experiment_title)
+			utils.print_function('Refined model CLL: %s' % scored_results['CLL'], experiment_title, experiment_type)
+			utils.print_function('\n', experiment_title, experiment_type)
 			if found_better == False:
 				break
 
@@ -235,7 +235,7 @@ class TheoryRevision:
 		best_model_results['Learning time'] = total_revision_time
 
 		utils.print_function('******************************************', experiment_title, experiment_type)
-		utils.print_function('Best model found', experiment_title)
+		utils.print_function('Best model found', experiment_title, experiment_type)
 		utils.print_function('******************************************', experiment_title, experiment_type)
 
 		utils.show_results(utils.get_results_dict(best_model_results, learning_time, inference_time), experiment_title, experiment_type)
@@ -248,11 +248,11 @@ class TheoryRevision:
 
 		utils.print_function('Total revision time: %s' % total_revision_time, experiment_title, experiment_type)
 		utils.print_function('Best scored revision CLL: %s' % best_model_cll, experiment_title, experiment_type)
-		utils.print_function('\n', experiment_title)
+		utils.print_function('\n', experiment_title, experiment_type)
 
 		return best_model_results, total_revision_time, inference_time, pl_t_results
 
-	def train_and_test(self, background, train_pos, train_neg, train_facts, test_pos, test_neg, test_facts, experiment_title, refine=None, transfer=None):
+	def train_and_test(self, background, train_pos, train_neg, train_facts, test_pos, test_neg, test_facts, experiment_title, experiment_type, refine=None, transfer=None):
 		'''
 	        Train RDN-B using transfer learning
 	    '''
@@ -263,11 +263,11 @@ class TheoryRevision:
 		end = time.time()
 		learning_time = end-start
 
-		utils.print_function('Model training time {}'.format(learning_time), experiment_title)
+		utils.print_function('Model training time {}'.format(learning_time), experiment_title, experiment_type)
 
 		will = ['WILL Produced-Tree #'+str(i+1)+'\n'+('\n'.join(model.get_will_produced_tree(treenumber=i+1))) for i in range(params.TREES)]
 		for w in will:
-			utils.print_function(w, experiment_title)
+			utils.print_function(w, experiment_title, experiment_type)
 
 		start = time.time()
 
@@ -277,6 +277,6 @@ class TheoryRevision:
 		end = time.time()
 		inference_time = end-start
 
-		utils.print_function('Inference time using transfer learning {}'.format(inference_time), experiment_title)
+		utils.print_function('Inference time using transfer learning {}'.format(inference_time), experiment_title, experiment_type)
 
 		return model, results.summarize_results(), learning_time, inference_time
