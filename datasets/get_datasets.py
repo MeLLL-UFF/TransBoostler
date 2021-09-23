@@ -150,7 +150,7 @@ class datasets:
         '''Return the number of folds given a target dataset'''
         return len(next(os.walk(os.path.join(__location__, 'folds/' + target)))[1])
 
-    def load_pre_saved_folds(i, target, mode):
+    def load_pre_saved_folds(i, target, mode, folds_path='folds'):
         '''Load folds generated used split_folds.py'''
 
         def read_file(filename):
@@ -158,8 +158,8 @@ class datasets:
                 data = data.read().splitlines() 
             return data
 
-        train = read_file('folds/{}/fold_{}/train_{}.txt'.format(target,i,mode))
-        test  = read_file('folds/{}/fold_{}/test_{}.txt'.format(target,i,mode))
+        train = read_file('{}/{}/fold_{}/train_{}.txt'.format(folds_path,target,i,mode))
+        test  = read_file('{}/{}/fold_{}/test_{}.txt'.format(folds_path,target,i,mode))
 
         return (train, test)
 
@@ -1360,8 +1360,6 @@ class datasets:
         print('{} citations'.format(len(facts[0]['cites'])))
 
         return [facts, [{}]]
-
-
 
 #import time
 #start = time.time()

@@ -1,0 +1,3 @@
+candidates,similarity
+"location(protein,loc),follows(account,account)",4.835389137268066
+"location(protein,loc),tweets(account,word)",5.615184783935547

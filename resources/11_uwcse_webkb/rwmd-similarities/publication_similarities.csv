@@ -1,0 +1,6 @@
+candidates,similarity
+"publication(title,person),has(word,page)",3.9082190990448
+"publication(title,person),membersofproject(page,page)",4.224710941314697
+"publication(title,person),instructorsof(page,page)",4.385194301605225
+"publication(title,person),hasanchor(word,page)",4.781912803649902
+"publication(title,person),pageclass(page,class)",5.558801651000977

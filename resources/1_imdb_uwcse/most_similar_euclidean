@@ -1,0 +1,4 @@
+,0
+director(person),professor(person)
+"movie(movie,person)","publication(title,person)"
+actor(person),student(person)

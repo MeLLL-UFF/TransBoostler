@@ -1,0 +1,170 @@
+Starting experiment 1_imdb_uwcse 
+
+Run: 1
+Starting experiments for RDN-B 
+
+
+ Starting fold 1 of 5 folds 
+
+Start training from scratch
+
+Target train facts examples: 708
+Target train pos examples: 35
+Target train neg examples: 1814
+
+Target test facts examples: 1679
+Target test pos examples: 78
+Target test neg examples: 2265
+
+Training from scratch 
+
+Results 
+
+CLL : -0.205227 
+
+AUC ROC : 0.953654 
+
+AUC PR : 0.40713 
+
+Precision : 0.226351 
+
+Recall : 0.858974 
+
+F1 : 0.358289 
+
+Total Learning Time : 14.527832269668579 
+
+Total Inference Time : 2.6913208961486816 
+
+
+ Starting fold 2 of 5 folds 
+
+Start training from scratch
+
+Target train facts examples: 422
+Target train pos examples: 20
+Target train neg examples: 341
+
+Target test facts examples: 1965
+Target test pos examples: 93
+Target test neg examples: 3738
+
+Training from scratch 
+
+Results 
+
+CLL : -0.303861 
+
+AUC ROC : 0.94523 
+
+AUC PR : 0.231674 
+
+Precision : 0.136157 
+
+Recall : 0.967742 
+
+F1 : 0.238727 
+
+Total Learning Time : 6.3652167320251465 
+
+Total Inference Time : 2.3589677810668945 
+
+
+ Starting fold 3 of 5 folds 
+
+Start training from scratch
+
+Target train facts examples: 162
+Target train pos examples: 9
+Target train neg examples: 91
+
+Target test facts examples: 2225
+Target test pos examples: 104
+Target test neg examples: 3988
+
+Training from scratch 
+
+Results 
+
+CLL : -0.319028 
+
+AUC ROC : 0.90564 
+
+AUC PR : 0.118786 
+
+Precision : 0.122042 
+
+Recall : 0.942308 
+
+F1 : 0.216097 
+
+Total Learning Time : 3.5188214778900146 
+
+Total Inference Time : 1.9779233932495117 
+
+
+ Starting fold 4 of 5 folds 
+
+Start training from scratch
+
+Target train facts examples: 681
+Target train pos examples: 33
+Target train neg examples: 1488
+
+Target test facts examples: 1706
+Target test pos examples: 80
+Target test neg examples: 2591
+
+Training from scratch 
+
+Results 
+
+CLL : -0.219419 
+
+AUC ROC : 0.951344 
+
+AUC PR : 0.361656 
+
+Precision : 0.190601 
+
+Recall : 0.9125 
+
+F1 : 0.315335 
+
+Total Learning Time : 12.070677995681763 
+
+Total Inference Time : 2.667679786682129 
+
+
+ Starting fold 5 of 5 folds 
+
+Start training from scratch
+
+Target train facts examples: 414
+Target train pos examples: 16
+Target train neg examples: 345
+
+Target test facts examples: 1973
+Target test pos examples: 97
+Target test neg examples: 3734
+
+Training from scratch 
+
+Results 
+
+CLL : -0.236488 
+
+AUC ROC : 0.945339 
+
+AUC PR : 0.29298 
+
+Precision : 0.152964 
+
+Recall : 0.824742 
+
+F1 : 0.258065 
+
+Total Learning Time : 7.260680913925171 
+
+Total Inference Time : 2.202826499938965 
+

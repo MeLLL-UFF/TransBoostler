@@ -1,0 +1,4 @@
+,0
+"author(class,author)","movie(movie,person)"
+"haswordvenue(venue,word)","genre(person,genre)"
+"haswordtitle(title,word)",empty

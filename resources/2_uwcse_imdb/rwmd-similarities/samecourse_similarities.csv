@@ -1,0 +1,3 @@
+candidates,similarity
+"samecourse(course,course),movie(movie,person)",4.361474990844727
+"samecourse(course,course),genre(person,genre)",5.199010848999023

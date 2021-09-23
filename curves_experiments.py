@@ -28,22 +28,21 @@ runTransBoostler = True
 runRDNB = False
 learn_from_source = True
 
-folds_path = 'folds_transfer_experiment'
-
 revision = TheoryRevision()
 segmenter = Segmenter(corpus="english")
 
 experiment_title = ''
+experiment_type = 'curves-experiments'
 
 def save_experiment(data, experiment_title, embeddingModel, similarityMetric):
-    if not os.path.exists('experiments/' + experiment_title):
-        os.makedirs('experiments/' + experiment_title)
+    if not os.path.exists(params.ROOT_PATH + 'curves-experiments/' + experiment_title):
+        os.makedirs(params.ROOT_PATH + 'curves-experiments/' + experiment_title)
     results = []
-    if os.path.isfile('experiments/' + experiment_title + '/' + experiment_title + '_{}_{}.json'.format(embeddingModel, similarityMetric)):
-        with open('experiments/' + experiment_title + '/' + experiment_title + '_{}_{}.json'.format(embeddingModel, similarityMetric), 'r') as fp:
+    if os.path.isfile(params.ROOT_PATH + 'curves-experiments/' + experiment_title + '/' + experiment_title + '_{}_{}.json'.format(embeddingModel, similarityMetric)):
+        with open(params.ROOT_PATH + 'curves-experiments/' + experiment_title + '/' + experiment_title + '_{}_{}.json'.format(embeddingModel, similarityMetric), 'r') as fp:
             results = json.load(fp)
     results.append(data)
-    with open('experiments/' + experiment_title + '/' + experiment_title + '_{}_{}.json'.format(embeddingModel, similarityMetric), 'w') as fp:
+    with open(params.ROOT_PATH + 'curves-experiments/' + experiment_title + '/' + experiment_title + '_{}_{}.json'.format(embeddingModel, similarityMetric), 'w') as fp:
         json.dump(results, fp)
 
 def load_model(model_name):
@@ -53,13 +52,13 @@ def load_model(model_name):
         raise ValueError("SKIP: You need to download the fasttext wikipedia model")
 
     if 'loadedModel' not in locals():
-        utils.print_function('Loading fasttext model', experiment_title)
+        utils.print_function('Loading fasttext model', experiment_title, experiment_type)
         start = time.time()
         #loadedModel = FastText.load_fasttext_format(params.WIKIPEDIA_FASTTEXT)
         loadedModel = KeyedVectors.load_word2vec_format(params.WIKIPEDIA_FASTTEXT, binary=False, unicode_errors='ignore')
 
         end = time.time()
-        utils.print_function('Time to load FastText model: {} seconds'.format(round(end-start, 2)), experiment_title)
+        utils.print_function('Time to load FastText model: {} seconds'.format(round(end-start, 2)), experiment_title, experiment_type)
 
   elif(model_name == 'word2vec'):
 
@@ -67,12 +66,12 @@ def load_model(model_name):
         raise ValueError("SKIP: You need to download the google news model")
 
     if 'loadedModel' not in locals():
-        utils.print_function('Loading word2vec model', experiment_title)
+        utils.print_function('Loading word2vec model', experiment_title, experiment_type)
         start = time.time()
         loadedModel = KeyedVectors.load_word2vec_format(params.GOOGLE_WORD2VEC, binary=True, unicode_errors='ignore')
 
         end = time.time()
-        utils.print_function('Time to load Word2Vec model: {} seconds'.format(round(end-start, 2)), experiment_title)
+        utils.print_function('Time to load Word2Vec model: {} seconds'.format(round(end-start, 2)), experiment_title, experiment_type)
   else:
     raise ValueError("SKIP: Embedding models must be 'fasttext' or 'word2vec'")
 
@@ -89,11 +88,11 @@ def train_and_test(background, train_pos, train_neg, train_facts, test_pos, test
     end = time.time()
     learning_time = end-start
 
-    utils.print_function('Model training time {}'.format(learning_time), experiment_title)
+    utils.print_function('Model training time {}'.format(learning_time), experiment_title, experiment_type)
 
     will = ['WILL Produced-Tree #'+str(i+1)+'\n'+('\n'.join(model.get_will_produced_tree(treenumber=i+1))) for i in range(10)]
     for w in will:
-        utils.print_function(w, experiment_title)
+        utils.print_function(w, experiment_title, experiment_type)
 
     start = time.time()
 
@@ -103,13 +102,13 @@ def train_and_test(background, train_pos, train_neg, train_facts, test_pos, test
     end = time.time()
     inference_time = end-start
 
-    utils.print_function('Inference time using transfer learning {}'.format(inference_time), experiment_title)
+    utils.print_function('Inference time using transfer learning {}'.format(inference_time), experiment_title, experiment_type)
 
     return model, results.summarize_results(), learning_time, inference_time
 
 def get_confusion_matrix(to_predicate, revision=False):
     # Get confusion matrix by reading results from db files created by the Java application
-    utils.print_function('Converting results file to txt', experiment_title)
+    utils.print_function('Converting results file to txt', experiment_title, experiment_type)
 
     if revision:
         utils.convert_db_to_txt(to_predicate, params.TEST_OUTPUT.replace('test', 'best/test'))
@@ -119,20 +118,20 @@ def get_confusion_matrix(to_predicate, revision=False):
         y_true, y_pred = utils.read_results(params.TEST_OUTPUT.format(to_predicate).replace('.db', '.txt'))
     
 
-    utils.print_function('Building confusion matrix', experiment_title)
+    utils.print_function('Building confusion matrix', experiment_title, experiment_type)
 
     # True Negatives, False Positives, False Negatives, True Positives
     TN, FP, FN, TP = utils.get_confusion_matrix(y_true, y_pred)
 
-    utils.print_function('Confusion matrix \n', experiment_title)
+    utils.print_function('Confusion matrix \n', experiment_title, experiment_type)
     matrix = ['TP: {}'.format(TP), 'FP: {}'.format(FP), 'TN: {}'.format(TN), 'FN: {}'.format(FN)]
     for m in matrix:
-        utils.print_function(m, experiment_title)
+        utils.print_function(m, experiment_title, experiment_type)
 
     return {'TP': TP, 'FP': FP, 'TN':TN, 'FN': FN}
 
 def clean_previous_experiments_stuff():
-    utils.print_function('Cleaning previous experiment\'s mess', experiment_title)
+    utils.print_function('Cleaning previous experiment\'s mess', experiment_title, experiment_type)
     utils.delete_file(params.TRANSFER_FILENAME)
     utils.delete_file(params.REFINE_FILENAME)
     utils.delete_folder(params.TRAIN_FOLDER)
@@ -140,7 +139,12 @@ def clean_previous_experiments_stuff():
     utils.delete_folder(params.BEST_MODEL_FOLDER)
 
 def save_pickle_file(nodes, _id, source, target, filename):
-    with open(os.getcwd() + '/experiments/{}_{}_{}/{}'.format(_id, source, target, filename), 'wb') as file:
+    if not os.path.exists(params.ROOT_PATH + 'resources/' + experiment_title):
+        os.makedirs(params.ROOT_PATH + 'resources/' + experiment_title)
+    if not os.path.exists(params.ROOT_PATH + 'resources/{}_{}_{}'.format(_id, source, target)):
+        os.makedirs(params.ROOT_PATH +'resources/{}_{}_{}'.format(_id, source, target))
+
+    with open(params.ROOT_PATH + 'resources/{}_{}_{}/{}'.format(_id, source, target, filename), 'wb') as file:
         pickle.dump(nodes, file)
 
 def load_pickle_file(filename):
@@ -152,15 +156,16 @@ def main():
     # Dictionaries to keep all experiments results
     #transboostler_experiments = {}
     transboostler_confusion_matrix = {}
+    loadedModel = ''
 
-    if not os.path.exists('experiments'):
-        os.makedirs('experiments')
-        os.makedirs('experiments/similarities')
-        os.makedirs('experiments/similarities/fasttext')
-        os.makedirs('experiments/similarities/fasttext/cosine')
-        os.makedirs('experiments/similarities/fasttext/softcosine')
-        os.makedirs('experiments/similarities/fasttext/euclidean')
-        os.makedirs('experiments/similarities/fasttext/wmd')
+    if not os.path.exists(params.ROOT_PATH + 'curves-experiments'):
+        os.makedirs(params.ROOT_PATH + 'curves-experiments')
+        os.makedirs(params.ROOT_PATH + 'curves-experiments/similarities')
+        os.makedirs(params.ROOT_PATH + 'curves-experiments/similarities/fasttext')
+        os.makedirs(params.ROOT_PATH + 'curves-experiments/similarities/fasttext/cosine')
+        os.makedirs(params.ROOT_PATH + 'curves-experiments/similarities/fasttext/softcosine')
+        os.makedirs(params.ROOT_PATH + 'curves-experiments/similarities/fasttext/euclidean')
+        os.makedirs(params.ROOT_PATH + 'curves-experiments/similarities/fasttext/wmd')
 
     results = {}
 
@@ -186,7 +191,7 @@ def main():
         #Clean folders if exists
         clean_previous_experiments_stuff()
 
-        utils.print_function('Starting experiment {} \n'.format(experiment_title), experiment_title)
+        utils.print_function('Starting experiment {} \n'.format(experiment_title), experiment_title, experiment_type)
 
         _id = experiment['id']
         source = experiment['source']
@@ -200,7 +205,7 @@ def main():
         else:
             recursion = False
 
-        path = os.getcwd() + '/experiments/' + experiment_title
+        path = params.ROOT_PATH +  'curves-experiments/' + experiment_title
         if not os.path.exists(path):
             os.mkdir(path)
 
@@ -221,7 +226,7 @@ def main():
             }
 
         while results['save']['n_runs'] < n_runs:
-            utils.print_function('Run: ' + str(results['save']['n_runs'] + 1), experiment_title)
+            utils.print_function('Run: ' + str(results['save']['n_runs'] + 1), experiment_title, experiment_type)
 
             if(learn_from_source):
 
@@ -234,11 +239,11 @@ def main():
                 src_pos   = datasets.group_folds(src_data[1])
                 src_neg   = datasets.group_folds(src_data[2])
                             
-                utils.print_function('Start learning from source dataset\n')
+                utils.print_function('Start learning from source dataset\n', experiment_title, experiment_type)
                 
-                utils.print_function('Source train facts examples: {}'.format(len(src_facts)), experiment_title)
-                utils.print_function('Source train pos examples: {}'.format(len(src_pos)), experiment_title)
-                utils.print_function('Source train neg examples: {}\n'.format(len(src_neg)), experiment_title)
+                utils.print_function('Source train facts examples: {}'.format(len(src_facts)), experiment_title, experiment_type)
+                utils.print_function('Source train pos examples: {}'.format(len(src_pos)), experiment_title, experiment_type)
+                utils.print_function('Source train neg examples: {}\n'.format(len(src_neg)), experiment_title, experiment_type)
                 
                 start = time.time()
 
@@ -251,9 +256,9 @@ def main():
                 #TODO: adicionar o tempo corretamente
                 #print('Model training time {}'.format(model.traintime()))
 
-                utils.print_function('Model training time {} \n'.format(end-start), experiment_title)
+                utils.print_function('Model training time {} \n'.format(end-start), experiment_title, experiment_type)
 
-                utils.print_function('Building refine structure \n', experiment_title)
+                utils.print_function('Building refine structure \n', experiment_title, experiment_type)
 
                 # Get all learned trees
                 structured = []
@@ -262,7 +267,7 @@ def main():
                 
                 will = ['WILL Produced-Tree #'+str(i+1)+'\n'+('\n'.join(model.get_will_produced_tree(treenumber=i+1))) for i in range(10)]
                 for w in will:
-                    utils.print_function(w, experiment_title)
+                    utils.print_function(w, experiment_title, experiment_type)
                 
                 del model
 
@@ -274,20 +279,31 @@ def main():
                 # Get all rules learned by RDN-B
                 refine_structure = utils.get_all_rules_from_tree(structured)
                 utils.write_to_file(refine_structure, params.REFINE_FILENAME)
-                utils.write_to_file(refine_structure, os.getcwd() + '/experiments/{}_{}_{}/{}'.format(_id, source, target, params.REFINE_FILENAME.split('/')[1]))
+                utils.write_to_file(refine_structure, params.REFINE_FILENAME)
+                utils.write_to_file(refine_structure, params.ROOT_PATH + 'curves-experiments/{}_{}_{}/{}'.format(_id, source, target, params.REFINE_FILENAME.split('/')[1]))
 
             else:
-                utils.print_function('Loading pre-trained trees.', experiment_title)
+                utils.print_function('Loading pre-trained trees.', experiment_title, experiment_type)
 
                 from shutil import copyfile
-                copyfile(os.getcwd() + '/resources/{}_{}_{}/{}'.format(_id, source, target, params.REFINE_FILENAME.split('/')[1]), os.getcwd() + '/' + params.REFINE_FILENAME)
-                nodes = load_pickle_file(os.getcwd() + '/resources/{}_{}_{}/{}'.format(_id, source, target, params.SOURCE_TREE_NODES_FILES))
-                structured = load_pickle_file(os.getcwd() + '/resources/{}_{}_{}/{}'.format(_id, source, target, params.STRUCTURED_TREE_NODES_FILES))
+                copyfile(params.ROOT_PATH + 'resources/{}_{}_{}/{}'.format(_id, source, target, params.REFINE_FILENAME.split('/')[-1]), params.REFINE_FILENAME)
+                nodes = load_pickle_file(params.ROOT_PATH +  'resources/{}_{}_{}/{}'.format(_id, source, target, params.SOURCE_TREE_NODES_FILES))
+                structured = load_pickle_file(params.ROOT_PATH + 'resources/{}_{}_{}/{}'.format(_id, source, target, params.STRUCTURED_TREE_NODES_FILES))
 
             for setup in setups: 
                 embeddingModel = setup['model'].lower()
                 similarityMetric = setup['similarity_metric'].lower()
                 theoryRevision = setup['revision_theory']
+
+                path = params.ROOT_PATH + 'curves-experiments/' + experiment_title + '/similarities'
+                if not os.path.exists(path):
+                    os.mkdir(path)
+
+                if not os.path.exists(path + '/' + embeddingModel):
+                    os.mkdir(path + '/' + embeddingModel)
+
+                if not os.path.exists(path + '/' + embeddingModel + '/' + similarityMetric):
+                    os.mkdir(path + '/' + embeddingModel + '/' + similarityMetric)
                 
                 utils.delete_file(params.TRANSFER_FILENAME)
                 
@@ -300,24 +316,28 @@ def main():
                 transboostler_confusion_matrix[embeddingModel][similarityMetric] = []
                 confusion_matrix = {key: {'TP': [], 'FP': [], 'TN': [], 'FN': []} for key in params.AMOUNTS} 
 
-                utils.print_function('Starting experiments for {} using {} \n'.format(embeddingModel, similarityMetric), experiment_title)
+                utils.print_function('Starting experiments for {} using {} \n'.format(embeddingModel, similarityMetric), experiment_title, experiment_type)
             
-                if('previous' not in locals() or previous != embeddingModel):
+                if(('previous' not in locals() or previous != embeddingModel) and similarityMetric != 'relax-wmd'):
                     loadedModel = load_model(embeddingModel)
                     previous = embeddingModel
 
-                transfer = Transfer(model=loadedModel, model_name=embeddingModel, segmenter=segmenter, similarity_metric=similarityMetric, sources=sources, targets=targets)
+                transfer = Transfer(model=loadedModel, model_name=embeddingModel, segmenter=segmenter, similarity_metric=similarityMetric, sources=sources, targets=targets, experiment=experiment_title, experiment_type=experiment_type)
                     
                 start = time.time()
 
-                # Map and transfer using the loaded embedding model
-                mapping  = transfer.map_predicates(similarityMetric, nodes, targets)
-                transfer.write_to_file_closest_distance(similarityMetric, embeddingModel, predicate, to_predicate, arity, mapping, 'experiments/' + experiment_title, recursion=recursion, searchArgPermutation=params.SEARCH_PERMUTATION, searchEmpty=params.SEARCH_EMPTY, allowSameTargetMap=params.ALLOW_SAME_TARGET_MAP)
-                #transfer.write_constraints_to_file('experiments/' + experiment_title)
+                mapping_time_clauses = 0
+                if(similarityMetric == 'relax-wmd'):
+                    mapping, mapping_time_clauses = transfer.map_predicates(similarityMetric, nodes, targets)
+                else:
+                    # Map and transfer using the loaded embedding model
+                    mapping  = transfer.map_predicates(similarityMetric, nodes, targets)
+
+                transfer.write_to_file_closest_distance(similarityMetric, embeddingModel, predicate, to_predicate, arity, mapping, 'curves-experiments/' + experiment_title, recursion=recursion, searchArgPermutation=params.SEARCH_PERMUTATION, searchEmpty=params.SEARCH_EMPTY, allowSameTargetMap=params.ALLOW_SAME_TARGET_MAP)
                 del mapping
 
                 end = time.time()
-                mapping_time = end-start
+                mapping_time = end-start + mapping_time_clauses
 
                 if target in ['nell_sports', 'nell_finances', 'yago2s']:
                     n_folds = params.N_FOLDS
@@ -326,7 +346,7 @@ def main():
 
                 results_save, confusion_matrix_save = [], []
                 for i in range(n_folds):
-                    utils.print_function('\n Starting fold {} of {} folds \n'.format(i+1, n_folds), experiment_title)
+                    utils.print_function('\n Starting fold {} of {} folds \n'.format(i+1, n_folds), experiment_title, experiment_type)
 
                     ob_save, cm_save = {}, {}
 
@@ -354,29 +374,30 @@ def main():
                     random.shuffle(tar_train_pos)
                     random.shuffle(tar_train_neg)
                     
-                    utils.print_function('Start transfer learning experiment\n', experiment_title)
+                    utils.print_function('Start transfer learning experiment\n', experiment_title, experiment_type)
 
-                    utils.print_function('Target train facts examples: %s' % len(tar_train_facts), experiment_title)
-                    utils.print_function('Target train pos examples: %s' % len(tar_train_pos), experiment_title)
-                    utils.print_function('Target train neg examples: %s\n' % len(tar_train_neg), experiment_title)
-                    utils.print_function('Target test facts examples: %s' % len(tar_test_facts), experiment_title)
-                    utils.print_function('Target test pos examples: %s' % len(tar_test_pos), experiment_title)
-                    utils.print_function('Target test neg examples: %s\n' % len(tar_test_neg), experiment_title)
+                    utils.print_function('Target train facts examples: %s' % len(tar_train_facts), experiment_title, experiment_type)
+                    utils.print_function('Target train pos examples: %s' % len(tar_train_pos), experiment_title, experiment_type)
+                    utils.print_function('Target train neg examples: %s\n' % len(tar_train_neg), experiment_title, experiment_type)
+                    utils.print_function('Target test facts examples: %s' % len(tar_test_facts), experiment_title, experiment_type)
+                    utils.print_function('Target test pos examples: %s' % len(tar_test_pos), experiment_title, experiment_type)
+                    utils.print_function('Target test neg examples: %s\n' % len(tar_test_neg), experiment_title, experiment_type)
 
                     # Creating background
                     background = boostsrl.modes(bk[target], [to_predicate], useStdLogicVariables=False, maxTreeDepth=params.MAXTREEDEPTH, nodeSize=params.NODESIZE, numOfClauses=params.NUMOFCLAUSES)
                     
                     for amount in params.AMOUNTS:
-                        utils.print_function('Amount of data: ' + str(amount), experiment_title)
+                        utils.print_function('Amount of data: ' + str(amount), experiment_title, experiment_type)
                         part_tar_train_pos = tar_train_pos[:int(amount * len(tar_train_pos))]
                         part_tar_train_neg = tar_train_neg[:int(amount * len(tar_train_neg))]
 
                         # Train and test using transfer learning
-                        utils.print_function('Training using transfer \n', experiment_title)
+                        utils.print_function('Training using transfer \n', experiment_title, experiment_type)
 
                         if(theoryRevision):
                             # Learn and test model applying revision theory
-                            t_results, learning_time, inference_time = revision.apply(background, part_tar_train_pos, part_tar_train_neg, tar_train_facts, tar_test_pos, tar_test_neg, tar_test_facts, structured, experiment_title)
+                            t_results, learning_time, inference_time, pl_t_results = revision.apply(background, part_tar_train_pos, part_tar_train_neg, tar_train_facts, tar_test_pos, tar_test_neg, tar_test_facts, structured, experiment_title, experiment_type)
+                            t_results['parameter'] = pl_t_results
                         else:
                             # Learn and test model not revising theory
                             model, t_results, learning_time, inference_time = train_and_test(background, part_tar_train_pos, part_tar_train_neg, tar_train_facts, tar_test_pos, tar_test_neg, tar_test_facts, params.REFINE_FILENAME, params.TRANSFER_FILENAME)
@@ -387,7 +408,7 @@ def main():
                         ob_save['transfer_' + str(amount)] = t_results
                         
                         learning_time += mapping_time
-                        utils.show_results(utils.get_results_dict(t_results, learning_time, inference_time), experiment_title)
+                        utils.show_results(utils.get_results_dict(t_results, learning_time, inference_time), experiment_title, experiment_type)
 
                         #experiment_metrics[amount]['CLL'].append(t_results['CLL'])
                         #experiment_metrics[amount]['AUC ROC'].append(t_results['AUC ROC'])
@@ -414,8 +435,8 @@ def main():
                 save_experiment(results_save, experiment_title, embeddingModel, similarityMetric)
             results['save']['n_runs'] += 1    
             
-        matrix_filename = os.getcwd() + '/experiments/{}_{}_{}/transboostler_confusion_matrix.json'.format(_id, source, target)
-        #folds_filename  = os.getcwd() + '/experiments/{}_{}_{}/transboostler_curves_folds.json'.format(_id, source, target)
+        matrix_filename = params.ROOT_PATH + 'curves-experiments/{}_{}_{}/transboostler_confusion_matrix.json'.format(_id, source, target)
+        #folds_filename  = params.ROOT_PATH + 'curves-experiments/{}_{}_{}/transboostler_curves_folds.json'.format(_id, source, target)
         
         if(theoryRevision):
             matrix_filename = matrix_filename.replace('.json', '_revision.json')

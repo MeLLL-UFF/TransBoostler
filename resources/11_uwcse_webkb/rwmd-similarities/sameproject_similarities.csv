@@ -1,0 +1,6 @@
+candidates,similarity
+"sameproject(project,project),membersofproject(page,page)",2.4565529823303223
+"sameproject(project,project),has(word,page)",3.379305601119995
+"sameproject(project,project),instructorsof(page,page)",3.901624917984009
+"sameproject(project,project),hasanchor(word,page)",4.32242488861084
+"sameproject(project,project),pageclass(page,class)",5.2023820877075195

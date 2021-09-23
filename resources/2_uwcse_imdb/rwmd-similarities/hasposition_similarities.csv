@@ -1,0 +1,3 @@
+candidates,similarity
+"hasposition(person,faculty),movie(movie,person)",4.785916328430176
+"hasposition(person,faculty),genre(person,genre)",5.348875999450684

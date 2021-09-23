@@ -1,7 +1,0 @@
-director(person): 
-movie(movie,person): sametitle(title,title)
-actor(person): 
-setMap:workedunder(A,B),samevenue(A,B)
-setParam:searchArgPermutation=true.
-setParam:searchEmpty=false.
-setParam:allowSameTargetMap=false.

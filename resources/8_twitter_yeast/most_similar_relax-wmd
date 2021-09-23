@@ -1,0 +1,3 @@
+,0
+"follows(account,account)","complex(protein,com)"
+"tweets(account,word)","interaction(protein,protein)"

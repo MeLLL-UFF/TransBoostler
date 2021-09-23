@@ -96,7 +96,7 @@ class Preprocessing:
 		tag_map['V'] = wordnet.VERB
 
 		predicate = []
-		for token, tag in pos_tag(self.__remove_stopwords(self.__check_for_abbreviations(self.__segment(text).split()))):
+		for token, tag in pos_tag(self.__check_for_abbreviations(self.__segment(text).split())):
 			# If it's a verb or a noun in plural, we apply lemmatization
 			if token == 'as':
 				predicate.append(token)

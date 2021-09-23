@@ -1,0 +1,17 @@
+tempadvisedby(person,person): has(word,page)
+sameproject(project,project): membersofproject(page,page)
+inphase(person,prequals): instructorsof(page,page)
+student(person): studentpage(page)
+courselevel(course,level): hasanchor(word,page)
+samecourse(course,course): pageclass(page,class)
+publication(title,person): 
+sameperson(person,person): 
+projectmember(project,person): 
+yearsinprogram(person,year): 
+professor(person): facultypage(page)
+ta(course,person,quarter): linkto(id,page,page)
+hasposition(person,faculty): 
+setMap:advisedby(A,B),departmentof(A,B)
+setParam:searchArgPermutation=true.
+setParam:searchEmpty=false.
+setParam:allowSameTargetMap=false.

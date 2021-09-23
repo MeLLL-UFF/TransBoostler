@@ -1,0 +1,6 @@
+,0
+"complex(protein,com)","follows(account,account)"
+"interaction(protein,protein)","tweets(account,word)"
+"location(protein,loc)",empty
+"phenotype(protein,phe)",empty
+"enzyme(protein,enz)",empty

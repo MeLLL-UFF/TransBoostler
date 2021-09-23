@@ -1,0 +1,8 @@
+,0
+"athleteplaysforteam(athlete,sportsteam)","acquired(company,company)"
+"athleteledsportsteam(athlete,sportsteam)","companyceo(company,person)"
+"teamplaysinleague(sportsteam,sportsleague)","bankboughtbank(company,company)"
+"athleteplayssport(athlete,sport)","bankbankincountry(person,country)"
+"athleteplaysinleague(athlete,sportsleague)","bankchiefexecutiveceo(company,person)"
+"teamplaysagainstteam(sportsteam,sportsteam)","cityhascompanyoffice(city,company)"
+"teamalsoknownas(sportsteam,sportsteam)","economicsectorcompany(sector,`company)"

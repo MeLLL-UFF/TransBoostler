@@ -1,0 +1,3 @@
+candidates,similarity
+"samevenue(venue,venue),movie(movie,person)",4.735532283782959
+"samevenue(venue,venue),genre(person,genre)",5.4266815185546875
