@@ -1,0 +1,8 @@
+candidates,similarity
+"economicsectorcompany(sector,`company),teamalsoknownas(sportsteam,sportsteam)",4.643942356109619
+"economicsectorcompany(sector,`company),teamplaysinleague(sportsteam,sportsleague)",5.019002914428711
+"economicsectorcompany(sector,`company),athleteplaysinleague(athlete,sportsleague)",5.2115678787231445
+"economicsectorcompany(sector,`company),teamplaysagainstteam(sportsteam,sportsteam)",5.235394477844238
+"economicsectorcompany(sector,`company),athleteplaysforteam(athlete,sportsteam)",5.243659019470215
+"economicsectorcompany(sector,`company),athleteledsportsteam(athlete,sportsteam)",5.561461925506592
+"economicsectorcompany(sector,`company),athleteplayssport(athlete,sport)",5.603054046630859

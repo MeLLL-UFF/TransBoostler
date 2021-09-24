@@ -1,11 +1,11 @@
 candidates,similarity
-"athleteplayssport(athlete,sport),companyalsoknownas(company,company)",4.923108100891113
-"athleteplayssport(athlete,sport),countryhascompanyoffice(country,company)",5.314970016479492
-"athleteplayssport(athlete,sport),cityhascompanyoffice(city,company)",5.34623908996582
+"athleteplayssport(athlete,sport),companyalsoknownas(company,company)",4.862204074859619
+"athleteplayssport(athlete,sport),countryhascompanyoffice(country,company)",5.14456844329834
+"athleteplayssport(athlete,sport),cityhascompanyoffice(city,company)",5.168020248413086
+"athleteplayssport(athlete,sport),bankbankincountry(person,country)",5.320034503936768
 "athleteplayssport(athlete,sport),acquired(company,company)",5.373129844665527
 "athleteplayssport(athlete,sport),companyceo(company,person)",5.474005699157715
 "athleteplayssport(athlete,sport),economicsectorcompany(`sector,company)",5.603054046630859
 "athleteplayssport(athlete,sport),economicsectorcompany(sector,`company)",5.603054046630859
-"athleteplayssport(athlete,sport),bankbankincountry(person,country)",5.656237602233887
 "athleteplayssport(athlete,sport),bankboughtbank(company,company)",5.676507949829102
 "athleteplayssport(athlete,sport),bankchiefexecutiveceo(company,person)",5.697285175323486

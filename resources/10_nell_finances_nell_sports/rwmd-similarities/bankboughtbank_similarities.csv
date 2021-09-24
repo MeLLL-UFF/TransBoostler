@@ -1,8 +1,8 @@
 candidates,similarity
-"bankboughtbank(company,company),teamalsoknownas(sportsteam,sportsteam)",4.618503570556641
-"bankboughtbank(company,company),teamplaysinleague(sportsteam,sportsleague)",5.027402877807617
-"bankboughtbank(company,company),teamplaysagainstteam(sportsteam,sportsteam)",5.177783012390137
-"bankboughtbank(company,company),athleteplaysinleague(athlete,sportsleague)",5.202128887176514
-"bankboughtbank(company,company),athleteplaysforteam(athlete,sportsteam)",5.208765506744385
+"bankboughtbank(company,company),teamalsoknownas(sportsteam,sportsteam)",4.67604398727417
+"bankboughtbank(company,company),teamplaysagainstteam(sportsteam,sportsteam)",5.195165157318115
+"bankboughtbank(company,company),teamplaysinleague(sportsteam,sportsleague)",5.271543979644775
+"bankboughtbank(company,company),athleteplaysforteam(athlete,sportsteam)",5.504806995391846
+"bankboughtbank(company,company),athleteplaysinleague(athlete,sportsleague)",5.533145904541016
 "bankboughtbank(company,company),athleteplayssport(athlete,sport)",5.676507949829102
 "bankboughtbank(company,company),athleteledsportsteam(athlete,sportsteam)",5.750762939453125

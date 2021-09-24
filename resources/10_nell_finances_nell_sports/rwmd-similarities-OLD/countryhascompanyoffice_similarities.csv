@@ -1,0 +1,8 @@
+candidates,similarity
+"countryhascompanyoffice(country,company),teamalsoknownas(sportsteam,sportsteam)",4.033538818359375
+"countryhascompanyoffice(country,company),teamplaysinleague(sportsteam,sportsleague)",4.576522350311279
+"countryhascompanyoffice(country,company),athleteplaysforteam(athlete,sportsteam)",4.677220344543457
+"countryhascompanyoffice(country,company),athleteplaysinleague(athlete,sportsleague)",4.722411632537842
+"countryhascompanyoffice(country,company),teamplaysagainstteam(sportsteam,sportsteam)",4.7848944664001465
+"countryhascompanyoffice(country,company),athleteledsportsteam(athlete,sportsteam)",5.077643871307373
+"countryhascompanyoffice(country,company),athleteplayssport(athlete,sport)",5.14456844329834

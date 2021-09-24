@@ -1,8 +1,8 @@
 candidates,similarity
-"bankchiefexecutiveceo(company,person),teamalsoknownas(sportsteam,sportsteam)",4.754177093505859
-"bankchiefexecutiveceo(company,person),teamplaysinleague(sportsteam,sportsleague)",5.157194137573242
-"bankchiefexecutiveceo(company,person),athleteplaysforteam(athlete,sportsteam)",5.252596378326416
-"bankchiefexecutiveceo(company,person),teamplaysagainstteam(sportsteam,sportsteam)",5.274389743804932
-"bankchiefexecutiveceo(company,person),athleteplaysinleague(athlete,sportsleague)",5.286864280700684
+"bankchiefexecutiveceo(company,person),teamalsoknownas(sportsteam,sportsteam)",4.916895389556885
+"bankchiefexecutiveceo(company,person),teamplaysagainstteam(sportsteam,sportsteam)",5.352323055267334
+"bankchiefexecutiveceo(company,person),teamplaysinleague(sportsteam,sportsleague)",5.474438190460205
+"bankchiefexecutiveceo(company,person),athleteplaysforteam(athlete,sportsteam)",5.534750461578369
 "bankchiefexecutiveceo(company,person),athleteledsportsteam(athlete,sportsteam)",5.601589679718018
+"bankchiefexecutiveceo(company,person),athleteplaysinleague(athlete,sportsleague)",5.66420841217041
 "bankchiefexecutiveceo(company,person),athleteplayssport(athlete,sport)",5.697285175323486

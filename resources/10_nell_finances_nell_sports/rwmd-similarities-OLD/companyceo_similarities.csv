@@ -1,0 +1,8 @@
+candidates,similarity
+"companyceo(company,person),teamalsoknownas(sportsteam,sportsteam)",4.617351055145264
+"companyceo(company,person),athleteplaysforteam(athlete,sportsteam)",5.018258571624756
+"companyceo(company,person),teamplaysinleague(sportsteam,sportsleague)",5.034897327423096
+"companyceo(company,person),teamplaysagainstteam(sportsteam,sportsteam)",5.12722635269165
+"companyceo(company,person),athleteplaysinleague(athlete,sportsleague)",5.164567947387695
+"companyceo(company,person),athleteledsportsteam(athlete,sportsteam)",5.406395435333252
+"companyceo(company,person),athleteplayssport(athlete,sport)",5.474005699157715

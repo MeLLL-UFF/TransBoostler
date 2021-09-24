@@ -1,8 +1,8 @@
 candidates,similarity
-"cityhascompanyoffice(city,company),teamalsoknownas(sportsteam,sportsteam)",3.9931721687316895
-"cityhascompanyoffice(city,company),teamplaysinleague(sportsteam,sportsleague)",4.557043552398682
-"cityhascompanyoffice(city,company),athleteplaysforteam(athlete,sportsteam)",4.657741546630859
-"cityhascompanyoffice(city,company),athleteplaysinleague(athlete,sportsleague)",4.7060956954956055
-"cityhascompanyoffice(city,company),teamplaysagainstteam(sportsteam,sportsteam)",4.755126953125
-"cityhascompanyoffice(city,company),athleteledsportsteam(athlete,sportsteam)",5.101096153259277
-"cityhascompanyoffice(city,company),athleteplayssport(athlete,sport)",5.168020248413086
+"cityhascompanyoffice(city,company),teamalsoknownas(sportsteam,sportsteam)",4.511964321136475
+"cityhascompanyoffice(city,company),teamplaysagainstteam(sportsteam,sportsteam)",5.0747880935668945
+"cityhascompanyoffice(city,company),teamplaysinleague(sportsteam,sportsleague)",5.125797748565674
+"cityhascompanyoffice(city,company),athleteplaysforteam(athlete,sportsteam)",5.230910778045654
+"cityhascompanyoffice(city,company),athleteledsportsteam(athlete,sportsteam)",5.3162126541137695
+"cityhascompanyoffice(city,company),athleteplaysinleague(athlete,sportsleague)",5.324533939361572
+"cityhascompanyoffice(city,company),athleteplayssport(athlete,sport)",5.34623908996582
