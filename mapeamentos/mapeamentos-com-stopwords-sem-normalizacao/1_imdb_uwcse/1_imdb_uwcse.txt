@@ -1,0 +1,16 @@
+Starting experiment 1_imdb_uwcse 
+
+Run: 1
+Loading pre-trained trees.
+Starting experiments for fasttext using relax-wmd 
+
+Starting experiment 1_imdb_uwcse 
+
+Run: 1
+Loading pre-trained trees.
+Starting experiments for fasttext using euclidean 
+
+Starting experiments for fasttext using softcosine 
+
+Starting experiments for fasttext using wmd 
+
