@@ -68,8 +68,6 @@ def load_model(model_name):
         #loadedModel = FastText.load_fasttext_format(params.WIKIPEDIA_FASTTEXT)
         loadedModel = KeyedVectors.load_word2vec_format(params.WIKIPEDIA_FASTTEXT, binary=False, unicode_errors='ignore')
 
-        #loadedModel.init_sims(replace=True)
-
         end = time.time()
         utils.print_function('Time to load FastText model: {} seconds'.format(round(end-start, 2)), experiment_title, experiment_type)
 
