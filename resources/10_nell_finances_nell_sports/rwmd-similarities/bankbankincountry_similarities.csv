@@ -1,0 +1,8 @@
+candidates,similarity
+"bankbankincountry(company,country),teamalsoknownas(sportsteam,sportsteam)",4.92806339263916
+"bankbankincountry(company,country),teamplaysagainstteam(sportsteam,sportsteam)",5.359800338745117
+"bankbankincountry(company,country),teamplaysinleague(sportsteam,sportsleague)",5.4116129875183105
+"bankbankincountry(company,country),athleteplaysforteam(athlete,sportsteam)",5.537704944610596
+"bankbankincountry(company,country),athleteplaysinleague(athlete,sportsleague)",5.566043853759766
+"bankbankincountry(company,country),athleteledsportsteam(athlete,sportsteam)",5.648056507110596
+"bankbankincountry(company,country),athleteplayssport(athlete,sport)",5.656237602233887
