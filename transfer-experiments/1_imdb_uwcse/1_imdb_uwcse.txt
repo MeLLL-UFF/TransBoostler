@@ -89,3 +89,88 @@ Starting experiments for fasttext using wmd
 
 Starting experiments for fasttext using relax-wmd 
 
+Starting experiment 1_imdb_uwcse 
+
+Run: 1
+Start learning from source dataset
+
+Source train facts examples: 1078
+Source train pos examples: 382
+Source train neg examples: 14236
+
+Model training time 11.551815748214722 
+
+Building refine structure 
+
+WILL Produced-Tree #1
+% FOR workedunder(A, B):
+%   if ( director(B), actor(A) )
+%   then if ( movie(C, A), movie(C, B) )
+%   | then return 0.8581489350995083;  // std dev = 1.43e-06, 382.000 (wgt'ed) examples reached here.  /* #pos=382 */
+%   | else return -0.14185106490048766;  // std dev = 6.50e-08, 64.000 (wgt'ed) examples reached here.  /* #neg=64 */
+%   else return -0.14185106490048913;  // std dev = 0.000, 708.000 (wgt'ed) examples reached here.  /* #neg=708 */
+WILL Produced-Tree #2
+% FOR workedunder(A, B):
+%   if ( director(B), actor(A) )
+%   then if ( movie(C, A), movie(C, B) )
+%   | then return 0.7194734122109581;  // std dev = 0.000, 382.000 (wgt'ed) examples reached here.  /* #pos=382 */
+%   | else return -0.1254446385283916;  // std dev = 0.000, 59.000 (wgt'ed) examples reached here.  /* #neg=59 */
+%   else return -0.12544463852839235;  // std dev = 0.000, 718.000 (wgt'ed) examples reached here.  /* #neg=718 */
+WILL Produced-Tree #3
+% FOR workedunder(A, B):
+%   if ( director(B), actor(A) )
+%   then if ( movie(C, A), movie(C, B) )
+%   | then return 0.555366436746283;  // std dev = 0.000, 382.000 (wgt'ed) examples reached here.  /* #pos=382 */
+%   | else return -0.11231637819360628;  // std dev = 4.59e-08, 61.000 (wgt'ed) examples reached here.  /* #neg=61 */
+%   else return -0.11231637819360651;  // std dev = 0.000, 699.000 (wgt'ed) examples reached here.  /* #neg=699 */
+WILL Produced-Tree #4
+% FOR workedunder(A, B):
+%   if ( actor(A), director(B) )
+%   then if ( movie(C, A), movie(C, B) )
+%   | then return 0.417513584158312;  // std dev = 0.000, 382.000 (wgt'ed) examples reached here.  /* #pos=382 */
+%   | else return -0.10159632948783624;  // std dev = 2.79e-08, 52.000 (wgt'ed) examples reached here.  /* #neg=52 */
+%   else return -0.10159632948783513;  // std dev = 4.53e-07, 737.000 (wgt'ed) examples reached here.  /* #neg=737 */
+WILL Produced-Tree #5
+% FOR workedunder(A, B):
+%   if ( director(B), actor(A) )
+%   then if ( movie(C, A), movie(C, B) )
+%   | then return 0.32071184716015166;  // std dev = 0.000, 382.000 (wgt'ed) examples reached here.  /* #pos=382 */
+%   | else return -0.09269127618926105;  // std dev = 0.000, 51.000 (wgt'ed) examples reached here.  /* #neg=51 */
+%   else return -0.09269127618926197;  // std dev = 0.000, 677.000 (wgt'ed) examples reached here.  /* #neg=677 */
+WILL Produced-Tree #6
+% FOR workedunder(A, B):
+%   if ( actor(A), director(B) )
+%   then if ( movie(C, A), movie(C, B) )
+%   | then return 0.25517224256948734;  // std dev = 4.42e-07, 382.000 (wgt'ed) examples reached here.  /* #pos=382 */
+%   | else return -0.08518475138839679;  // std dev = 1.83e-08, 56.000 (wgt'ed) examples reached here.  /* #neg=56 */
+%   else return -0.08518475138839675;  // std dev = 1.30e-07, 714.000 (wgt'ed) examples reached here.  /* #neg=714 */
+WILL Produced-Tree #7
+% FOR workedunder(A, B):
+%   if ( director(B), actor(A) )
+%   then if ( movie(C, A), movie(C, B) )
+%   | then return 0.20975771563253462;  // std dev = 2.53e-07, 382.000 (wgt'ed) examples reached here.  /* #pos=382 */
+%   | else return -0.07877675473109179;  // std dev = 0.000, 51.000 (wgt'ed) examples reached here.  /* #neg=51 */
+%   else return -0.0787767547310928;  // std dev = 0.000, 719.000 (wgt'ed) examples reached here.  /* #neg=719 */
+WILL Produced-Tree #8
+% FOR workedunder(A, B):
+%   if ( actor(A), director(B) )
+%   then if ( movie(C, A), movie(C, B) )
+%   | then return 0.17709649774527667;  // std dev = 2.60e-07, 382.000 (wgt'ed) examples reached here.  /* #pos=382 */
+%   | else return -0.07324622576333704;  // std dev = 7.45e-09, 58.000 (wgt'ed) examples reached here.  /* #neg=58 */
+%   else return -0.0732462257633365;  // std dev = 2.43e-07, 707.000 (wgt'ed) examples reached here.  /* #neg=707 */
+WILL Produced-Tree #9
+% FOR workedunder(A, B):
+%   if ( director(B), actor(A) )
+%   then if ( movie(C, A), movie(C, B) )
+%   | then return 0.15274385809367164;  // std dev = 0.000, 382.000 (wgt'ed) examples reached here.  /* #pos=382 */
+%   | else return -0.06842697784420268;  // std dev = 2.11e-08, 61.000 (wgt'ed) examples reached here.  /* #neg=61 */
+%   else return -0.06842697784420256;  // std dev = 1.85e-07, 703.000 (wgt'ed) examples reached here.  /* #neg=703 */
+WILL Produced-Tree #10
+% FOR workedunder(A, B):
+%   if ( actor(A), director(B) )
+%   then if ( movie(C, A), movie(C, B) )
+%   | then return 0.13400703000801212;  // std dev = 0.000, 382.000 (wgt'ed) examples reached here.  /* #pos=382 */
+%   | else return -0.06419184008202625;  // std dev = 0.000, 71.000 (wgt'ed) examples reached here.  /* #neg=71 */
+%   else return -0.06419184008202529;  // std dev = 2.53e-07, 719.000 (wgt'ed) examples reached here.  /* #neg=719 */
+Starting experiments for fasttext using euclidean 
+

@@ -580,3 +580,5 @@ TP: 38
 FP: 120
 TN: 183097
 FN: 220
+Cleaning previous experiment's mess
+Loading fasttext model
