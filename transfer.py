@@ -201,11 +201,11 @@ class Transfer:
     #
     # Linha criada pra rodar os experimentos no cluster porque não consegui criar os modelos do SpaCy
     # 
-    if(similarity_metric == 'arelax-wmd'):
+    if(similarity_metric == 'relax-wmd'):
       import pandas as pd
       similarities = pd.read_csv(params.ROOT_PATH + 'resources/{}/rwmd-similarities/{}_similarities.csv'.format(self.experiment_title,clause.split('(')[0])).set_index('candidates')
     else:
-      similarities = self.similarity.compute_similarities(source, targets, similarity_metric, self.model, self.model_name, similarity_matrix, dictionary, self.experiment_title)
+      similarities = self.similarity.compute_similarities(source, targets, similarity_metric, self.model, self.model_name)
     
     similarities.to_csv(params.ROOT_PATH + '{}/{}/similarities/{}/{}/{}_similarities.csv'.format(self.experiment_type, self.experiment_title, self.model_name, similarity_metric, clause.split('(')[0]))
     #similarities.to_csv(params.ROOT_PATH + 'resources/{}/rwmd-similarities/{}_similarities.csv'.format(self.experiment_title, clause.split('(')[0]))
@@ -300,7 +300,7 @@ class Transfer:
               best_match, targets_taken = self.__find_best_single_mapping(clause, targets, similarity_metric, targets_taken)
 
               #for RWMD
-              if(similarity_metric == 'arelax-wmd'):
+              if(similarity_metric == 'relax-wmd'):
                 with open(params.ROOT_PATH + 'resources/{}/rwmd-similarities/{}time.txt'.format(self.experiment_title,clause.split('(')[0]), 'r') as file:
                   mapping_time += float(file.read())
 
@@ -308,9 +308,56 @@ class Transfer:
             else:
               mappings[clause] = self.__find_best_mapping(clause, targets, similarity_metric)
     
-    if(similarity_metric == 'arelax-wmd'):
+    if(similarity_metric == 'relax-wmd'):
       return mappings, mapping_time
     
+    return mappings
+
+  def __find_most_similar_mapping(self, sources, targets, similarities):
+    """
+        Calculate pairs similarity and sorts dataframe to obtain the closest target to a given source
+
+        Args:
+            sources(list): list of source predicates
+            targets(list): all targets found in the target domain
+            similarities(DataFrame): similarities between (source, target) pairs of predicates
+        Returns:
+            the closest target-predicate to a given source
+      """
+
+    targets_taken = []
+    mappings = {}
+
+    for source in sources:
+      #df = similarities.filter(regex=source.split('(')[0], axis=0)
+      #df = df.rename_axis('candidates').sort_values(by=['similarity', 'candidates'], ascending=[False, True])
+      indexes = similarities.index.tolist()
+
+      for index in indexes:
+        index = re.split(r',\s*(?![^()]*\))', index)
+        source, target = index[0].rstrip(), index[1].rstrip()
+
+        if(source in mappings):
+          continue
+
+        # Literals must match
+        if(not self.__same_arity(utils.get_all_literals([source]), utils.get_all_literals([target]))):
+          continue
+
+        if(target not in targets_taken):
+          mappings[source] = [target]
+          targets_taken.append(target)
+          continue
+
+        #targets.append(target)
+        #if(len(targets) == params.TOP_K):
+        #  return targets
+
+    #Checks for non mapped predicates
+    for source in sources:
+      if source not in mappings:
+        mappings[source] = []
+
     return mappings
   
   def map_predicates_most_similar(self, similarity_metric, clauses, targets):
@@ -325,6 +372,7 @@ class Transfer:
       Returns:
           all sources mapped to the its closest target-predicate
     """
+    import pandas as pd
 
     targets = utils.build_triples(targets)
     targets = self.__build_word_vectors(targets, similarity_metric)
@@ -333,25 +381,43 @@ class Transfer:
     mapping_time = 0
 
     mappings, targets_taken = {}, {}
+    similarities = pd.DataFrame()
+    clauses = list(set(clauses))
 
     for clause in clauses:
-      if(clause not in mappings and 'recursion' not in clause):
-        if(params.TOP_K == 1):
-          best_match, targets_taken = self.__find_best_single_mapping(clause, targets, similarity_metric, targets_taken)
+      if('recursion' not in clause):
+        source  = self.__build_word_vectors([utils.build_triple(clause)], similarity_metric)
 
-          #for RWMD
-          if(similarity_metric == 'arelax-wmd'):
-            with open(params.ROOT_PATH + 'resources/{}/rwmd-similarities/{}time.txt'.format(self.experiment_title,clause.split('(')[0]), 'r') as file:
-              mapping_time += float(file.read())
+      if(similarity_metric == 'relax-wmd'):
+        current = pd.read_csv(params.ROOT_PATH + 'resources/{}/rwmd-similarities/{}_similarities.csv'.format(self.experiment_title,clause.split('(')[0])).set_index('candidates')
+      else:
+        current = self.similarity.compute_similarities(source, targets, similarity_metric, self.model, self.model_name)
+        current.to_csv(params.ROOT_PATH + '{}/{}/similarities/{}/{}/{}_similarities.csv'.format(self.experiment_type, self.experiment_title, self.model_name, similarity_metric, clause.split('(')[0]))
+      similarities = pd.concat([similarities, current])
 
-          mappings[clause] = [best_match] if best_match != '' else []
-        else:
-          mappings[clause] = self.__find_best_mapping(clause, targets, similarity_metric)
+      if(similarity_metric == 'softcosine'):
+        similarities = similarities.rename_axis('candidates').sort_values(by=['similarity', 'candidates'], ascending=[False, True])
+      else:
+        similarities = similarities.rename_axis('candidates').sort_values(by=['similarity', 'candidates'])
+
+    return self.__find_most_similar_mapping(clauses, targets, similarities)
+      
+    # if(params.TOP_K == 1):
+    #   best_match, targets_taken = self.__find_most_similar_mapping(clause, targets, similarity_metric, targets_taken)
+
+    #   #for RWMD
+    #   if(similarity_metric == 'relax-wmd'):
+    #     with open(params.ROOT_PATH + 'resources/{}/rwmd-similarities/{}time.txt'.format(self.experiment_title,clause.split('(')[0]), 'r') as file:
+    #       mapping_time += float(file.read())
+
+    #   mappings[clause] = [best_match] if best_match != '' else []
+    # else:
+    #   mappings[clause] = self.__find_best_mapping(clause, targets, similarity_metric)
     
-    if(similarity_metric == 'arelax-wmd'):
-      return mappings, mapping_time
+    # if(similarity_metric == 'relax-wmd'):
+    #   return mappings, mapping_time
     
-    return mappings
+    # return mappings
 
 
   def write_constraints_to_file(self, filename):
