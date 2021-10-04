@@ -181,7 +181,7 @@ class Similarity:
     return source[0] + '(' + ','.join(source[1]) + ')' + ',' + target[0] + '(' + ','.join(target[1]) + ')'
     #key = s + '(' + ','.join([chr(65+i) for i in range(len(source[s][1]))]) + ')' + ',' + t + '(' + ','.join([chr(65+i) for i in range(len(target[t][1]))]) + ')'
 
-  def compute_similarities(self, source, targets, similarity_metric, model='', model_name='', similarity_index='', similarity_matrix='', dictionary=''):
+  def compute_similarities(self, source, targets, similarity_metric, model='', model_name=''):
     """
         Calculate similarities between a clause and the targets
 
