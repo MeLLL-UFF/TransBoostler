@@ -350,6 +350,7 @@ def main():
 
                 if(similarityMetric == 'relax-wmd' and 'previous' in locals()):
                     del loadedModel, previous
+                    loadedModel = ''
                 
                 transfer = Transfer(model=loadedModel, model_name=embeddingModel, segmenter=segmenter, similarity_metric=similarityMetric, sources=sources, targets=targets, experiment=experiment_title, experiment_type='transfer-experiments')
             
