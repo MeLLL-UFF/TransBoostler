@@ -1,0 +1,139 @@
+Cleaning previous experiment's mess
+Cleaning previous experiment's mess
+Loading fasttext model
+Time to load FastText model: 425.31 seconds
+Cleaning previous experiment's mess
+Cleaning previous experiment's mess
+Cleaning previous experiment's mess
+Cleaning previous experiment's mess
+Loading fasttext model
+Time to load FastText model: 407.74 seconds
+Cleaning previous experiment's mess
+Cleaning previous experiment's mess
+Cleaning previous experiment's mess
+Cleaning previous experiment's mess
+Loading fasttext model
+Time to load FastText model: 368.42 seconds
+Cleaning previous experiment's mess
+Loading fasttext model
+Time to load FastText model: 391.18 seconds
+Cleaning previous experiment's mess
+Cleaning previous experiment's mess
+Cleaning previous experiment's mess
+Cleaning previous experiment's mess
+Cleaning previous experiment's mess
+Cleaning previous experiment's mess
+Cleaning previous experiment's mess
+Cleaning previous experiment's mess
+Loading fasttext model
+Time to load FastText model: 324.64 seconds
+Cleaning previous experiment's mess
+Loading word2vec model
+Time to load Word2Vec model: 53.04 seconds
+Cleaning previous experiment's mess
+Loading word2vec model
+Time to load Word2Vec model: 35.33 seconds
+Cleaning previous experiment's mess
+Loading fasttext model
+Time to load FastText model: 348.31 seconds
+Cleaning previous experiment's mess
+Loading fasttext model
+Cleaning previous experiment's mess
+Loading word2vec model
+Time to load Word2Vec model: 53.12 seconds
+Cleaning previous experiment's mess
+Loading word2vec model
+Time to load Word2Vec model: 34.29 seconds
+Cleaning previous experiment's mess
+Loading word2vec model
+Time to load Word2Vec model: 25.17 seconds
+Cleaning previous experiment's mess
+Loading word2vec model
+Time to load Word2Vec model: 25.71 seconds
+Cleaning previous experiment's mess
+Loading word2vec model
+Time to load Word2Vec model: 22.94 seconds
+Cleaning previous experiment's mess
+Loading word2vec model
+Time to load Word2Vec model: 22.7 seconds
+Cleaning previous experiment's mess
+Loading word2vec model
+Time to load Word2Vec model: 23.68 seconds
+Cleaning previous experiment's mess
+Loading word2vec model
+Time to load Word2Vec model: 22.84 seconds
+Cleaning previous experiment's mess
+Loading word2vec model
+Time to load Word2Vec model: 61.18 seconds
+Cleaning previous experiment's mess
+Loading word2vec model
+Time to load Word2Vec model: 30.06 seconds
+Cleaning previous experiment's mess
+Loading word2vec model
+Time to load Word2Vec model: 31.91 seconds
+Cleaning previous experiment's mess
+Loading word2vec model
+Time to load Word2Vec model: 30.66 seconds
+Cleaning previous experiment's mess
+Loading word2vec model
+Time to load Word2Vec model: 28.75 seconds
+Cleaning previous experiment's mess
+Loading word2vec model
+Time to load Word2Vec model: 60.23 seconds
+Cleaning previous experiment's mess
+Loading word2vec model
+Time to load Word2Vec model: 25.21 seconds
+Cleaning previous experiment's mess
+Loading word2vec model
+Time to load Word2Vec model: 30.02 seconds
+Cleaning previous experiment's mess
+Loading word2vec model
+Time to load Word2Vec model: 24.49 seconds
+Cleaning previous experiment's mess
+Cleaning previous experiment's mess
+Loading fasttext model
+Time to load FastText model: 325.34 seconds
+Cleaning previous experiment's mess
+Loading fasttext model
+Time to load FastText model: 470.83 seconds
+Cleaning previous experiment's mess
+Loading fasttext model
+Time to load FastText model: 453.54 seconds
+Cleaning previous experiment's mess
+Cleaning previous experiment's mess
+Cleaning previous experiment's mess
+Loading fasttext model
+Time to load FastText model: 406.66 seconds
+Cleaning previous experiment's mess
+Cleaning previous experiment's mess
+Loading fasttext model
+Time to load FastText model: 465.33 seconds
+Cleaning previous experiment's mess
+Cleaning previous experiment's mess
+Loading fasttext model
+Time to load FastText model: 348.86 seconds
+Cleaning previous experiment's mess
+Loading fasttext model
+Time to load FastText model: 354.79 seconds
+Cleaning previous experiment's mess
+Loading fasttext model
+Time to load FastText model: 371.48 seconds
+Cleaning previous experiment's mess
+Loading fasttext model
+Time to load FastText model: 351.04 seconds
+Cleaning previous experiment's mess
+Loading fasttext model
+Time to load FastText model: 418.07 seconds
+Cleaning previous experiment's mess
+Loading fasttext model
+Time to load FastText model: 375.02 seconds
+Cleaning previous experiment's mess
+Cleaning previous experiment's mess
+Cleaning previous experiment's mess
+Cleaning previous experiment's mess
+Loading fasttext model
+Cleaning previous experiment's mess
+Cleaning previous experiment's mess
+Cleaning previous experiment's mess
+Cleaning previous experiment's mess
+Cleaning previous experiment's mess
