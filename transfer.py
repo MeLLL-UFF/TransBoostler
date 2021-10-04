@@ -400,7 +400,14 @@ class Transfer:
       else:
         similarities = similarities.rename_axis('candidates').sort_values(by=['similarity', 'candidates'])
 
-    return self.__find_most_similar_mapping(clauses, targets, similarities)
+    mappings = self.__find_most_similar_mapping(clauses, targets, similarities)
+
+    if(similarity_metric == 'relax-wmd'):
+      with open(params.ROOT_PATH + 'resources/{}/rwmd-similarities/{}time.txt'.format(self.experiment_title,clause.split('(')[0]), 'r') as file:
+        mapping_time += float(file.read())
+      return mappings, mapping_time
+
+    return mappings
       
     # if(params.TOP_K == 1):
     #   best_match, targets_taken = self.__find_most_similar_mapping(clause, targets, similarity_metric, targets_taken)
