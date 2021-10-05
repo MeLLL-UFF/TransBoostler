@@ -274,7 +274,10 @@ def main():
                 # Get the list of predicates from source tree          
                 #nodes = utils.deep_first_search_nodes(structured, utils.match_bk_source(set(bk[source])))
                 sources_dict =  utils.match_bk_source(set(bk[source]))
-                nodes = [sources_dict[node] for node in utils.sweep_tree(structured) if node != predicate]
+
+                nodes = [sources_dict[node] for node in utils.sweep_tree(structured, preds=[]) if node != predicate]
+                nodes = list(set(nodes))
+                
                 save_pickle_file(nodes, _id, source, target, params.SOURCE_TREE_NODES_FILES)
                 save_pickle_file(structured, _id, source, target, params.STRUCTURED_TREE_NODES_FILES)
 
