@@ -474,7 +474,9 @@ def save_best_model_files():
   except:
     pass
 
-  os.mkdir(params.BEST_MODEL_FOLDER_FILES[:-1])
+  if not os.path.exists(params.BEST_MODEL_FOLDER_FILES[:-1]):
+    os.mkdir(params.BEST_MODEL_FOLDER_FILES[:-1])
+    
   shutil.move(params.TRAIN_FOLDER_FILES[:-1], params.BEST_MODEL_FOLDER_FILES[:-1])
   shutil.move(params.TEST_FOLDER_FILES[:-1], params.BEST_MODEL_FOLDER_FILES[:-1])
   shutil.move(params.TRAIN_OUTPUT_FILE, params.BEST_MODEL_FOLDER_FILES[:-1])
