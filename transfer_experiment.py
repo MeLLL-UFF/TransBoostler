@@ -244,7 +244,7 @@ def main():
                 'numOfClauses' : params.NUMOFCLAUSES,
                 'maxTreeDepth' : params.MAXTREEDEPTH
                 }
-
+        
         while results['save']['n_runs'] < n_runs:
 
             utils.print_function('Run: ' + str(results['save']['n_runs'] + 1), experiment_title, experiment_type)
