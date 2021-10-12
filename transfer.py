@@ -385,8 +385,10 @@ class Transfer:
     clauses = list(set(clauses))
 
     for clause in clauses:
-      if('recursion' not in clause):
-        source  = self.__build_word_vectors([utils.build_triple(clause)], similarity_metric)
+      if('recursion' in clause):
+        continue
+        
+      source  = self.__build_word_vectors([utils.build_triple(clause)], similarity_metric)
 
       if(similarity_metric == 'relax-wmd'):
         current = pd.read_csv(params.ROOT_PATH + 'resources/{}/rwmd-similarities/{}_similarities.csv'.format(self.experiment_title,clause.split('(')[0])).set_index('candidates')
