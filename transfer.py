@@ -404,7 +404,7 @@ class Transfer:
 
     mappings = self.__find_most_similar_mapping(clauses, targets, similarities)
 
-    if(similarity_metric == 'relax-wmd'):
+    if(similarity_metric == 'relax-wmd' and 'recursion' not in clause):
       with open(params.ROOT_PATH + 'resources/{}/rwmd-similarities/{}time.txt'.format(self.experiment_title,clause.split('(')[0]), 'r') as file:
         mapping_time += float(file.read())
       return mappings, mapping_time
