@@ -26,7 +26,7 @@ balanced = False
 
 runTransBoostler = True
 runRDNB = False
-learn_from_source = True
+learn_from_source = False
 
 revision = TheoryRevision()
 segmenter = Segmenter(corpus="english")
@@ -225,6 +225,7 @@ def main():
             'maxTreeDepth' : params.MAXTREEDEPTH
             }
 
+        n_runs = 1
         while results['save']['n_runs'] < n_runs:
             utils.print_function('Run: ' + str(results['save']['n_runs'] + 1), experiment_title, experiment_type)
 
@@ -272,11 +273,11 @@ def main():
                 del model
 
                 # Get the list of predicates from source tree          
-                #nodes = utils.deep_first_search_nodes(structured, utils.match_bk_source(set(bk[source])))
-                sources_dict =  utils.match_bk_source(set(bk[source]))
+                nodes = utils.deep_first_search_nodes(structured, utils.match_bk_source(set(bk[source])))
+                #sources_dict =  utils.match_bk_source(set(bk[source]))
 
-                nodes = [sources_dict[node] for node in utils.sweep_tree(structured, preds=[]) if node != predicate]
-                nodes = list(set(nodes))
+                #nodes = [sources_dict[node] for node in utils.sweep_tree(structured, preds=[]) if node != predicate]
+                #nodes = list(set(nodes))
                 
                 save_pickle_file(nodes, _id, source, target, params.SOURCE_TREE_NODES_FILES)
                 save_pickle_file(structured, _id, source, target, params.STRUCTURED_TREE_NODES_FILES)
@@ -293,8 +294,8 @@ def main():
                 from shutil import copyfile
                 copyfile(params.ROOT_PATH + 'resources/{}_{}_{}/{}'.format(_id, source, target, params.REFINE_FILENAME.split('/')[-1]), params.REFINE_FILENAME)
                 nodes = load_pickle_file(params.ROOT_PATH +  'resources/{}_{}_{}/{}'.format(_id, source, target, params.SOURCE_TREE_NODES_FILES))
-                sources_dict =  utils.match_bk_source(set(bk[source]))
-                nodes = [sources_dict[node] for node in utils.sweep_tree(nodes) if node != predicate]
+                #sources_dict =  utils.match_bk_source(set(bk[source]))
+                #nodes = [sources_dict[node] for node in utils.sweep_tree(nodes) if node != predicate]
                 structured = load_pickle_file(params.ROOT_PATH + 'resources/{}_{}_{}/{}'.format(_id, source, target, params.STRUCTURED_TREE_NODES_FILES))
 
             for setup in setups: 
@@ -335,10 +336,10 @@ def main():
 
                 mapping_time_clauses = 0
                 if(similarityMetric == 'relax-wmd'):
-                    mapping, mapping_time_clauses = transfer.map_predicates_most_similar(similarityMetric, nodes, targets)
+                    mapping, mapping_time_clauses = transfer.map_predicates(similarityMetric, nodes, targets)
                 else:
                     # Map and transfer using the loaded embedding model
-                    mapping  = transfer.map_predicates_most_similar(similarityMetric, nodes, targets)
+                    mapping  = transfer.map_predicates(similarityMetric, nodes, targets)
 
                 transfer.write_to_file_closest_distance(similarityMetric, embeddingModel, predicate, to_predicate, arity, mapping, params.ROOT_PATH + '/curves-experiments/' + experiment_title, recursion=recursion, searchArgPermutation=params.SEARCH_PERMUTATION, searchEmpty=params.SEARCH_EMPTY, allowSameTargetMap=params.ALLOW_SAME_TARGET_MAP)
                 del mapping
