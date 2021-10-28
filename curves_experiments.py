@@ -24,9 +24,7 @@ import os
 source_balanced = False
 balanced = False
 
-runTransBoostler = True
-runRDNB = False
-learn_from_source = False
+learn_from_source = True
 
 revision = TheoryRevision()
 segmenter = Segmenter(corpus="english")
@@ -225,7 +223,6 @@ def main():
             'maxTreeDepth' : params.MAXTREEDEPTH
             }
 
-        n_runs = 1
         while results['save']['n_runs'] < n_runs:
             utils.print_function('Run: ' + str(results['save']['n_runs'] + 1), experiment_title, experiment_type)
 
