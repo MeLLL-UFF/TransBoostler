@@ -153,7 +153,7 @@ def save_pickle_file(nodes, _id, source, target, filename):
         pickle.dump(nodes, file)
 
 def load_pickle_file(filename):
-    with open(params.ROOT_PATH + filename, 'rb') as file:
+    with open(filename, 'rb') as file:
         return pickle.load(file)
 
 def main():
