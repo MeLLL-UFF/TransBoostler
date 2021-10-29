@@ -334,7 +334,7 @@ def main():
                 utils.print_function('Starting experiments for {} using {} \n'.format(embeddingModel, similarityMetric), experiment_title, experiment_type)
 
                 if(('previous' not in locals() or previous != embeddingModel) and similarityMetric != 'relax-wmd'):
-                    #loadedModel = load_model(embeddingModel)
+                    loadedModel = load_model(embeddingModel)
                     previous = embeddingModel
                 
                 transfer = Transfer(model=loadedModel, model_name=embeddingModel, segmenter=segmenter, similarity_metric=similarityMetric, sources=sources, targets=targets, experiment=experiment_title, experiment_type='transfer-experiments')
