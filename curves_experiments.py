@@ -80,11 +80,9 @@ def train_and_test(background, train_pos, train_neg, train_facts, test_pos, test
         Train RDN-B using transfer learning
     '''
 
-    start = time.time()
     model = boostsrl.train(background, train_pos, train_neg, train_facts, refine=refine, transfer=transfer, trees=params.TREES)
     
-    end = time.time()
-    learning_time = end-start
+    learning_time = model.traintime()
 
     utils.print_function('Model training time {}'.format(learning_time), experiment_title, experiment_type)
 
@@ -92,13 +90,10 @@ def train_and_test(background, train_pos, train_neg, train_facts, test_pos, test
     for w in will:
         utils.print_function(w, experiment_title, experiment_type)
 
-    start = time.time()
-
     # Test transfered model
     results = boostsrl.test(model, test_pos, test_neg, test_facts, trees=params.TREES)
 
-    end = time.time()
-    inference_time = end-start
+    inference_time = results.get_testing_time()
 
     utils.print_function('Inference time using transfer learning {}'.format(inference_time), experiment_title, experiment_type)
 
@@ -223,59 +218,7 @@ def main():
             'maxTreeDepth' : params.MAXTREEDEPTH
             }
 
-        if(learn_from_source):
-
-            # Load source dataset
-            src_total_data = datasets.load(source, bk[source], seed=params.SEED)
-            src_data = datasets.load(source, bk[source], target=predicate, balanced=source_balanced, seed=params.SEED)
-
-            # Group and shuffle
-            src_facts = datasets.group_folds(src_data[0])
-            src_pos   = datasets.group_folds(src_data[1])
-            src_neg   = datasets.group_folds(src_data[2])
-                        
-            utils.print_function('Start learning from source dataset\n', experiment_title, experiment_type)
-            
-            utils.print_function('Source train facts examples: {}'.format(len(src_facts)), experiment_title, experiment_type)
-            utils.print_function('Source train pos examples: {}'.format(len(src_pos)), experiment_title, experiment_type)
-            utils.print_function('Source train neg examples: {}\n'.format(len(src_neg)), experiment_title, experiment_type)
-
-            # Learning from source dataset
-            background = boostsrl.modes(bk[source], [predicate], useStdLogicVariables=False, maxTreeDepth=params.MAXTREEDEPTH, nodeSize=params.NODESIZE, numOfClauses=params.NUMOFCLAUSES)
-            model = boostsrl.train(background, src_pos, src_neg, src_facts, trees=params.TREES)
-
-            utils.print_function('Model training time {} \n'.format(model.traintime()), experiment_title, experiment_type)
-
-            utils.print_function('Building refine structure \n', experiment_title, experiment_type)
-
-            # Get all learned trees
-            structured = []
-            for i in range(params.TREES):
-                structured.append(model.get_structured_tree(treenumber=i+1).copy())
-            
-            will = ['WILL Produced-Tree #'+str(i+1)+'\n'+('\n'.join(model.get_will_produced_tree(treenumber=i+1))) for i in range(10)]
-            for w in will:
-                utils.print_function(w, experiment_title, experiment_type)
-            
-            del model
-
-            # Get the list of predicates from source tree          
-            nodes = utils.deep_first_search_nodes(structured, utils.match_bk_source(set(bk[source])))
-            #sources_dict =  utils.match_bk_source(set(bk[source]))
-
-            #nodes = [sources_dict[node] for node in utils.sweep_tree(structured, preds=[]) if node != predicate]
-            #nodes = list(set(nodes))
-            
-            save_pickle_file(nodes, _id, source, target, params.SOURCE_TREE_NODES_FILES)
-            save_pickle_file(structured, _id, source, target, params.STRUCTURED_TREE_NODES_FILES)
-
-            # Get all rules learned by RDN-B
-            refine_structure = utils.get_all_rules_from_tree(structured)
-            utils.write_to_file(refine_structure, params.REFINE_FILENAME)
-            utils.write_to_file(refine_structure, params.REFINE_FILENAME)
-            utils.write_to_file(refine_structure, params.ROOT_PATH + 'curves-experiments/{}_{}_{}/{}'.format(_id, source, target, params.REFINE_FILENAME.split('/')[1]))
-
-        else:
+        if(not learn_from_source):
             utils.print_function('Loading pre-trained trees.', experiment_title, experiment_type)
 
             from shutil import copyfile
@@ -285,9 +228,63 @@ def main():
             #nodes = [sources_dict[node] for node in utils.sweep_tree(nodes) if node != predicate]
             structured = load_pickle_file(params.ROOT_PATH + 'resources/{}_{}_{}/{}'.format(_id, source, target, params.STRUCTURED_TREE_NODES_FILES))
 
-
         while results['save']['n_runs'] < n_runs:
+
             utils.print_function('Run: ' + str(results['save']['n_runs'] + 1), experiment_title, experiment_type)
+
+            if(learn_from_source):
+
+                # Load source dataset
+                src_total_data = datasets.load(source, bk[source], seed=params.SEED)
+                src_data = datasets.load(source, bk[source], target=predicate, balanced=source_balanced, seed=params.SEED)
+
+                # Group and shuffle
+                src_facts = datasets.group_folds(src_data[0])
+                src_pos   = datasets.group_folds(src_data[1])
+                src_neg   = datasets.group_folds(src_data[2])
+                            
+                utils.print_function('Start learning from source dataset\n', experiment_title, experiment_type)
+                
+                utils.print_function('Source train facts examples: {}'.format(len(src_facts)), experiment_title, experiment_type)
+                utils.print_function('Source train pos examples: {}'.format(len(src_pos)), experiment_title, experiment_type)
+                utils.print_function('Source train neg examples: {}\n'.format(len(src_neg)), experiment_title, experiment_type)
+
+                # Learning from source dataset
+                background = boostsrl.modes(bk[source], [predicate], useStdLogicVariables=False, maxTreeDepth=params.MAXTREEDEPTH, nodeSize=params.NODESIZE, numOfClauses=params.NUMOFCLAUSES)
+                model = boostsrl.train(background, src_pos, src_neg, src_facts, trees=params.TREES)
+
+                utils.print_function('Model training time {} \n'.format(model.traintime()), experiment_title, experiment_type)
+
+                utils.print_function('Building refine structure \n', experiment_title, experiment_type)
+
+                # Get all learned trees
+                structured = []
+                for i in range(params.TREES):
+                    structured.append(model.get_structured_tree(treenumber=i+1).copy())
+                
+                will = ['WILL Produced-Tree #'+str(i+1)+'\n'+('\n'.join(model.get_will_produced_tree(treenumber=i+1))) for i in range(10)]
+                for w in will:
+                    utils.print_function(w, experiment_title, experiment_type)
+                
+                del model
+
+                # Get the list of predicates from source tree          
+                nodes = utils.deep_first_search_nodes(structured, utils.match_bk_source(set(bk[source])))
+                #sources_dict =  utils.match_bk_source(set(bk[source]))
+
+                #nodes = [sources_dict[node] for node in utils.sweep_tree(structured, preds=[]) if node != predicate]
+                #nodes = list(set(nodes))
+                
+                save_pickle_file(nodes, _id, source, target, params.SOURCE_TREE_NODES_FILES)
+                save_pickle_file(structured, _id, source, target, params.STRUCTURED_TREE_NODES_FILES)
+
+                # Get all rules learned by RDN-B
+                refine_structure = utils.get_all_rules_from_tree(structured)
+                utils.write_to_file(refine_structure, params.REFINE_FILENAME)
+                utils.write_to_file(refine_structure, params.REFINE_FILENAME)
+                utils.write_to_file(refine_structure, params.ROOT_PATH + 'curves-experiments/{}_{}_{}/{}'.format(_id, source, target, params.REFINE_FILENAME.split('/')[1]))
+
+                del model, src_data, src_pos, src_neg, src_total_data
 
             for setup in setups: 
                 embeddingModel = setup['model'].lower()
@@ -318,8 +315,7 @@ def main():
                 utils.print_function('Starting experiments for {} using {} \n'.format(embeddingModel, similarityMetric), experiment_title, experiment_type)
             
                 if(('previous' not in locals() or previous != embeddingModel) and similarityMetric != 'relax-wmd'):
-                    #loadedModel = load_model(embeddingModel)
-                    loadedModel = ''
+                    loadedModel = load_model(embeddingModel)
                     previous = embeddingModel
 
                 transfer = Transfer(model=loadedModel, model_name=embeddingModel, segmenter=segmenter, similarity_metric=similarityMetric, sources=sources, targets=targets, experiment=experiment_title, experiment_type=experiment_type)

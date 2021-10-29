@@ -26,7 +26,7 @@ import os
 source_balanced = False
 balanced = False
 
-learn_from_source = True
+learn_from_source = False
 
 revision = TheoryRevision()
 segmenter = Segmenter(corpus="english")
@@ -93,11 +93,8 @@ def train_and_test(background, train_pos, train_neg, train_facts, test_pos, test
         Train RDN-B using transfer learning
     '''
 
-    start = time.time()
     model = boostsrl.train(background, train_pos, train_neg, train_facts, refine=refine, transfer=transfer, trees=params.TREES)
-    
-    end = time.time()
-    learning_time = end-start
+    learning_time = model.traintime()
 
     utils.print_function('Model training time {}'.format(learning_time), experiment_title, experiment_type)
 
@@ -105,13 +102,9 @@ def train_and_test(background, train_pos, train_neg, train_facts, test_pos, test
     for w in will:
         utils.print_function(w, experiment_title, experiment_type)
 
-    start = time.time()
-
     # Test transfered model
     results = boostsrl.test(model, test_pos, test_neg, test_facts, trees=params.TREES)
-
-    end = time.time()
-    inference_time = end-start
+    inference_time = results.get_testing_time()
 
     utils.print_function('Inference time using transfer learning {}'.format(inference_time), experiment_title, experiment_type)
 
@@ -244,7 +237,18 @@ def main():
                 'numOfClauses' : params.NUMOFCLAUSES,
                 'maxTreeDepth' : params.MAXTREEDEPTH
                 }
-        
+
+        if(not learn_from_source):
+
+            utils.print_function('Loading pre-trained trees.', experiment_title, experiment_type)
+
+            from shutil import copyfile
+            copyfile(params.ROOT_PATH + 'resources/{}_{}_{}/{}'.format(_id, source, target, params.REFINE_FILENAME.split('/')[-1]), params.REFINE_FILENAME)
+            nodes = load_pickle_file(params.ROOT_PATH +  'resources/{}_{}_{}/{}'.format(_id, source, target, params.SOURCE_TREE_NODES_FILES))
+            #sources_dict =  utils.match_bk_source(set(bk[source]))
+            #nodes = [sources_dict[node] for node in utils.sweep_tree(nodes) if node != predicate]
+            structured = load_pickle_file(params.ROOT_PATH + 'resources/{}_{}_{}/{}'.format(_id, source, target, params.STRUCTURED_TREE_NODES_FILES))
+    
         while results['save']['n_runs'] < n_runs:
 
             utils.print_function('Run: ' + str(results['save']['n_runs'] + 1), experiment_title, experiment_type)
@@ -265,19 +269,12 @@ def main():
                 utils.print_function('Source train facts examples: {}'.format(len(src_facts)), experiment_title, experiment_type)
                 utils.print_function('Source train pos examples: {}'.format(len(src_pos)), experiment_title, experiment_type)
                 utils.print_function('Source train neg examples: {}\n'.format(len(src_neg)), experiment_title, experiment_type)
-                
-                start = time.time()
 
                 # Learning from source dataset
                 background = boostsrl.modes(bk[source], [predicate], useStdLogicVariables=False, maxTreeDepth=params.MAXTREEDEPTH, nodeSize=params.NODESIZE, numOfClauses=params.NUMOFCLAUSES)
                 model = boostsrl.train(background, src_pos, src_neg, src_facts, trees=params.TREES)
-                
-                end = time.time()
 
-                #TODO: adicionar o tempo corretamente
-                #print('Model training time {}'.format(model.traintime()))
-
-                utils.print_function('Model training time {} \n'.format(end-start), experiment_title, experiment_type)
+                utils.print_function('Model training time {} \n'.format(model.traintime()), experiment_title, experiment_type)
 
                 utils.print_function('Building refine structure \n', experiment_title, experiment_type)
 
@@ -289,8 +286,6 @@ def main():
                 will = ['WILL Produced-Tree #'+str(i+1)+'\n'+('\n'.join(model.get_will_produced_tree(treenumber=i+1))) for i in range(10)]
                 for w in will:
                     utils.print_function(w, experiment_title, experiment_type)
-                
-                del model
 
                 # Get the list of predicates from source tree          
                 nodes = utils.deep_first_search_nodes(structured, utils.match_bk_source(set(bk[source])))
@@ -308,16 +303,7 @@ def main():
                 utils.write_to_file(refine_structure, params.ROOT_PATH + 'transfer-experiments/{}_{}_{}/{}'.format(_id, source, target, params.REFINE_FILENAME.split('/')[1]))
                 utils.write_to_file(refine_structure, params.ROOT_PATH + 'resources/{}_{}_{}/{}'.format(_id, source, target, params.REFINE_FILENAME.split('/')[1]))
 
-            else:
-                utils.print_function('Loading pre-trained trees.', experiment_title, experiment_type)
-
-                from shutil import copyfile
-                copyfile(params.ROOT_PATH + 'resources/{}_{}_{}/{}'.format(_id, source, target, params.REFINE_FILENAME.split('/')[-1]), params.REFINE_FILENAME)
-                nodes = load_pickle_file(params.ROOT_PATH +  'resources/{}_{}_{}/{}'.format(_id, source, target, params.SOURCE_TREE_NODES_FILES))
-                #sources_dict =  utils.match_bk_source(set(bk[source]))
-                #nodes = [sources_dict[node] for node in utils.sweep_tree(nodes) if node != predicate]
-                structured = load_pickle_file(params.ROOT_PATH + 'resources/{}_{}_{}/{}'.format(_id, source, target, params.STRUCTURED_TREE_NODES_FILES))
-
+                del model, src_data, src_pos, src_neg, src_total_data
 
             for setup in setups: 
                 embeddingModel = setup['model'].lower()
@@ -348,7 +334,7 @@ def main():
                 utils.print_function('Starting experiments for {} using {} \n'.format(embeddingModel, similarityMetric), experiment_title, experiment_type)
 
                 if(('previous' not in locals() or previous != embeddingModel) and similarityMetric != 'relax-wmd'):
-                    loadedModel = load_model(embeddingModel)
+                    #loadedModel = load_model(embeddingModel)
                     previous = embeddingModel
                 
                 transfer = Transfer(model=loadedModel, model_name=embeddingModel, segmenter=segmenter, similarity_metric=similarityMetric, sources=sources, targets=targets, experiment=experiment_title, experiment_type='transfer-experiments')
