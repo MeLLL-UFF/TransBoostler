@@ -257,11 +257,8 @@ class TheoryRevision:
 	        Train RDN-B using transfer learning
 	    '''
 
-		start = time.time()
 		model = boostsrl.train(background, train_pos, train_neg, train_facts, refine=refine, transfer=transfer, trees=params.TREES)
-	    
-		end = time.time()
-		learning_time = end-start
+		learning_time = model.traintime()
 
 		utils.print_function('Model training time {}'.format(learning_time), experiment_title, experiment_type)
 
@@ -269,13 +266,9 @@ class TheoryRevision:
 		for w in will:
 			utils.print_function(w, experiment_title, experiment_type)
 
-		start = time.time()
-
 		# Test transfered model
 		results = boostsrl.test(model, test_pos, test_neg, test_facts, trees=params.TREES)
-
-		end = time.time()
-		inference_time = end-start
+		inference_time = results.get_testing_time()
 
 		utils.print_function('Inference time using transfer learning {}'.format(inference_time), experiment_title, experiment_type)
 
