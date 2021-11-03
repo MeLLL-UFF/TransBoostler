@@ -251,8 +251,17 @@ class Transfer:
     source  = self.__build_word_vectors([utils.build_triple(clause)], similarity_metric)
     
     similarities = {}
-    similarities = self.similarity.compute_similarities(source, targets, similarity_metric, self.model, self.model_name)
-    similarities.to_csv(params.ROOT_PATH + '{}/{}/similarities/{}/{}/{}_similarities.csv'.format(self.experiment_type, self.experiment_title, self.model_name, similarity_metric, clause.split('(')[0]))
+    
+    #
+    # Linha criada pra rodar os experimentos no cluster porque não consegui criar os modelos do SpaCy
+    # 
+    if(similarity_metric == 'relax-wmd'):
+      import pandas as pd
+      similarities = pd.read_csv(params.ROOT_PATH + 'resources/{}/rwmd-similarities/{}_similarities.csv'.format(self.experiment_title,clause.split('(')[0])).set_index('candidates')
+    else:
+      similarities = self.similarity.compute_similarities(source, targets, similarity_metric, self.model, self.model_name)
+      similarities.to_csv(params.ROOT_PATH + '{}/{}/similarities/{}/{}/{}_similarities.csv'.format(self.experiment_type, self.experiment_title, self.model_name, similarity_metric, clause.split('(')[0]))
+
     indexes = similarities.index.tolist()
 
     targets = []
@@ -298,15 +307,14 @@ class Transfer:
           if(clause not in mappings and 'recursion' not in clause):
             if(params.TOP_K == 1):
               best_match, targets_taken = self.__find_best_single_mapping(clause, targets, similarity_metric, targets_taken)
-
-              #for RWMD
-              if(similarity_metric == 'relax-wmd'):
-                with open(params.ROOT_PATH + 'resources/{}/rwmd-similarities/{}time.txt'.format(self.experiment_title,clause.split('(')[0]), 'r') as file:
-                  mapping_time += float(file.read())
-
               mappings[clause] = [best_match] if best_match != '' else []
             else:
               mappings[clause] = self.__find_best_mapping(clause, targets, similarity_metric)
+
+            #for RWMD
+            if(similarity_metric == 'relax-wmd'):
+              with open(params.ROOT_PATH + 'resources/{}/rwmd-similarities/{}time.txt'.format(self.experiment_title,clause.split('(')[0]), 'r') as file:
+                mapping_time += float(file.read())
     
     if(similarity_metric == 'relax-wmd'):
       return mappings, mapping_time
