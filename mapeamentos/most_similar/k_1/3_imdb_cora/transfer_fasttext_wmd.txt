@@ -1,0 +1,9 @@
+movie(movie,person): sameauthor(author,author)
+genre(person,genre): author(class,author)
+female(person): 
+director(person): 
+actor(person): 
+setMap:workedunder(A,B),samevenue(A,B)
+setParam:searchArgPermutation=true.
+setParam:searchEmpty=false.
+setParam:allowSameTargetMap=false.

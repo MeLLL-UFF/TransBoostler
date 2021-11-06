@@ -1,0 +1,12 @@
+Starting experiment 10_nell_finances_nell_sports 
+
+Loading pre-trained trees.
+Run: 1
+Starting experiments for fasttext using euclidean 
+
+Starting experiments for fasttext using softcosine 
+
+Starting experiments for fasttext using wmd 
+
+Starting experiments for fasttext using relax-wmd 
+

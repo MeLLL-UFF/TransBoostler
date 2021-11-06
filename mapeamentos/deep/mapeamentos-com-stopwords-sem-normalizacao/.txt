@@ -1,0 +1,22 @@
+Cleaning previous experiment's mess
+Cleaning previous experiment's mess
+Cleaning previous experiment's mess
+Cleaning previous experiment's mess
+Cleaning previous experiment's mess
+Cleaning previous experiment's mess
+Cleaning previous experiment's mess
+Cleaning previous experiment's mess
+Cleaning previous experiment's mess
+Cleaning previous experiment's mess
+Cleaning previous experiment's mess
+Loading fasttext model
+Time to load FastText model: 377.28 seconds
+Cleaning previous experiment's mess
+Cleaning previous experiment's mess
+Cleaning previous experiment's mess
+Cleaning previous experiment's mess
+Cleaning previous experiment's mess
+Cleaning previous experiment's mess
+Cleaning previous experiment's mess
+Cleaning previous experiment's mess
+Cleaning previous experiment's mess

@@ -1,0 +1,12 @@
+Starting experiment 8_twitter_yeast 
+
+Loading pre-trained trees.
+Run: 1
+Starting experiments for fasttext using euclidean 
+
+Starting experiments for fasttext using softcosine 
+
+Starting experiments for fasttext using wmd 
+
+Starting experiments for fasttext using relax-wmd 
+

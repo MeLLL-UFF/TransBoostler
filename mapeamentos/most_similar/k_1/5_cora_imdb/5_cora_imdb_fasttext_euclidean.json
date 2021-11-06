@@ -1,0 +1,1 @@
+[[{"transfer": {"AUC ROC": 1.0, "AUC PR": 1.0, "CLL": -0.08477, "Precision": [0.735892, 0.5], "Recall": 1.0, "F1": 0.847854, "Learning time": 11.569103002548218, "parameter": {"AUC ROC": 0.5, "AUC PR": 0.028967, "CLL": -0.383786, "Precision": [NaN, 0.5], "Recall": 0.0, "F1": NaN}, "Mapping time": 1.6867916584014893}}]]
