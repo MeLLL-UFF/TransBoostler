@@ -236,7 +236,7 @@ class Transfer:
           return target, targets_taken
     return '', targets_taken
 
-  def __find_best_mapping(self, clause, targets, similarity_metric):
+  def __find_best_mapping(self, clause, targets, similarity_metric, targets_taken={}):
     """
         Calculate pairs similarity and sorts dataframe to obtain the closest target to a given source
 
@@ -251,7 +251,6 @@ class Transfer:
     source  = self.__build_word_vectors([utils.build_triple(clause)], similarity_metric)
     
     similarities = {}
-    targets_taken = []
     
     #
     # Linha criada pra rodar os experimentos no cluster porque não consegui criar os modelos do SpaCy
@@ -275,18 +274,17 @@ class Transfer:
       if(not self.__same_arity(utils.get_all_literals([source]), utils.get_all_literals([target]))):
         continue
 
-      if(target not in targets_taken):
-        mappings[source] = [target]
-        targets_taken.append(target)
-        continue
+      if(params.ALLOW_SAME_TARGET_MAP or target not in targets_taken):
+        targets.append(target)
+        targets_taken[target] = 1
 
       if(len(targets) == params.TOP_K):
-        return targets
-    return targets
+        return targets, targets_taken
+    return targets, targets_taken
 
   def map_predicates(self, similarity_metric, trees, targets):
     """
-      Create mappings from source to target predicates
+      Create mappings from source to target predicates using the order they appear in the structure
 
       Args:
           similarity_metric(str): similarity metric to be applied
@@ -314,7 +312,7 @@ class Transfer:
               best_match, targets_taken = self.__find_best_single_mapping(clause, targets, similarity_metric, targets_taken)
               mappings[clause] = [best_match] if best_match != '' else []
             else:
-              mappings[clause] = self.__find_best_mapping(clause, targets, similarity_metric)
+              mappings[clause], targets_taken = self.__find_best_mapping(clause, targets, similarity_metric, targets_taken)
 
             #for RWMD
             if(similarity_metric == 'relax-wmd'):
