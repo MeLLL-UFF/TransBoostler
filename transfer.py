@@ -172,10 +172,10 @@ class Transfer:
       if(allowSameTargetMap):
         return [target], targets_taken
       else:
-        if(target in targets_taken):
+        if(target.split('(')[0] in targets_taken):
           continue
         else:
-          targets_taken[target] = 0
+          targets_taken[target.split('(')[0]] = 0
           return [target], targets_taken
     return [], targets_taken
 
@@ -229,10 +229,10 @@ class Transfer:
       if(allowSameTargetMap):
         return target, targets_taken
       else:
-        if(target in targets_taken):
+        if(target.split('(')[0] in targets_taken):
           continue
         else:
-          targets_taken[target] = 0
+          targets_taken[target.split('(')[0]] = 0
           return target, targets_taken
     return '', targets_taken
 
@@ -274,9 +274,9 @@ class Transfer:
       if(not self.__same_arity(utils.get_all_literals([source]), utils.get_all_literals([target]))):
         continue
 
-      if(params.ALLOW_SAME_TARGET_MAP or target not in targets_taken):
+      if(params.ALLOW_SAME_TARGET_MAP or target.split('(')[0] not in targets_taken):
         targets.append(target)
-        targets_taken[target] = 1
+        targets_taken[target.split('(')[0]] = 0
 
       if(len(targets) == params.TOP_K):
         return targets, targets_taken
@@ -338,36 +338,29 @@ class Transfer:
 
     targets_taken = []
     mappings = {}
+
+    for source in sources:
+      mappings[source] = []
+
+    #df = similarities.filter(regex=source.split('(')[0], axis=0)
+    #df = df.rename_axis('candidates').sort_values(by=['similarity', 'candidates'], ascending=[False, True])
+
     indexes = similarities.index.tolist()
+    for index in indexes:
+      index = re.split(r',\s*(?![^()]*\))', index)
+      source, target = index[0].rstrip(), index[1].rstrip()
 
-    for source in sources:
-      #df = similarities.filter(regex=source.split('(')[0], axis=0)
-      #df = df.rename_axis('candidates').sort_values(by=['similarity', 'candidates'], ascending=[False, True])
+      if(len(mappings[source]) == params.TOP_K):
+        continue
 
-      for index in indexes:
-        index = re.split(r',\s*(?![^()]*\))', index)
-        source, target = index[0].rstrip(), index[1].rstrip()
+      # Literals must match
+      if(not self.__same_arity(utils.get_all_literals([source]), utils.get_all_literals([target]))):
+        continue
 
-        if(source in mappings):
-          continue
-
-        # Literals must match
-        if(not self.__same_arity(utils.get_all_literals([source]), utils.get_all_literals([target]))):
-          continue
-
-        if(target not in targets_taken):
-          mappings[source] = [target]
-          targets_taken.append(target)
-          continue
-
-        if(len(targets) == params.TOP_K):
-          return targets
-
-    #Checks for non mapped predicates
-    for source in sources:
-      if source not in mappings:
-        mappings[source] = []
-
+      if(params.ALLOW_SAME_TARGET_MAP or target.split('(')[0] not in targets_taken):
+        mappings[source].append(target)
+        targets_taken.append(target.split('(')[0])
+        
     return mappings
   
   def map_predicates_most_similar(self, similarity_metric, clauses, targets):
@@ -414,7 +407,9 @@ class Transfer:
 
     mappings = self.__find_most_similar_mapping(clauses, targets, similarities)
 
-    if(similarity_metric == 'relax-wmd' and 'recursion' not in clause):
+    if(similarity_metric == 'relax-wmd'):
+      clause = clause.replace('recursion_', '') if 'recursion_' in clause else clause
+
       with open(params.ROOT_PATH + 'resources/{}/rwmd-similarities/{}time.txt'.format(self.experiment_title,clause.split('(')[0]), 'r') as file:
         mapping_time += float(file.read())
       return mappings, mapping_time
