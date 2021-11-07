@@ -150,6 +150,35 @@ class Transfer:
       raise 'In build_words_vectors: model name should  be \'fasttext\' or \'word2vec\''
     return data
 
+  def __single_mapping(self, indexes, targets_taken={}, allowSameTargetMap=False):
+    """
+        Calculate pairs similarity and sorts dataframe to obtain the closest target to a given source
+        when K = 1
+
+        Args:
+            indexes(list): similarities between pairs
+        Returns:
+            the closest target-predicate to the given source
+    """
+
+    for index in indexes:
+      index = re.split(r',\s*(?![^()]*\))', index)
+      source, target = index[0].rstrip(), index[1].rstrip()
+
+      # Literals must match
+      if(not self.__same_arity(utils.get_all_literals([source]), utils.get_all_literals([target]))):
+        continue
+      
+      if(allowSameTargetMap):
+        return [target], targets_taken
+      else:
+        if(target in targets_taken):
+          continue
+        else:
+          targets_taken[target] = 0
+          return [target], targets_taken
+    return [], targets_taken
+
   def __find_best_single_mapping(self, clause, targets, similarity_metric, targets_taken={}, similarity_matrix='', dictionary='', allowSameTargetMap=False):
     """
         Calculate pairs similarity and sorts dataframe to obtain the closest target to a given source
@@ -321,7 +350,7 @@ class Transfer:
         index = re.split(r',\s*(?![^()]*\))', index)
         source, target = index[0].rstrip(), index[1].rstrip()
 
-        if(source in mappings and len(mappings[source]) == params.TOP_K):
+        if(source in mappings):
           continue
 
         # Literals must match
@@ -329,14 +358,12 @@ class Transfer:
           continue
 
         if(target not in targets_taken):
-          if(source not in mappings):
-            mappings[source] = [target]
-          else:
-            mappings[source].append(target)
+          mappings[source] = [target]
           targets_taken.append(target)
+          continue
 
-        if(len(mappings[source]) == params.TOP_K):
-          break
+        if(len(targets) == params.TOP_K):
+          return targets
 
     #Checks for non mapped predicates
     for source in sources:
@@ -382,10 +409,10 @@ class Transfer:
         current.to_csv(params.ROOT_PATH + '{}/{}/similarities/{}/{}/{}_similarities.csv'.format(self.experiment_type, self.experiment_title, self.model_name, similarity_metric, clause.split('(')[0]))
       similarities = pd.concat([similarities, current])
 
-      if(similarity_metric == 'softcosine'):
-        similarities = similarities.rename_axis('candidates').sort_values(by=['similarity', 'candidates'], ascending=[False, True])
-      else:
-        similarities = similarities.rename_axis('candidates').sort_values(by=['similarity', 'candidates'])
+    if(similarity_metric == 'softcosine'):
+      similarities = similarities.rename_axis('candidates').sort_values(by=['similarity', 'candidates'], ascending=[False, True])
+    else:
+      similarities = similarities.rename_axis('candidates').sort_values(by=['similarity', 'candidates'])
 
     mappings = self.__find_most_similar_mapping(clauses, targets, similarities)
 
