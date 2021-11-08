@@ -352,7 +352,6 @@ def main():
 
                 transfer.write_to_file_closest_distance(similarityMetric, embeddingModel, predicate, to_predicate, arity, mapping, params.ROOT_PATH + '/transfer-experiments/' + experiment_title, recursion=recursion, searchArgPermutation=params.SEARCH_PERMUTATION, searchEmpty=params.SEARCH_EMPTY, allowSameTargetMap=params.ALLOW_SAME_TARGET_MAP)
                 del mapping
-                continue
 
                 end = time.time()
                 mapping_time = end-start + mapping_time_clauses
