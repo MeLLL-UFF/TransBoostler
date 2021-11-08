@@ -1,0 +1,3 @@
+candidates,similarity
+"complex(protein,com),follows(account,account)",4.543264865875244
+"complex(protein,com),tweets(account,word)",5.545722007751465

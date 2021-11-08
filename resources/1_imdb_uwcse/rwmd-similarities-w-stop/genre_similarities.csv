@@ -1,0 +1,11 @@
+candidates,similarity
+"genre(person,genre),sameperson(person,person)",5.100216865539551
+"genre(person,genre),samecourse(course,course)",5.199010848999023
+"genre(person,genre),publication(title,person)",5.210647106170654
+"genre(person,genre),sameproject(project,project)",5.244400978088379
+"genre(person,genre),yearsinprogram(person,year)",5.28743839263916
+"genre(person,genre),hasposition(person,faculty)",5.348875999450684
+"genre(person,genre),inphase(person,prequals)",5.441676139831543
+"genre(person,genre),courselevel(course,level)",5.472095489501953
+"genre(person,genre),tempadvisedby(person,person)",5.565415382385254
+"genre(person,genre),projectmember(project,person)",5.603146553039551
