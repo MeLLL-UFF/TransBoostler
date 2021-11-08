@@ -1,4 +1,0 @@
-setMap:workedunder(A,B),advisedby(A,B)
-setParam:searchArgPermutation=true.
-setParam:searchEmpty=false.
-setParam:allowSameTargetMap=false.

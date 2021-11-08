@@ -1,0 +1,3 @@
+candidates,similarity
+"phenotype(protein,phe),follows(account,account)",5.774702072143555
+"phenotype(protein,phe),tweets(account,word)",6.348622798919678

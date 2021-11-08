@@ -1,0 +1,11 @@
+candidates,similarity
+"movie(movie,person),sameperson(person,person)",4.296428203582764
+"movie(movie,person),samecourse(course,course)",4.361474990844727
+"movie(movie,person),sameproject(project,project)",4.411990642547607
+"movie(movie,person),yearsinprogram(person,year)",4.5297322273254395
+"movie(movie,person),inphase(person,prequals)",4.654685974121094
+"movie(movie,person),publication(title,person)",4.749782085418701
+"movie(movie,person),hasposition(person,faculty)",4.785916328430176
+"movie(movie,person),tempadvisedby(person,person)",4.829348564147949
+"movie(movie,person),projectmember(project,person)",4.956645965576172
+"movie(movie,person),courselevel(course,level)",4.9586896896362305

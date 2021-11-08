@@ -203,7 +203,7 @@ class Transfer:
     # 
     if(similarity_metric == 'relax-wmd'):
       import pandas as pd
-      similarities = pd.read_csv(params.ROOT_PATH + 'resources/{}/rwmd-similarities/{}_similarities.csv'.format(self.experiment_title,clause.split('(')[0])).set_index('candidates')
+      similarities = pd.read_csv(params.ROOT_PATH + 'resources/{}/rwmd-similarities-w-stop/{}_similarities.csv'.format(self.experiment_title,clause.split('(')[0])).set_index('candidates')
     else:
       similarities = self.similarity.compute_similarities(source, targets, similarity_metric, self.model, self.model_name)
     
@@ -257,7 +257,7 @@ class Transfer:
     # 
     if(similarity_metric == 'relax-wmd'):
       import pandas as pd
-      similarities = pd.read_csv(params.ROOT_PATH + 'resources/{}/rwmd-similarities/{}_similarities.csv'.format(self.experiment_title,clause.split('(')[0])).set_index('candidates')
+      similarities = pd.read_csv(params.ROOT_PATH + 'resources/{}/rwmd-similarities-w-stop/{}_similarities.csv'.format(self.experiment_title,clause.split('(')[0])).set_index('candidates')
     else:
       similarities = self.similarity.compute_similarities(source, targets, similarity_metric, self.model, self.model_name)
       similarities.to_csv(params.ROOT_PATH + '{}/{}/similarities/{}/{}/{}_similarities.csv'.format(self.experiment_type, self.experiment_title, self.model_name, similarity_metric, clause.split('(')[0]))
@@ -316,7 +316,7 @@ class Transfer:
 
             #for RWMD
             if(similarity_metric == 'relax-wmd'):
-              with open(params.ROOT_PATH + 'resources/{}/rwmd-similarities/{}time.txt'.format(self.experiment_title,clause.split('(')[0]), 'r') as file:
+              with open(params.ROOT_PATH + 'resources/{}/rwmd-similarities-w-stop/{}time.txt'.format(self.experiment_title,clause.split('(')[0]), 'r') as file:
                 mapping_time += float(file.read())
     
     if(similarity_metric == 'relax-wmd'):
@@ -394,7 +394,7 @@ class Transfer:
       source  = self.__build_word_vectors([utils.build_triple(clause)], similarity_metric)
 
       if(similarity_metric == 'relax-wmd'):
-        current = pd.read_csv(params.ROOT_PATH + 'resources/{}/rwmd-similarities/{}_similarities.csv'.format(self.experiment_title,clause.split('(')[0])).set_index('candidates')
+        current = pd.read_csv(params.ROOT_PATH + 'resources/{}/rwmd-similarities-w-stop/{}_similarities.csv'.format(self.experiment_title,clause.split('(')[0])).set_index('candidates')
       else:
         current = self.similarity.compute_similarities(source, targets, similarity_metric, self.model, self.model_name)
         current.to_csv(params.ROOT_PATH + '{}/{}/similarities/{}/{}/{}_similarities.csv'.format(self.experiment_type, self.experiment_title, self.model_name, similarity_metric, clause.split('(')[0]))
@@ -410,7 +410,7 @@ class Transfer:
     if(similarity_metric == 'relax-wmd'):
       clause = clause.replace('recursion_', '') if 'recursion_' in clause else clause
 
-      with open(params.ROOT_PATH + 'resources/{}/rwmd-similarities/{}time.txt'.format(self.experiment_title,clause.split('(')[0]), 'r') as file:
+      with open(params.ROOT_PATH + 'resources/{}/rwmd-similarities-w-stop/{}time.txt'.format(self.experiment_title,clause.split('(')[0]), 'r') as file:
         mapping_time += float(file.read())
       return mappings, mapping_time
 

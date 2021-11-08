@@ -1,0 +1,10 @@
+candidates,similarity
+"genre(person,genre),sameauthor(author,author)",5.1150431632995605
+"genre(person,genre),author(class,author)",5.121117115020752
+"genre(person,genre),haswordauthor(author,word)",5.137548923492432
+"genre(person,genre),haswordvenue(venue,word)",5.34530782699585
+"genre(person,genre),haswordtitle(title,word)",5.440040588378906
+"genre(person,genre),sametitle(title,title)",5.568780422210693
+"genre(person,genre),venue(class,venue)",5.744393825531006
+"genre(person,genre),samebib(class,class)",6.008728981018066
+"genre(person,genre),title(class,title)",6.028592109680176

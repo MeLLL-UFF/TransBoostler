@@ -1,7 +1,0 @@
-movie(movie,person): sameperson(person,person)
-actor(person): student(person)
-director(person): professor(person)
-setMap:workedunder(A,B),advisedby(A,B)
-setParam:searchArgPermutation=true.
-setParam:searchEmpty=false.
-setParam:allowSameTargetMap=false.

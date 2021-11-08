@@ -1,0 +1,3 @@
+candidates,similarity
+"author(class,author),movie(movie,person)",4.690475940704346
+"author(class,author),genre(person,genre)",5.121117115020752
