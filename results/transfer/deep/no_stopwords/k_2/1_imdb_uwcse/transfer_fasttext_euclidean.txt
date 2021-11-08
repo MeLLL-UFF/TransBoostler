@@ -1,7 +1,7 @@
 actor(person): student(person),professor(person)
 movie(movie,person): sameperson(person,person),samecourse(course,course)
-genre(person,genre): sameperson(person,person),publication(title,person)
-director(person): professor(person),student(person)
+genre(person,genre): publication(title,person),sameproject(project,project)
+director(person): 
 setMap:workedunder(A,B),advisedby(A,B)
 setParam:searchArgPermutation=true.
 setParam:searchEmpty=false.
