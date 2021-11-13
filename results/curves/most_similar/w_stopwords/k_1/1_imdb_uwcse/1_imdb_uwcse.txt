@@ -1,0 +1,12 @@
+Starting experiment 1_imdb_uwcse 
+
+Loading pre-trained trees.
+Run: 1
+Starting experiments for fasttext using euclidean 
+
+Starting experiment 1_imdb_uwcse 
+
+Loading pre-trained trees.
+Run: 1
+Starting experiments for fasttext using euclidean 
+
