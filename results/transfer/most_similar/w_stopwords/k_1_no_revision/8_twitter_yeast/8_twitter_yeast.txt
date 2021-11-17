@@ -1,0 +1,2151 @@
+Starting experiment 8_twitter_yeast 
+
+Loading pre-trained trees.
+Run: 1
+Starting experiments for fasttext using euclidean 
+
+
+ Starting fold 1 of 4 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 4517
+Target train pos examples: 87
+Target train neg examples: 11565
+
+Target test facts examples: 10498
+Target test pos examples: 282
+Target test neg examples: 39912
+
+Training using transfer 
+
+Results 
+
+CLL : -0.339096 
+
+AUC ROC : 0.821158 
+
+AUC PR : 0.315645 
+
+Precision : nan 
+
+Recall : 0.0 
+
+F1 : nan 
+
+Total Learning Time : 3.3432579975128176 
+
+Total Inference Time : ['%', 'Total', 'inference', 'time', '(10', 'trees):', '10.204', 'seconds'] 
+
+
+ Starting fold 2 of 4 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 3856
+Target train pos examples: 104
+Target train neg examples: 16320
+
+Target test facts examples: 11159
+Target test pos examples: 265
+Target test neg examples: 35157
+
+Training using transfer 
+
+Results 
+
+CLL : -0.348665 
+
+AUC ROC : 0.821723 
+
+AUC PR : 0.301147 
+
+Precision : nan 
+
+Recall : 0.0 
+
+F1 : nan 
+
+Total Learning Time : 3.4242579975128176 
+
+Total Inference Time : ['%', 'Total', 'inference', 'time', '(10', 'trees):', '9.306', 'seconds'] 
+
+
+ Starting fold 3 of 4 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 3421
+Target train pos examples: 92
+Target train neg examples: 12594
+
+Target test facts examples: 11594
+Target test pos examples: 277
+Target test neg examples: 38883
+
+Training using transfer 
+
+Results 
+
+CLL : -0.340301 
+
+AUC ROC : 0.80319 
+
+AUC PR : 0.27526 
+
+Precision : nan 
+
+Recall : 0.0 
+
+F1 : nan 
+
+Total Learning Time : 3.3062579975128172 
+
+Total Inference Time : ['%', 'Total', 'inference', 'time', '(10', 'trees):', '10.055', 'seconds'] 
+
+
+ Starting fold 4 of 4 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 3221
+Target train pos examples: 86
+Target train neg examples: 10998
+
+Target test facts examples: 11794
+Target test pos examples: 283
+Target test neg examples: 40479
+
+Training using transfer 
+
+Results 
+
+CLL : -0.326997 
+
+AUC ROC : 0.833538 
+
+AUC PR : 0.356476 
+
+Precision : nan 
+
+Recall : 0.0 
+
+F1 : nan 
+
+Total Learning Time : 3.226257997512817 
+
+Total Inference Time : ['%', 'Total', 'inference', 'time', '(10', 'trees):', '10.615', 'seconds'] 
+
+Starting experiments for fasttext using softcosine 
+
+
+ Starting fold 1 of 4 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 4517
+Target train pos examples: 87
+Target train neg examples: 11565
+
+Target test facts examples: 10498
+Target test pos examples: 282
+Target test neg examples: 39912
+
+Training using transfer 
+
+Results 
+
+CLL : -0.330877 
+
+AUC ROC : 0.819643 
+
+AUC PR : 0.310004 
+
+Precision : nan 
+
+Recall : 0.0 
+
+F1 : nan 
+
+Total Learning Time : 3.1799510383605956 
+
+Total Inference Time : ['%', 'Total', 'inference', 'time', '(10', 'trees):', '10.133', 'seconds'] 
+
+
+ Starting fold 2 of 4 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 3856
+Target train pos examples: 104
+Target train neg examples: 16320
+
+Target test facts examples: 11159
+Target test pos examples: 265
+Target test neg examples: 35157
+
+Training using transfer 
+
+Results 
+
+CLL : -0.340077 
+
+AUC ROC : 0.821948 
+
+AUC PR : 0.322998 
+
+Precision : nan 
+
+Recall : 0.0 
+
+F1 : nan 
+
+Total Learning Time : 3.5859510383605957 
+
+Total Inference Time : ['%', 'Total', 'inference', 'time', '(10', 'trees):', '9.005', 'seconds'] 
+
+
+ Starting fold 3 of 4 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 3421
+Target train pos examples: 92
+Target train neg examples: 12594
+
+Target test facts examples: 11594
+Target test pos examples: 277
+Target test neg examples: 38883
+
+Training using transfer 
+
+Results 
+
+CLL : -0.339419 
+
+AUC ROC : 0.80446 
+
+AUC PR : 0.264585 
+
+Precision : nan 
+
+Recall : 0.0 
+
+F1 : nan 
+
+Total Learning Time : 3.3209510383605956 
+
+Total Inference Time : ['%', 'Total', 'inference', 'time', '(10', 'trees):', '9.744', 'seconds'] 
+
+
+ Starting fold 4 of 4 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 3221
+Target train pos examples: 86
+Target train neg examples: 10998
+
+Target test facts examples: 11794
+Target test pos examples: 283
+Target test neg examples: 40479
+
+Training using transfer 
+
+Results 
+
+CLL : -0.335813 
+
+AUC ROC : 0.832632 
+
+AUC PR : 0.305203 
+
+Precision : nan 
+
+Recall : 0.0 
+
+F1 : nan 
+
+Total Learning Time : 3.3169510383605956 
+
+Total Inference Time : ['%', 'Total', 'inference', 'time', '(10', 'trees):', '10.444', 'seconds'] 
+
+Starting experiments for fasttext using wmd 
+
+
+ Starting fold 1 of 4 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 4517
+Target train pos examples: 87
+Target train neg examples: 11565
+
+Target test facts examples: 10498
+Target test pos examples: 282
+Target test neg examples: 39912
+
+Training using transfer 
+
+Results 
+
+CLL : -0.339084 
+
+AUC ROC : 0.818217 
+
+AUC PR : 0.273163 
+
+Precision : nan 
+
+Recall : 0.0 
+
+F1 : nan 
+
+Total Learning Time : 3.2442388000488283 
+
+Total Inference Time : ['%', 'Total', 'inference', 'time', '(10', 'trees):', '10.486', 'seconds'] 
+
+
+ Starting fold 2 of 4 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 3856
+Target train pos examples: 104
+Target train neg examples: 16320
+
+Target test facts examples: 11159
+Target test pos examples: 265
+Target test neg examples: 35157
+
+Training using transfer 
+
+Results 
+
+CLL : -0.33489 
+
+AUC ROC : 0.821996 
+
+AUC PR : 0.320505 
+
+Precision : nan 
+
+Recall : 0.0 
+
+F1 : nan 
+
+Total Learning Time : 3.575238800048828 
+
+Total Inference Time : ['%', 'Total', 'inference', 'time', '(10', 'trees):', '9.194', 'seconds'] 
+
+
+ Starting fold 3 of 4 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 3421
+Target train pos examples: 92
+Target train neg examples: 12594
+
+Target test facts examples: 11594
+Target test pos examples: 277
+Target test neg examples: 38883
+
+Training using transfer 
+
+Results 
+
+CLL : -0.341739 
+
+AUC ROC : 0.803228 
+
+AUC PR : 0.295727 
+
+Precision : nan 
+
+Recall : 0.0 
+
+F1 : nan 
+
+Total Learning Time : 3.3572388000488282 
+
+Total Inference Time : ['%', 'Total', 'inference', 'time', '(10', 'trees):', '10.104', 'seconds'] 
+
+
+ Starting fold 4 of 4 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 3221
+Target train pos examples: 86
+Target train neg examples: 10998
+
+Target test facts examples: 11794
+Target test pos examples: 283
+Target test neg examples: 40479
+
+Training using transfer 
+
+Results 
+
+CLL : -0.328884 
+
+AUC ROC : 0.833415 
+
+AUC PR : 0.29441 
+
+Precision : nan 
+
+Recall : 0.0 
+
+F1 : nan 
+
+Total Learning Time : 3.277238800048828 
+
+Total Inference Time : ['%', 'Total', 'inference', 'time', '(10', 'trees):', '10.418', 'seconds'] 
+
+Starting experiments for fasttext using relax-wmd 
+
+
+ Starting fold 1 of 4 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 4517
+Target train pos examples: 87
+Target train neg examples: 11565
+
+Target test facts examples: 10498
+Target test pos examples: 282
+Target test neg examples: 39912
+
+Training using transfer 
+
+Results 
+
+CLL : -0.346633 
+
+AUC ROC : 0.818304 
+
+AUC PR : 0.315243 
+
+Precision : nan 
+
+Recall : 0.0 
+
+F1 : nan 
+
+Total Learning Time : 14.016621482849121 
+
+Total Inference Time : ['%', 'Total', 'inference', 'time', '(10', 'trees):', '10.455', 'seconds'] 
+
+
+ Starting fold 2 of 4 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 3856
+Target train pos examples: 104
+Target train neg examples: 16320
+
+Target test facts examples: 11159
+Target test pos examples: 265
+Target test neg examples: 35157
+
+Training using transfer 
+
+Results 
+
+CLL : -0.342782 
+
+AUC ROC : 0.821996 
+
+AUC PR : 0.320505 
+
+Precision : nan 
+
+Recall : 0.0 
+
+F1 : nan 
+
+Total Learning Time : 14.35562148284912 
+
+Total Inference Time : ['%', 'Total', 'inference', 'time', '(10', 'trees):', '9.108', 'seconds'] 
+
+
+ Starting fold 3 of 4 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 3421
+Target train pos examples: 92
+Target train neg examples: 12594
+
+Target test facts examples: 11594
+Target test pos examples: 277
+Target test neg examples: 38883
+
+Training using transfer 
+
+Results 
+
+CLL : -0.331168 
+
+AUC ROC : 0.80319 
+
+AUC PR : 0.27526 
+
+Precision : nan 
+
+Recall : 0.0 
+
+F1 : nan 
+
+Total Learning Time : 14.148621482849121 
+
+Total Inference Time : ['%', 'Total', 'inference', 'time', '(10', 'trees):', '9.901', 'seconds'] 
+
+
+ Starting fold 4 of 4 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 3221
+Target train pos examples: 86
+Target train neg examples: 10998
+
+Target test facts examples: 11794
+Target test pos examples: 283
+Target test neg examples: 40479
+
+Training using transfer 
+
+Results 
+
+CLL : -0.340891 
+
+AUC ROC : 0.833415 
+
+AUC PR : 0.29441 
+
+Precision : nan 
+
+Recall : 0.0 
+
+F1 : nan 
+
+Total Learning Time : 14.007621482849121 
+
+Total Inference Time : ['%', 'Total', 'inference', 'time', '(10', 'trees):', '10.672', 'seconds'] 
+
+Run: 2
+Starting experiments for fasttext using euclidean 
+
+
+ Starting fold 1 of 4 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 4517
+Target train pos examples: 87
+Target train neg examples: 11565
+
+Target test facts examples: 10498
+Target test pos examples: 282
+Target test neg examples: 39912
+
+Training using transfer 
+
+Results 
+
+CLL : -0.331939 
+
+AUC ROC : 0.821072 
+
+AUC PR : 0.273565 
+
+Precision : nan 
+
+Recall : 0.0 
+
+F1 : nan 
+
+Total Learning Time : 3.1242251834869386 
+
+Total Inference Time : ['%', 'Total', 'inference', 'time', '(10', 'trees):', '10.408', 'seconds'] 
+
+
+ Starting fold 2 of 4 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 3856
+Target train pos examples: 104
+Target train neg examples: 16320
+
+Target test facts examples: 11159
+Target test pos examples: 265
+Target test neg examples: 35157
+
+Training using transfer 
+
+Results 
+
+CLL : -0.3269 
+
+AUC ROC : 0.821956 
+
+AUC PR : 0.301183 
+
+Precision : nan 
+
+Recall : 0.0 
+
+F1 : nan 
+
+Total Learning Time : 3.6792251834869383 
+
+Total Inference Time : ['%', 'Total', 'inference', 'time', '(10', 'trees):', '9.165', 'seconds'] 
+
+
+ Starting fold 3 of 4 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 3421
+Target train pos examples: 92
+Target train neg examples: 12594
+
+Target test facts examples: 11594
+Target test pos examples: 277
+Target test neg examples: 38883
+
+Training using transfer 
+
+Results 
+
+CLL : -0.327256 
+
+AUC ROC : 0.803228 
+
+AUC PR : 0.295727 
+
+Precision : nan 
+
+Recall : 0.0 
+
+F1 : nan 
+
+Total Learning Time : 3.3732251834869387 
+
+Total Inference Time : ['%', 'Total', 'inference', 'time', '(10', 'trees):', '10.139', 'seconds'] 
+
+
+ Starting fold 4 of 4 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 3221
+Target train pos examples: 86
+Target train neg examples: 10998
+
+Target test facts examples: 11794
+Target test pos examples: 283
+Target test neg examples: 40479
+
+Training using transfer 
+
+Results 
+
+CLL : -0.343833 
+
+AUC ROC : 0.833415 
+
+AUC PR : 0.29441 
+
+Precision : nan 
+
+Recall : 0.0 
+
+F1 : nan 
+
+Total Learning Time : 3.1732251834869385 
+
+Total Inference Time : ['%', 'Total', 'inference', 'time', '(10', 'trees):', '10.498', 'seconds'] 
+
+Starting experiments for fasttext using softcosine 
+
+
+ Starting fold 1 of 4 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 4517
+Target train pos examples: 87
+Target train neg examples: 11565
+
+Target test facts examples: 10498
+Target test pos examples: 282
+Target test neg examples: 39912
+
+Training using transfer 
+
+Results 
+
+CLL : -0.348958 
+
+AUC ROC : 0.819568 
+
+AUC PR : 0.274818 
+
+Precision : nan 
+
+Recall : 0.0 
+
+F1 : nan 
+
+Total Learning Time : 3.2058768253326417 
+
+Total Inference Time : ['%', 'Total', 'inference', 'time', '(10', 'trees):', '9.925', 'seconds'] 
+
+
+ Starting fold 2 of 4 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 3856
+Target train pos examples: 104
+Target train neg examples: 16320
+
+Target test facts examples: 11159
+Target test pos examples: 265
+Target test neg examples: 35157
+
+Training using transfer 
+
+Results 
+
+CLL : -0.334815 
+
+AUC ROC : 0.821897 
+
+AUC PR : 0.29862 
+
+Precision : nan 
+
+Recall : 0.0 
+
+F1 : nan 
+
+Total Learning Time : 3.5698768253326416 
+
+Total Inference Time : ['%', 'Total', 'inference', 'time', '(10', 'trees):', '8.856', 'seconds'] 
+
+
+ Starting fold 3 of 4 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 3421
+Target train pos examples: 92
+Target train neg examples: 12594
+
+Target test facts examples: 11594
+Target test pos examples: 277
+Target test neg examples: 38883
+
+Training using transfer 
+
+Results 
+
+CLL : -0.331017 
+
+AUC ROC : 0.80446 
+
+AUC PR : 0.264585 
+
+Precision : nan 
+
+Recall : 0.0 
+
+F1 : nan 
+
+Total Learning Time : 3.4128768253326416 
+
+Total Inference Time : ['%', 'Total', 'inference', 'time', '(10', 'trees):', '9.718', 'seconds'] 
+
+
+ Starting fold 4 of 4 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 3221
+Target train pos examples: 86
+Target train neg examples: 10998
+
+Target test facts examples: 11794
+Target test pos examples: 283
+Target test neg examples: 40479
+
+Training using transfer 
+
+Results 
+
+CLL : -0.342258 
+
+AUC ROC : 0.832877 
+
+AUC PR : 0.334438 
+
+Precision : nan 
+
+Recall : 0.0 
+
+F1 : nan 
+
+Total Learning Time : 3.1158768253326414 
+
+Total Inference Time : ['%', 'Total', 'inference', 'time', '(10', 'trees):', '10.445', 'seconds'] 
+
+Starting experiments for fasttext using wmd 
+
+
+ Starting fold 1 of 4 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 4517
+Target train pos examples: 87
+Target train neg examples: 11565
+
+Target test facts examples: 10498
+Target test pos examples: 282
+Target test neg examples: 39912
+
+Training using transfer 
+
+Results 
+
+CLL : -0.344838 
+
+AUC ROC : 0.818217 
+
+AUC PR : 0.273163 
+
+Precision : nan 
+
+Recall : 0.0 
+
+F1 : nan 
+
+Total Learning Time : 3.3381880226135254 
+
+Total Inference Time : ['%', 'Total', 'inference', 'time', '(10', 'trees):', '10.190', 'seconds'] 
+
+
+ Starting fold 2 of 4 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 3856
+Target train pos examples: 104
+Target train neg examples: 16320
+
+Target test facts examples: 11159
+Target test pos examples: 265
+Target test neg examples: 35157
+
+Training using transfer 
+
+Results 
+
+CLL : -0.33654 
+
+AUC ROC : 0.821956 
+
+AUC PR : 0.301183 
+
+Precision : nan 
+
+Recall : 0.0 
+
+F1 : nan 
+
+Total Learning Time : 3.675188022613525 
+
+Total Inference Time : ['%', 'Total', 'inference', 'time', '(10', 'trees):', '9.149', 'seconds'] 
+
+
+ Starting fold 3 of 4 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 3421
+Target train pos examples: 92
+Target train neg examples: 12594
+
+Target test facts examples: 11594
+Target test pos examples: 277
+Target test neg examples: 38883
+
+Training using transfer 
+
+Results 
+
+CLL : -0.337062 
+
+AUC ROC : 0.806028 
+
+AUC PR : 0.275629 
+
+Precision : nan 
+
+Recall : 0.0 
+
+F1 : nan 
+
+Total Learning Time : 3.2661880226135254 
+
+Total Inference Time : ['%', 'Total', 'inference', 'time', '(10', 'trees):', '10.296', 'seconds'] 
+
+
+ Starting fold 4 of 4 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 3221
+Target train pos examples: 86
+Target train neg examples: 10998
+
+Target test facts examples: 11794
+Target test pos examples: 283
+Target test neg examples: 40479
+
+Training using transfer 
+
+Results 
+
+CLL : -0.349367 
+
+AUC ROC : 0.833415 
+
+AUC PR : 0.29441 
+
+Precision : nan 
+
+Recall : 0.0 
+
+F1 : nan 
+
+Total Learning Time : 3.090188022613525 
+
+Total Inference Time : ['%', 'Total', 'inference', 'time', '(10', 'trees):', '10.223', 'seconds'] 
+
+Starting experiments for fasttext using relax-wmd 
+
+
+ Starting fold 1 of 4 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 4517
+Target train pos examples: 87
+Target train neg examples: 11565
+
+Target test facts examples: 10498
+Target test pos examples: 282
+Target test neg examples: 39912
+
+Training using transfer 
+
+Results 
+
+CLL : -0.335405 
+
+AUC ROC : 0.818217 
+
+AUC PR : 0.273163 
+
+Precision : nan 
+
+Recall : 0.0 
+
+F1 : nan 
+
+Total Learning Time : 13.970613397598267 
+
+Total Inference Time : ['%', 'Total', 'inference', 'time', '(10', 'trees):', '10.270', 'seconds'] 
+
+
+ Starting fold 2 of 4 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 3856
+Target train pos examples: 104
+Target train neg examples: 16320
+
+Target test facts examples: 11159
+Target test pos examples: 265
+Target test neg examples: 35157
+
+Training using transfer 
+
+Results 
+
+CLL : -0.345721 
+
+AUC ROC : 0.821956 
+
+AUC PR : 0.301183 
+
+Precision : nan 
+
+Recall : 0.0 
+
+F1 : nan 
+
+Total Learning Time : 14.300613397598266 
+
+Total Inference Time : ['%', 'Total', 'inference', 'time', '(10', 'trees):', '9.249', 'seconds'] 
+
+
+ Starting fold 3 of 4 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 3421
+Target train pos examples: 92
+Target train neg examples: 12594
+
+Target test facts examples: 11594
+Target test pos examples: 277
+Target test neg examples: 38883
+
+Training using transfer 
+
+Results 
+
+CLL : -0.332104 
+
+AUC ROC : 0.806028 
+
+AUC PR : 0.275629 
+
+Precision : nan 
+
+Recall : 0.0 
+
+F1 : nan 
+
+Total Learning Time : 14.089613397598267 
+
+Total Inference Time : ['%', 'Total', 'inference', 'time', '(10', 'trees):', '10.344', 'seconds'] 
+
+
+ Starting fold 4 of 4 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 3221
+Target train pos examples: 86
+Target train neg examples: 10998
+
+Target test facts examples: 11794
+Target test pos examples: 283
+Target test neg examples: 40479
+
+Training using transfer 
+
+Results 
+
+CLL : -0.343458 
+
+AUC ROC : 0.833538 
+
+AUC PR : 0.356476 
+
+Precision : nan 
+
+Recall : 0.0 
+
+F1 : nan 
+
+Total Learning Time : 13.796613397598266 
+
+Total Inference Time : ['%', 'Total', 'inference', 'time', '(10', 'trees):', '10.368', 'seconds'] 
+
+Run: 3
+Starting experiments for fasttext using euclidean 
+
+
+ Starting fold 1 of 4 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 4517
+Target train pos examples: 87
+Target train neg examples: 11565
+
+Target test facts examples: 10498
+Target test pos examples: 282
+Target test neg examples: 39912
+
+Training using transfer 
+
+Results 
+
+CLL : -0.343991 
+
+AUC ROC : 0.821158 
+
+AUC PR : 0.315645 
+
+Precision : nan 
+
+Recall : 0.0 
+
+F1 : nan 
+
+Total Learning Time : 3.296518127441406 
+
+Total Inference Time : ['%', 'Total', 'inference', 'time', '(10', 'trees):', '10.148', 'seconds'] 
+
+
+ Starting fold 2 of 4 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 3856
+Target train pos examples: 104
+Target train neg examples: 16320
+
+Target test facts examples: 11159
+Target test pos examples: 265
+Target test neg examples: 35157
+
+Training using transfer 
+
+Results 
+
+CLL : -0.348996 
+
+AUC ROC : 0.821996 
+
+AUC PR : 0.320505 
+
+Precision : nan 
+
+Recall : 0.0 
+
+F1 : nan 
+
+Total Learning Time : 3.489518127441406 
+
+Total Inference Time : ['%', 'Total', 'inference', 'time', '(10', 'trees):', '8.993', 'seconds'] 
+
+
+ Starting fold 3 of 4 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 3421
+Target train pos examples: 92
+Target train neg examples: 12594
+
+Target test facts examples: 11594
+Target test pos examples: 277
+Target test neg examples: 38883
+
+Training using transfer 
+
+Results 
+
+CLL : -0.338203 
+
+AUC ROC : 0.806028 
+
+AUC PR : 0.275629 
+
+Precision : nan 
+
+Recall : 0.0 
+
+F1 : nan 
+
+Total Learning Time : 3.2635181274414062 
+
+Total Inference Time : ['%', 'Total', 'inference', 'time', '(10', 'trees):', '10.340', 'seconds'] 
+
+
+ Starting fold 4 of 4 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 3221
+Target train pos examples: 86
+Target train neg examples: 10998
+
+Target test facts examples: 11794
+Target test pos examples: 283
+Target test neg examples: 40479
+
+Training using transfer 
+
+Results 
+
+CLL : -0.32769 
+
+AUC ROC : 0.832095 
+
+AUC PR : 0.356252 
+
+Precision : nan 
+
+Recall : 0.0 
+
+F1 : nan 
+
+Total Learning Time : 3.2055181274414064 
+
+Total Inference Time : ['%', 'Total', 'inference', 'time', '(10', 'trees):', '10.541', 'seconds'] 
+
+Starting experiments for fasttext using softcosine 
+
+
+ Starting fold 1 of 4 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 4517
+Target train pos examples: 87
+Target train neg examples: 11565
+
+Target test facts examples: 10498
+Target test pos examples: 282
+Target test neg examples: 39912
+
+Training using transfer 
+
+Results 
+
+CLL : -0.332904 
+
+AUC ROC : 0.819643 
+
+AUC PR : 0.310004 
+
+Precision : nan 
+
+Recall : 0.0 
+
+F1 : nan 
+
+Total Learning Time : 3.257316873550415 
+
+Total Inference Time : ['%', 'Total', 'inference', 'time', '(10', 'trees):', '10.021', 'seconds'] 
+
+
+ Starting fold 2 of 4 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 3856
+Target train pos examples: 104
+Target train neg examples: 16320
+
+Target test facts examples: 11159
+Target test pos examples: 265
+Target test neg examples: 35157
+
+Training using transfer 
+
+Results 
+
+CLL : -0.328686 
+
+AUC ROC : 0.821948 
+
+AUC PR : 0.322998 
+
+Precision : nan 
+
+Recall : 0.0 
+
+F1 : nan 
+
+Total Learning Time : 3.620316873550415 
+
+Total Inference Time : ['%', 'Total', 'inference', 'time', '(10', 'trees):', '8.948', 'seconds'] 
+
+
+ Starting fold 3 of 4 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 3421
+Target train pos examples: 92
+Target train neg examples: 12594
+
+Target test facts examples: 11594
+Target test pos examples: 277
+Target test neg examples: 38883
+
+Training using transfer 
+
+Results 
+
+CLL : -0.332337 
+
+AUC ROC : 0.804705 
+
+AUC PR : 0.264619 
+
+Precision : nan 
+
+Recall : 0.0 
+
+F1 : nan 
+
+Total Learning Time : 3.425316873550415 
+
+Total Inference Time : ['%', 'Total', 'inference', 'time', '(10', 'trees):', '9.863', 'seconds'] 
+
+
+ Starting fold 4 of 4 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 3221
+Target train pos examples: 86
+Target train neg examples: 10998
+
+Target test facts examples: 11794
+Target test pos examples: 283
+Target test neg examples: 40479
+
+Training using transfer 
+
+Results 
+
+CLL : -0.340281 
+
+AUC ROC : 0.832693 
+
+AUC PR : 0.334407 
+
+Precision : nan 
+
+Recall : 0.0 
+
+F1 : nan 
+
+Total Learning Time : 3.188316873550415 
+
+Total Inference Time : ['%', 'Total', 'inference', 'time', '(10', 'trees):', '10.157', 'seconds'] 
+
+Starting experiments for fasttext using wmd 
+
+
+ Starting fold 1 of 4 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 4517
+Target train pos examples: 87
+Target train neg examples: 11565
+
+Target test facts examples: 10498
+Target test pos examples: 282
+Target test neg examples: 39912
+
+Training using transfer 
+
+Results 
+
+CLL : -0.336176 
+
+AUC ROC : 0.818217 
+
+AUC PR : 0.273163 
+
+Precision : nan 
+
+Recall : 0.0 
+
+F1 : nan 
+
+Total Learning Time : 3.395682025909424 
+
+Total Inference Time : ['%', 'Total', 'inference', 'time', '(10', 'trees):', '10.095', 'seconds'] 
+
+
+ Starting fold 2 of 4 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 3856
+Target train pos examples: 104
+Target train neg examples: 16320
+
+Target test facts examples: 11159
+Target test pos examples: 265
+Target test neg examples: 35157
+
+Training using transfer 
+
+Results 
+
+CLL : -0.341598 
+
+AUC ROC : 0.821763 
+
+AUC PR : 0.320469 
+
+Precision : nan 
+
+Recall : 0.0 
+
+F1 : nan 
+
+Total Learning Time : 3.603682025909424 
+
+Total Inference Time : ['%', 'Total', 'inference', 'time', '(10', 'trees):', '9.539', 'seconds'] 
+
+
+ Starting fold 3 of 4 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 3421
+Target train pos examples: 92
+Target train neg examples: 12594
+
+Target test facts examples: 11594
+Target test pos examples: 277
+Target test neg examples: 38883
+
+Training using transfer 
+
+Results 
+
+CLL : -0.339527 
+
+AUC ROC : 0.803228 
+
+AUC PR : 0.295727 
+
+Precision : nan 
+
+Recall : 0.0 
+
+F1 : nan 
+
+Total Learning Time : 3.6796820259094236 
+
+Total Inference Time : ['%', 'Total', 'inference', 'time', '(10', 'trees):', '10.408', 'seconds'] 
+
+
+ Starting fold 4 of 4 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 3221
+Target train pos examples: 86
+Target train neg examples: 10998
+
+Target test facts examples: 11794
+Target test pos examples: 283
+Target test neg examples: 40479
+
+Training using transfer 
+
+Results 
+
+CLL : -0.340907 
+
+AUC ROC : 0.833538 
+
+AUC PR : 0.356476 
+
+Precision : nan 
+
+Recall : 0.0 
+
+F1 : nan 
+
+Total Learning Time : 3.221682025909424 
+
+Total Inference Time : ['%', 'Total', 'inference', 'time', '(10', 'trees):', '10.510', 'seconds'] 
+
+Starting experiments for fasttext using relax-wmd 
+
+
+ Starting fold 1 of 4 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 4517
+Target train pos examples: 87
+Target train neg examples: 11565
+
+Target test facts examples: 10498
+Target test pos examples: 282
+Target test neg examples: 39912
+
+Training using transfer 
+
+Results 
+
+CLL : -0.321527 
+
+AUC ROC : 0.821072 
+
+AUC PR : 0.273565 
+
+Precision : nan 
+
+Recall : 0.0 
+
+F1 : nan 
+
+Total Learning Time : 13.958305433273315 
+
+Total Inference Time : ['%', 'Total', 'inference', 'time', '(10', 'trees):', '10.128', 'seconds'] 
+
+
+ Starting fold 2 of 4 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 3856
+Target train pos examples: 104
+Target train neg examples: 16320
+
+Target test facts examples: 11159
+Target test pos examples: 265
+Target test neg examples: 35157
+
+Training using transfer 
+
+Results 
+
+CLL : -0.331267 
+
+AUC ROC : 0.821763 
+
+AUC PR : 0.320469 
+
+Precision : nan 
+
+Recall : 0.0 
+
+F1 : nan 
+
+Total Learning Time : 14.257305433273316 
+
+Total Inference Time : ['%', 'Total', 'inference', 'time', '(10', 'trees):', '9.147', 'seconds'] 
+
+
+ Starting fold 3 of 4 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 3421
+Target train pos examples: 92
+Target train neg examples: 12594
+
+Target test facts examples: 11594
+Target test pos examples: 277
+Target test neg examples: 38883
+
+Training using transfer 
+
+Results 
+
+CLL : -0.335175 
+
+AUC ROC : 0.803228 
+
+AUC PR : 0.295727 
+
+Precision : nan 
+
+Recall : 0.0 
+
+F1 : nan 
+
+Total Learning Time : 13.991305433273315 
+
+Total Inference Time : ['%', 'Total', 'inference', 'time', '(10', 'trees):', '10.278', 'seconds'] 
+
+
+ Starting fold 4 of 4 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 3221
+Target train pos examples: 86
+Target train neg examples: 10998
+
+Target test facts examples: 11794
+Target test pos examples: 283
+Target test neg examples: 40479
+
+Training using transfer 
+
+Results 
+
+CLL : -0.333477 
+
+AUC ROC : 0.832095 
+
+AUC PR : 0.356252 
+
+Precision : nan 
+
+Recall : 0.0 
+
+F1 : nan 
+
+Total Learning Time : 13.905305433273316 
+
+Total Inference Time : ['%', 'Total', 'inference', 'time', '(10', 'trees):', '10.520', 'seconds'] 
+
+Run: 4
+Starting experiments for fasttext using euclidean 
+
+
+ Starting fold 1 of 4 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 4517
+Target train pos examples: 87
+Target train neg examples: 11565
+
+Target test facts examples: 10498
+Target test pos examples: 282
+Target test neg examples: 39912
+
+Training using transfer 
+
+Results 
+
+CLL : -0.340023 
+
+AUC ROC : 0.818217 
+
+AUC PR : 0.273163 
+
+Precision : nan 
+
+Recall : 0.0 
+
+F1 : nan 
+
+Total Learning Time : 3.240812885284424 
+
+Total Inference Time : ['%', 'Total', 'inference', 'time', '(10', 'trees):', '10.256', 'seconds'] 
+
+
+ Starting fold 2 of 4 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 3856
+Target train pos examples: 104
+Target train neg examples: 16320
+
+Target test facts examples: 11159
+Target test pos examples: 265
+Target test neg examples: 35157
+
+Training using transfer 
+
+Results 
+
+CLL : -0.332539 
+
+AUC ROC : 0.821723 
+
+AUC PR : 0.301147 
+
+Precision : nan 
+
+Recall : 0.0 
+
+F1 : nan 
+
+Total Learning Time : 3.6148128852844237 
+
+Total Inference Time : ['%', 'Total', 'inference', 'time', '(10', 'trees):', '9.113', 'seconds'] 
+
+
+ Starting fold 3 of 4 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 3421
+Target train pos examples: 92
+Target train neg examples: 12594
+
+Target test facts examples: 11594
+Target test pos examples: 277
+Target test neg examples: 38883
+
+Training using transfer 
+
+Results 
+
+CLL : -0.350061 
+
+AUC ROC : 0.806028 
+
+AUC PR : 0.275629 
+
+Precision : nan 
+
+Recall : 0.0 
+
+F1 : nan 
+
+Total Learning Time : 3.482812885284424 
+
+Total Inference Time : ['%', 'Total', 'inference', 'time', '(10', 'trees):', '10.038', 'seconds'] 
+
+
+ Starting fold 4 of 4 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 3221
+Target train pos examples: 86
+Target train neg examples: 10998
+
+Target test facts examples: 11794
+Target test pos examples: 283
+Target test neg examples: 40479
+
+Training using transfer 
+
+Results 
+
+CLL : -0.331206 
+
+AUC ROC : 0.831972 
+
+AUC PR : 0.294186 
+
+Precision : nan 
+
+Recall : 0.0 
+
+F1 : nan 
+
+Total Learning Time : 3.230812885284424 
+
+Total Inference Time : ['%', 'Total', 'inference', 'time', '(10', 'trees):', '10.406', 'seconds'] 
+
+Starting experiments for fasttext using softcosine 
+
+
+ Starting fold 1 of 4 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 4517
+Target train pos examples: 87
+Target train neg examples: 11565
+
+Target test facts examples: 10498
+Target test pos examples: 282
+Target test neg examples: 39912
+
+Training using transfer 
+
+Results 
+
+CLL : -0.325876 
+
+AUC ROC : 0.819643 
+
+AUC PR : 0.310004 
+
+Precision : nan 
+
+Recall : 0.0 
+
+F1 : nan 
+
+Total Learning Time : 3.4620971965789793 
+
+Total Inference Time : ['%', 'Total', 'inference', 'time', '(10', 'trees):', '9.934', 'seconds'] 
+
+
+ Starting fold 2 of 4 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 3856
+Target train pos examples: 104
+Target train neg examples: 16320
+
+Target test facts examples: 11159
+Target test pos examples: 265
+Target test neg examples: 35157
+
+Training using transfer 
+
+Results 
+
+CLL : -0.334453 
+
+AUC ROC : 0.821771 
+
+AUC PR : 0.2986 
+
+Precision : nan 
+
+Recall : 0.0 
+
+F1 : nan 
+
+Total Learning Time : 3.7000971965789793 
+
+Total Inference Time : ['%', 'Total', 'inference', 'time', '(10', 'trees):', '8.956', 'seconds'] 
+
+
+ Starting fold 3 of 4 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 3421
+Target train pos examples: 92
+Target train neg examples: 12594
+
+Target test facts examples: 11594
+Target test pos examples: 277
+Target test neg examples: 38883
+
+Training using transfer 
+
+Results 
+
+CLL : -0.329499 
+
+AUC ROC : 0.804796 
+
+AUC PR : 0.31722 
+
+Precision : nan 
+
+Recall : 0.0 
+
+F1 : nan 
+
+Total Learning Time : 3.3070971965789795 
+
+Total Inference Time : ['%', 'Total', 'inference', 'time', '(10', 'trees):', '9.972', 'seconds'] 
+
+
+ Starting fold 4 of 4 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 3221
+Target train pos examples: 86
+Target train neg examples: 10998
+
+Target test facts examples: 11794
+Target test pos examples: 283
+Target test neg examples: 40479
+
+Training using transfer 
+
+Results 
+
+CLL : -0.332808 
+
+AUC ROC : 0.832632 
+
+AUC PR : 0.305203 
+
+Precision : nan 
+
+Recall : 0.0 
+
+F1 : nan 
+
+Total Learning Time : 3.1950971965789794 
+
+Total Inference Time : ['%', 'Total', 'inference', 'time', '(10', 'trees):', '10.324', 'seconds'] 
+
+Starting experiments for fasttext using wmd 
+
+
+ Starting fold 1 of 4 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 4517
+Target train pos examples: 87
+Target train neg examples: 11565
+
+Target test facts examples: 10498
+Target test pos examples: 282
+Target test neg examples: 39912
+
+Training using transfer 
+
+Results 
+
+CLL : -0.337534 
+
+AUC ROC : 0.821158 
+
+AUC PR : 0.315645 
+
+Precision : nan 
+
+Recall : 0.0 
+
+F1 : nan 
+
+Total Learning Time : 3.2720309047698977 
+
+Total Inference Time : ['%', 'Total', 'inference', 'time', '(10', 'trees):', '10.360', 'seconds'] 
+
+
+ Starting fold 2 of 4 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 3856
+Target train pos examples: 104
+Target train neg examples: 16320
+
+Target test facts examples: 11159
+Target test pos examples: 265
+Target test neg examples: 35157
+
+Training using transfer 
+
+Results 
+
+CLL : -0.330175 
+
+AUC ROC : 0.821723 
+
+AUC PR : 0.301147 
+
+Precision : nan 
+
+Recall : 0.0 
+
+F1 : nan 
+
+Total Learning Time : 3.5580309047698973 
+
+Total Inference Time : ['%', 'Total', 'inference', 'time', '(10', 'trees):', '9.072', 'seconds'] 
+
+
+ Starting fold 3 of 4 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 3421
+Target train pos examples: 92
+Target train neg examples: 12594
+
+Target test facts examples: 11594
+Target test pos examples: 277
+Target test neg examples: 38883
+
+Training using transfer 
+
+Results 
+
+CLL : -0.328297 
+
+AUC ROC : 0.80319 
+
+AUC PR : 0.27526 
+
+Precision : nan 
+
+Recall : 0.0 
+
+F1 : nan 
+
+Total Learning Time : 3.2680309047698977 
+
+Total Inference Time : ['%', 'Total', 'inference', 'time', '(10', 'trees):', '10.315', 'seconds'] 
+
+
+ Starting fold 4 of 4 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 3221
+Target train pos examples: 86
+Target train neg examples: 10998
+
+Target test facts examples: 11794
+Target test pos examples: 283
+Target test neg examples: 40479
+
+Training using transfer 
+
+Results 
+
+CLL : -0.347214 
+
+AUC ROC : 0.833415 
+
+AUC PR : 0.29441 
+
+Precision : nan 
+
+Recall : 0.0 
+
+F1 : nan 
+
+Total Learning Time : 3.1790309047698972 
+
+Total Inference Time : ['%', 'Total', 'inference', 'time', '(10', 'trees):', '10.504', 'seconds'] 
+
+Starting experiments for fasttext using relax-wmd 
+
+
+ Starting fold 1 of 4 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 4517
+Target train pos examples: 87
+Target train neg examples: 11565
+
+Target test facts examples: 10498
+Target test pos examples: 282
+Target test neg examples: 39912
+
+Training using transfer 
+
+Results 
+
+CLL : -0.34261 
+
+AUC ROC : 0.821158 
+
+AUC PR : 0.315645 
+
+Precision : nan 
+
+Recall : 0.0 
+
+F1 : nan 
+
+Total Learning Time : 13.987860637664795 
+
+Total Inference Time : ['%', 'Total', 'inference', 'time', '(10', 'trees):', '10.326', 'seconds'] 
+
+
+ Starting fold 2 of 4 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 3856
+Target train pos examples: 104
+Target train neg examples: 16320
+
+Target test facts examples: 11159
+Target test pos examples: 265
+Target test neg examples: 35157
+
+Training using transfer 
+
+Results 
+
+CLL : -0.335651 
+
+AUC ROC : 0.821763 
+
+AUC PR : 0.320469 
+
+Precision : nan 
+
+Recall : 0.0 
+
+F1 : nan 
+
+Total Learning Time : 14.158860637664795 
+
+Total Inference Time : ['%', 'Total', 'inference', 'time', '(10', 'trees):', '9.151', 'seconds'] 
+
+
+ Starting fold 3 of 4 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 3421
+Target train pos examples: 92
+Target train neg examples: 12594
+
+Target test facts examples: 11594
+Target test pos examples: 277
+Target test neg examples: 38883
+
+Training using transfer 
+
+Results 
+
+CLL : -0.342567 
+
+AUC ROC : 0.806066 
+
+AUC PR : 0.296096 
+
+Precision : nan 
+
+Recall : 0.0 
+
+F1 : nan 
+
+Total Learning Time : 13.903860637664796 
+
+Total Inference Time : ['%', 'Total', 'inference', 'time', '(10', 'trees):', '10.237', 'seconds'] 
+
+
+ Starting fold 4 of 4 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 3221
+Target train pos examples: 86
+Target train neg examples: 10998
+
+Target test facts examples: 11794
+Target test pos examples: 283
+Target test neg examples: 40479
+
+Training using transfer 
+
+Results 
+
+CLL : -0.341031 
+
+AUC ROC : 0.833415 
+
+AUC PR : 0.29441 
+
+Precision : nan 
+
+Recall : 0.0 
+
+F1 : nan 
+
+Total Learning Time : 13.779860637664795 
+
+Total Inference Time : ['%', 'Total', 'inference', 'time', '(10', 'trees):', '10.474', 'seconds'] 
+
