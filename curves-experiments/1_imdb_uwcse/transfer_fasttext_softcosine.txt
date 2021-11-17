@@ -1,0 +1,8 @@
+director(person): 
+genre(person,genre): courselevel(course,level),hasposition(person,faculty)
+actor(person): professor(person),student(person)
+movie(movie,person): inphase(person,prequals),projectmember(project,person)
+setMap:workedunder(A,B),advisedby(A,B)
+setParam:searchArgPermutation=true.
+setParam:searchEmpty=false.
+setParam:allowSameTargetMap=false.
