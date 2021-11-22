@@ -144,6 +144,7 @@ class TheoryRevision:
 
 		model, t_results, learning_time, inference_time = self.train_and_test(background, train_pos, train_neg, train_facts, test_pos, test_neg, test_facts, experiment_title, experiment_type, refine=params.REFINE_FILENAME, transfer=params.TRANSFER_FILENAME)
 		pl_t_results = copy.deepcopy(t_results)
+		pl_t_results['Learning time'] = learning_time
 
 		structured = []
 		for i in range(params.TREES):
