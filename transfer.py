@@ -47,7 +47,11 @@ class Transfer:
 
   def __is_compatible(self, source, target):
     """
-        Turn relations into a single array
+        Check for type constraints
+        Example: Given that both predicates have the type person, we can create the constraint person -> person
+        Then, predicates actor(person) and director(person) are compatible
+        Predicates publication(person, title) and projectmember(person,project) are also compatible and we can create a new constraint: title -> project
+        However, predicates publication(person,title) and samecourse(course,course) are not compatible given the current constraints.
 
         Args:
             source(str): source predicate
@@ -150,35 +154,6 @@ class Transfer:
       raise 'In build_words_vectors: model name should  be \'fasttext\' or \'word2vec\''
     return data
 
-  def __single_mapping(self, indexes, targets_taken={}, allowSameTargetMap=False):
-    """
-        Calculate pairs similarity and sorts dataframe to obtain the closest target to a given source
-        when K = 1
-
-        Args:
-            indexes(list): similarities between pairs
-        Returns:
-            the closest target-predicate to the given source
-    """
-
-    for index in indexes:
-      index = re.split(r',\s*(?![^()]*\))', index)
-      source, target = index[0].rstrip(), index[1].rstrip()
-
-      # Literals must match
-      if(not self.__same_arity(utils.get_all_literals([source]), utils.get_all_literals([target]))):
-        continue
-      
-      if(allowSameTargetMap):
-        return [target], targets_taken
-      else:
-        if(target.split('(')[0] in targets_taken):
-          continue
-        else:
-          targets_taken[target.split('(')[0]] = 0
-          return [target], targets_taken
-    return [], targets_taken
-
   def __find_best_single_mapping(self, clause, targets, similarity_metric, targets_taken={}, similarity_matrix='', dictionary='', allowSameTargetMap=False):
     """
         Calculate pairs similarity and sorts dataframe to obtain the closest target to a given source
@@ -208,13 +183,6 @@ class Transfer:
       similarities = self.similarity.compute_similarities(source, targets, similarity_metric, self.model, self.model_name)
     
     similarities.to_csv(params.ROOT_PATH + '{}/{}/similarities/{}/{}/{}_similarities.csv'.format(self.experiment_type, self.experiment_title, self.model_name, similarity_metric, clause.split('(')[0]))
-    #similarities.to_csv(params.ROOT_PATH + 'resources/{}/rwmd-similarities/{}_similarities.csv'.format(self.experiment_title, clause.split('(')[0]))
-    
-    #end = time.time()
-
-    #f = open('resources/{}/rwmd-similarities/{}time.txt'.format(self.experiment_title, clause.split('(')[0]), 'w')
-    #f.write(str(end-start))
-    #f.close()
 
     indexes = similarities.index.tolist()
 
@@ -416,24 +384,6 @@ class Transfer:
       return mappings, mapping_time
 
     return mappings
-      
-    # if(params.TOP_K == 1):
-    #   best_match, targets_taken = self.__find_most_similar_mapping(clause, targets, similarity_metric, targets_taken)
-
-    #   #for RWMD
-    #   if(similarity_metric == 'relax-wmd'):
-    #     with open(params.ROOT_PATH + 'resources/{}/rwmd-similarities/{}time.txt'.format(self.experiment_title,clause.split('(')[0]), 'r') as file:
-    #       mapping_time += float(file.read())
-
-    #   mappings[clause] = [best_match] if best_match != '' else []
-    # else:
-    #   mappings[clause] = self.__find_best_mapping(clause, targets, similarity_metric)
-    
-    # if(similarity_metric == 'relax-wmd'):
-    #   return mappings, mapping_time
-    
-    # return mappings
-
 
   def write_constraints_to_file(self, filename):
     """
