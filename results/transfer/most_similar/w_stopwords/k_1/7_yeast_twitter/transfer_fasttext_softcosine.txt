@@ -1,9 +1,9 @@
-complex(protein,com): follows(account,account)
+location(protein,loc): 
 enzyme(protein,enz): tweets(account,word)
+recursion_proteinclass(protein,class): 
+complex(protein,com): follows(account,account)
 phenotype(protein,phe): 
 interaction(protein,protein): 
-location(protein,loc): 
-recursion_proteinclass(protein,class): 
 recursion_proteinclass(A,B): recursion_accounttype(A,B)
 setMap:proteinclass(A,B),accounttype(A,B)
 setParam:searchArgPermutation=true.

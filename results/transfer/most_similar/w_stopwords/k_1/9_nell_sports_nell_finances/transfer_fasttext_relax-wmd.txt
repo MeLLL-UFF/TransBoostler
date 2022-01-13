@@ -1,9 +1,9 @@
-teamplaysagainstteam(sportsteam,sportsteam): acquired(company,company)
 athleteledsportsteam(athlete,sportsteam): companyceo(company,person)
-athleteplaysforteam(athlete,sportsteam): cityhascompanyoffice(city,company)
 athleteplayssport(athlete,sport): economicsectorcompany(sector,company)
-teamplaysinleague(sportsteam,sportsleague): bankbankincountry(person,country)
+athleteplaysforteam(athlete,sportsteam): cityhascompanyoffice(city,company)
+teamplaysagainstteam(sportsteam,sportsteam): acquired(company,company)
 teamalsoknownas(sportsteam,sportsteam): companyalsoknownas(company,company)
+teamplaysinleague(sportsteam,sportsleague): bankbankincountry(person,country)
 athleteplaysinleague(athlete,sportsleague): countryhascompanyoffice(country,company)
 setMap:teamplayssport(A,B),companyeconomicsector(A,B)
 setParam:searchArgPermutation=true.

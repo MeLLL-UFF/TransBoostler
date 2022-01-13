@@ -1,5 +1,5 @@
-interaction(protein,protein): follows(account,account)
-location(protein,loc): tweets(account,word)
+interaction(protein,protein): tweets(account,word)
+location(protein,loc): follows(account,account)
 enzyme(protein,enz): 
 complex(protein,com): 
 phenotype(protein,phe): 

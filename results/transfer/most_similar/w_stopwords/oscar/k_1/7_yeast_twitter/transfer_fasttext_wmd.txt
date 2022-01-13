@@ -1,0 +1,11 @@
+complex(protein,com): follows(account,account)
+interaction(protein,protein): tweets(account,word)
+phenotype(protein,phe): 
+location(protein,loc): 
+recursion_proteinclass(protein,class): 
+enzyme(protein,enz): 
+recursion_proteinclass(A,B): recursion_accounttype(A,B)
+setMap:proteinclass(A,B),accounttype(A,B)
+setParam:searchArgPermutation=true.
+setParam:searchEmpty=false.
+setParam:allowSameTargetMap=false.
