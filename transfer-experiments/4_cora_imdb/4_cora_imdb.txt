@@ -1,9 +1,0 @@
-Starting experiment 4_cora_imdb 
-
-Run: 1
-Start learning from source dataset
-
-Source train facts examples: 42558
-Source train pos examples: 3017
-Source train neg examples: 5022
-
