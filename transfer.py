@@ -340,6 +340,7 @@ class Transfer:
     mappings = {}
 
     for source in sources:
+      source = source.replace('`','')
       mappings[source] = []
 
     #df = similarities.filter(regex=source.split('(')[0], axis=0)
@@ -348,9 +349,9 @@ class Transfer:
     indexes = similarities.index.tolist()
     for index in indexes:
       index = re.split(r',\s*(?![^()]*\))', index)
-      source, target = index[0].rstrip(), index[1].rstrip()
+      source, target = index[0].rstrip().replace('`',''), index[1].rstrip().replace('`','')
 
-      if(len(mappings[source]) == params.TOP_K):
+      if(source in mappings and len(mappings[source]) == params.TOP_K):
         continue
 
       # Literals must match
