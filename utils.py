@@ -73,7 +73,7 @@ def build_triple(triple):
   #   predicate_literal_1 = triple[1].split(',')[0].replace(')', '').replace('+', '').replace('-', '')
   #   predicate_literal_2 = ''
 
-  return [predicate, triple[1].replace('(', '').replace(')', '').replace('+', '').replace('-', '').split(',')]
+  return [predicate, triple[1].replace('(', '').replace(')', '').replace('+', '').replace('-', '').replace('`','').split(',')]
 
 def build_triples(data):
   """
@@ -135,7 +135,7 @@ def match_bk_source(sources):
   source_match = {}
   for source in sources:
     if(source.split('(')[0] not in source_match):
-      source_match[source.split('(')[0]] = source.replace('.', '').replace('+', '').replace('-', '')
+      source_match[source.split('(')[0]] = source.replace('.', '').replace('+', '').replace('-', '').replace('`','')
   return source_match
 
 def deep_first_search_nodes(structure, matches={}, trees=[]):
