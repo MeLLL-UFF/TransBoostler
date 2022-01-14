@@ -311,9 +311,6 @@ class Transfer:
       source = source.replace('`','')
       mappings[source] = []
 
-    #df = similarities.filter(regex=source.split('(')[0], axis=0)
-    #df = df.rename_axis('candidates').sort_values(by=['similarity', 'candidates'], ascending=[False, True])
-
     indexes = similarities.index.tolist()
     for index in indexes:
       index = re.split(r',\s*(?![^()]*\))', index)
@@ -374,7 +371,13 @@ class Transfer:
     else:
       similarities = similarities.rename_axis('candidates').sort_values(by=['similarity', 'candidates'])
 
-    mappings = self.__find_most_similar_mapping(clauses, targets, similarities)
+    if(params.USE_HUNGARIAN_METHOD):
+      import hungarian as hung
+      hug = Hungarian(similarities)
+      mappings = hug.assigment()
+      del hug
+    else:
+      mappings = self.__find_most_similar_mapping(clauses, targets, similarities)
 
     if(similarity_metric == 'relax-wmd'):
       clause = clause.replace('recursion_', '') if 'recursion_' in clause else clause
