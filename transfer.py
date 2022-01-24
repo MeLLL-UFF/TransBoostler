@@ -4,6 +4,7 @@ from gensim.models import KeyedVectors, Word2Vec
 from preprocessing import Preprocessing
 from collections import OrderedDict
 from similarity import Similarity
+from hungarian import Hungarian
 import parameters as params
 from scipy import spatial
 import utils as utils
@@ -372,7 +373,6 @@ class Transfer:
       similarities = similarities.rename_axis('candidates').sort_values(by=['similarity', 'candidates'])
 
     if(params.USE_HUNGARIAN_METHOD):
-      import hungarian as hung
       hug = Hungarian(similarities)
       mappings = hug.assigment()
       del hug
