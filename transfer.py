@@ -342,7 +342,6 @@ class Transfer:
       Returns:
           all sources mapped to the its closest target-predicate
     """
-    import pandas as pd
 
     targets = utils.build_triples(targets)
     targets = self.__build_word_vectors(targets, similarity_metric)
@@ -373,6 +372,9 @@ class Transfer:
       similarities = similarities.rename_axis('candidates').sort_values(by=['similarity', 'candidates'])
 
     if(params.USE_HUNGARIAN_METHOD):
+      if(similarity_metric == 'softcosine'):
+        similarities['similarity'] = 1 - similarities['similarity']
+        
       hug = Hungarian(similarities)
       mappings = hug.assigment()
       del hug
