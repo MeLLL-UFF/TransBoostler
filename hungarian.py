@@ -10,11 +10,20 @@ class Hungarian:
 		self.similarities = similarities
 		self.candidates = {}
 		self.source_ind = {}
-		self.target_ind = self.__get_target_indexes()
+		self.target_ind, self.ind_to_target = self.__get_target_indexes()
 
 	def __get_target_indexes(self):
+		"""
+			Maps the index of targets predicates accordingly to the matrix columns
+
+        	Returns:
+            	a dictionary containing the index of a given key
+            	a dicitonary containing the target of a given index
+		"""
+
 		columns = []
 		column_indexes = {}
+		index_to_target = {}
 		
 		indexes = self.similarities.index.tolist()
 		for index in indexes:
@@ -26,7 +35,10 @@ class Hungarian:
 		for column in columns:
 			column_indexes[column] = len(column_indexes)
 
-		return column_indexes
+		for key in column_indexes:
+			index_to_target[column_indexes[key]] = key
+
+		return column_indexes, index_to_target
 
 	def __build_cost_matrix(self):
 		"""
@@ -55,12 +67,9 @@ class Hungarian:
 		for i in self.candidates:
 			row = []
 			for j in self.candidates[i]:
-				try:
-					row = [0]*len(self.target_ind)
-					row[self.target_ind[j]] = similarities_dictionary[i + ',' + j]
-					self.source_ind[len(cost_matrix)] = i
-				except:
-					pass
+				row = [0]*len(self.target_ind)
+				row[self.target_ind[j]] = similarities_dictionary[i + ',' + j]
+				self.source_ind[len(cost_matrix)] = i
 			cost_matrix.append(row)
 
 		return cost_matrix
@@ -78,7 +87,7 @@ class Hungarian:
 		mappings = {}
 		for i in range(len(col_ind)):
 			source_predicate = self.source_ind[i]
-			mappings[source_predicate] = self.candidates[source_predicate][col_ind[i]]  
+			mappings[source_predicate] = [self.ind_to_target[col_ind[i]]]
 		return mappings
 
 	def assigment(self):
@@ -93,16 +102,18 @@ class Hungarian:
 		row_ind, col_ind = linear_sum_assignment(cost_matrix)
 		return self.__get_targets(col_ind)
 
-
 # similarities = pd.DataFrame()
-# for predicate in ['athleteledsportsteam', 'athleteplaysforteam','athleteplaysinleague']: #,'athleteplayssport', 'teamalsoknownas', 'teamplaysagainstteam','teamplaysinleague']:
+# for predicate in ['athleteledsportsteam', 'athleteplaysforteam','athleteplaysinleague', 'athleteplayssport', 'teamalsoknownas', 'teamplaysagainstteam','teamplaysinleague']:
 #  	current = pd.read_csv(params.ROOT_PATH + 'resources/9_nell_sports_nell_finances/rwmd-similarities/{}_similarities.csv'.format(predicate)).set_index('candidates')
 #  	similarities = pd.concat([similarities, current])
 
+# import time
+# start = time.time()
 # hug = Hungarian(similarities)
-# print(similarities)
+# #print(similarities)
 # print(hug.assigment())
+#print(time.time()-start)
 
-#cost = [[4.9586896896362305, 5.472095489501953],[4.785916328430176,5.348875999450684],[4.654685974121094,5.441676139831543],[4.956645488739014,5.603146553039551],[4.749782085418701,5.210647106170654],[4.361474990844727,5.199010848999023],[4.411990165710449,5.244400978088379],[4.829348564147949,5.565415382385254],[4.5297322273254395,5.28743839263916]]
+# cost = [[4.9586896896362305, 5.472095489501953],[4.785916328430176,5.348875999450684],[4.654685974121094,5.441676139831543],[4.956645488739014,5.603146553039551],[4.749782085418701,5.210647106170654],[4.361474990844727,5.199010848999023],[4.411990165710449,5.244400978088379],[4.829348564147949,5.565415382385254],[4.5297322273254395,5.28743839263916]]
 # row_ind, col_ind = linear_sum_assignment(cost_matrix)
 # print(col_ind)
