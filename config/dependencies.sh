@@ -12,9 +12,11 @@ pip3 install unidecode
 pip3 install pandas
 pip3 install pyemd
 
-
 pip3 install -U pip setuptools wheel
 pip3 install -U spacy
+
+sudo apt install default-jdk
+sudo apt install default-jre
 
 echo "Installation is complete!"
 
