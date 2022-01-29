@@ -15,6 +15,9 @@ pip3 install pyemd
 pip3 install -U pip setuptools wheel
 pip3 install -U spacy
 
+pip3 install nltk
+python3 nltk_downloads.py
+
 sudo apt install default-jdk
 sudo apt install default-jre
 
