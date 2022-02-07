@@ -219,9 +219,9 @@ def main():
             recursion = False
 
         # Get sources and targets
-        sources = [s.replace('.', '').replace('+', '').replace('-', '') for s in set(bk[source]) if s.split('(')[0] != predicate and 'recursion_' not in s]
-        targets = [t.replace('.', '').replace('+', '').replace('-', '') for t in set(bk[target]) if t.split('(')[0] != to_predicate and 'recursion_' not in t]
-        
+        sources = [s.replace('.', '').replace('+', '').replace('-', '').replace('`','') for s in set(bk[source]) if s.replace('`','').split('(')[0] != predicate and 'recursion_' not in s]
+        targets = [t.replace('.', '').replace('+', '').replace('-', '').replace('`','') for t in set(bk[target]) if t.replace('`','').split('(')[0] != to_predicate and 'recursion_' not in t]
+
         path = params.ROOT_PATH + 'transfer-experiments/' + experiment_title
         if not os.path.exists(path):
             os.mkdir(path)
@@ -246,9 +246,9 @@ def main():
             copyfile(params.ROOT_PATH + 'resources/{}_{}_{}/{}'.format(_id, source, target, params.REFINE_FILENAME.split('/')[-1]), params.REFINE_FILENAME)
             nodes = load_pickle_file(params.ROOT_PATH +  'resources/{}_{}_{}/{}'.format(_id, source, target, params.SOURCE_TREE_NODES_FILES))
             #sources_dict =  utils.match_bk_source(set(bk[source]))
-            #nodes = [sources_dict[node] for node in utils.sweep_tree(nodes, preds=[]) if node != predicate]
+            #nodes = [sources_dict[node] for node in utils.sweep_tree(nodes, preds=[]) if node != predicate and 'recursion_' not in node]
             structured = load_pickle_file(params.ROOT_PATH + 'resources/{}_{}_{}/{}'.format(_id, source, target, params.STRUCTURED_TREE_NODES_FILES))
-        
+
         while results['save']['n_runs'] < n_runs:
 
             utils.print_function('Run: ' + str(results['save']['n_runs'] + 1), experiment_title, experiment_type)
