@@ -202,10 +202,10 @@ def main():
         if not os.path.exists(path):
             os.mkdir(path)
 
-        # Get targets
-        sources = [s.replace('.', '').replace('+', '').replace('-', '') for s in set(bk[source]) if s.split('(')[0] != to_predicate and 'recursion_' not in s]
-        targets = [t.replace('.', '').replace('+', '').replace('-', '') for t in set(bk[target]) if t.split('(')[0] != to_predicate and 'recursion_' not in t]
-    
+        # Get sources and targets
+        sources = [s.replace('.', '').replace('+', '').replace('-', '').replace('`','') for s in set(bk[source]) if s.replace('`','').split('(')[0] != predicate and 'recursion_' not in s]
+        targets = [t.replace('.', '').replace('+', '').replace('-', '').replace('`','') for t in set(bk[target]) if t.replace('`','').split('(')[0] != to_predicate and 'recursion_' not in t]
+
         results['save'] = {
             'experiment': 0,
             'n_runs': 0,
