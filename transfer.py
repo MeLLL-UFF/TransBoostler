@@ -309,13 +309,12 @@ class Transfer:
     mappings = {}
 
     for source in sources:
-      source = source.replace('`','')
       mappings[source] = []
 
     indexes = similarities.index.tolist()
     for index in indexes:
       index = re.split(r',\s*(?![^()]*\))', index)
-      source, target = index[0].rstrip().replace('`',''), index[1].rstrip().replace('`','')
+      source, target = index[0].rstrip(), index[1].rstrip()
 
       if(source in mappings and len(mappings[source]) == params.TOP_K):
         continue

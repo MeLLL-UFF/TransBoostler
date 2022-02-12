@@ -26,7 +26,7 @@ class Hungarian:
 		indexes = self.similarities.index.tolist()
 		for index in indexes:
 			index = re.split(r',\s*(?![^()]*\))', index)
-			source, target = index[0].rstrip().replace('`',''), index[1].rstrip().replace('`','')
+			source, target = index[0].rstrip(), index[1].rstrip()
 
 			# Check if predicates are of the same arity
 			if(not len(utils.get_all_literals([source])) == arity):
@@ -59,7 +59,7 @@ class Hungarian:
 		indexes = self.similarities.index.tolist()
 		for index in indexes:
 			index = re.split(r',\s*(?![^()]*\))', index)
-			source, target = index[0].rstrip().replace('`',''), index[1].rstrip().replace('`','')
+			source, target = index[0].rstrip(), index[1].rstrip()
 
 			# Check if predicates are of the same arity
 			if(not len(utils.get_all_literals([source])) == arity):
