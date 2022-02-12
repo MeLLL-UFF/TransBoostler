@@ -219,8 +219,8 @@ def main():
             recursion = False
 
         # Get sources and targets
-        sources = [s.replace('.', '').replace('+', '').replace('-', '').replace('`','') for s in set(bk[source]) if s.replace('`','').split('(')[0] != predicate and 'recursion_' not in s]
-        targets = [t.replace('.', '').replace('+', '').replace('-', '').replace('`','') for t in set(bk[target]) if t.replace('`','').split('(')[0] != to_predicate and 'recursion_' not in t]
+        sources = [s.replace('.', '').replace('+', '').replace('-', '') for s in set(bk[source]) if s.replace('`','').split('(')[0] != predicate and 'recursion_' not in s]
+        targets = [t.replace('.', '').replace('+', '').replace('-', '') for t in set(bk[target]) if t.replace('`','').split('(')[0] != to_predicate and 'recursion_' not in t]
 
         path = params.ROOT_PATH + 'transfer-experiments/' + experiment_title
         if not os.path.exists(path):
