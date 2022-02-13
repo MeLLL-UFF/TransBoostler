@@ -1,0 +1,6 @@
+author(class,author): genre(person,genre)
+title(class,title): movie(movie,person)
+setMap:samevenue(A,B),workedunder(A,B)
+setParam:searchArgPermutation=true.
+setParam:searchEmpty=false.
+setParam:allowSameTargetMap=false.
