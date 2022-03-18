@@ -13,13 +13,13 @@ WIKIPEDIA_FASTTEXT_SPACY = ROOT_PATH + 'resources/fasttext/spacy'
 
 WORD_VECTOR_SIMILARITIES = ['cosine','euclidean']
 
-USE_HUNGARIAN_METHOD = True
+USE_HUNGARIAN_METHOD = False
 
 EMBEDDING_DIMENSION = 300
 #METHOD = 'CONCATENATE'
 METHOD = None
 
-TOP_K = 1
+TOP_N = 2
 
 # Validation parameters
 N_FOLDS = 3

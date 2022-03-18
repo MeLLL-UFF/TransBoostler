@@ -247,7 +247,7 @@ class Transfer:
         targets.append(target)
         targets_taken[target.split('(')[0]] = 0
 
-      if(len(targets) == params.TOP_K):
+      if(len(targets) == params.TOP_N):
         return targets, targets_taken
     return targets, targets_taken
 
@@ -277,7 +277,7 @@ class Transfer:
         clauses = re.split(r',\s*(?![^()]*\))', tree[i])
         for clause in clauses:
           if(clause not in mappings and 'recursion' not in clause):
-            if(params.TOP_K == 1):
+            if(params.TOP_N == 1):
               best_match, targets_taken = self.__find_best_single_mapping(clause, targets, similarity_metric, targets_taken)
               mappings[clause] = [best_match] if best_match != '' else []
             else:
@@ -316,7 +316,7 @@ class Transfer:
       index = re.split(r',\s*(?![^()]*\))', index)
       source, target = index[0].rstrip(), index[1].rstrip()
 
-      if(source in mappings and len(mappings[source]) == params.TOP_K):
+      if(source in mappings and len(mappings[source]) == params.TOP_N):
         continue
 
       # Literals must match
