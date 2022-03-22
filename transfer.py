@@ -434,7 +434,7 @@ class Transfer:
       file.write('setMap:' + from_predicate + '(' + ','.join([chr(65+i) for i in range(arity)]) + ')' + ',' + to_predicate + '(' + ','.join([chr(65+i) for i in range(arity)]) + ')' + '\n')
       file.write('setParam:searchArgPermutation=' + str(searchArgPermutation).lower() + '.\n')
       file.write('setParam:searchEmpty=' + str(searchEmpty).lower() + '.\n')
-      file.write('setParam:allowSameTargetMap=false')  #+ str(allowSameTargetMap).lower() + '.\n')
+      file.write('setParam:allowSameTargetMap=false.\n')  #+ str(allowSameTargetMap).lower() + '.\n')
       file.write('setParam:N=' + str(params.TOP_N) + '.\n')
 
     with open(filename + '/transfer_{}_{}.txt'.format(model_name, similarity_metric), 'w') as file:
@@ -450,5 +450,5 @@ class Transfer:
       file.write('setMap:' + from_predicate + '(' + ','.join([chr(65+i) for i in range(arity)]) + ')' + ',' + to_predicate + '(' + ','.join([chr(65+i) for i in range(arity)]) + ')' + '\n')
       file.write('setParam:searchArgPermutation=' + str(searchArgPermutation).lower() + '.\n')
       file.write('setParam:searchEmpty=' + str(searchEmpty).lower() + '.\n')
-      file.write('setParam:allowSameTargetMap=false')  #+ str(allowSameTargetMap).lower() + '.\n')
+      file.write('setParam:allowSameTargetMap=false.\n')  #+ str(allowSameTargetMap).lower() + '.\n')
       file.write('setParam:N=' + str(params.TOP_N) + '.\n')
