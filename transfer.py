@@ -247,8 +247,8 @@ class Transfer:
         targets.append(target)
         targets_taken[target.split('(')[0]] = 0
 
-      if(len(targets) == params.TOP_N):
-        return targets, targets_taken
+      #if(len(targets) == params.TOP_N):
+      #  return targets, targets_taken
     return targets, targets_taken
 
   def map_predicates(self, similarity_metric, trees, targets):
@@ -316,7 +316,7 @@ class Transfer:
       index = re.split(r',\s*(?![^()]*\))', index)
       source, target = index[0].rstrip(), index[1].rstrip()
 
-      if(source in mappings and len(mappings[source]) == params.TOP_N):
+      if(source in mappings): #and len(mappings[source]) == params.TOP_N):
         continue
 
       # Literals must match
@@ -435,6 +435,7 @@ class Transfer:
       file.write('setParam:searchArgPermutation=' + str(searchArgPermutation).lower() + '.\n')
       file.write('setParam:searchEmpty=' + str(searchEmpty).lower() + '.\n')
       file.write('setParam:allowSameTargetMap=' + str(allowSameTargetMap).lower() + '.\n')
+      file.write('setParam:N=' + str(params.TOP_N) + '.\n')
 
     with open(filename + '/transfer_{}_{}.txt'.format(model_name, similarity_metric), 'w') as file:
       for source in mapping.keys():
@@ -450,3 +451,4 @@ class Transfer:
       file.write('setParam:searchArgPermutation=' + str(searchArgPermutation).lower() + '.\n')
       file.write('setParam:searchEmpty=' + str(searchEmpty).lower() + '.\n')
       file.write('setParam:allowSameTargetMap=' + str(allowSameTargetMap).lower() + '.\n')
+      file.write('setParam:N=' + str(params.TOP_N) + '.\n')
