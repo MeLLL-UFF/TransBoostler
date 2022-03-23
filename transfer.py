@@ -314,7 +314,7 @@ class Transfer:
     indexes = similarities.index.tolist()
     for index in indexes:
       index = re.split(r',\s*(?![^()]*\))', index)
-      source, target = index[0].rstrip(), index[1].rstrip()
+      source, target = index[0].rstrip().replace('`', ''), index[1].rstrip().replace('`', '')
 
       #if(source in mappings and len(mappings[source]) == params.TOP_N):
       #  continue
