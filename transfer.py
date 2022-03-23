@@ -316,8 +316,8 @@ class Transfer:
       index = re.split(r',\s*(?![^()]*\))', index)
       source, target = index[0].rstrip(), index[1].rstrip()
 
-      if(source in mappings): #and len(mappings[source]) == params.TOP_N):
-        continue
+      #if(source in mappings and len(mappings[source]) == params.TOP_N):
+      #  continue
 
       # Literals must match
       if(not self.__same_arity(utils.get_all_literals([source]), utils.get_all_literals([target]))):
