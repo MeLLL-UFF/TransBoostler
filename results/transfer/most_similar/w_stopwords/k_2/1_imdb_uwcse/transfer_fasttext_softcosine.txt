@@ -1,8 +1,0 @@
-movie(movie,person): inphase(person,prequals),projectmember(project,person)
-actor(person): professor(person),student(person)
-genre(person,genre): courselevel(course,level),hasposition(person,faculty)
-director(person): 
-setMap:workedunder(A,B),advisedby(A,B)
-setParam:searchArgPermutation=true.
-setParam:searchEmpty=false.
-setParam:allowSameTargetMap=false.

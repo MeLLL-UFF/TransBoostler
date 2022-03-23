@@ -1,11 +1,12 @@
-athleteplayssport(athlete,sport): acquired(company,company),bankbankincountry(person,country)
-athleteledsportsteam(athlete,sportsteam): bankboughtbank(company,company),bankchiefexecutiveceo(company,person)
-teamplaysagainstteam(sportsteam,sportsteam): cityhascompanyoffice(city,company),companyalsoknownas(company,company)
-athleteplaysforteam(athlete,sportsteam): companyceo(company,person),countryhascompanyoffice(country,company)
-teamplaysinleague(sportsteam,sportsleague): economicsectorcompany(sector,company)
-teamalsoknownas(sportsteam,sportsteam): 
-athleteplaysinleague(athlete,sportsleague): 
+athleteplayssport(athlete,sport): acquired(company,company),bankbankincountry(person,country),bankboughtbank(company,company),bankchiefexecutiveceo(company,person),cityhascompanyoffice(city,company),companyalsoknownas(company,company),companyceo(company,person),countryhascompanyoffice(country,company),economicsectorcompany(sector,company)
+athleteledsportsteam(athlete,sportsteam): acquired(company,company),bankbankincountry(person,country),bankboughtbank(company,company),bankchiefexecutiveceo(company,person),cityhascompanyoffice(city,company),companyalsoknownas(company,company),companyceo(company,person),countryhascompanyoffice(country,company),economicsectorcompany(sector,company)
+teamplaysagainstteam(sportsteam,sportsteam): acquired(company,company),bankbankincountry(person,country),bankboughtbank(company,company),bankchiefexecutiveceo(company,person),cityhascompanyoffice(city,company),companyalsoknownas(company,company),companyceo(company,person),countryhascompanyoffice(country,company),economicsectorcompany(sector,company)
+athleteplaysforteam(athlete,sportsteam): companyalsoknownas(company,company),acquired(company,company),bankbankincountry(person,country),bankboughtbank(company,company),bankchiefexecutiveceo(company,person),cityhascompanyoffice(city,company),companyceo(company,person),countryhascompanyoffice(country,company),economicsectorcompany(sector,company)
+teamplaysinleague(sportsteam,sportsleague): bankbankincountry(person,country),companyalsoknownas(company,company),acquired(company,company),bankboughtbank(company,company),bankchiefexecutiveceo(company,person),cityhascompanyoffice(city,company),companyceo(company,person),countryhascompanyoffice(country,company),economicsectorcompany(sector,company)
+teamalsoknownas(sportsteam,sportsteam): companyalsoknownas(company,company),bankbankincountry(person,country),acquired(company,company),bankboughtbank(company,company),bankchiefexecutiveceo(company,person),cityhascompanyoffice(city,company),companyceo(company,person),countryhascompanyoffice(country,company),economicsectorcompany(sector,company)
+athleteplaysinleague(athlete,sportsleague): bankbankincountry(person,country),companyalsoknownas(company,company),acquired(company,company),bankboughtbank(company,company),bankchiefexecutiveceo(company,person),cityhascompanyoffice(city,company),companyceo(company,person),countryhascompanyoffice(country,company),economicsectorcompany(sector,company)
 setMap:teamplayssport(A,B),companyeconomicsector(A,B)
 setParam:searchArgPermutation=true.
 setParam:searchEmpty=false.
 setParam:allowSameTargetMap=false.
+setParam:N=2.

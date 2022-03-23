@@ -1,9 +1,0 @@
-director(person): 
-movie(movie,person): author(class,author),haswordauthor(author,word),haswordtitle(title,word),haswordvenue(venue,word),sameauthor(author,author),samebib(class,class),sametitle(title,title),title(class,title),venue(class,venue)
-actor(person): 
-female(person): 
-setMap:workedunder(A,B),samevenue(A,B)
-setParam:searchArgPermutation=true.
-setParam:searchEmpty=false.
-setParam:allowSameTargetMap=false.
-setParam:N=2.

@@ -1,8 +1,9 @@
 actor(person): student(person),professor(person)
-movie(movie,person): publication(title,person),samecourse(course,course)
-genre(person,genre): sameperson(person,person),sameproject(project,project)
-director(person): 
+movie(movie,person): publication(title,person),samecourse(course,course),sameperson(person,person),sameproject(project,project),hasposition(person,faculty),inphase(person,prequals),courselevel(course,level),projectmember(project,person),yearsinprogram(person,year),tempadvisedby(person,person)
+genre(person,genre): publication(title,person),samecourse(course,course),sameperson(person,person),sameproject(project,project),hasposition(person,faculty),inphase(person,prequals),courselevel(course,level),projectmember(project,person),yearsinprogram(person,year),tempadvisedby(person,person)
+director(person): professor(person),student(person)
 setMap:workedunder(A,B),advisedby(A,B)
 setParam:searchArgPermutation=true.
 setParam:searchEmpty=false.
 setParam:allowSameTargetMap=false.
+setParam:N=2.
