@@ -1,0 +1,9 @@
+movie(movie,person): sameauthor(author,author),haswordauthor(author,word),author(class,author),haswordvenue(venue,word),sametitle(title,title),haswordtitle(title,word),samebib(class,class),venue(class,venue),title(class,title)
+female(person): 
+director(person): 
+actor(person): 
+setMap:workedunder(A,B),samevenue(A,B)
+setParam:searchArgPermutation=true.
+setParam:searchEmpty=false.
+setParam:allowSameTargetMap=false.
+setParam:N=2.

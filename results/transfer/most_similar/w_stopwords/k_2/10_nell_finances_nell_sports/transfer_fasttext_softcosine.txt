@@ -1,0 +1,13 @@
+countryhascompanyoffice(country,company): athleteledsportsteam(athlete,sportsteam),athleteplaysforteam(athlete,sportsteam),athleteplaysinleague(athlete,sportsleague),athleteplayssport(athlete,sport),teamalsoknownas(sportsteam,sportsteam),teamplaysagainstteam(sportsteam,sportsteam),teamplaysinleague(sportsteam,sportsleague)
+cityhascompanyoffice(city,company): athleteledsportsteam(athlete,sportsteam),athleteplaysforteam(athlete,sportsteam),athleteplaysinleague(athlete,sportsleague),athleteplayssport(athlete,sport),teamalsoknownas(sportsteam,sportsteam),teamplaysagainstteam(sportsteam,sportsteam),teamplaysinleague(sportsteam,sportsleague)
+bankchiefexecutiveceo(company,person): athleteledsportsteam(athlete,sportsteam),athleteplaysforteam(athlete,sportsteam),athleteplaysinleague(athlete,sportsleague),athleteplayssport(athlete,sport),teamalsoknownas(sportsteam,sportsteam),teamplaysagainstteam(sportsteam,sportsteam),teamplaysinleague(sportsteam,sportsleague)
+companyalsoknownas(company,company): teamalsoknownas(sportsteam,sportsteam),athleteplaysinleague(athlete,sportsleague),teamplaysinleague(sportsteam,sportsleague),athleteplaysforteam(athlete,sportsteam),athleteledsportsteam(athlete,sportsteam),athleteplayssport(athlete,sport),teamplaysagainstteam(sportsteam,sportsteam)
+economicsectorcompany(sector,company): athleteledsportsteam(athlete,sportsteam),athleteplaysforteam(athlete,sportsteam),athleteplaysinleague(athlete,sportsleague),athleteplayssport(athlete,sport),teamalsoknownas(sportsteam,sportsteam),teamplaysagainstteam(sportsteam,sportsteam),teamplaysinleague(sportsteam,sportsleague)
+bankboughtbank(company,company): athleteledsportsteam(athlete,sportsteam),athleteplaysforteam(athlete,sportsteam),athleteplaysinleague(athlete,sportsleague),athleteplayssport(athlete,sport),teamalsoknownas(sportsteam,sportsteam),teamplaysagainstteam(sportsteam,sportsteam),teamplaysinleague(sportsteam,sportsleague)
+acquired(company,company): athleteledsportsteam(athlete,sportsteam),athleteplaysforteam(athlete,sportsteam),athleteplaysinleague(athlete,sportsleague),athleteplayssport(athlete,sport),teamalsoknownas(sportsteam,sportsteam),teamplaysagainstteam(sportsteam,sportsteam),teamplaysinleague(sportsteam,sportsleague)
+companyceo(company,person): athleteledsportsteam(athlete,sportsteam),athleteplaysforteam(athlete,sportsteam),athleteplaysinleague(athlete,sportsleague),athleteplayssport(athlete,sport),teamalsoknownas(sportsteam,sportsteam),teamplaysagainstteam(sportsteam,sportsteam),teamplaysinleague(sportsteam,sportsleague)
+setMap:companyeconomicsector(A,B),teamplayssport(A,B)
+setParam:searchArgPermutation=true.
+setParam:searchEmpty=false.
+setParam:allowSameTargetMap=false.
+setParam:N=2.

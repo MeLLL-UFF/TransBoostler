@@ -1,0 +1,9 @@
+movie(movie,person): 
+actor(person): 
+genre(person,genre): 
+director(person): 
+setMap:workedunder(A,B),advisedby(A,B)
+setParam:searchArgPermutation=true.
+setParam:searchEmpty=false.
+setParam:allowSameTargetMap=false.
+setParam:N=2.

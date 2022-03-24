@@ -1,0 +1,48 @@
+Starting experiment 1_imdb_uwcse 
+
+Loading pre-trained trees.
+Run: 1
+Starting experiments for fasttext using euclidean 
+
+
+ Starting fold 1 of 5 folds 
+
+Start transfer learning experiment
+
+Target train facts examples: 708
+Target train pos examples: 35
+Target train neg examples: 1814
+
+Target test facts examples: 1679
+Target test pos examples: 78
+Target test neg examples: 2265
+
+Training using transfer 
+
+******************************************
+Performing Parameter Learning
+******************************************
+Refine
+0;;workedunder(A, B) :- actor(A), director(B).;true;false
+0;true;movie(C, A), movie(C, B).;false;false
+1;;workedunder(A, B) :- actor(B).;false;true
+1;false;movie(C, A), movie(C, B).;false;false
+2;;workedunder(A, B) :- actor(A), director(B).;true;false
+2;true;movie(C, A), movie(C, B).;false;false
+3;;workedunder(A, B) :- genre(A, C), genre(B, C).;false;true
+3;false;actor(B).;false;true
+3;false,false;movie(D, A), movie(D, B).;false;false
+4;;workedunder(A, B) :- actor(A), director(B).;true;false
+4;true;movie(C, A), movie(C, B).;false;false
+5;;workedunder(A, B) :- actor(B).;false;true
+5;false;movie(C, A), movie(C, B).;false;false
+6;;workedunder(A, B) :- director(B), actor(A).;true;false
+6;true;movie(C, A), movie(C, B).;false;false
+7;;workedunder(A, B) :- actor(A), director(B).;true;false
+7;true;movie(C, A), movie(C, B).;false;false
+8;;workedunder(A, B) :- director(B), actor(A).;true;false
+8;true;movie(C, A), movie(C, B).;false;false
+9;;workedunder(A, B) :- actor(A), director(B).;true;false
+9;true;movie(C, A), movie(C, B).;false;false
+
+
