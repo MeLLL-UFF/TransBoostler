@@ -1,0 +1,3525 @@
+Cleaning previous experiment's mess
+Loading fasttext model
+Time to load FastText model: 280.77 seconds
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 31
+FP: 53
+TN: 4876
+FN: 0
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 62
+FP: 125
+TN: 9734
+FN: 0
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 93
+FP: 180
+TN: 14608
+FN: 0
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 124
+FP: 244
+TN: 19474
+FN: 0
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 156
+FP: 306
+TN: 24342
+FN: 0
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 25
+FP: 42
+TN: 3183
+FN: 0
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 50
+FP: 95
+TN: 6356
+FN: 0
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 75
+FP: 151
+TN: 9525
+FN: 0
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 100
+FP: 201
+TN: 12701
+FN: 0
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 126
+FP: 247
+TN: 15881
+FN: 0
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 31
+FP: 45
+TN: 4884
+FN: 0
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 62
+FP: 111
+TN: 9748
+FN: 0
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 93
+FP: 179
+TN: 14609
+FN: 0
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 124
+FP: 246
+TN: 19472
+FN: 0
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 156
+FP: 305
+TN: 24343
+FN: 0
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 25
+FP: 55
+TN: 3170
+FN: 0
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 50
+FP: 110
+TN: 6341
+FN: 0
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 75
+FP: 169
+TN: 9507
+FN: 0
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 100
+FP: 202
+TN: 12700
+FN: 0
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 126
+FP: 248
+TN: 15880
+FN: 0
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 31
+FP: 52
+TN: 4877
+FN: 0
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 62
+FP: 106
+TN: 9753
+FN: 0
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 93
+FP: 173
+TN: 14615
+FN: 0
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 124
+FP: 225
+TN: 19493
+FN: 0
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 156
+FP: 294
+TN: 24354
+FN: 0
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 25
+FP: 52
+TN: 3173
+FN: 0
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 50
+FP: 105
+TN: 6346
+FN: 0
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 75
+FP: 149
+TN: 9527
+FN: 0
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 100
+FP: 185
+TN: 12717
+FN: 0
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 126
+FP: 247
+TN: 15881
+FN: 0
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 31
+FP: 55
+TN: 4874
+FN: 0
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 62
+FP: 103
+TN: 9756
+FN: 0
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 92
+FP: 165
+TN: 14623
+FN: 1
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 124
+FP: 241
+TN: 19477
+FN: 0
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 156
+FP: 309
+TN: 24339
+FN: 0
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 25
+FP: 45
+TN: 3180
+FN: 0
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 49
+FP: 103
+TN: 6348
+FN: 1
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 75
+FP: 153
+TN: 9523
+FN: 0
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 100
+FP: 199
+TN: 12703
+FN: 0
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 126
+FP: 245
+TN: 15883
+FN: 0
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 31
+FP: 51
+TN: 4878
+FN: 0
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 62
+FP: 106
+TN: 9753
+FN: 0
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 93
+FP: 148
+TN: 14640
+FN: 0
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 124
+FP: 236
+TN: 19482
+FN: 0
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 156
+FP: 310
+TN: 24338
+FN: 0
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 25
+FP: 34
+TN: 3191
+FN: 0
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 50
+FP: 80
+TN: 6371
+FN: 0
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 75
+FP: 148
+TN: 9528
+FN: 0
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 100
+FP: 192
+TN: 12710
+FN: 0
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 126
+FP: 248
+TN: 15880
+FN: 0
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 31
+FP: 60
+TN: 4869
+FN: 0
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 62
+FP: 118
+TN: 9741
+FN: 0
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 93
+FP: 164
+TN: 14624
+FN: 0
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 124
+FP: 232
+TN: 19486
+FN: 0
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 156
+FP: 301
+TN: 24347
+FN: 0
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 25
+FP: 52
+TN: 3173
+FN: 0
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 50
+FP: 89
+TN: 6362
+FN: 0
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 75
+FP: 143
+TN: 9533
+FN: 0
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 100
+FP: 189
+TN: 12713
+FN: 0
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 126
+FP: 248
+TN: 15880
+FN: 0
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 31
+FP: 59
+TN: 4870
+FN: 0
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 61
+FP: 117
+TN: 9742
+FN: 1
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 93
+FP: 184
+TN: 14604
+FN: 0
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 121
+FP: 241
+TN: 19477
+FN: 3
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 156
+FP: 304
+TN: 24344
+FN: 0
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 25
+FP: 55
+TN: 3170
+FN: 0
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 50
+FP: 115
+TN: 6336
+FN: 0
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 75
+FP: 163
+TN: 9513
+FN: 0
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 100
+FP: 210
+TN: 12692
+FN: 0
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 126
+FP: 246
+TN: 15882
+FN: 0
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 31
+FP: 71
+TN: 4858
+FN: 0
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 62
+FP: 140
+TN: 9719
+FN: 0
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 93
+FP: 193
+TN: 14595
+FN: 0
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 123
+FP: 227
+TN: 19491
+FN: 1
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 156
+FP: 298
+TN: 24350
+FN: 0
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 25
+FP: 45
+TN: 3180
+FN: 0
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 50
+FP: 88
+TN: 6363
+FN: 0
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 75
+FP: 143
+TN: 9533
+FN: 0
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 100
+FP: 193
+TN: 12709
+FN: 0
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 126
+FP: 245
+TN: 15883
+FN: 0
+Cleaning previous experiment's mess
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 30
+FP: 256
+TN: 73031
+FN: 73
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 39
+FP: 114
+TN: 146460
+FN: 168
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 40
+FP: 95
+TN: 219766
+FN: 270
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 107
+FP: 1491
+TN: 291657
+FN: 307
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 127
+FP: 1111
+TN: 365325
+FN: 391
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 34
+FP: 537
+TN: 72750
+FN: 69
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 68
+FP: 650
+TN: 145924
+FN: 139
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 92
+FP: 1007
+TN: 218854
+FN: 218
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 56
+FP: 149
+TN: 292999
+FN: 358
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 56
+FP: 83
+TN: 366353
+FN: 462
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 22
+FP: 1027
+TN: 72260
+FN: 82
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 44
+FP: 391
+TN: 146184
+FN: 164
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 34
+FP: 79
+TN: 219783
+FN: 278
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 118
+FP: 860
+TN: 292290
+FN: 298
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 80
+FP: 504
+TN: 365934
+FN: 440
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 13
+FP: 432
+TN: 72855
+FN: 90
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 24
+FP: 17
+TN: 146557
+FN: 183
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 38
+FP: 35
+TN: 219826
+FN: 272
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 83
+FP: 333
+TN: 292815
+FN: 331
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 60
+FP: 500
+TN: 365936
+FN: 458
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 41
+FP: 637
+TN: 72650
+FN: 62
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 51
+FP: 138
+TN: 146436
+FN: 156
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 36
+FP: 50
+TN: 219811
+FN: 274
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 71
+FP: 216
+TN: 292932
+FN: 343
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 63
+FP: 81
+TN: 366355
+FN: 455
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 29
+FP: 459
+TN: 72828
+FN: 75
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 26
+FP: 183
+TN: 146392
+FN: 182
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 36
+FP: 56
+TN: 219806
+FN: 276
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 74
+FP: 428
+TN: 292722
+FN: 342
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 68
+FP: 99
+TN: 366339
+FN: 452
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 24
+FP: 144
+TN: 73143
+FN: 79
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 36
+FP: 106
+TN: 146468
+FN: 171
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 41
+FP: 44
+TN: 219817
+FN: 269
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 70
+FP: 244
+TN: 292904
+FN: 344
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 58
+FP: 92
+TN: 366344
+FN: 460
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 25
+FP: 378
+TN: 72909
+FN: 78
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 37
+FP: 76
+TN: 146498
+FN: 170
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 91
+FP: 807
+TN: 219054
+FN: 219
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 104
+FP: 853
+TN: 292295
+FN: 310
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 155
+FP: 1429
+TN: 365007
+FN: 363
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 20
+FP: 242
+TN: 73045
+FN: 84
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 61
+FP: 597
+TN: 145978
+FN: 147
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 80
+FP: 730
+TN: 219132
+FN: 232
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 106
+FP: 1197
+TN: 291953
+FN: 310
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 29
+FP: 39
+TN: 366399
+FN: 491
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 29
+FP: 52
+TN: 73235
+FN: 74
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 54
+FP: 679
+TN: 145895
+FN: 153
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 41
+FP: 54
+TN: 219807
+FN: 269
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 106
+FP: 1011
+TN: 292137
+FN: 308
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 60
+FP: 78
+TN: 366358
+FN: 458
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 30
+FP: 103
+TN: 73184
+FN: 73
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 34
+FP: 32
+TN: 146542
+FN: 173
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 61
+FP: 122
+TN: 219739
+FN: 249
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 103
+FP: 1131
+TN: 292017
+FN: 311
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 145
+FP: 1225
+TN: 365211
+FN: 373
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 17
+FP: 603
+TN: 72684
+FN: 87
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 41
+FP: 170
+TN: 146405
+FN: 167
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 32
+FP: 45
+TN: 219817
+FN: 280
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 35
+FP: 66
+TN: 293084
+FN: 381
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 52
+FP: 72
+TN: 366366
+FN: 468
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 0
+FP: 0
+TN: 73287
+FN: 103
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 35
+FP: 326
+TN: 146248
+FN: 172
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 38
+FP: 1021
+TN: 218840
+FN: 272
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 45
+FP: 56
+TN: 293092
+FN: 369
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 60
+FP: 74
+TN: 366362
+FN: 458
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 19
+FP: 239
+TN: 73048
+FN: 84
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 49
+FP: 135
+TN: 146439
+FN: 158
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 93
+FP: 859
+TN: 219002
+FN: 217
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 55
+FP: 82
+TN: 293066
+FN: 359
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 45
+FP: 36
+TN: 366400
+FN: 473
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 24
+FP: 311
+TN: 72976
+FN: 80
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 42
+FP: 390
+TN: 146185
+FN: 166
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 33
+FP: 43
+TN: 219819
+FN: 279
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 73
+FP: 368
+TN: 292782
+FN: 343
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 156
+FP: 1562
+TN: 364876
+FN: 364
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 13
+FP: 1013
+TN: 72274
+FN: 90
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 37
+FP: 221
+TN: 146353
+FN: 170
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 84
+FP: 1068
+TN: 218793
+FN: 226
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 119
+FP: 1674
+TN: 291474
+FN: 295
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 59
+FP: 71
+TN: 366365
+FN: 459
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 27
+FP: 56
+TN: 73231
+FN: 76
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 25
+FP: 170
+TN: 146404
+FN: 182
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 40
+FP: 112
+TN: 219749
+FN: 270
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 54
+FP: 69
+TN: 293079
+FN: 360
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 144
+FP: 1258
+TN: 365178
+FN: 374
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 29
+FP: 725
+TN: 72562
+FN: 75
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 19
+FP: 26
+TN: 146549
+FN: 189
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 42
+FP: 114
+TN: 219748
+FN: 270
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 81
+FP: 289
+TN: 292861
+FN: 335
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 78
+FP: 613
+TN: 365825
+FN: 442
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 24
+FP: 680
+TN: 72607
+FN: 79
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 44
+FP: 627
+TN: 145947
+FN: 163
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 32
+FP: 43
+TN: 219818
+FN: 278
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 99
+FP: 1415
+TN: 291733
+FN: 315
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 47
+FP: 81
+TN: 366355
+FN: 471
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 22
+FP: 22
+TN: 73265
+FN: 81
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 73
+FP: 754
+TN: 145820
+FN: 134
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 38
+FP: 56
+TN: 219805
+FN: 272
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 45
+FP: 36
+TN: 293112
+FN: 369
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 66
+FP: 117
+TN: 366319
+FN: 452
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 22
+FP: 229
+TN: 73058
+FN: 82
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 28
+FP: 59
+TN: 146516
+FN: 180
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 27
+FP: 22
+TN: 219840
+FN: 285
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 111
+FP: 1372
+TN: 291778
+FN: 305
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 58
+FP: 86
+TN: 366352
+FN: 462
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 37
+FP: 371
+TN: 72916
+FN: 66
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 34
+FP: 81
+TN: 146493
+FN: 173
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 100
+FP: 942
+TN: 218919
+FN: 210
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 49
+FP: 109
+TN: 293039
+FN: 365
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 52
+FP: 71
+TN: 366365
+FN: 466
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 21
+FP: 886
+TN: 72401
+FN: 82
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 47
+FP: 449
+TN: 146125
+FN: 160
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 74
+FP: 629
+TN: 219232
+FN: 236
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 47
+FP: 401
+TN: 292747
+FN: 367
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 73
+FP: 201
+TN: 366235
+FN: 445
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 34
+FP: 769
+TN: 72518
+FN: 70
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 32
+FP: 537
+TN: 146038
+FN: 176
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 46
+FP: 57
+TN: 219805
+FN: 266
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 101
+FP: 1238
+TN: 291912
+FN: 315
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 126
+FP: 1546
+TN: 364892
+FN: 394
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 15
+FP: 107
+TN: 73180
+FN: 88
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 58
+FP: 804
+TN: 145770
+FN: 149
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 43
+FP: 313
+TN: 219548
+FN: 267
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 109
+FP: 1441
+TN: 291707
+FN: 305
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 62
+FP: 106
+TN: 366330
+FN: 456
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 16
+FP: 151
+TN: 73136
+FN: 87
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 22
+FP: 58
+TN: 146516
+FN: 185
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 93
+FP: 792
+TN: 219069
+FN: 217
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 128
+FP: 1169
+TN: 291979
+FN: 286
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 76
+FP: 201
+TN: 366235
+FN: 442
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 26
+FP: 100
+TN: 73187
+FN: 78
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 34
+FP: 240
+TN: 146335
+FN: 174
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 51
+FP: 90
+TN: 219772
+FN: 261
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 114
+FP: 1306
+TN: 291844
+FN: 302
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 69
+FP: 1385
+TN: 365053
+FN: 451
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 15
+FP: 97
+TN: 73190
+FN: 88
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 31
+FP: 140
+TN: 146434
+FN: 176
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 76
+FP: 944
+TN: 218917
+FN: 234
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 30
+FP: 145
+TN: 293003
+FN: 384
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 72
+FP: 107
+TN: 366329
+FN: 446
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 27
+FP: 327
+TN: 72960
+FN: 76
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 26
+FP: 265
+TN: 146309
+FN: 181
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 32
+FP: 1025
+TN: 218836
+FN: 278
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 49
+FP: 90
+TN: 293058
+FN: 365
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 148
+FP: 1367
+TN: 365069
+FN: 370
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 19
+FP: 217
+TN: 73070
+FN: 85
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 23
+FP: 31
+TN: 146544
+FN: 185
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 34
+FP: 43
+TN: 219819
+FN: 278
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 46
+FP: 43
+TN: 293107
+FN: 370
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 121
+FP: 1280
+TN: 365158
+FN: 399
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 31
+FP: 327
+TN: 72960
+FN: 72
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 35
+FP: 397
+TN: 146177
+FN: 172
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 50
+FP: 61
+TN: 219800
+FN: 260
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 58
+FP: 143
+TN: 293005
+FN: 356
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 71
+FP: 117
+TN: 366319
+FN: 447
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 28
+FP: 932
+TN: 72355
+FN: 75
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 74
+FP: 533
+TN: 146041
+FN: 133
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 85
+FP: 715
+TN: 219146
+FN: 225
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 56
+FP: 59
+TN: 293089
+FN: 358
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 67
+FP: 60
+TN: 366376
+FN: 451
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 24
+FP: 285
+TN: 73002
+FN: 80
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 51
+FP: 721
+TN: 145854
+FN: 157
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 60
+FP: 670
+TN: 219192
+FN: 252
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 90
+FP: 1162
+TN: 291988
+FN: 326
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 111
+FP: 1127
+TN: 365311
+FN: 409
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 35
+FP: 239
+TN: 73048
+FN: 68
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 29
+FP: 66
+TN: 146508
+FN: 178
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 92
+FP: 803
+TN: 219058
+FN: 218
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 111
+FP: 1184
+TN: 291964
+FN: 303
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 154
+FP: 1440
+TN: 364996
+FN: 364
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 24
+FP: 223
+TN: 73064
+FN: 79
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 59
+FP: 470
+TN: 146104
+FN: 148
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 37
+FP: 54
+TN: 219807
+FN: 273
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 43
+FP: 55
+TN: 293093
+FN: 371
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 77
+FP: 276
+TN: 366160
+FN: 441
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 26
+FP: 303
+TN: 72984
+FN: 78
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 31
+FP: 712
+TN: 145863
+FN: 177
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 35
+FP: 39
+TN: 219823
+FN: 277
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 49
+FP: 62
+TN: 293088
+FN: 367
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 74
+FP: 345
+TN: 366093
+FN: 446
+Cleaning previous experiment's mess
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 3
+FP: 17
+TN: 21315
+FN: 49
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 5
+FP: 20
+TN: 42644
+FN: 100
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 8
+FP: 32
+TN: 63964
+FN: 150
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 10
+FP: 40
+TN: 85288
+FN: 201
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 17
+FP: 52
+TN: 106608
+FN: 247
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 3
+FP: 21
+TN: 21311
+FN: 49
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 5
+FP: 50
+TN: 42614
+FN: 100
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 7
+FP: 48
+TN: 63948
+FN: 151
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 8
+FP: 58
+TN: 85270
+FN: 203
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 10
+FP: 60
+TN: 106600
+FN: 254
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 5
+FP: 44
+TN: 21288
+FN: 48
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 6
+FP: 39
+TN: 42625
+FN: 100
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 11
+FP: 34
+TN: 63963
+FN: 148
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 12
+FP: 55
+TN: 85274
+FN: 200
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 15
+FP: 66
+TN: 106596
+FN: 251
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 13
+FP: 61
+TN: 21271
+FN: 39
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 25
+FP: 94
+TN: 42570
+FN: 80
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 43
+FP: 177
+TN: 63819
+FN: 115
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 57
+FP: 240
+TN: 85088
+FN: 154
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 76
+FP: 290
+TN: 106370
+FN: 188
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 10
+FP: 85
+TN: 21247
+FN: 42
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 29
+FP: 144
+TN: 42520
+FN: 76
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 47
+FP: 204
+TN: 63792
+FN: 111
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 65
+FP: 258
+TN: 85070
+FN: 146
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 78
+FP: 325
+TN: 106335
+FN: 186
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 17
+FP: 64
+TN: 21268
+FN: 36
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 33
+FP: 241
+TN: 42423
+FN: 73
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 48
+FP: 357
+TN: 63640
+FN: 111
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 65
+FP: 282
+TN: 85047
+FN: 147
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 4
+FP: 9
+TN: 106653
+FN: 262
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 52
+FP: 226
+TN: 21106
+FN: 0
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 103
+FP: 503
+TN: 42161
+FN: 2
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 38
+FP: 281
+TN: 63715
+FN: 120
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 54
+FP: 158
+TN: 85170
+FN: 157
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 69
+FP: 277
+TN: 106383
+FN: 195
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 16
+FP: 120
+TN: 21212
+FN: 36
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 103
+FP: 411
+TN: 42253
+FN: 2
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 155
+FP: 613
+TN: 63383
+FN: 3
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 56
+FP: 250
+TN: 85078
+FN: 155
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 260
+FP: 1044
+TN: 105616
+FN: 4
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 53
+FP: 299
+TN: 21033
+FN: 0
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 31
+FP: 114
+TN: 42550
+FN: 75
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 45
+FP: 179
+TN: 63818
+FN: 114
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 60
+FP: 395
+TN: 84934
+FN: 152
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 73
+FP: 288
+TN: 106374
+FN: 193
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 52
+FP: 204
+TN: 21128
+FN: 0
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 26
+FP: 119
+TN: 42545
+FN: 79
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 42
+FP: 132
+TN: 63864
+FN: 116
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 209
+FP: 849
+TN: 84479
+FN: 2
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 70
+FP: 280
+TN: 106380
+FN: 194
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 15
+FP: 98
+TN: 21234
+FN: 37
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 31
+FP: 125
+TN: 42539
+FN: 74
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 156
+FP: 654
+TN: 63342
+FN: 2
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 207
+FP: 883
+TN: 84445
+FN: 4
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 260
+FP: 1099
+TN: 105561
+FN: 4
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 53
+FP: 357
+TN: 20975
+FN: 0
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 106
+FP: 493
+TN: 42171
+FN: 0
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 159
+FP: 919
+TN: 63078
+FN: 0
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 212
+FP: 1060
+TN: 84269
+FN: 0
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 73
+FP: 288
+TN: 106374
+FN: 193
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 3
+FP: 22
+TN: 21310
+FN: 49
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 5
+FP: 17
+TN: 42647
+FN: 100
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 9
+FP: 30
+TN: 63966
+FN: 149
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 13
+FP: 46
+TN: 85282
+FN: 198
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 17
+FP: 52
+TN: 106608
+FN: 247
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 3
+FP: 26
+TN: 21306
+FN: 49
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 3
+FP: 23
+TN: 42641
+FN: 102
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 5
+FP: 63
+TN: 63933
+FN: 153
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 9
+FP: 47
+TN: 85281
+FN: 202
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 10
+FP: 60
+TN: 106600
+FN: 254
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 1
+FP: 23
+TN: 21309
+FN: 52
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 5
+FP: 26
+TN: 42638
+FN: 101
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 17
+FP: 112
+TN: 63885
+FN: 142
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 12
+FP: 51
+TN: 85278
+FN: 200
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 15
+FP: 66
+TN: 106596
+FN: 251
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 17
+FP: 107
+TN: 21225
+FN: 35
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 33
+FP: 116
+TN: 42548
+FN: 72
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 46
+FP: 141
+TN: 63855
+FN: 112
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 63
+FP: 235
+TN: 85093
+FN: 148
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 76
+FP: 290
+TN: 106370
+FN: 188
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 52
+FP: 162
+TN: 21170
+FN: 0
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 42
+FP: 107
+TN: 42557
+FN: 63
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 56
+FP: 196
+TN: 63800
+FN: 102
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 68
+FP: 247
+TN: 85081
+FN: 143
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 78
+FP: 325
+TN: 106335
+FN: 186
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 12
+FP: 127
+TN: 21205
+FN: 41
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 32
+FP: 146
+TN: 42518
+FN: 74
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 51
+FP: 210
+TN: 63787
+FN: 108
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 67
+FP: 269
+TN: 85060
+FN: 145
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 82
+FP: 339
+TN: 106323
+FN: 184
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 52
+FP: 298
+TN: 21034
+FN: 0
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 104
+FP: 628
+TN: 42036
+FN: 1
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 44
+FP: 150
+TN: 63846
+FN: 114
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 63
+FP: 248
+TN: 85080
+FN: 148
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 85
+FP: 326
+TN: 106334
+FN: 179
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 51
+FP: 210
+TN: 21122
+FN: 1
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 26
+FP: 107
+TN: 42557
+FN: 79
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 40
+FP: 168
+TN: 63828
+FN: 118
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 58
+FP: 230
+TN: 85098
+FN: 153
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 260
+FP: 1088
+TN: 105572
+FN: 4
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 52
+FP: 293
+TN: 21039
+FN: 1
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 105
+FP: 430
+TN: 42234
+FN: 1
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 52
+FP: 234
+TN: 63763
+FN: 107
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 73
+FP: 278
+TN: 85051
+FN: 139
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 88
+FP: 353
+TN: 106309
+FN: 178
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 52
+FP: 318
+TN: 21014
+FN: 0
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 28
+FP: 125
+TN: 42539
+FN: 77
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 40
+FP: 283
+TN: 63713
+FN: 118
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 208
+FP: 866
+TN: 84462
+FN: 3
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 261
+FP: 1060
+TN: 105600
+FN: 3
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 20
+FP: 80
+TN: 21252
+FN: 32
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 104
+FP: 440
+TN: 42224
+FN: 1
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 158
+FP: 693
+TN: 63303
+FN: 0
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 208
+FP: 865
+TN: 84463
+FN: 3
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 260
+FP: 1019
+TN: 105641
+FN: 4
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 14
+FP: 89
+TN: 21243
+FN: 39
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 33
+FP: 120
+TN: 42544
+FN: 73
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 51
+FP: 353
+TN: 63644
+FN: 108
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 69
+FP: 277
+TN: 85052
+FN: 143
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 88
+FP: 353
+TN: 106309
+FN: 178
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 3
+FP: 12
+TN: 21320
+FN: 49
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 5
+FP: 19
+TN: 42645
+FN: 100
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 8
+FP: 27
+TN: 63969
+FN: 150
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 13
+FP: 41
+TN: 85287
+FN: 198
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 17
+FP: 52
+TN: 106608
+FN: 247
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 5
+FP: 18
+TN: 21314
+FN: 47
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 3
+FP: 46
+TN: 42618
+FN: 102
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 6
+FP: 37
+TN: 63959
+FN: 152
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 7
+FP: 50
+TN: 85278
+FN: 204
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 10
+FP: 60
+TN: 106600
+FN: 254
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 5
+FP: 34
+TN: 21298
+FN: 48
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 5
+FP: 23
+TN: 42641
+FN: 101
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 9
+FP: 56
+TN: 63941
+FN: 150
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 14
+FP: 56
+TN: 85273
+FN: 198
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 15
+FP: 66
+TN: 106596
+FN: 251
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 16
+FP: 57
+TN: 21275
+FN: 36
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 31
+FP: 117
+TN: 42547
+FN: 74
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 48
+FP: 166
+TN: 63830
+FN: 110
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 60
+FP: 218
+TN: 85110
+FN: 151
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 76
+FP: 290
+TN: 106370
+FN: 188
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 51
+FP: 216
+TN: 21116
+FN: 1
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 32
+FP: 126
+TN: 42538
+FN: 73
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 50
+FP: 189
+TN: 63807
+FN: 108
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 68
+FP: 248
+TN: 85080
+FN: 143
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 78
+FP: 325
+TN: 106335
+FN: 186
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 13
+FP: 70
+TN: 21262
+FN: 40
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 39
+FP: 142
+TN: 42522
+FN: 67
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 49
+FP: 340
+TN: 63657
+FN: 110
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 66
+FP: 276
+TN: 85053
+FN: 146
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 82
+FP: 339
+TN: 106323
+FN: 184
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 13
+FP: 42
+TN: 21290
+FN: 39
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 26
+FP: 205
+TN: 42459
+FN: 79
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 154
+FP: 551
+TN: 63445
+FN: 4
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 55
+FP: 223
+TN: 85105
+FN: 156
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 69
+FP: 277
+TN: 106383
+FN: 195
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 52
+FP: 218
+TN: 21114
+FN: 0
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 23
+FP: 212
+TN: 42452
+FN: 82
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 39
+FP: 187
+TN: 63809
+FN: 119
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 207
+FP: 856
+TN: 84472
+FN: 4
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 72
+FP: 301
+TN: 106359
+FN: 192
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 52
+FP: 185
+TN: 21147
+FN: 1
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 37
+FP: 184
+TN: 42480
+FN: 69
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 58
+FP: 262
+TN: 63735
+FN: 101
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 70
+FP: 298
+TN: 85031
+FN: 142
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 73
+FP: 288
+TN: 106374
+FN: 193
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 12
+FP: 93
+TN: 21239
+FN: 40
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 36
+FP: 234
+TN: 42430
+FN: 69
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 55
+FP: 167
+TN: 63829
+FN: 103
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 73
+FP: 271
+TN: 85057
+FN: 138
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 260
+FP: 954
+TN: 105706
+FN: 4
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 16
+FP: 106
+TN: 21226
+FN: 36
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 32
+FP: 188
+TN: 42476
+FN: 73
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 156
+FP: 837
+TN: 63159
+FN: 2
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 57
+FP: 243
+TN: 85085
+FN: 154
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 260
+FP: 1093
+TN: 105567
+FN: 4
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 14
+FP: 46
+TN: 21286
+FN: 39
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 29
+FP: 82
+TN: 42582
+FN: 77
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 159
+FP: 803
+TN: 63194
+FN: 0
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 72
+FP: 297
+TN: 85032
+FN: 140
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 88
+FP: 398
+TN: 106264
+FN: 178
