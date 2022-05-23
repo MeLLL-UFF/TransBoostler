@@ -4,8 +4,8 @@ echo "Installing project dependencies.."
 pip3 install ekphrasis
 pip3 install scipy==1.6.3
 pip3 install gensim==4.0.1
-pip3 install git+git://github.com/ThaisLuca/boostsrl-python-package.git
-pip3 install git+git://github.com/ThaisLuca/wmd-relax
+pip3 install git+https://github.com/ThaisLuca/boostsrl-python-package.git
+pip3 install git+https://github.com/ThaisLuca/wmd-relax
 pip3 install -U scikit-learn==0.24.2
 pip3 install psutil
 pip3 install unidecode
