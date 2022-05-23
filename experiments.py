@@ -1,5 +1,5 @@
 
-revision_theory = True
+revision_theory = False
 
 setups = [
         ##{'model': 'fasttext', 'similarity_metric': 'cosine', 'revision_theory': revision_theory},
@@ -7,7 +7,8 @@ setups = [
         {'model': 'fasttext', 'similarity_metric': 'softcosine', 'revision_theory': revision_theory},
         {'model': 'fasttext', 'similarity_metric': 'wmd', 'revision_theory': revision_theory},
         {'model': 'fasttext', 'similarity_metric': 'relax-wmd', 'revision_theory': revision_theory},
-        #{'model': 'fasttext', 'similarity_metric': 'ensemble', 'revision_theory': revision_theory},
+        {'model': 'fasttext', 'similarity_metric': 'majority_vote', 'revision_theory': revision_theory},
+        {'model': 'fasttext', 'similarity_metric': 'borda_count', 'revision_theory': revision_theory},
         
         #{'model': 'word2vec', 'similarity_metric': 'cosine', 'revision_theory': revision_theory},
         #{'model': 'word2vec', 'similarity_metric': 'euclidean', 'revision_theory': revision_theory},
@@ -18,11 +19,9 @@ setups = [
 
 experiments = [
             {'id': '1', 'source':'imdb', 'target':'uwcse', 'predicate':'workedunder', 'to_predicate':'advisedby', 'arity': 2},
-            #{'id': '2', 'source':'uwcse', 'target':'imdb', 'predicate':'advisedby', 'to_predicate':'workedunder', 'arity': 2},
+            ##{'id': '2', 'source':'uwcse', 'target':'imdb', 'predicate':'advisedby', 'to_predicate':'workedunder', 'arity': 2},
             {'id': '3', 'source':'imdb', 'target':'cora', 'predicate':'workedunder', 'to_predicate':'samevenue', 'arity': 2},
             {'id': '4', 'source':'cora', 'target':'imdb', 'predicate':'samevenue', 'to_predicate':'workedunder', 'arity': 2},
-            #{'id': '5', 'source':'cora', 'target':'imdb', 'predicate':'sametitle', 'to_predicate':'workedunder', 'arity': 2},
-            #{'id': '6', 'source':'imdb', 'target':'cora', 'predicate':'workedunder', 'to_predicate':'sametitle', 'arity': 2},
             ##{'id': '5', 'source':'uwcse', 'target':'cora', 'predicate':'advisedby', 'to_predicate':'samevenue', 'arity': 2},
             ##{'id': '6', 'source':'cora', 'target':'uwcse', 'predicate':'samevenue', 'to_predicate':'advisedby', 'arity': 2},
             {'id': '7', 'source':'yeast', 'target':'twitter', 'predicate':'proteinclass', 'to_predicate':'accounttype', 'arity': 2},
