@@ -1,0 +1,7 @@
+haswordvenue(venue,word): movie(movie,person)
+haswordtitle(title,word): genre(person,genre)
+setMap:samevenue(A,B),workedunder(A,B)
+setParam:searchArgPermutation=true.
+setParam:searchEmpty=false.
+setParam:allowSameTargetMap=false.
+setParam:N=20.
