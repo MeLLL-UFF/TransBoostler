@@ -48,7 +48,7 @@ class VotingSchemes:
                 count[key] += ballot[key]
         return count
 
-    def borda_count_voting(self,experiment_title,embeddingModel):
+    def borda_count_voting(self,sources,experiment_title,embeddingModel):
         ballots = []
 
         for sim in ['euclidean', 'softcosine', 'wmd', 'relax-wmd']:
@@ -65,8 +65,10 @@ class VotingSchemes:
             index = re.split(r',\s*(?![^()]*\))', index)
             source, target = index[0].rstrip().replace('`', ''), index[1].rstrip().replace('`', '')
 
-            if source in mappings:
-                continue
+            if source not in mappings:
+                mappings[source] = []
+            else:
+            	continue
 
             if(target not in targets_taken):
                 targets_taken.append(target)
@@ -96,15 +98,16 @@ class VotingSchemes:
         mappings = {}
         targets_taken = []
         chosen = False
-        
-        # for t in choices:
-        # 	print(t, ':', choices[t])
-        # 	print('\n\n')
 
         for source in sources:
 
             #if 'setParam' in line or 'setMap' in line or not line:
             #    continue
+
+            if source not in mappings:
+                mappings[source] = []
+            else:
+            	continue
 
             #source = line.split(':')[0].strip()
             if source not in choices:
@@ -115,9 +118,6 @@ class VotingSchemes:
 
             max_count = 0
             current = ''
-
-            if source in mappings:
-            	continue
 
             vots = []
             for target in unique_targets:

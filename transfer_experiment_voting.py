@@ -364,7 +364,7 @@ def main():
                 if similarityMetric == 'majority_vote':
                     mapping = votingSchemes.majority_vote(voting_sources,experiment_title,embeddingModel)
                 elif similarityMetric == 'borda_count':
-                    mapping = votingSchemes.borda_count_voting(experiment_title,embeddingModel)
+                    mapping = votingSchemes.borda_count_voting(voting_sources,experiment_title,embeddingModel)
                 
                 transfer.write_to_file_closest_distance(similarityMetric, embeddingModel, predicate, to_predicate, arity, mapping, params.ROOT_PATH + '/transfer-experiments/' + experiment_title, recursion=recursion, searchArgPermutation=params.SEARCH_PERMUTATION, searchEmpty=params.SEARCH_EMPTY, allowSameTargetMap=params.ALLOW_SAME_TARGET_MAP)
                 del mapping
