@@ -311,6 +311,13 @@ def main():
                 similarityMetric = setup['similarity_metric'].lower()
                 theoryRevision = setup['revision_theory']
 
+                if similarityMetric == 'majority_vote':
+                    params.TOP_N = 1
+                    params.ALLOW_SAME_TARGET_MAP = False
+                elif similarityMetric == 'borda_count':
+                    params.TOP_N = 100
+                    params.ALLOW_SAME_TARGET_MAP = True
+
                 utils.delete_file(params.TRANSFER_FILENAME)
                 
                 utils.print_function('Starting experiments for {} using {} \n'.format(embeddingModel, similarityMetric), experiment_title, experiment_type)
@@ -360,7 +367,7 @@ def main():
                     mapping_time = end-start + mapping_time_clauses
             
                 voting_sources = [sources_dict[node] for node in utils.sweep_tree(nodes, preds=[]) if node != predicate and 'recursion_' not in node]
-                
+
                 if similarityMetric == 'majority_vote':
                     mapping = votingSchemes.majority_vote(voting_sources,experiment_title,embeddingModel)
                 elif similarityMetric == 'borda_count':
