@@ -56,23 +56,24 @@ class VotingSchemes:
             ballots.append(self.create_ballot(file))
 
         bordaCount = pd.DataFrame.from_dict(self.borda_count(ballots), orient='index', columns=['votes']).rename_axis('candidates').sort_values(by=['votes', 'candidates'], ascending=[False, True])
-        
+
         mappings = {}
         targets_taken = []
         indexes = bordaCount.index.tolist()
+
+        for source in sources:
+        	mappings[source] = []
 
         for index in indexes:
             index = re.split(r',\s*(?![^()]*\))', index)
             source, target = index[0].rstrip().replace('`', ''), index[1].rstrip().replace('`', '')
 
-            if source not in mappings:
-                mappings[source] = []
-            else:
+            if 'recursion_' in source or mappings[source]:
             	continue
 
-            if(target not in targets_taken):
-                targets_taken.append(target)
-                mappings[source] = [target]
+            if(target.split('(')[0] not in targets_taken):
+            	mappings[source].append(target)
+            	targets_taken.append(target.split('(')[0])
 
         return mappings
 
