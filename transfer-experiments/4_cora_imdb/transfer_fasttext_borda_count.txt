@@ -1,5 +1,8 @@
 author(class,author): movie(movie,person)
-haswordauthor(author,word): genre(person,genre)
+haswordauthor(author,word): 
+haswordtitle(title,word): 
+haswordvenue(venue,word): 
+title(class,title): 
 setMap:samevenue(A,B),workedunder(A,B)
 setParam:searchArgPermutation=true.
 setParam:searchEmpty=false.

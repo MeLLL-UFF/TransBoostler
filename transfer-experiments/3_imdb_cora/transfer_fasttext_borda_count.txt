@@ -1,5 +1,7 @@
 movie(movie,person): author(class,author)
 actor(person): 
+director(person): 
+female(person): 
 setMap:workedunder(A,B),samevenue(A,B)
 setParam:searchArgPermutation=true.
 setParam:searchEmpty=false.
