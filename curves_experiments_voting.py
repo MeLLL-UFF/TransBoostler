@@ -355,7 +355,7 @@ def main():
                 elif similarityMetric == 'borda_count':
                     mapping = votingSchemes.borda_count_voting(voting_sources,experiment_title,embeddingModel)
                 
-                transfer.write_to_file_closest_distance(similarityMetric, embeddingModel, predicate, to_predicate, arity, mapping, params.ROOT_PATH + '/transfer-experiments/' + experiment_title, recursion=recursion, searchArgPermutation=params.SEARCH_PERMUTATION, searchEmpty=params.SEARCH_EMPTY, allowSameTargetMap=params.ALLOW_SAME_TARGET_MAP)
+                transfer.write_to_file_closest_distance(similarityMetric, embeddingModel, predicate, to_predicate, arity, mapping, params.ROOT_PATH + '/curves-experiments/' + experiment_title, recursion=recursion, searchArgPermutation=params.SEARCH_PERMUTATION, searchEmpty=params.SEARCH_EMPTY, allowSameTargetMap=params.ALLOW_SAME_TARGET_MAP)
                 del mapping
 
                 if target in ['nell_sports', 'nell_finances', 'yago2s']:
