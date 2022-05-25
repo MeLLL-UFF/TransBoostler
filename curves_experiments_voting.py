@@ -342,7 +342,7 @@ def main():
                         #mapping  = transfer.map_predicates_most_similar(sim, nodes, targets)
                         mapping  = transfer.map_predicates(sim, nodes, targets)
 
-                    transfer.write_to_file_closest_distance(sim, embeddingModel, predicate, to_predicate, arity, mapping, params.ROOT_PATH + '/transfer-experiments/' + experiment_title, recursion=recursion, searchArgPermutation=params.SEARCH_PERMUTATION, searchEmpty=params.SEARCH_EMPTY, allowSameTargetMap=params.ALLOW_SAME_TARGET_MAP)
+                    transfer.write_to_file_closest_distance(sim, embeddingModel, predicate, to_predicate, arity, mapping, params.ROOT_PATH + '/curves-experiments/' + experiment_title, recursion=recursion, searchArgPermutation=params.SEARCH_PERMUTATION, searchEmpty=params.SEARCH_EMPTY, allowSameTargetMap=params.ALLOW_SAME_TARGET_MAP)
                     del mapping
 
                     end = time.time()
