@@ -329,7 +329,7 @@ def main():
                         loadedModel = load_model(embeddingModel)
                         previous = embeddingModel
                     
-                    transfer = Transfer(model=loadedModel, model_name=embeddingModel, segmenter=segmenter, similarity_metric=sim, sources=sources, targets=targets, experiment=experiment_title, experiment_type='transfer-experiments')
+                    transfer = Transfer(model=loadedModel, model_name=embeddingModel, segmenter=segmenter, similarity_metric=sim, sources=sources, targets=targets, experiment=experiment_title, experiment_type='curves-experiments')
                 
                     start = time.time()
 
