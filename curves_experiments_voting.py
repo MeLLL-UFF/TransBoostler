@@ -314,7 +314,7 @@ def main():
                 confusion_matrix = {key: {'TP': [], 'FP': [], 'TN': [], 'FN': []} for key in params.AMOUNTS} 
 
 
-                path = params.ROOT_PATH + 'transfer-experiments/' + experiment_title + '/similarities'
+                path = params.ROOT_PATH + 'curves-experiments/' + experiment_title + '/similarities'
                 if not os.path.exists(path):
                     os.mkdir(path)
 
