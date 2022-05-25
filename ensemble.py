@@ -52,7 +52,7 @@ class VotingSchemes:
         ballots = []
 
         for sim in ['euclidean', 'softcosine', 'wmd', 'relax-wmd']:
-            file = open(params.ROOT_PATH + 'transfer-experiments/{}/transfer_{}_{}.txt'.format(experiment_title,embeddingModel,sim),'r').read().split('\n')
+            file = open(params.ROOT_PATH + 'curves-experiments/{}/transfer_{}_{}.txt'.format(experiment_title,embeddingModel,sim),'r').read().split('\n')
             ballots.append(self.create_ballot(file))
 
         bordaCount = pd.DataFrame.from_dict(self.borda_count(ballots), orient='index', columns=['votes']).rename_axis('candidates').sort_values(by=['votes', 'candidates'], ascending=[False, True])
@@ -81,7 +81,7 @@ class VotingSchemes:
 
         choices = {}
         for sim in ['euclidean', 'softcosine', 'wmd', 'relax-wmd']:
-            file = open(params.ROOT_PATH + 'transfer-experiments/{}/transfer_{}_{}.txt'.format(experiment_title,embeddingModel,sim),'r').read().split('\n')
+            file = open(params.ROOT_PATH + 'curves-experiments/{}/transfer_{}_{}.txt'.format(experiment_title,embeddingModel,sim),'r').read().split('\n')
     		
             for line in file:
                 if 'setParam' in line or 'setMap' in line or not line:
@@ -193,7 +193,7 @@ def weight_voting():
 			
 			for similarityMetric in ['euclidean', 'wmd', 'relax-wmd']:
 
-				path = params.ROOT_PATH + 'transfer-experiments/{}/similarities/fasttext/{}/{}_similarities.csv'.format(experiment_title,similarityMetric,source)
+				path = params.ROOT_PATH + 'curves-experiments/{}/similarities/fasttext/{}/{}_similarities.csv'.format(experiment_title,similarityMetric,source)
 				try:
 					current = pd.read_csv(path).set_index('candidates').rename(columns={'similarity': similarityMetric})
 				except FileNotFoundError:
