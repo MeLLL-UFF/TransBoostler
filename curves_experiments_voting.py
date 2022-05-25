@@ -311,7 +311,7 @@ def main():
                 #transboostler_experiments[embeddingModel][similarityMetric] = []
                 #experiment_metrics = {key: {'CLL': [], 'AUC ROC': [], 'AUC PR': [], 'Learning Time': [], 'Inference Time': []} for key in params.AMOUNTS} 
                 transboostler_confusion_matrix[embeddingModel][similarityMetric] = []
-                confusion_matrix = {'TP': [], 'FP': [], 'TN': [], 'FN': []} 
+                confusion_matrix = {key: {'TP': [], 'FP': [], 'TN': [], 'FN': []} for key in params.AMOUNTS} 
 
 
                 path = params.ROOT_PATH + 'transfer-experiments/' + experiment_title + '/similarities'
