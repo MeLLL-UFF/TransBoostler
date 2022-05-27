@@ -29,7 +29,7 @@ learn_from_source = False
 
 revision = TheoryRevision()
 segmenter = Segmenter(corpus="english")
-votingSchemes = ensemble.VotingSchemes()
+votingSchemes = ensemble.VotingSchemes(experiment_type='curves')
 
 experiment_title = ''
 experiment_type = 'curves-experiments'
@@ -321,7 +321,7 @@ def main():
                 if not os.path.exists(path + '/' + embeddingModel):
                     os.mkdir(path + '/' + embeddingModel)
 
-                for sim in ['euclidean', 'softcosine', 'wmd', 'relax-wmd']:
+                for sim in ['euclidean', 'softcosine', 'wmd']:
                     if not os.path.exists(path + '/' + embeddingModel + '/' + sim):
                         os.mkdir(path + '/' + embeddingModel + '/' + sim)
                     
