@@ -1,5 +1,5 @@
 actor(person): student(person)
-movie(movie,person): sameperson(person,person)
+movie(movie,person): courselevel(course,level)
 genre(person,genre): samecourse(course,course)
 director(person): professor(person)
 setMap:workedunder(A,B),advisedby(A,B)
