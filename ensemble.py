@@ -59,22 +59,27 @@ class VotingSchemes:
 
         mappings = {}
         targets_taken = []
-        indexes = bordaCount.index.tolist()
 
         for source in sources:
-        	mappings[source] = []
-
-        for index in indexes:
-            index = re.split(r',\s*(?![^()]*\))', index)
-            source, target = index[0].rstrip().replace('`', ''), index[1].rstrip().replace('`', '')
-
-            if 'recursion_' in source or mappings[source]:
+            if source not in mappings:
+                mappings[source] = []
+            else:
             	continue
 
-            if(target.split('(')[0] not in targets_taken):
-            	mappings[source].append(target)
-            	targets_taken.append(target.split('(')[0])
+            df = bordaCount.filter(regex=source.split('(')[0], axis=0)
+            indexes = df.index.tolist()
 
+            for index in indexes:
+                index = re.split(r',\s*(?![^()]*\))', index)
+                source, target = index[0].rstrip().replace('`', ''), index[1].rstrip().replace('`', '')
+
+                if 'recursion_' in source:
+                    break
+
+                if(target.split('(')[0] not in targets_taken):
+                    mappings[source].append(target)
+                    targets_taken.append(target.split('(')[0])
+                    break
         return mappings
 
     def majority_vote(self,sources,experiment_title,embeddingModel):
