@@ -1,13 +1,13 @@
-cityhascompanyoffice(city,company): teamplaysagainstteam(sportsteam,sportsteam)
-companyalsoknownas(company,company): teamalsoknownas(sportsteam,sportsteam)
-acquired(company,company): teamplaysinleague(sportsteam,sportsleague)
+cityhascompanyoffice(city,company): teamalsoknownas(sportsteam,sportsteam)
+companyalsoknownas(company,company): teamplaysinleague(sportsteam,sportsleague)
+acquired(company,company): athleteplaysforteam(athlete,sportsteam)
 countryhascompanyoffice(country,company): athleteplaysinleague(athlete,sportsleague)
-economicsectorcompany(sector,company): 
-companyceo(company,person): athleteplaysforteam(athlete,sportsteam)
-bankboughtbank(company,company): athleteplayssport(athlete,sport)
-bankchiefexecutiveceo(company,person): athleteledsportsteam(athlete,sportsteam)
+economicsectorcompany(sector,company): athleteplayssport(athlete,sport)
+companyceo(company,person): athleteledsportsteam(athlete,sportsteam)
+bankboughtbank(company,company): teamplaysagainstteam(sportsteam,sportsteam)
+bankchiefexecutiveceo(company,person): 
 setMap:companyeconomicsector(A,B),teamplayssport(A,B)
 setParam:searchArgPermutation=true.
 setParam:searchEmpty=false.
 setParam:allowSameTargetMap=false.
-setParam:N=100.
+setParam:N=1.
