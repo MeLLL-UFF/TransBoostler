@@ -5,4 +5,4 @@ setMap:accounttype(A,B),proteinclass(A,B)
 setParam:searchArgPermutation=true.
 setParam:searchEmpty=false.
 setParam:allowSameTargetMap=false.
-setParam:N=1.
+setParam:N=100.
