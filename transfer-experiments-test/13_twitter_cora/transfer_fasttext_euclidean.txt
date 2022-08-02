@@ -1,0 +1,7 @@
+follows(account,account): author(class,author)
+tweets(account,word): title(class,title)
+setMap:accounttype(A,B),samevenue(A,B)
+setParam:searchArgPermutation=true.
+setParam:searchEmpty=false.
+setParam:allowSameTargetMap=false.
+setParam:N=1.
