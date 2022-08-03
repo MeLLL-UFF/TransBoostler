@@ -1,8 +1,0 @@
-actor(person): professor(person)
-director(person): student(person)
-genre(person,genre): courselevel(course,level)
-movie(movie,person): hasposition(person,faculty)
-setMap:workedunder(A,B),advisedby(A,B)
-setParam:searchArgPermutation=true.
-setParam:searchEmpty=false.
-setParam:allowSameTargetMap=false.

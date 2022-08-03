@@ -1,9 +1,0 @@
-author(class,author): movie(movie,person)
-title(class,title): genre(person,genre)
-haswordauthor(author,word): 
-haswordtitle(title,word): 
-haswordvenue(venue,word): 
-setMap:samevenue(A,B),workedunder(A,B)
-setParam:searchArgPermutation=true.
-setParam:searchEmpty=false.
-setParam:allowSameTargetMap=false.
