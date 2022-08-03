@@ -1,11 +1,14 @@
 
-import re,os
-import itertools
-import collections
-import pandas as pd
-from os import listdir
+from experiments import experiments, bk, setups
 from os.path import isfile, join
-from experiments import experiments
+import parameters as params
+from os import listdir
+import utils as utils
+import pandas as pd
+import collections
+import itertools
+import pickle
+import re,os
 
 def borda(ballot):
     try:
@@ -62,3 +65,18 @@ for experiment in experiments:
 #C: 2*3+5 = 11
 #D: 2*2+1 = 5
 #E: 2*1+2 = 4
+
+
+# bd = BordaCount()
+
+# file = open('/home/thais/Documentos/TransBoostler/transfer-experiments/1_imdb_uwcse/transfer_fasttext_euclidean.txt','r').read().split('\n')
+# ballot_1 = bd.create_ballot(file)
+
+# file = open('/home/thais/Documentos/TransBoostler/transfer-experiments/1_imdb_uwcse/transfer_fasttext_wmd.txt','r').read().split('\n')
+# ballot_2 = bd.create_ballot(file)
+
+# v = bd.borda_count([ballot_1,ballot_2])
+
+# df = pd.DataFrame.from_dict(v, orient="index", columns=['votes']).rename_axis('candidates').sort_values(by=['votes', 'candidates'], ascending=[False, True])
+
+# print(df)
