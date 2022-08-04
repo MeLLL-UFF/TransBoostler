@@ -333,7 +333,7 @@ class Similarity:
 	        a pandas dataframe containing every pair (source, target) similarity
       """
       
-      # Loads GoogleNews word2vec model
+      # Loads model
       nlp = spacy.blank("en").from_disk(modelname)
       wmd_instance = WMD.SpacySimilarityHook(nlp)
 
