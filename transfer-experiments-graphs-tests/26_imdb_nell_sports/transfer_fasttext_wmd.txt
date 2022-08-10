@@ -1,0 +1,9 @@
+director(person): 
+movie(movie,person): teamalsoknownas(sportsteam,sportsteam),teamplaysinleague(sportsteam,sportsleague),athleteplaysforteam(athlete,sportsteam),athleteplaysinleague(athlete,sportsleague),teamplaysagainstteam(sportsteam,sportsteam),athleteplayssport(athlete,sport),athleteledsportsteam(athlete,sportsteam)
+actor(person): 
+female(person): 
+setMap:workedunder(A,B),teamplayssport(A,B)
+setParam:searchArgPermutation=true.
+setParam:searchEmpty=false.
+setParam:allowSameTargetMap=false.
+setParam:N=2.

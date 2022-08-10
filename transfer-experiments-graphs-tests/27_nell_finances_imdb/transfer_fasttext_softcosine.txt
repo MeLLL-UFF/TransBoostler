@@ -1,0 +1,13 @@
+cityhascompanyoffice(city,company): genre(person,genre),movie(movie,person)
+companyalsoknownas(company,company): 
+acquired(company,company): 
+countryhascompanyoffice(country,company): 
+economicsectorcompany(sector,company): 
+companyceo(company,person): 
+bankboughtbank(company,company): 
+bankchiefexecutiveceo(company,person): 
+setMap:companyeconomicsector(A,B),workedunder(A,B)
+setParam:searchArgPermutation=true.
+setParam:searchEmpty=false.
+setParam:allowSameTargetMap=false.
+setParam:N=2.

@@ -1,0 +1,7 @@
+follows(account,account): companyalsoknownas(company,company),countryhascompanyoffice(country,company),cityhascompanyoffice(city,company),acquired(company,company),bankbankincountry(person,country),bankboughtbank(company,company),economicsectorcompany(sector,company),companyceo(company,person),bankchiefexecutiveceo(company,person)
+tweets(account,word): 
+setMap:accounttype(A,B),companyeconomicsector(A,B)
+setParam:searchArgPermutation=true.
+setParam:searchEmpty=false.
+setParam:allowSameTargetMap=false.
+setParam:N=2.

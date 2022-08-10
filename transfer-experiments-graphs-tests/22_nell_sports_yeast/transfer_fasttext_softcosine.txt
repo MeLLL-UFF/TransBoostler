@@ -1,0 +1,13 @@
+athleteplayssport(athlete,sport): complex(protein,com),enzyme(protein,enz),function(protein,fun),interaction(protein,protein),location(protein,loc),phenotype(protein,phe)
+athleteledsportsteam(athlete,sportsteam): 
+teamplaysagainstteam(sportsteam,sportsteam): 
+athleteplaysforteam(athlete,sportsteam): 
+teamplaysinleague(sportsteam,sportsleague): 
+teamalsoknownas(sportsteam,sportsteam): 
+athleteplaysinleague(athlete,sportsleague): 
+recursion_teamplayssport(A,B): recursion_proteinclass(A,B)
+setMap:teamplayssport(A,B),proteinclass(A,B)
+setParam:searchArgPermutation=true.
+setParam:searchEmpty=false.
+setParam:allowSameTargetMap=false.
+setParam:N=2.

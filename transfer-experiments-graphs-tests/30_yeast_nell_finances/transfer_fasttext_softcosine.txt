@@ -1,0 +1,10 @@
+interaction(protein,protein): acquired(company,company),bankbankincountry(person,country),bankboughtbank(company,company),bankchiefexecutiveceo(company,person),cityhascompanyoffice(city,company),companyalsoknownas(company,company),companyceo(company,person),countryhascompanyoffice(country,company),economicsectorcompany(sector,company)
+location(protein,loc): 
+enzyme(protein,enz): 
+complex(protein,com): 
+phenotype(protein,phe): 
+setMap:proteinclass(A,B),companyeconomicsector(A,B)
+setParam:searchArgPermutation=true.
+setParam:searchEmpty=false.
+setParam:allowSameTargetMap=false.
+setParam:N=2.

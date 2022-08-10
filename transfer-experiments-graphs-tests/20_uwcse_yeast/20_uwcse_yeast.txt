@@ -1,0 +1,6 @@
+Starting experiment 20_uwcse_yeast 
+
+Loading pre-trained trees.
+Run: 1
+Starting experiments for fasttext using euclidean 
+

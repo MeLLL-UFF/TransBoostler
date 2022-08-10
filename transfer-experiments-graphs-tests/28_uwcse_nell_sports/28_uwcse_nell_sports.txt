@@ -1,0 +1,6 @@
+Starting experiment 28_uwcse_nell_sports 
+
+Loading pre-trained trees.
+Run: 1
+Starting experiments for fasttext using euclidean 
+
