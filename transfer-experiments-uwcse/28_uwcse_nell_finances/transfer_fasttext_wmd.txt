@@ -1,0 +1,13 @@
+professor(person): 
+publication(title,person): companyalsoknownas(company,company),countryhascompanyoffice(country,company),cityhascompanyoffice(city,company),economicsectorcompany(sector,company),acquired(company,company),bankbankincountry(person,country),companyceo(company,person),bankchiefexecutiveceo(company,person),bankboughtbank(company,company)
+tempadvisedby(person,person): 
+ta(course,person,quarter): 
+projectmember(project,person): 
+student(person): 
+hasposition(person,faculty): 
+sameperson(person,person): 
+setMap:advisedby(A,B),companyeconomicsector(A,B)
+setParam:searchArgPermutation=true.
+setParam:searchEmpty=false.
+setParam:allowSameTargetMap=false.
+setParam:N=2.

@@ -1,0 +1,13 @@
+professor(person): 
+publication(title,person): athleteledsportsteam(athlete,sportsteam),athleteplaysforteam(athlete,sportsteam),athleteplaysinleague(athlete,sportsleague),athleteplayssport(athlete,sport),teamalsoknownas(sportsteam,sportsteam),teamplaysagainstteam(sportsteam,sportsteam),teamplaysinleague(sportsteam,sportsleague)
+tempadvisedby(person,person): 
+ta(course,person,quarter): 
+projectmember(project,person): 
+student(person): 
+hasposition(person,faculty): 
+sameperson(person,person): 
+setMap:advisedby(A,B),teamplayssport(A,B)
+setParam:searchArgPermutation=true.
+setParam:searchEmpty=false.
+setParam:allowSameTargetMap=false.
+setParam:N=2.
