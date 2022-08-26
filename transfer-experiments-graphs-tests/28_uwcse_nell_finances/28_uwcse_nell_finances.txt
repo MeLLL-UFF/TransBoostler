@@ -1,6 +1,0 @@
-Starting experiment 28_uwcse_nell_finances 
-
-Loading pre-trained trees.
-Run: 1
-Starting experiments for fasttext using euclidean 
-

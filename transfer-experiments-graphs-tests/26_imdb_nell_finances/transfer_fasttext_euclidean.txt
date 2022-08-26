@@ -1,9 +1,0 @@
-director(person): 
-movie(movie,person): acquired(company,company),companyceo(company,person),companyalsoknownas(company,company),cityhascompanyoffice(city,company),economicsectorcompany(sector,company),countryhascompanyoffice(country,company),bankboughtbank(company,company),bankbankincountry(person,country),bankchiefexecutiveceo(company,person)
-actor(person): 
-female(person): 
-setMap:workedunder(A,B),companyeconomicsector(A,B)
-setParam:searchArgPermutation=true.
-setParam:searchEmpty=false.
-setParam:allowSameTargetMap=false.
-setParam:N=2.
