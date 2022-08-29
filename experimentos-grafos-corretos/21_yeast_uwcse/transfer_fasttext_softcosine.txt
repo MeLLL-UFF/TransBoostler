@@ -1,0 +1,10 @@
+interaction(protein,protein): courselevel(course,level)
+location(protein,loc): hasposition(person,faculty)
+enzyme(protein,enz): inphase(person,prequals)
+complex(protein,com): projectmember(project,person)
+phenotype(protein,phe): publication(title,person)
+setMap:proteinclass(A,B),advisedby(A,B)
+setParam:searchArgPermutation=true.
+setParam:searchEmpty=false.
+setParam:allowSameTargetMap=false.
+setParam:N=1.

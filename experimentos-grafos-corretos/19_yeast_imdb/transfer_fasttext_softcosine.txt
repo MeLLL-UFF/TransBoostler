@@ -1,0 +1,10 @@
+interaction(protein,protein): genre(person,genre)
+location(protein,loc): movie(movie,person)
+enzyme(protein,enz): 
+complex(protein,com): 
+phenotype(protein,phe): 
+setMap:proteinclass(A,B),workedunder(A,B)
+setParam:searchArgPermutation=true.
+setParam:searchEmpty=false.
+setParam:allowSameTargetMap=false.
+setParam:N=1.

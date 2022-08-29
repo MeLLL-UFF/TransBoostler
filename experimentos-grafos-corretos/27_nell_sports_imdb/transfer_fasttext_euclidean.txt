@@ -1,0 +1,12 @@
+athleteplayssport(athlete,sport): movie(movie,person)
+athleteledsportsteam(athlete,sportsteam): genre(person,genre)
+teamplaysagainstteam(sportsteam,sportsteam): 
+athleteplaysforteam(athlete,sportsteam): 
+teamplaysinleague(sportsteam,sportsleague): 
+teamalsoknownas(sportsteam,sportsteam): 
+athleteplaysinleague(athlete,sportsleague): 
+setMap:teamplayssport(A,B),workedunder(A,B)
+setParam:searchArgPermutation=true.
+setParam:searchEmpty=false.
+setParam:allowSameTargetMap=false.
+setParam:N=1.

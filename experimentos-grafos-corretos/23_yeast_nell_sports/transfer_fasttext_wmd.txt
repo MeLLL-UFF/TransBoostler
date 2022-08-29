@@ -1,0 +1,10 @@
+interaction(protein,protein): teamalsoknownas(sportsteam,sportsteam)
+location(protein,loc): teamplaysinleague(sportsteam,sportsleague)
+enzyme(protein,enz): athleteplaysforteam(athlete,sportsteam)
+complex(protein,com): athleteplaysinleague(athlete,sportsleague)
+phenotype(protein,phe): teamplaysagainstteam(sportsteam,sportsteam)
+setMap:proteinclass(A,B),teamplayssport(A,B)
+setParam:searchArgPermutation=true.
+setParam:searchEmpty=false.
+setParam:allowSameTargetMap=false.
+setParam:N=1.

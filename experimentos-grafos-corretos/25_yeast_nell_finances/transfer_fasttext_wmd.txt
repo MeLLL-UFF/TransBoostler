@@ -1,0 +1,10 @@
+interaction(protein,protein): companyalsoknownas(company,company)
+location(protein,loc): cityhascompanyoffice(city,company)
+enzyme(protein,enz): economicsectorcompany(sector,company)
+complex(protein,com): acquired(company,company)
+phenotype(protein,phe): countryhascompanyoffice(country,company)
+setMap:proteinclass(A,B),companyeconomicsector(A,B)
+setParam:searchArgPermutation=true.
+setParam:searchEmpty=false.
+setParam:allowSameTargetMap=false.
+setParam:N=1.

@@ -1,0 +1,14 @@
+cityhascompanyoffice(city,company): complex(protein,com)
+companyalsoknownas(company,company): interaction(protein,protein)
+acquired(company,company): location(protein,loc)
+countryhascompanyoffice(country,company): function(protein,fun)
+economicsectorcompany(sector,company): phenotype(protein,phe)
+companyceo(company,person): enzyme(protein,enz)
+bankboughtbank(company,company): 
+bankchiefexecutiveceo(company,person): 
+recursion_companyeconomicsector(A,B): recursion_proteinclass(A,B)
+setMap:companyeconomicsector(A,B),proteinclass(A,B)
+setParam:searchArgPermutation=true.
+setParam:searchEmpty=false.
+setParam:allowSameTargetMap=false.
+setParam:N=1.

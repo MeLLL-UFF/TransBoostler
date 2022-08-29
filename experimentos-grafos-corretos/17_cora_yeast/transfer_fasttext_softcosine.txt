@@ -1,0 +1,11 @@
+haswordvenue(venue,word): complex(protein,com)
+haswordtitle(title,word): enzyme(protein,enz)
+title(class,title): function(protein,fun)
+haswordauthor(author,word): interaction(protein,protein)
+author(class,author): location(protein,loc)
+recursion_samevenue(A,B): recursion_proteinclass(A,B)
+setMap:samevenue(A,B),proteinclass(A,B)
+setParam:searchArgPermutation=true.
+setParam:searchEmpty=false.
+setParam:allowSameTargetMap=false.
+setParam:N=1.
