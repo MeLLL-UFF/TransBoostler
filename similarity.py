@@ -1,5 +1,6 @@
 
 from __future__ import division
+from collections import Counter
 from gensim.corpora.dictionary import Dictionary
 from gensim.similarities import WordEmbeddingSimilarityIndex
 from gensim.similarities import SparseTermSimilarityMatrix
@@ -373,7 +374,7 @@ class Similarity:
 
 	    Args:
 	        sources(dict): all word embeddings from the source dataset
-	        targets(list): all word embeddings from the target dataset
+	        targets(dict): all word embeddings from the target dataset
 	    Returns:
 	        a pandas dataframe containing every pair (source, target) similarity
     """
