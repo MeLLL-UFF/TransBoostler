@@ -1,4 +1,5 @@
 
+import re
 from ekphrasis.classes.segmenter import Segmenter
 from abbreviations import abbreviations
 from nltk.stem import WordNetLemmatizer
@@ -44,8 +45,8 @@ class Preprocessing:
 				list of the same predicates/literals with no special characters
 		"""
 		for i in range(len(literals)):
-			literals[i] = remove_special_characters(literals[i])
-		return atoms
+			literals[i] = self.__remove_special_characters(literals[i])
+		return literals
 
 	def __remove_special_characters(self,string):
 		"""
