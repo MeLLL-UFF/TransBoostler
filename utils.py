@@ -507,10 +507,24 @@ def get_softcosine_matrix(sources, targets, model, preprocessing):
   sources, targets = utils.build_triples(sources), utils.build_triples(targets)
   similarity_index = WordEmbeddingSimilarityIndex(model)
 
+  if(params.INCLUDE_TYPES):
+    for source in sources:
+      source[0] = source[0] + ' ' + ' '.join(source[1])
+
+    for target in targets:
+      target[0] = target[0] + ' ' + ' '.join(target[1])
+
   # Prepare a dictionary and a corpus.
   documents = []
   documents += [preprocessing.pre_process_text(source[0]) for source in sources]
   documents += [preprocessing.pre_process_text(target[0]) for target in targets]
+
+  # if(params.INCLUDE_TYPES):
+  #   for source in sources:
+  #     documents += [preprocessing.pre_process_text(''.join(source[1])) for source in sources]
+
+  #   for target in targets:
+  #     documents += [preprocessing.pre_process_text(''.join(target[1])) for target in targets]
 
   dictionary = corpora.Dictionary(documents)
 
