@@ -73,24 +73,21 @@ class Transfer:
       return True
     return False
 
-  def __build_fasttext_array(self, data, mapping_literals=False):
+  def __build_fasttext_array(self, data):
     """
         Turn relations into a single array
 
         Args:
             data(array): an array containing predicates for each tree
-            model(object): fasttext embedding model
-            method(str): method to compact arrays of embedded words
        Returns:
             a dictionary that the keys are the words and the values are single arrays of embeddings
     """
 
-    dict = {}
-    for example in data:
+    def __get_vector(example):
       temp = []
 
       predicate = self.preprocessing.pre_process_text(example[0])
-
+          
       for word in predicate:
         try:
           #temp.append(model.get_word_vector(word.lower().strip()))
@@ -98,12 +95,24 @@ class Transfer:
         except:
           print('Word \'{}\' not present in pre-trained model'.format(word.lower().strip()))
           temp.append([0] * params.EMBEDDING_DIMENSION)
+      return temp
 
+    dict = {} 
+    for example in data:
       #predicate = temp.copy()
       #if(params.METHOD):
       #  predicate = utils.single_array(temp, params.METHOD)
 
-      dict[example[0].strip()] = [temp, example[1]]
+      if(params.INCLUDE_TYPES):
+        # In the case the predicate has two arguments, ex: publication(person, movie)
+        if(len(example[1]) > 1):
+            dict[example[0].strip()] = [__get_vector(example), example[1], __get_vector([example[1][0]]), __get_vector([example[1][1]])]
+        else:
+          # In the case the predicate has only one argument, ex: director(person)
+            dict[example[0].strip()] = [__get_vector(example), example[1], __get_vector([example[1][0]])]
+      else:
+        # Creates the embedding for the predicate
+        dict[example[0].strip()] = [__get_vector(example), example[1]]
     return dict
 
   def __build_word2vec_array(self, data):
@@ -128,6 +137,7 @@ class Transfer:
           #temp.append(model.get_word_vector(word.lower().strip()))
           temp.append(self.model[word.lower().strip()])
         except:
+          print(f'NOT FOUND {word.lower().strip()}')
           print('Word \'{}\' not present in pre-trained model'.format(word.lower().strip()))
           temp.append([0] * params.EMBEDDING_DIMENSION)
 
@@ -181,9 +191,10 @@ class Transfer:
       import pandas as pd
       similarities = pd.read_csv(params.ROOT_PATH + 'resources/{}/rwmd-similarities-w-stop/{}_similarities.csv'.format(self.experiment_title,clause.split('(')[0])).set_index('candidates')
     else:
-      similarities = self.similarity.compute_similarities(source, targets, similarity_metric, self.model, self.model_name)
+      similarities, type_similarities = self.similarity.compute_similarities(source, targets, similarity_metric, self.model, self.model_name)
     
     similarities.to_csv(params.ROOT_PATH + '{}/{}/similarities/{}/{}/{}_similarities.csv'.format(self.experiment_type, self.experiment_title, self.model_name, similarity_metric, clause.split('(')[0]))
+    type_similarities.to_csv(params.ROOT_PATH + '{}/{}/similarities/{}/{}/{}_type_similarities.csv'.format(self.experiment_type, self.experiment_title, self.model_name, similarity_metric, clause.split('(')[0]))
 
     indexes = similarities.index.tolist()
 
@@ -228,8 +239,9 @@ class Transfer:
       import pandas as pd
       similarities = pd.read_csv(params.ROOT_PATH + 'resources/{}/rwmd-similarities-w-stop/{}_similarities.csv'.format(self.experiment_title,clause.split('(')[0])).set_index('candidates')
     else:
-      similarities = self.similarity.compute_similarities(source, targets, similarity_metric, self.model, self.model_name)
+      similarities, type_similarities = self.similarity.compute_similarities(source, targets, similarity_metric, self.model, self.model_name)
       similarities.to_csv(params.ROOT_PATH + '{}/{}/similarities/{}/{}/{}_similarities.csv'.format(self.experiment_type, self.experiment_title, self.model_name, similarity_metric, clause.split('(')[0]))
+      type_similarities.to_csv(params.ROOT_PATH + '{}/{}/similarities/{}/{}/{}_types_similarities.csv'.format(self.experiment_type, self.experiment_title, self.model_name, similarity_metric, clause.split('(')[0]))
 
     indexes = similarities.index.tolist()
 

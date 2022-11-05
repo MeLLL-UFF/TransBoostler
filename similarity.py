@@ -178,7 +178,6 @@ class Similarity:
        Returns:
             a string corresponding that corresponds to the mapping
     """
-
     return source[0] + '(' + ','.join(source[1]) + ')' + ',' + target[0] + '(' + ','.join(target[1]) + ')'
     #key = s + '(' + ','.join([chr(65+i) for i in range(len(source[s][1]))]) + ')' + ',' + t + '(' + ','.join([chr(65+i) for i in range(len(target[t][1]))]) + ')'
 
@@ -211,9 +210,6 @@ class Similarity:
     if(similarity_metric == 'relax-wmd' and model_name==params.WORD2VEC):
       return self.relaxed_wmd_similarities(source, targets, params.GOOGLE_WORD2VEC_SPACY)
 
-    if(similarity_metric == 'ensemble'):
-        return self.ensemble_similarities(source, targets)
-
     raise "Similarity metric not implemented."
 
   def cosine_similarities(self, sources, targets, model):
@@ -233,6 +229,8 @@ class Similarity:
 
         key = self.__create_key(source, target)
 
+        # Predicates have the form [predicate_name, [argument_1, argument_2]]
+        # Arities much match
         if(len(source[1]) != len(target[1])):
           continue
 
@@ -268,9 +266,12 @@ class Similarity:
     """
 
     similarity = {}
+    types_similarity = {}
     for source in sources:
         for target in targets:
 
+            # Predicates have the form [predicate_name, [argument_1, argument_2]]
+            # # Arities much match
             if(len(source[1]) != len(target[1])):
               continue
 
@@ -292,8 +293,40 @@ class Similarity:
             # Compute soft cosine similarity
             similarity[key] = self.similarity_matrix.inner_product(sent_1, sent_2, normalized=(True,True))
 
+            if(params.INCLUDE_TYPES):
+              sent_1 = self.preprocessing.pre_process_text(source[1][0])
+              sent_2 = self.preprocessing.pre_process_text(target[1][0])
+
+              type_key = self.__create_key([sent_1[0], []], [sent_2[0],[]])
+              
+              # Convert the sentences into bag-of-words vectors.
+              sent_1 = self.dictionary.doc2bow(sent_1)
+              sent_2 = self.dictionary.doc2bow(sent_2)
+
+              a = self.similarity_matrix.inner_product(sent_1, sent_2, normalized=(True,True))
+              similarity[key] += a
+              types_similarity[type_key] = a
+
+              if(len(source[1]) > 1):
+                sent_1 = self.preprocessing.pre_process_text(source[1][1])
+                sent_2 = self.preprocessing.pre_process_text(target[1][1])
+                
+                type_key = self.__create_key([sent_1[0], []], [sent_2[0],[]])
+
+                # Convert the sentences into bag-of-words vectors.
+                sent_1 = self.dictionary.doc2bow(sent_1)
+                sent_2 = self.dictionary.doc2bow(sent_2)
+
+                b = self.similarity_matrix.inner_product(sent_1, sent_2, normalized=(True,True))
+                similarity[key] += b
+                types_similarity[type_key] = b
+                similarity[key] = similarity[key] / 3
+              else:
+                similarity[key] = similarity[key] / 2
+
     df = pd.DataFrame.from_dict(similarity, orient="index", columns=['similarity'])
-    return df.rename_axis('candidates').sort_values(by=['similarity', 'candidates'], ascending=[False, True])
+    df_2 = pd.DataFrame.from_dict(types_similarity, orient="index", columns=['similarity'])
+    return df.rename_axis('candidates').sort_values(by=['similarity', 'candidates'], ascending=[False, True]), df_2.rename_axis('candidates').sort_values(by=['similarity', 'candidates'], ascending=[False, True])
 
   def wmd_similarities(self, sources, targets, model):
     """
@@ -308,18 +341,37 @@ class Similarity:
     """
 
     similarity = {}
+    types_similarity = {}
     for source in sources:
       for target in targets:
 
+        # Predicates have the form [predicate_name, [argument_1, argument_2]]
+        # Arities much match
         if(len(source[1]) != len(target[1])):
           continue
 
         key = self.__create_key(source, target)
 
         similarity[key] = self.__wmdistance(source[0], target[0], model)
+        if(params.INCLUDE_TYPES):
+          a = self.__wmdistance(source[1][0], target[1][0], model)
+          type_key = self.__create_key(source[1][0], target[1][0])
+          similarity[key] += a
+          types_similarity[type_key] = a
+
+          if(len(source[1]) > 1):
+            a = self.__wmdistance(source[1][1], target[1][1], model)
+            type_key = self.__create_key(source[1][1], target[1][1])
+            similarity[key] += a
+            types_similarity[type_key] = a
+            similarity[key] += a
+            similarity[key] = similarity[key] / 3
+          else:
+            similarity[key] = similarity[key] / 2
 
     df = pd.DataFrame.from_dict(similarity, orient="index", columns=['similarity'])
-    return df.rename_axis('candidates').sort_values(by=['similarity', 'candidates'])
+    df_2 = pd.DataFrame.from_dict(types_similarity, orient="index", columns=['similarity'])
+    return df.rename_axis('candidates').sort_values(by=['similarity', 'candidates']), df_2.rename_axis('candidates').sort_values(by=['similarity', 'candidates'])
 
   def relaxed_wmd_similarities(self, sources, targets, modelname):
       """
@@ -342,6 +394,8 @@ class Similarity:
       for source in sources:
         for target in targets:
 
+            # Predicates have the form [predicate_name, [argument_1, argument_2]]
+            # Arities much match
             if(len(source[1]) != len(target[1])):
                 continue
           
@@ -379,10 +433,14 @@ class Similarity:
 	        a pandas dataframe containing every pair (source, target) similarity
     """
     similarity = {}
+    types_similarity = {}
     for s in sources:
       for t in targets:
 
-        if(len(sources[s][1]) != len(targets[t][1])):
+        # Predicates have the form [predicate_name, [argument_1, argument_2]]
+        # Arities much match
+        x1, x2 = len(sources[s][1]), len(targets[t][1])
+        if(x1 != x2):
           continue
 
         key = self.__create_key([s, sources[s][1]], [t, targets[t][1]])
@@ -400,8 +458,43 @@ class Similarity:
 
         similarity[key] = distance.euclidean(n_source, n_target)
 
+        if(params.INCLUDE_TYPES):
+          source_segmented = self.preprocessing.pre_process_text(sources[s][1][0])
+          target_segmented = self.preprocessing.pre_process_text(targets[t][1][0])
+
+          n_source, n_target = sources[s][2], targets[t][2]
+          if(len(source_segmented) != len(target_segmented)):
+            n_source, n_target = self.__bow(source_segmented, sources[s][2], target_segmented, targets[t][2], params.EMBEDDING_DIMENSION)
+
+          n_source, n_target = np.concatenate(n_source), np.concatenate(n_target)
+
+          a = distance.euclidean(n_source, n_target)
+          type_key = self.__create_key(['', sources[s][1][0]], ['', targets[t][1][0]])
+          similarity[key] += a
+          types_similarity[type_key] = a
+
+          if(len(sources[s][1]) > 1):
+            source_segmented = self.preprocessing.pre_process_text(sources[s][1][1])
+            target_segmented = self.preprocessing.pre_process_text(targets[t][1][1])
+
+            n_source, n_target = sources[s][3], targets[t][3]
+            if(len(source_segmented) != len(target_segmented)):
+              n_source, n_target = self.__bow(source_segmented, sources[s][3], target_segmented, targets[t][3], params.EMBEDDING_DIMENSION)
+
+            n_source, n_target = np.concatenate(n_source), np.concatenate(n_target)
+
+            a = distance.euclidean(n_source, n_target)
+            type_key = self.__create_key(['', sources[s][1][1]], ['', targets[t][1][1]])
+            types_similarity[type_key] = a
+
+            similarity[key] += a
+            similarity[key] = similarity[key] / 3
+          else:
+            similarity[key] = similarity[key] / 2
+
     df = pd.DataFrame.from_dict(similarity, orient="index", columns=['similarity'])
-    return df.rename_axis('candidates').sort_values(by=['similarity', 'candidates'])
+    df_2 = pd.DataFrame.from_dict(types_similarity, orient="index", columns=['similarity'])
+    return df.rename_axis('candidates').sort_values(by=['similarity', 'candidates']), df_2.rename_axis('candidates').sort_values(by=['similarity', 'candidates'])
 
 # from ekphrasis.classes.segmenter import Segmenter
 # from pyemd import emd
