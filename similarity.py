@@ -355,16 +355,15 @@ class Similarity:
         similarity[key] = self.__wmdistance(source[0], target[0], model)
         if(params.INCLUDE_TYPES):
           a = self.__wmdistance(source[1][0], target[1][0], model)
-          type_key = self.__create_key(source[1][0], target[1][0])
+          type_key = self.__create_key([source[1][0], []], [target[1][0],[]])
           similarity[key] += a
           types_similarity[type_key] = a
 
           if(len(source[1]) > 1):
             a = self.__wmdistance(source[1][1], target[1][1], model)
-            type_key = self.__create_key(source[1][1], target[1][1])
+            type_key = self.__create_key([source[1][1], []], [target[1][1],[]])
             similarity[key] += a
             types_similarity[type_key] = a
-            similarity[key] += a
             similarity[key] = similarity[key] / 3
           else:
             similarity[key] = similarity[key] / 2
@@ -439,8 +438,7 @@ class Similarity:
 
         # Predicates have the form [predicate_name, [argument_1, argument_2]]
         # Arities much match
-        x1, x2 = len(sources[s][1]), len(targets[t][1])
-        if(x1 != x2):
+        if(len(sources[s][1]) != len(targets[t][1])):
           continue
 
         key = self.__create_key([s, sources[s][1]], [t, targets[t][1]])
@@ -469,7 +467,7 @@ class Similarity:
           n_source, n_target = np.concatenate(n_source), np.concatenate(n_target)
 
           a = distance.euclidean(n_source, n_target)
-          type_key = self.__create_key(['', sources[s][1][0]], ['', targets[t][1][0]])
+          type_key = self.__create_key(['', ''.join(sources[s][1][0])], ['', ''.join(targets[t][1][0])])
           similarity[key] += a
           types_similarity[type_key] = a
 
