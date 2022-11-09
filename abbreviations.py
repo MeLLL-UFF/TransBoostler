@@ -1,2 +1,2 @@
 
-abbreviations = {'ta': 'teaching assistant', 'temp': 'temporary', 'bib': 'bibliography', 'chem': 'chemical', 'aff': 'affiliation', 'gp': 'genotype phenotype'}
+abbreviations = {'ta': 'teaching assistant', 'temp': 'temporary', 'bib': 'bibliography', 'chem': 'chemical', 'aff': 'affiliation', 'gp': 'genotype phenotype', 'loc': 'location', 'com': 'complex', 'enz': 'enzyme', 'fun': 'function', 'phe': 'phenotype'}
