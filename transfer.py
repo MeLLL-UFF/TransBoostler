@@ -191,10 +191,9 @@ class Transfer:
       import pandas as pd
       similarities = pd.read_csv(params.ROOT_PATH + 'resources/{}/rwmd-similarities-w-stop/{}_similarities.csv'.format(self.experiment_title,clause.split('(')[0])).set_index('candidates')
     else:
-      similarities, type_similarities = self.similarity.compute_similarities(source, targets, similarity_metric, self.model, self.model_name)
+      similarities = self.similarity.compute_similarities(source, targets, similarity_metric, self.model, self.model_name)
     
     similarities.to_csv(params.ROOT_PATH + '{}/{}/similarities/{}/{}/{}_similarities.csv'.format(self.experiment_type, self.experiment_title, self.model_name, similarity_metric, clause.split('(')[0]))
-    type_similarities.to_csv(params.ROOT_PATH + '{}/{}/similarities/{}/{}/{}_type_similarities.csv'.format(self.experiment_type, self.experiment_title, self.model_name, similarity_metric, clause.split('(')[0]))
 
     indexes = similarities.index.tolist()
 
@@ -239,9 +238,8 @@ class Transfer:
       import pandas as pd
       similarities = pd.read_csv(params.ROOT_PATH + 'resources/{}/rwmd-similarities-w-stop/{}_similarities.csv'.format(self.experiment_title,clause.split('(')[0])).set_index('candidates')
     else:
-      similarities, type_similarities = self.similarity.compute_similarities(source, targets, similarity_metric, self.model, self.model_name)
+      similarities = self.similarity.compute_similarities(source, targets, similarity_metric, self.model, self.model_name)
       similarities.to_csv(params.ROOT_PATH + '{}/{}/similarities/{}/{}/{}_similarities.csv'.format(self.experiment_type, self.experiment_title, self.model_name, similarity_metric, clause.split('(')[0]))
-      type_similarities.to_csv(params.ROOT_PATH + '{}/{}/similarities/{}/{}/{}_types_similarities.csv'.format(self.experiment_type, self.experiment_title, self.model_name, similarity_metric, clause.split('(')[0]))
 
     indexes = similarities.index.tolist()
 
