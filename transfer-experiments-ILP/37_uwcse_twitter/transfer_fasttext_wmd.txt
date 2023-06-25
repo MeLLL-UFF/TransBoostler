@@ -1,0 +1,12 @@
+professor(person): 
+publication(title,person): follows(account,account)
+tempadvisedby(person,person): tweets(account,word)
+student(person): 
+ta(course,person,quarter): 
+projectmember(project,person): 
+recursion_advisedby(A,B): recursion_accounttype(A,B)
+setMap:advisedby(A,B),accounttype(A,B)
+setParam:searchArgPermutation=true.
+setParam:searchEmpty=false.
+setParam:allowSameTargetMap=false.
+setParam:N=1.

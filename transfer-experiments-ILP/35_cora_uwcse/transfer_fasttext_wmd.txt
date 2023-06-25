@@ -1,0 +1,10 @@
+haswordvenue(venue,word): hasposition(person,faculty)
+haswordtitle(title,word): yearsinprogram(person,year)
+title(class,title): publication(title,person)
+haswordauthor(author,word): sameperson(person,person)
+author(class,author): projectmember(project,person)
+setMap:samevenue(A,B),advisedby(A,B)
+setParam:searchArgPermutation=true.
+setParam:searchEmpty=false.
+setParam:allowSameTargetMap=false.
+setParam:N=1.

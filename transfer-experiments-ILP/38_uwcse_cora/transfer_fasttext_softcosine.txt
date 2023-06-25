@@ -1,0 +1,11 @@
+professor(person): 
+publication(title,person): author(class,author)
+tempadvisedby(person,person): haswordauthor(author,word)
+student(person): 
+ta(course,person,quarter): 
+projectmember(project,person): haswordtitle(title,word)
+setMap:advisedby(A,B),samevenue(A,B)
+setParam:searchArgPermutation=true.
+setParam:searchEmpty=false.
+setParam:allowSameTargetMap=false.
+setParam:N=1.

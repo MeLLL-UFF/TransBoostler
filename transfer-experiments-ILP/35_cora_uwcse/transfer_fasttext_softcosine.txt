@@ -1,0 +1,10 @@
+haswordvenue(venue,word): hasposition(person,faculty)
+haswordtitle(title,word): publication(title,person)
+title(class,title): courselevel(course,level)
+haswordauthor(author,word): sameperson(person,person)
+author(class,author): inphase(person,prequals)
+setMap:samevenue(A,B),advisedby(A,B)
+setParam:searchArgPermutation=true.
+setParam:searchEmpty=false.
+setParam:allowSameTargetMap=false.
+setParam:N=1.

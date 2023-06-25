@@ -1,0 +1,7 @@
+follows(account,account): samecourse(course,course)
+tweets(account,word): publication(title,person)
+setMap:accounttype(A,B),advisedby(A,B)
+setParam:searchArgPermutation=true.
+setParam:searchEmpty=false.
+setParam:allowSameTargetMap=false.
+setParam:N=1.

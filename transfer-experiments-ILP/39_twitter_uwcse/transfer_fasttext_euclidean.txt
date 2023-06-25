@@ -1,0 +1,7 @@
+follows(account,account): publication(title,person)
+tweets(account,word): sameproject(project,project)
+setMap:accounttype(A,B),advisedby(A,B)
+setParam:searchArgPermutation=true.
+setParam:searchEmpty=false.
+setParam:allowSameTargetMap=false.
+setParam:N=1.
