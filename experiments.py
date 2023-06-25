@@ -1,11 +1,11 @@
 
-revision_theory = False
+revision_theory = True
 
 setups = [
         ##{'model': 'fasttext', 'similarity_metric': 'cosine', 'revision_theory': revision_theory},
         {'model': 'fasttext', 'similarity_metric': 'euclidean', 'revision_theory': revision_theory},
-        #{'model': 'fasttext', 'similarity_metric': 'softcosine', 'revision_theory': revision_theory},
-        #{'model': 'fasttext', 'similarity_metric': 'wmd', 'revision_theory': revision_theory},
+        {'model': 'fasttext', 'similarity_metric': 'softcosine', 'revision_theory': revision_theory},
+        {'model': 'fasttext', 'similarity_metric': 'wmd', 'revision_theory': revision_theory},
         #{'model': 'fasttext', 'similarity_metric': 'relax-wmd', 'revision_theory': revision_theory},
         #{'model': 'fasttext', 'similarity_metric': 'majority_vote', 'revision_theory': revision_theory},
         #{'model': 'fasttext', 'similarity_metric': 'borda_count', 'revision_theory': revision_theory},
