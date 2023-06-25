@@ -1,11 +1,11 @@
 
-revision_theory = True
+revision_theory = False
 
 setups = [
         ##{'model': 'fasttext', 'similarity_metric': 'cosine', 'revision_theory': revision_theory},
         {'model': 'fasttext', 'similarity_metric': 'euclidean', 'revision_theory': revision_theory},
-        {'model': 'fasttext', 'similarity_metric': 'softcosine', 'revision_theory': revision_theory},
-        {'model': 'fasttext', 'similarity_metric': 'wmd', 'revision_theory': revision_theory},
+        #{'model': 'fasttext', 'similarity_metric': 'softcosine', 'revision_theory': revision_theory},
+        #{'model': 'fasttext', 'similarity_metric': 'wmd', 'revision_theory': revision_theory},
         #{'model': 'fasttext', 'similarity_metric': 'relax-wmd', 'revision_theory': revision_theory},
         #{'model': 'fasttext', 'similarity_metric': 'majority_vote', 'revision_theory': revision_theory},
         #{'model': 'fasttext', 'similarity_metric': 'borda_count', 'revision_theory': revision_theory},
@@ -17,7 +17,26 @@ setups = [
         #{'model': 'word2vec', 'similarity_metric': 'relax-wmd', 'revision_theory': revision_theory},
         ]
 
+#IMDB -> Twitter
+
+#Cora -> UWCSE
+
+#UWCSE -> IMDB
+#UWCSE -> Twitter
+#UWCSE -> Cora
+
+#Twitter -> UWCSE
+#Twitter -> IMDB
+
 experiments = [
+            {'id': '34', 'source': 'imdb', 'target': 'twitter', 'predicate': 'workedunder', 'to_predicate': 'accounttype', 'arity': 2},
+            {'id': '35', 'source': 'cora', 'target': 'uwcse', 'predicate': 'samevenue', 'to_predicate': 'advisedby', 'arity': 2},
+            {'id': '36', 'source': 'uwcse', 'target': 'imdb', 'predicate': 'advisedby', 'to_predicate': 'workedunder', 'arity': 2},
+            {'id': '37', 'source': 'uwcse', 'target': 'twitter', 'predicate': 'advisedby', 'to_predicate': 'accounttype', 'arity': 2},
+            {'id': '38', 'source': 'uwcse', 'target': 'cora', 'predicate': 'advisedby', 'to_predicate': 'samevenue', 'arity': 2},
+            {'id': '39', 'source': 'twitter', 'target': 'uwcse', 'predicate': 'accounttype', 'to_predicate': 'advisedby', 'arity': 2},
+            {'id': '40', 'source': 'twitter', 'target': 'imdb', 'predicate': 'accounttype', 'to_predicate': 'workedunder', 'arity': 2},
+            
             #{'id': '1', 'source':'imdb', 'target':'uwcse', 'predicate':'workedunder', 'to_predicate':'advisedby', 'arity': 2},
             ##{'id': '2', 'source':'uwcse', 'target':'imdb', 'predicate':'advisedby', 'to_predicate':'workedunder', 'arity': 2},
             #{'id': '3', 'source':'imdb', 'target':'cora', 'predicate':'workedunder', 'to_predicate':'samevenue', 'arity': 2},
@@ -35,34 +54,34 @@ experiments = [
             #{'id': '15', 'source': 'yeast', 'target': 'yeast2', 'predicate': 'proteinclass', 'to_predicate': 'gene', 'arity': 2},
             #{'id': '16', 'source': 'yeast', 'target': 'fly', 'predicate': 'proteinclass', 'to_predicate': 'gene', 'arity': 2},
             #{'id': '17', 'source':'cora', 'target':'yeast', 'predicate':'samevenue', 'to_predicate':'proteinclass', 'arity': 2},
-            {'id': '18', 'source':'imdb', 'target':'yeast', 'predicate':'workedunder', 'to_predicate':'proteinclass', 'arity': 2},
-            {'id': '19', 'source':'yeast', 'target':'imdb', 'predicate':'proteinclass', 'to_predicate':'workedunder', 'arity': 2},
-            {'id': '20', 'source':'uwcse', 'target':'yeast', 'predicate':'advisedby', 'to_predicate':'proteinclass', 'arity': 2},
-            {'id': '21', 'source':'yeast', 'target':'uwcse', 'predicate':'proteinclass', 'to_predicate':'advisedby', 'arity': 2},
-            {'id': '22', 'source':'nell_sports', 'target':'yeast', 'predicate':'teamplayssport', 'to_predicate':'proteinclass', 'arity': 2},
-            {'id': '23', 'source':'yeast', 'target':'nell_sports', 'predicate':'proteinclass', 'to_predicate':'teamplayssport', 'arity': 2},
-            {'id': '24', 'source':'nell_finances', 'target':'yeast', 'predicate':'companyeconomicsector', 'to_predicate':'proteinclass', 'arity': 2},
-            {'id': '25', 'source':'yeast', 'target':'nell_finances', 'predicate':'proteinclass', 'to_predicate':'companyeconomicsector', 'arity': 2},
+        #     {'id': '18', 'source':'imdb', 'target':'yeast', 'predicate':'workedunder', 'to_predicate':'proteinclass', 'arity': 2},
+        #     {'id': '19', 'source':'yeast', 'target':'imdb', 'predicate':'proteinclass', 'to_predicate':'workedunder', 'arity': 2},
+        #     {'id': '20', 'source':'uwcse', 'target':'yeast', 'predicate':'advisedby', 'to_predicate':'proteinclass', 'arity': 2},
+        #     {'id': '21', 'source':'yeast', 'target':'uwcse', 'predicate':'proteinclass', 'to_predicate':'advisedby', 'arity': 2},
+        #     {'id': '22', 'source':'nell_sports', 'target':'yeast', 'predicate':'teamplayssport', 'to_predicate':'proteinclass', 'arity': 2},
+        #     {'id': '23', 'source':'yeast', 'target':'nell_sports', 'predicate':'proteinclass', 'to_predicate':'teamplayssport', 'arity': 2},
+        #     {'id': '24', 'source':'nell_finances', 'target':'yeast', 'predicate':'companyeconomicsector', 'to_predicate':'proteinclass', 'arity': 2},
+        #     {'id': '25', 'source':'yeast', 'target':'nell_finances', 'predicate':'proteinclass', 'to_predicate':'companyeconomicsector', 'arity': 2},
 
 
-            {'id': '26', 'source':'imdb', 'target':'nell_sports', 'predicate':'workedunder', 'to_predicate':'teamplayssport', 'arity': 2},
-            {'id': '27', 'source':'nell_sports', 'target':'imdb', 'predicate':'teamplayssport', 'to_predicate':'workedunder', 'arity': 2},
-            {'id': '28', 'source':'uwcse', 'target':'nell_sports', 'predicate':'advisedby', 'to_predicate':'teamplayssport', 'arity': 2},
-            {'id': '29', 'source':'nell_sports', 'target':'uwcse', 'predicate':'teamplayssport', 'to_predicate':'advisedby', 'arity': 2},
-            {'id': '30', 'source':'yeast', 'target':'nell_sports', 'predicate':'proteinclass', 'to_predicate':'teamplayssport', 'arity': 2},
-            {'id': '31', 'source':'nell_sports', 'target':'yeast', 'predicate':'teamplayssport', 'to_predicate':'proteinclass', 'arity': 2},
-            {'id': '32', 'source':'twitter', 'target':'nell_sports', 'predicate':'accounttype', 'to_predicate':'teamplayssport', 'arity': 2},
-            {'id': '33', 'source':'nell_sports', 'target':'twitter', 'predicate':'teamplayssport', 'to_predicate':'accounttype', 'arity': 2},
+        #     {'id': '26', 'source':'imdb', 'target':'nell_sports', 'predicate':'workedunder', 'to_predicate':'teamplayssport', 'arity': 2},
+        #     {'id': '27', 'source':'nell_sports', 'target':'imdb', 'predicate':'teamplayssport', 'to_predicate':'workedunder', 'arity': 2},
+        #     {'id': '28', 'source':'uwcse', 'target':'nell_sports', 'predicate':'advisedby', 'to_predicate':'teamplayssport', 'arity': 2},
+        #     {'id': '29', 'source':'nell_sports', 'target':'uwcse', 'predicate':'teamplayssport', 'to_predicate':'advisedby', 'arity': 2},
+        #     {'id': '30', 'source':'yeast', 'target':'nell_sports', 'predicate':'proteinclass', 'to_predicate':'teamplayssport', 'arity': 2},
+        #     {'id': '31', 'source':'nell_sports', 'target':'yeast', 'predicate':'teamplayssport', 'to_predicate':'proteinclass', 'arity': 2},
+        #     {'id': '32', 'source':'twitter', 'target':'nell_sports', 'predicate':'accounttype', 'to_predicate':'teamplayssport', 'arity': 2},
+        #     {'id': '33', 'source':'nell_sports', 'target':'twitter', 'predicate':'teamplayssport', 'to_predicate':'accounttype', 'arity': 2},
 
 
-            {'id': '26', 'source':'imdb', 'target':'nell_finances', 'predicate':'workedunder', 'to_predicate':'companyeconomicsector', 'arity': 2},
-            {'id': '27', 'source':'nell_finances', 'target':'imdb', 'predicate':'companyeconomicsector', 'to_predicate':'workedunder', 'arity': 2},
-            {'id': '28', 'source':'uwcse', 'target':'nell_finances', 'predicate':'advisedby', 'to_predicate':'companyeconomicsector', 'arity': 2},
-            {'id': '29', 'source':'nell_finances', 'target':'uwcse', 'predicate':'companyeconomicsector', 'to_predicate':'advisedby', 'arity': 2},
-            {'id': '30', 'source':'yeast', 'target':'nell_finances', 'predicate':'proteinclass', 'to_predicate':'companyeconomicsector', 'arity': 2},
-            {'id': '31', 'source':'nell_finances', 'target':'yeast', 'predicate':'companyeconomicsector', 'to_predicate':'proteinclass', 'arity': 2},
-            {'id': '32', 'source':'twitter', 'target':'nell_finances', 'predicate':'accounttype', 'to_predicate':'companyeconomicsector', 'arity': 2},
-            {'id': '33', 'source':'nell_finances', 'target':'twitter', 'predicate':'companyeconomicsector', 'to_predicate':'accounttype', 'arity': 2},
+        #     {'id': '26', 'source':'imdb', 'target':'nell_finances', 'predicate':'workedunder', 'to_predicate':'companyeconomicsector', 'arity': 2},
+        #     {'id': '27', 'source':'nell_finances', 'target':'imdb', 'predicate':'companyeconomicsector', 'to_predicate':'workedunder', 'arity': 2},
+        #     {'id': '28', 'source':'uwcse', 'target':'nell_finances', 'predicate':'advisedby', 'to_predicate':'companyeconomicsector', 'arity': 2},
+        #     {'id': '29', 'source':'nell_finances', 'target':'uwcse', 'predicate':'companyeconomicsector', 'to_predicate':'advisedby', 'arity': 2},
+        #     {'id': '30', 'source':'yeast', 'target':'nell_finances', 'predicate':'proteinclass', 'to_predicate':'companyeconomicsector', 'arity': 2},
+        #     {'id': '31', 'source':'nell_finances', 'target':'yeast', 'predicate':'companyeconomicsector', 'to_predicate':'proteinclass', 'arity': 2},
+        #     {'id': '32', 'source':'twitter', 'target':'nell_finances', 'predicate':'accounttype', 'to_predicate':'companyeconomicsector', 'arity': 2},
+        #     {'id': '33', 'source':'nell_finances', 'target':'twitter', 'predicate':'companyeconomicsector', 'to_predicate':'accounttype', 'arity': 2},
 
             ]
             

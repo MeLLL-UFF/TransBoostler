@@ -1,0 +1,13 @@
+hasposition(person,faculty): complex(protein,com),enzyme(protein,enz),function(protein,fun),interaction(protein,protein),location(protein,loc),phenotype(protein,phe)
+publication(title,person): 
+tempadvisedby(person,person): 
+ta(course,person,quarter): 
+professor(person): 
+student(person): 
+projectmember(project,person): 
+recursion_advisedby(A,B): recursion_proteinclass(A,B)
+setMap:advisedby(A,B),proteinclass(A,B)
+setParam:searchArgPermutation=true.
+setParam:searchEmpty=false.
+setParam:allowSameTargetMap=false.
+setParam:N=2.

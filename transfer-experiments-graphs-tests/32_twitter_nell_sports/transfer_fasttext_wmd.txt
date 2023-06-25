@@ -1,0 +1,7 @@
+follows(account,account): teamalsoknownas(sportsteam,sportsteam),teamplaysinleague(sportsteam,sportsleague),athleteplaysforteam(athlete,sportsteam),teamplaysagainstteam(sportsteam,sportsteam),athleteplaysinleague(athlete,sportsleague),athleteledsportsteam(athlete,sportsteam),athleteplayssport(athlete,sport)
+tweets(account,word): 
+setMap:accounttype(A,B),teamplayssport(A,B)
+setParam:searchArgPermutation=true.
+setParam:searchEmpty=false.
+setParam:allowSameTargetMap=false.
+setParam:N=2.

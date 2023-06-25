@@ -1,0 +1,7 @@
+follows(account,account): sameauthor(author,author)
+tweets(account,word): haswordauthor(author,word)
+setMap:accounttype(A,B),samevenue(A,B)
+setParam:searchArgPermutation=true.
+setParam:searchEmpty=false.
+setParam:allowSameTargetMap=false.
+setParam:N=1.

@@ -1,0 +1,13 @@
+cityhascompanyoffice(city,company): hasposition(person,faculty),publication(title,person),samecourse(course,course),sameperson(person,person),sameproject(project,project),inphase(person,prequals),courselevel(course,level),projectmember(project,person),yearsinprogram(person,year),tempadvisedby(person,person)
+companyalsoknownas(company,company): 
+acquired(company,company): 
+countryhascompanyoffice(country,company): 
+economicsectorcompany(sector,company): 
+companyceo(company,person): 
+bankboughtbank(company,company): 
+bankchiefexecutiveceo(company,person): 
+setMap:companyeconomicsector(A,B),advisedby(A,B)
+setParam:searchArgPermutation=true.
+setParam:searchEmpty=false.
+setParam:allowSameTargetMap=false.
+setParam:N=2.
