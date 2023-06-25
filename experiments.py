@@ -29,13 +29,13 @@ setups = [
 #Twitter -> IMDB
 
 experiments = [
-            {'id': '34', 'source': 'imdb', 'target': 'twitter', 'predicate': 'workedunder', 'to_predicate': 'accounttype', 'arity': 2},
-            {'id': '35', 'source': 'cora', 'target': 'uwcse', 'predicate': 'samevenue', 'to_predicate': 'advisedby', 'arity': 2},
-            {'id': '36', 'source': 'uwcse', 'target': 'imdb', 'predicate': 'advisedby', 'to_predicate': 'workedunder', 'arity': 2},
-            {'id': '37', 'source': 'uwcse', 'target': 'twitter', 'predicate': 'advisedby', 'to_predicate': 'accounttype', 'arity': 2},
-            {'id': '38', 'source': 'uwcse', 'target': 'cora', 'predicate': 'advisedby', 'to_predicate': 'samevenue', 'arity': 2},
-            {'id': '39', 'source': 'twitter', 'target': 'uwcse', 'predicate': 'accounttype', 'to_predicate': 'advisedby', 'arity': 2},
-            {'id': '40', 'source': 'twitter', 'target': 'imdb', 'predicate': 'accounttype', 'to_predicate': 'workedunder', 'arity': 2},
+            #{'id': '34', 'source': 'imdb', 'target': 'twitter', 'predicate': 'workedunder', 'to_predicate': 'accounttype', 'arity': 2},
+            #{'id': '35', 'source': 'cora', 'target': 'uwcse', 'predicate': 'samevenue', 'to_predicate': 'advisedby', 'arity': 2},
+            #{'id': '36', 'source': 'uwcse', 'target': 'imdb', 'predicate': 'advisedby', 'to_predicate': 'workedunder', 'arity': 2},
+            #{'id': '37', 'source': 'uwcse', 'target': 'twitter', 'predicate': 'advisedby', 'to_predicate': 'accounttype', 'arity': 2},
+            #{'id': '38', 'source': 'uwcse', 'target': 'cora', 'predicate': 'advisedby', 'to_predicate': 'samevenue', 'arity': 2},
+            #{'id': '39', 'source': 'twitter', 'target': 'uwcse', 'predicate': 'accounttype', 'to_predicate': 'advisedby', 'arity': 2},
+            #{'id': '40', 'source': 'twitter', 'target': 'imdb', 'predicate': 'accounttype', 'to_predicate': 'workedunder', 'arity': 2},
             
             #{'id': '1', 'source':'imdb', 'target':'uwcse', 'predicate':'workedunder', 'to_predicate':'advisedby', 'arity': 2},
             ##{'id': '2', 'source':'uwcse', 'target':'imdb', 'predicate':'advisedby', 'to_predicate':'workedunder', 'arity': 2},
@@ -82,6 +82,7 @@ experiments = [
         #     {'id': '31', 'source':'nell_finances', 'target':'yeast', 'predicate':'companyeconomicsector', 'to_predicate':'proteinclass', 'arity': 2},
         #     {'id': '32', 'source':'twitter', 'target':'nell_finances', 'predicate':'accounttype', 'to_predicate':'companyeconomicsector', 'arity': 2},
         #     {'id': '33', 'source':'nell_finances', 'target':'twitter', 'predicate':'companyeconomicsector', 'to_predicate':'accounttype', 'arity': 2},
+        {'id': '41', 'source':'yeast', 'target':'uwcse', 'predicate':'proteinclass', 'to_predicate':'advisedby', 'arity': 2},
 
             ]
             
