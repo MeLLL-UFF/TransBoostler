@@ -1,0 +1,10 @@
+interaction(protein,protein): sameauthor(author,author)
+location(protein,loc): venue(class,venue)
+enzyme(protein,enz): author(class,author)
+complex(protein,com): sametitle(title,title)
+phenotype(protein,phe): haswordauthor(author,word)
+setMap:proteinclass(A,B),samevenue(A,B)
+setParam:searchArgPermutation=true.
+setParam:searchEmpty=false.
+setParam:allowSameTargetMap=false.
+setParam:N=1.

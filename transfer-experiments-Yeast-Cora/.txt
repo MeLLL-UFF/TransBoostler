@@ -1,0 +1,973 @@
+Cleaning previous experiment's mess
+Cleaning previous experiment's mess
+Cleaning previous experiment's mess
+Model training time 4.069
+WILL Produced-Tree #1
+% FOR workedunder(A, B):
+%   if ( movie(C, D) )
+%   then return 0.26102663294124007;  // std dev = 5,783, 139,000 (wgt'ed) examples reached here.  /* #neg=83 #pos=56 */
+%   else return 0;  // std dev = 0,000, 0,000 (wgt'ed) examples reached here.
+WILL Produced-Tree #2
+% FOR workedunder(A, B):
+%   if ( movie(C, D) )
+%   then return 0.1627093728337628;  // std dev = 6,082, 165,000 (wgt'ed) examples reached here.  /* #neg=109 #pos=56 */
+%   else return 0;  // std dev = 0,000, 0,000 (wgt'ed) examples reached here.
+WILL Produced-Tree #3
+% FOR workedunder(A, B):
+%   if ( movie(C, D) )
+%   then return 0.13573970865163013;  // std dev = 6,092, 166,000 (wgt'ed) examples reached here.  /* #neg=110 #pos=56 */
+%   else return 0;  // std dev = 0,000, 0,000 (wgt'ed) examples reached here.
+WILL Produced-Tree #4
+% FOR workedunder(A, B):
+%   if ( movie(C, D) )
+%   then return 0.10314064069377807;  // std dev = 6,137, 171,000 (wgt'ed) examples reached here.  /* #neg=115 #pos=56 */
+%   else return 0;  // std dev = 0,000, 0,000 (wgt'ed) examples reached here.
+WILL Produced-Tree #5
+% FOR workedunder(A, B):
+%   return 0;  // std dev = 0,478, 158,000 (wgt'ed) examples reached here.  /* #neg=102 #pos=56 */
+WILL Produced-Tree #6
+% FOR workedunder(A, B):
+%   if ( movie(C, D) )
+%   then return 0.11848927183718387;  // std dev = 5,981, 155,000 (wgt'ed) examples reached here.  /* #neg=99 #pos=56 */
+%   else return 0;  // std dev = 0,000, 0,000 (wgt'ed) examples reached here.
+WILL Produced-Tree #7
+% FOR workedunder(A, B):
+%   if ( movie(C, D) )
+%   then if ( genre(E, C) )
+%   | then return 0;  // std dev = 0,000, 0,000 (wgt'ed) examples reached here.
+%   | else return 0.06611812754159278;  // std dev = 6,119, 169,000 (wgt'ed) examples reached here.  /* #neg=113 #pos=56 */
+%   else return 0;  // std dev = 0,000, 0,000 (wgt'ed) examples reached here.
+WILL Produced-Tree #8
+% FOR workedunder(A, B):
+%   if ( movie(C, D) )
+%   then return 0.03985497871441646;  // std dev = 6,179, 176,000 (wgt'ed) examples reached here.  /* #neg=120 #pos=56 */
+%   else return 0;  // std dev = 0,000, 0,000 (wgt'ed) examples reached here.
+WILL Produced-Tree #9
+% FOR workedunder(A, B):
+%   if ( movie(C, D) )
+%   then if ( genre(E, C) )
+%   | then return 0;  // std dev = 0,000, 0,000 (wgt'ed) examples reached here.
+%   | else return 0.037296994107755777;  // std dev = 6,154, 173,000 (wgt'ed) examples reached here.  /* #neg=117 #pos=56 */
+%   else return 0;  // std dev = 0,000, 0,000 (wgt'ed) examples reached here.
+WILL Produced-Tree #10
+% FOR workedunder(A, B):
+%   return 0;  // std dev = 0,476, 161,000 (wgt'ed) examples reached here.  /* #neg=105 #pos=56 */
+Inference time using transfer learning ['%', 'Total', 'inference', 'time', '(10', 'trees):', '10,239', 'seconds']
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 0
+FP: 0
+TN: 10928
+FN: 326
+Model training time 2.125
+WILL Produced-Tree #1
+% FOR workedunder(A, B):
+%   if ( movie(C, D) )
+%   then return 0.20134420137170295;  // std dev = 6,172, 169,000 (wgt'ed) examples reached here.  /* #neg=111 #pos=58 */
+%   else return 0;  // std dev = 0,000, 0,000 (wgt'ed) examples reached here.
+WILL Produced-Tree #2
+% FOR workedunder(A, B):
+%   if ( movie(C, D) )
+%   then return 0.15051174927868388;  // std dev = 6,286, 182,000 (wgt'ed) examples reached here.  /* #neg=124 #pos=58 */
+%   else return 0;  // std dev = 0,000, 0,000 (wgt'ed) examples reached here.
+WILL Produced-Tree #3
+% FOR workedunder(A, B):
+%   if ( movie(C, D) )
+%   then return 0.14889392357841053;  // std dev = 6,191, 171,000 (wgt'ed) examples reached here.  /* #neg=113 #pos=58 */
+%   else return 0;  // std dev = 0,000, 0,000 (wgt'ed) examples reached here.
+WILL Produced-Tree #4
+% FOR workedunder(A, B):
+%   if ( movie(C, D) )
+%   then return 0.12291805571319102;  // std dev = 6,200, 172,000 (wgt'ed) examples reached here.  /* #neg=114 #pos=58 */
+%   else return 0;  // std dev = 0,000, 0,000 (wgt'ed) examples reached here.
+WILL Produced-Tree #5
+% FOR workedunder(A, B):
+%   return 0;  // std dev = 0,469, 177,000 (wgt'ed) examples reached here.  /* #neg=119 #pos=58 */
+WILL Produced-Tree #6
+% FOR workedunder(A, B):
+%   if ( movie(C, D) )
+%   then return 0.1158028109191918;  // std dev = 6,133, 165,000 (wgt'ed) examples reached here.  /* #neg=107 #pos=58 */
+%   else return 0;  // std dev = 0,000, 0,000 (wgt'ed) examples reached here.
+WILL Produced-Tree #7
+% FOR workedunder(A, B):
+%   if ( movie(C, D) )
+%   then if ( genre(E, C) )
+%   | then return 0;  // std dev = 0,000, 0,000 (wgt'ed) examples reached here.
+%   | else return 0.11698522280682447;  // std dev = 6,025, 155,000 (wgt'ed) examples reached here.  /* #neg=97 #pos=58 */
+%   else return 0;  // std dev = 0,000, 0,000 (wgt'ed) examples reached here.
+WILL Produced-Tree #8
+% FOR workedunder(A, B):
+%   if ( movie(C, D) )
+%   then return 0.07564320090486307;  // std dev = 6,112, 163,000 (wgt'ed) examples reached here.  /* #neg=105 #pos=58 */
+%   else return 0;  // std dev = 0,000, 0,000 (wgt'ed) examples reached here.
+WILL Produced-Tree #9
+% FOR workedunder(A, B):
+%   if ( movie(C, D) )
+%   then if ( genre(E, C) )
+%   | then return 0;  // std dev = 0,000, 0,000 (wgt'ed) examples reached here.
+%   | else return 0.03956883347044117;  // std dev = 6,209, 173,000 (wgt'ed) examples reached here.  /* #neg=115 #pos=58 */
+%   else return 0;  // std dev = 0,000, 0,000 (wgt'ed) examples reached here.
+WILL Produced-Tree #10
+% FOR workedunder(A, B):
+%   return 0;  // std dev = 0,481, 159,000 (wgt'ed) examples reached here.  /* #neg=101 #pos=58 */
+Inference time using transfer learning ['%', 'Total', 'inference', 'time', '(10', 'trees):', '9,121', 'seconds']
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 0
+FP: 0
+TN: 10813
+FN: 324
+Model training time 3.366
+WILL Produced-Tree #1
+% FOR workedunder(A, B):
+%   if ( movie(C, D) )
+%   then return 0.17829281999159416;  // std dev = 11,001, 556,000 (wgt'ed) examples reached here.  /* #neg=378 #pos=178 */
+%   else return 0;  // std dev = 0,000, 0,000 (wgt'ed) examples reached here.
+WILL Produced-Tree #2
+% FOR workedunder(A, B):
+%   if ( movie(C, D) )
+%   then return 0.16836376958157;  // std dev = 10,893, 534,000 (wgt'ed) examples reached here.  /* #neg=356 #pos=178 */
+%   else return 0;  // std dev = 0,000, 0,000 (wgt'ed) examples reached here.
+WILL Produced-Tree #3
+% FOR workedunder(A, B):
+%   if ( movie(C, D) )
+%   then return 0.16866134821895923;  // std dev = 10,689, 497,000 (wgt'ed) examples reached here.  /* #neg=319 #pos=178 */
+%   else return 0;  // std dev = 0,000, 0,000 (wgt'ed) examples reached here.
+WILL Produced-Tree #4
+% FOR workedunder(A, B):
+%   if ( movie(C, D) )
+%   then return 0.1248963847426781;  // std dev = 10,825, 521,000 (wgt'ed) examples reached here.  /* #neg=343 #pos=178 */
+%   else return 0;  // std dev = 0,000, 0,000 (wgt'ed) examples reached here.
+WILL Produced-Tree #5
+% FOR workedunder(A, B):
+%   return 0;  // std dev = 0,470, 542,000 (wgt'ed) examples reached here.  /* #neg=364 #pos=178 */
+WILL Produced-Tree #6
+% FOR workedunder(A, B):
+%   if ( movie(C, D) )
+%   then return 0.0927649050804894;  // std dev = 10,909, 537,000 (wgt'ed) examples reached here.  /* #neg=359 #pos=178 */
+%   else return 0;  // std dev = 0,000, 0,000 (wgt'ed) examples reached here.
+WILL Produced-Tree #7
+% FOR workedunder(A, B):
+%   if ( movie(C, D) )
+%   then if ( genre(E, C) )
+%   | then return 0;  // std dev = 0,000, 0,000 (wgt'ed) examples reached here.
+%   | else return 0.07861640253560823;  // std dev = 10,883, 532,000 (wgt'ed) examples reached here.  /* #neg=354 #pos=178 */
+%   else return 0;  // std dev = 0,000, 0,000 (wgt'ed) examples reached here.
+WILL Produced-Tree #8
+% FOR workedunder(A, B):
+%   if ( movie(C, D) )
+%   then return 0.06086219257583265;  // std dev = 10,904, 536,000 (wgt'ed) examples reached here.  /* #neg=358 #pos=178 */
+%   else return 0;  // std dev = 0,000, 0,000 (wgt'ed) examples reached here.
+WILL Produced-Tree #9
+% FOR workedunder(A, B):
+%   if ( movie(C, D) )
+%   then if ( genre(E, C) )
+%   | then return 0;  // std dev = 0,000, 0,000 (wgt'ed) examples reached here.
+%   | else return 0.04866593285421643;  // std dev = 10,904, 536,000 (wgt'ed) examples reached here.  /* #neg=358 #pos=178 */
+%   else return 0;  // std dev = 0,000, 0,000 (wgt'ed) examples reached here.
+WILL Produced-Tree #10
+% FOR workedunder(A, B):
+%   return 0;  // std dev = 0,475, 516,000 (wgt'ed) examples reached here.  /* #neg=338 #pos=178 */
+Inference time using transfer learning ['%', 'Total', 'inference', 'time', '(10', 'trees):', '12,306', 'seconds']
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 0
+FP: 0
+TN: 10693
+FN: 204
+Model training time 1.82
+WILL Produced-Tree #1
+% FOR workedunder(A, B):
+%   if ( movie(C, D) )
+%   then return 0.21814893509951241;  // std dev = 5,367, 125,000 (wgt'ed) examples reached here.  /* #neg=80 #pos=45 */
+%   else return 0;  // std dev = 0,000, 0,000 (wgt'ed) examples reached here.
+WILL Produced-Tree #2
+% FOR workedunder(A, B):
+%   if ( movie(C, D) )
+%   then return 0.1837972228380331;  // std dev = 5,390, 127,000 (wgt'ed) examples reached here.  /* #neg=82 #pos=45 */
+%   else return 0;  // std dev = 0,000, 0,000 (wgt'ed) examples reached here.
+WILL Produced-Tree #3
+% FOR workedunder(A, B):
+%   if ( movie(C, D) )
+%   then return 0.13034203434139313;  // std dev = 5,497, 137,000 (wgt'ed) examples reached here.  /* #neg=92 #pos=45 */
+%   else return 0;  // std dev = 0,000, 0,000 (wgt'ed) examples reached here.
+WILL Produced-Tree #4
+% FOR workedunder(A, B):
+%   if ( movie(C, D) )
+%   then return 0.116171691033194;  // std dev = 5,467, 134,000 (wgt'ed) examples reached here.  /* #neg=89 #pos=45 */
+%   else return 0;  // std dev = 0,000, 0,000 (wgt'ed) examples reached here.
+WILL Produced-Tree #5
+% FOR workedunder(A, B):
+%   return 0;  // std dev = 0,457, 151,000 (wgt'ed) examples reached here.  /* #neg=106 #pos=45 */
+WILL Produced-Tree #6
+% FOR workedunder(A, B):
+%   if ( movie(C, D) )
+%   then return 0.07669352155942047;  // std dev = 5,544, 142,000 (wgt'ed) examples reached here.  /* #neg=97 #pos=45 */
+%   else return 0;  // std dev = 0,000, 0,000 (wgt'ed) examples reached here.
+WILL Produced-Tree #7
+% FOR workedunder(A, B):
+%   if ( movie(C, D) )
+%   then if ( genre(E, C) )
+%   | then return 0;  // std dev = 0,000, 0,000 (wgt'ed) examples reached here.
+%   | else return 0.04753093389246049;  // std dev = 5,604, 149,000 (wgt'ed) examples reached here.  /* #neg=104 #pos=45 */
+%   else return 0;  // std dev = 0,000, 0,000 (wgt'ed) examples reached here.
+WILL Produced-Tree #8
+% FOR workedunder(A, B):
+%   if ( movie(C, D) )
+%   then return 0.07990660029275148;  // std dev = 5,435, 131,000 (wgt'ed) examples reached here.  /* #neg=86 #pos=45 */
+%   else return 0;  // std dev = 0,000, 0,000 (wgt'ed) examples reached here.
+WILL Produced-Tree #9
+% FOR workedunder(A, B):
+%   if ( movie(C, D) )
+%   then if ( genre(E, C) )
+%   | then return 0;  // std dev = 0,000, 0,000 (wgt'ed) examples reached here.
+%   | else return 0.07215632085706215;  // std dev = 5,402, 128,000 (wgt'ed) examples reached here.  /* #neg=83 #pos=45 */
+%   else return 0;  // std dev = 0,000, 0,000 (wgt'ed) examples reached here.
+WILL Produced-Tree #10
+% FOR workedunder(A, B):
+%   return 0;  // std dev = 0,467, 140,000 (wgt'ed) examples reached here.  /* #neg=95 #pos=45 */
+Cleaning previous experiment's mess
+Cleaning previous experiment's mess
+Cleaning previous experiment's mess
+Loading fasttext model
+Time to load FastText model: 410.03 seconds
+Model training time 3.813
+WILL Produced-Tree #1
+% FOR proteinclass(A, B):
+%   return 0;  // std dev = 0,475, 254,000 (wgt'ed) examples reached here.  /* #neg=167 #pos=87 */
+WILL Produced-Tree #2
+% FOR proteinclass(A, B):
+%   return 0;  // std dev = 0,468, 268,000 (wgt'ed) examples reached here.  /* #neg=181 #pos=87 */
+WILL Produced-Tree #3
+% FOR proteinclass(A, B):
+%   return 0;  // std dev = 0,461, 284,000 (wgt'ed) examples reached here.  /* #neg=197 #pos=87 */
+WILL Produced-Tree #4
+% FOR proteinclass(A, B):
+%   return 0;  // std dev = 0,478, 246,000 (wgt'ed) examples reached here.  /* #neg=159 #pos=87 */
+WILL Produced-Tree #5
+% FOR proteinclass(A, B):
+%   return 0;  // std dev = 0,471, 262,000 (wgt'ed) examples reached here.  /* #neg=175 #pos=87 */
+WILL Produced-Tree #6
+% FOR proteinclass(A, B):
+%   return 0;  // std dev = 0,478, 247,000 (wgt'ed) examples reached here.  /* #neg=160 #pos=87 */
+WILL Produced-Tree #7
+% FOR proteinclass(A, B):
+%   if ( location(C, D) )
+%   then return 0.192764319714896;  // std dev = 7,608, 260,000 (wgt'ed) examples reached here.  /* #neg=173 #pos=87 */
+%   else return 0;  // std dev = 0,000, 0,000 (wgt'ed) examples reached here.
+WILL Produced-Tree #8
+% FOR proteinclass(A, B):
+%   return 0;  // std dev = 0,467, 270,000 (wgt'ed) examples reached here.  /* #neg=183 #pos=87 */
+WILL Produced-Tree #9
+% FOR proteinclass(A, B):
+%   if ( location(C, D) )
+%   then return 0.16893457909427406;  // std dev = 7,601, 259,000 (wgt'ed) examples reached here.  /* #neg=172 #pos=87 */
+%   else return 0;  // std dev = 0,000, 0,000 (wgt'ed) examples reached here.
+WILL Produced-Tree #10
+% FOR proteinclass(A, B):
+%   return 0;  // std dev = 0,465, 275,000 (wgt'ed) examples reached here.  /* #neg=188 #pos=87 */
+Inference time using transfer learning ['%', 'Total', 'inference', 'time', '(10', 'trees):', '1', 'minutes', 'and', '9,288', 'seconds']
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 0
+FP: 0
+TN: 39912
+FN: 282
+Model training time 3.431
+WILL Produced-Tree #1
+% FOR proteinclass(A, B):
+%   return 0;  // std dev = 0,473, 307,000 (wgt'ed) examples reached here.  /* #neg=203 #pos=104 */
+WILL Produced-Tree #2
+% FOR proteinclass(A, B):
+%   return 0;  // std dev = 0,481, 287,000 (wgt'ed) examples reached here.  /* #neg=183 #pos=104 */
+WILL Produced-Tree #3
+% FOR proteinclass(A, B):
+%   return 0;  // std dev = 0,467, 324,000 (wgt'ed) examples reached here.  /* #neg=220 #pos=104 */
+WILL Produced-Tree #4
+% FOR proteinclass(A, B):
+%   return 0;  // std dev = 0,464, 332,000 (wgt'ed) examples reached here.  /* #neg=228 #pos=104 */
+WILL Produced-Tree #5
+% FOR proteinclass(A, B):
+%   return 0;  // std dev = 0,471, 312,000 (wgt'ed) examples reached here.  /* #neg=208 #pos=104 */
+WILL Produced-Tree #6
+% FOR proteinclass(A, B):
+%   return 0;  // std dev = 0,471, 314,000 (wgt'ed) examples reached here.  /* #neg=210 #pos=104 */
+WILL Produced-Tree #7
+% FOR proteinclass(A, B):
+%   if ( location(C, D) )
+%   then return 0.17330045025102456;  // std dev = 8,439, 330,000 (wgt'ed) examples reached here.  /* #neg=226 #pos=104 */
+%   else return 0;  // std dev = 0,000, 0,000 (wgt'ed) examples reached here.
+WILL Produced-Tree #8
+% FOR proteinclass(A, B):
+%   return 0;  // std dev = 0,476, 299,000 (wgt'ed) examples reached here.  /* #neg=195 #pos=104 */
+WILL Produced-Tree #9
+% FOR proteinclass(A, B):
+%   if ( location(C, D) )
+%   then return 0.1968281195062043;  // std dev = 8,151, 288,000 (wgt'ed) examples reached here.  /* #neg=184 #pos=104 */
+%   else return 0;  // std dev = 0,000, 0,000 (wgt'ed) examples reached here.
+WILL Produced-Tree #10
+% FOR proteinclass(A, B):
+%   return 0;  // std dev = 0,468, 322,000 (wgt'ed) examples reached here.  /* #neg=218 #pos=104 */
+Inference time using transfer learning ['%', 'Total', 'inference', 'time', '(10', 'trees):', '1', 'minutes', 'and', '5,026', 'seconds']
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 0
+FP: 0
+TN: 35157
+FN: 265
+Model training time 3.114
+WILL Produced-Tree #1
+% FOR proteinclass(A, B):
+%   return 0;  // std dev = 0,465, 290,000 (wgt'ed) examples reached here.  /* #neg=198 #pos=92 */
+WILL Produced-Tree #2
+% FOR proteinclass(A, B):
+%   return 0;  // std dev = 0,463, 295,000 (wgt'ed) examples reached here.  /* #neg=203 #pos=92 */
+WILL Produced-Tree #3
+% FOR proteinclass(A, B):
+%   return 0;  // std dev = 0,477, 263,000 (wgt'ed) examples reached here.  /* #neg=171 #pos=92 */
+WILL Produced-Tree #4
+% FOR proteinclass(A, B):
+%   return 0;  // std dev = 0,478, 260,000 (wgt'ed) examples reached here.  /* #neg=168 #pos=92 */
+WILL Produced-Tree #5
+% FOR proteinclass(A, B):
+%   return 0;  // std dev = 0,467, 286,000 (wgt'ed) examples reached here.  /* #neg=194 #pos=92 */
+WILL Produced-Tree #6
+% FOR proteinclass(A, B):
+%   return 0;  // std dev = 0,480, 256,000 (wgt'ed) examples reached here.  /* #neg=164 #pos=92 */
+WILL Produced-Tree #7
+% FOR proteinclass(A, B):
+%   if ( location(C, D) )
+%   then return 0.18908418689807183;  // std dev = 7,846, 278,000 (wgt'ed) examples reached here.  /* #neg=186 #pos=92 */
+%   else return 0;  // std dev = 0,000, 0,000 (wgt'ed) examples reached here.
+WILL Produced-Tree #8
+% FOR proteinclass(A, B):
+%   return 0;  // std dev = 0,480, 255,000 (wgt'ed) examples reached here.  /* #neg=163 #pos=92 */
+WILL Produced-Tree #9
+% FOR proteinclass(A, B):
+%   if ( location(C, D) )
+%   then return 0.1717737903251662;  // std dev = 7,803, 272,000 (wgt'ed) examples reached here.  /* #neg=180 #pos=92 */
+%   else return 0;  // std dev = 0,000, 0,000 (wgt'ed) examples reached here.
+WILL Produced-Tree #10
+% FOR proteinclass(A, B):
+%   return 0;  // std dev = 0,474, 270,000 (wgt'ed) examples reached here.  /* #neg=178 #pos=92 */
+Cleaning previous experiment's mess
+Loading fasttext model
+Time to load FastText model: 419.03 seconds
+Cleaning previous experiment's mess
+Loading fasttext model
+Cleaning previous experiment's mess
+Cleaning previous experiment's mess
+Loading fasttext model
+Cleaning previous experiment's mess
+Loading fasttext model
+Time to load FastText model: 122.48 seconds
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 0
+FP: 0
+TN: 688
+FN: 368
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 771
+FP: 544
+TN: 0
+FN: 0
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 0
+FP: 0
+TN: 2222
+FN: 581
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 0
+FP: 0
+TN: 1068
+FN: 747
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 498
+FP: 338
+TN: 162
+FN: 52
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 0
+FP: 0
+TN: 688
+FN: 368
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 771
+FP: 544
+TN: 0
+FN: 0
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 0
+FP: 0
+TN: 2222
+FN: 581
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 0
+FP: 0
+TN: 1068
+FN: 747
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 498
+FP: 338
+TN: 162
+FN: 52
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 0
+FP: 0
+TN: 688
+FN: 368
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 771
+FP: 544
+TN: 0
+FN: 0
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 0
+FP: 0
+TN: 2222
+FN: 581
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 0
+FP: 0
+TN: 1068
+FN: 747
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 498
+FP: 338
+TN: 162
+FN: 52
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 0
+FP: 0
+TN: 688
+FN: 368
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 771
+FP: 544
+TN: 0
+FN: 0
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 0
+FP: 0
+TN: 2222
+FN: 581
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 0
+FP: 0
+TN: 1068
+FN: 747
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 498
+FP: 338
+TN: 162
+FN: 52
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 0
+FP: 0
+TN: 688
+FN: 368
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 771
+FP: 544
+TN: 0
+FN: 0
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 0
+FP: 0
+TN: 2222
+FN: 581
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 0
+FP: 0
+TN: 1068
+FN: 747
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 498
+FP: 338
+TN: 162
+FN: 52
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 0
+FP: 0
+TN: 688
+FN: 368
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 771
+FP: 544
+TN: 0
+FN: 0
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 0
+FP: 0
+TN: 2222
+FN: 581
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 0
+FP: 0
+TN: 1068
+FN: 747
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 498
+FP: 338
+TN: 162
+FN: 52
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 0
+FP: 0
+TN: 688
+FN: 368
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 771
+FP: 544
+TN: 0
+FN: 0
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 0
+FP: 0
+TN: 2222
+FN: 581
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 0
+FP: 0
+TN: 1068
+FN: 747
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 498
+FP: 338
+TN: 162
+FN: 52
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 0
+FP: 0
+TN: 688
+FN: 368
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 771
+FP: 544
+TN: 0
+FN: 0
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 0
+FP: 0
+TN: 2222
+FN: 581
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 0
+FP: 0
+TN: 1068
+FN: 747
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 498
+FP: 338
+TN: 162
+FN: 52
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 0
+FP: 0
+TN: 688
+FN: 368
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 771
+FP: 544
+TN: 0
+FN: 0
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 0
+FP: 0
+TN: 2222
+FN: 581
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 0
+FP: 0
+TN: 1068
+FN: 747
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 498
+FP: 338
+TN: 162
+FN: 52
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 0
+FP: 0
+TN: 688
+FN: 368
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 771
+FP: 544
+TN: 0
+FN: 0
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 0
+FP: 0
+TN: 2222
+FN: 581
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 0
+FP: 0
+TN: 1068
+FN: 747
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 498
+FP: 338
+TN: 162
+FN: 52
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 0
+FP: 0
+TN: 688
+FN: 368
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 771
+FP: 544
+TN: 0
+FN: 0
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 0
+FP: 0
+TN: 2222
+FN: 581
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 0
+FP: 0
+TN: 1068
+FN: 747
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 498
+FP: 338
+TN: 162
+FN: 52
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 0
+FP: 0
+TN: 688
+FN: 368
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 771
+FP: 544
+TN: 0
+FN: 0
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 0
+FP: 0
+TN: 2222
+FN: 581
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 0
+FP: 0
+TN: 1068
+FN: 747
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 498
+FP: 338
+TN: 162
+FN: 52
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 0
+FP: 0
+TN: 688
+FN: 368
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 771
+FP: 544
+TN: 0
+FN: 0
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 0
+FP: 0
+TN: 2222
+FN: 581
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 0
+FP: 0
+TN: 1068
+FN: 747
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 498
+FP: 338
+TN: 162
+FN: 52
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 0
+FP: 0
+TN: 688
+FN: 368
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 771
+FP: 544
+TN: 0
+FN: 0
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 0
+FP: 0
+TN: 2222
+FN: 581
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 0
+FP: 0
+TN: 1068
+FN: 747
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 498
+FP: 338
+TN: 162
+FN: 52
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 0
+FP: 0
+TN: 688
+FN: 368
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 771
+FP: 544
+TN: 0
+FN: 0
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 0
+FP: 0
+TN: 2222
+FN: 581
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 0
+FP: 0
+TN: 1068
+FN: 747
+Converting results file to txt
+Building confusion matrix
+Confusion matrix 
+
+TP: 498
+FP: 338
+TN: 162
+FN: 52
