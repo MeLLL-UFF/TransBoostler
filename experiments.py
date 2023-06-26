@@ -82,7 +82,7 @@ experiments = [
         #     {'id': '31', 'source':'nell_finances', 'target':'yeast', 'predicate':'companyeconomicsector', 'to_predicate':'proteinclass', 'arity': 2},
         #     {'id': '32', 'source':'twitter', 'target':'nell_finances', 'predicate':'accounttype', 'to_predicate':'companyeconomicsector', 'arity': 2},
         #     {'id': '33', 'source':'nell_finances', 'target':'twitter', 'predicate':'companyeconomicsector', 'to_predicate':'accounttype', 'arity': 2},
-        {'id': '41', 'source':'yeast', 'target':'uwcse', 'predicate':'proteinclass', 'to_predicate':'advisedby', 'arity': 2},
+        {'id': '41', 'source':'yeast', 'target':'cora', 'predicate':'proteinclass', 'to_predicate':'samevenue', 'arity': 2},
 
             ]
             
