@@ -3,7 +3,6 @@
 #logging.basicConfig(level=logging.INFO, format='%(asctime)s %(message)s', handlers=[logging.FileHandler('app.log','w'),logging.StreamHandler()])
 
 from experiments import experiments, bk, setups
-from gensim.test.utils import datapath
 from datasets.get_datasets import *
 from boostsrl import boostsrl
 import parameters as params
@@ -19,6 +18,7 @@ source_balanced = False
 balanced = False
 
 experiment_title = ''
+experiment_type = 'rdnb'
 
 def save_experiment(data, experiment_title):
     if not os.path.exists('experiments/' + experiment_title):
@@ -42,11 +42,11 @@ def train_and_test(background, train_pos, train_neg, train_facts, test_pos, test
     end = time.time()
     learning_time = end-start
 
-    utils.print_function('Model training time {}'.format(learning_time), experiment_title)
+    utils.print_function('Model training time {}'.format(learning_time), experiment_title, experiment_type)
 
     will = ['WILL Produced-Tree #'+str(i+1)+'\n'+('\n'.join(model.get_will_produced_tree(treenumber=i+1))) for i in range(10)]
     for w in will:
-        utils.print_function(w, experiment_title)
+        utils.print_function(w, experiment_title, experiment_type)
 
     start = time.time()
 
@@ -56,27 +56,27 @@ def train_and_test(background, train_pos, train_neg, train_facts, test_pos, test
     end = time.time()
     inference_time = end-start
 
-    utils.print_function('Inference time {}'.format(inference_time), experiment_title)
+    utils.print_function('Inference time {}'.format(inference_time), experiment_title, experiment_type)
 
     return model, results.summarize_results(), learning_time, inference_time
 
 def get_confusion_matrix(to_predicate):
     # Get confusion matrix by reading results from db files created by the Java application
-    utils.print_function('Converting results file to txt', experiment_title)
+    utils.print_function('Converting results file to txt', experiment_title, experiment_type)
 
     utils.convert_db_to_txt(to_predicate, params.TEST_OUTPUT)
     y_true, y_pred = utils.read_results(params.TEST_OUTPUT.format(to_predicate).replace('.db', '.txt'))
     
 
-    utils.print_function('Building confusion matrix', experiment_title)
+    utils.print_function('Building confusion matrix', experiment_title, experiment_type)
 
     # True Negatives, False Positives, False Negatives, True Positives
     TN, FP, FN, TP = utils.get_confusion_matrix(y_true, y_pred)
 
-    utils.print_function('Confusion matrix \n', experiment_title)
+    utils.print_function('Confusion matrix \n', experiment_title, experiment_type)
     matrix = ['TP: {}'.format(TP), 'FP: {}'.format(FP), 'TN: {}'.format(TN), 'FN: {}'.format(FN)]
     for m in matrix:
-        utils.print_function(m, experiment_title)
+        utils.print_function(m, experiment_title, experiment_type)
 
     # Converts to int to fix JSON np.int64 problem
     return {'TP': int(TP), 'FP': int(FP), 'TN': int(TN), 'FN': int(FN)}
@@ -103,14 +103,14 @@ def main():
         # Load total target dataset
         tar_total_data = datasets.load(target, bk[target], seed=params.SEED)
 
-        if target in ['nell_sports', 'nell_finances', 'yago2s']:
+        if target in ['nell_sports', 'nell_finances', 'yago2s', 'bace']:
             n_runs = params.N_FOLDS
         else:
             n_runs = len(tar_total_data[0])
 
         results = { 'save': { }}
 
-        utils.print_function('Starting experiment {} \n'.format(experiment_title), experiment_title)
+        utils.print_function('Starting experiment {} \n'.format(experiment_title), experiment_title, experiment_type)
 
         _id = experiment['id']
         source = experiment['source']
@@ -144,11 +144,9 @@ def main():
                 'maxTreeDepth' : params.MAXTREEDEPTH
                 }
 
-        # APAGAR ISSO AQUI
-        n_runs = 1
         while results['save']['n_runs'] < n_runs:
 
-            utils.print_function('Run: ' + str(results['save']['n_runs'] + 1), experiment_title)
+            utils.print_function('Run: ' + str(results['save']['n_runs'] + 1), experiment_title, experiment_type)
             
             if('rdn-b' not in rdnb_confusion_matrix):
                 #transboostler_experiments[embeddingModel] = {}
@@ -159,16 +157,16 @@ def main():
             rdnb_confusion_matrix['rdn-b'] = []
             confusion_matrix = {'TP': [], 'FP': [], 'TN': [], 'FN': []} 
 
-            utils.print_function('Starting experiments for RDN-B \n', experiment_title)
+            utils.print_function('Starting experiments for RDN-B \n', experiment_title, experiment_type)
 
-            if target in ['nell_sports', 'nell_finances', 'yago2s']:
+            if target in ['nell_sports', 'nell_finances', 'yago2s', 'bace']:
                 n_folds = params.N_FOLDS
             else:
                 n_folds = len(tar_total_data[0])
 
             results_save, confusion_matrix_save = [], []
             for i in range(n_folds):
-                utils.print_function('\n Starting fold {} of {} folds \n'.format(i+1, n_folds), experiment_title)
+                utils.print_function('\n Starting fold {} of {} folds \n'.format(i+1, n_folds), experiment_title, experiment_type)
 
                 ob_save, cm_save = {}, {}
 
@@ -182,7 +180,7 @@ def main():
                 tar_data = datasets.load(target, bk[target], target=to_predicate, balanced=balanced, seed=params.SEED)
 
                 # Group and shuffle
-                if target not in ['nell_sports', 'nell_finances', 'yago2s']:
+                if target not in ['nell_sports', 'nell_finances', 'yago2s', 'bace']:
                     [tar_train_facts, tar_test_facts] =  datasets.get_kfold_small(i, tar_data[0])
                     [tar_train_pos, tar_test_pos] =  datasets.get_kfold_small(i, tar_data[1])
                     [tar_train_neg, tar_test_neg] =  datasets.get_kfold_small(i, tar_data[2])
@@ -196,21 +194,21 @@ def main():
                 random.shuffle(tar_train_pos)
                 random.shuffle(tar_train_neg)
                 
-                utils.print_function('Start training from scratch\n', experiment_title)
+                utils.print_function('Start training from scratch\n', experiment_title, experiment_type)
 
-                utils.print_function('Target train facts examples: %s' % len(tar_train_facts), experiment_title)
-                utils.print_function('Target train pos examples: %s' % len(tar_train_pos), experiment_title)
-                utils.print_function('Target train neg examples: %s\n' % len(tar_train_neg), experiment_title)
+                utils.print_function('Target train facts examples: %s' % len(tar_train_facts), experiment_title, experiment_type)
+                utils.print_function('Target train pos examples: %s' % len(tar_train_pos), experiment_title, experiment_type)
+                utils.print_function('Target train neg examples: %s\n' % len(tar_train_neg), experiment_title, experiment_type)
 
-                utils.print_function('Target test facts examples: %s' % len(tar_test_facts), experiment_title)
-                utils.print_function('Target test pos examples: %s' % len(tar_test_pos), experiment_title)
-                utils.print_function('Target test neg examples: %s\n' % len(tar_test_neg), experiment_title)
+                utils.print_function('Target test facts examples: %s' % len(tar_test_facts), experiment_title, experiment_type)
+                utils.print_function('Target test pos examples: %s' % len(tar_test_pos), experiment_title, experiment_type)
+                utils.print_function('Target test neg examples: %s\n' % len(tar_test_neg), experiment_title, experiment_type)
 
                 # Creating background
                 background = boostsrl.modes(bk[target], [to_predicate], useStdLogicVariables=False, maxTreeDepth=params.MAXTREEDEPTH, nodeSize=params.NODESIZE, numOfClauses=params.NUMOFCLAUSES)
 
                 # Train and test
-                utils.print_function('Training from scratch \n', experiment_title)
+                utils.print_function('Training from scratch \n', experiment_title, experiment_type)
 
                 # Learn and test model not revising theory
                 model, t_results, learning_time, inference_time = train_and_test(background, tar_train_pos, tar_train_neg, tar_train_facts, tar_test_pos, tar_test_neg, tar_test_facts)
@@ -219,7 +217,7 @@ def main():
                 t_results['Learning time'] = learning_time
                 ob_save['rdn-b'] = t_results
                 
-                utils.show_results(utils.get_results_dict(t_results, learning_time, inference_time), experiment_title)
+                utils.show_results(utils.get_results_dict(t_results, learning_time, inference_time), experiment_title, experiment_type)
 
                 cm = get_confusion_matrix(to_predicate)
                 cm_save['rdn-b'] = cm
